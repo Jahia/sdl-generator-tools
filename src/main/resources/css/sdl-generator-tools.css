@@ -1,0 +1,17 @@
+#tools-container {
+    position: absolute;
+    width: 1440px;
+    height: 900px;
+    left: 0px;
+    top: 0px;
+    background: #F6FAFC;
+
+    font-family: Nunito Sans;
+    font-style: normal;
+    font-weight: normal;
+
+    display: flex;
+    display: -webkit-flex;
+    flex-direction: row;
+    -webkit-flex-direction: row;
+}
