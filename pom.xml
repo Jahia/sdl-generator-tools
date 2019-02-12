@@ -62,13 +62,34 @@
     <developerConnection>scm:git:git@github.com:Jahia/sdl-generator-tools.git</developerConnection>
   </scm>
   <properties>
-    <jahia-depends>default,graphql-dxm-provider</jahia-depends>
+    <jahia-depends>default,serverSettings,graphql-dxm-provider</jahia-depends>
+    <graphql-java.version>11.0</graphql-java.version>
+    <graphql-java-annotations.version>6.1</graphql-java-annotations.version>
+    <graphql-java-servlet.version>4.7.0-jahia3-SNAPSHOT</graphql-java-servlet.version>
   </properties>
   <dependencies>
+    <dependency>
+      <groupId>com.graphql-java</groupId>
+      <artifactId>graphql-java</artifactId>
+      <version>${graphql-java.version}</version>
+      <scope>provided</scope>
+    </dependency>
     <dependency>
       <groupId>org.jahia.modules</groupId>
       <artifactId>graphql-dxm-provider</artifactId>
       <version>1.0.6-SNAPSHOT</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.github.graphql-java</groupId>
+      <artifactId>graphql-java-annotations</artifactId>
+      <version>${graphql-java-annotations.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.graphql-java-kickstart</groupId>
+      <artifactId>graphql-java-servlet</artifactId>
+      <version>${graphql-java-servlet.version}</version>
       <scope>provided</scope>
     </dependency>
   </dependencies>
@@ -105,7 +126,14 @@
         <artifactId>maven-bundle-plugin</artifactId>
         <extensions>true</extensions>
         <configuration>
-          <instructions />
+          <instructions>
+            <Jahia-Depends>default,serverSettings,graphql-dxm-provider</Jahia-Depends>
+            <_dsannotations>*</_dsannotations>
+            <Import-Package>
+              ${jahia.plugin.projectPackageImport},
+              *
+            </Import-Package>
+          </instructions>
         </configuration>
       </plugin>
 
