@@ -87,10 +87,14 @@ export {getInitialObject};
 //     {
 //         "name": "mapping",
 //         "arguments": [
-//             {
-//                 "name": "node",
-//                 "value": "sdl:test"
-//             }
+//              {
+//                  "name": "node",
+//                  "value": "sdl:test"
+//              },
+//              {
+//                  "name": "ignoreDefaultQueries",
+//                  "value": true
+//              }
 //         ]
 //     }
 // ]
