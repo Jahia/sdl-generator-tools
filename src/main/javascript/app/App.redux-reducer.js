@@ -27,6 +27,42 @@ const nodeTypesReducer = (state = [], action) => {
                     fieldDefinitions: type.fieldDefinitions.filter((field, index) => index !== action.propertyIndex)
                 };
             });
+        case actionTypes.SDL_ADD_DIRECTIVE_ARG_TO_TYPE:
+            return state.map((type, index) => {
+                if (index !== action.typeIndex) {
+                    return type;
+                }
+                return {
+                    ...type,
+                    directives: type.directives.map(dir => {
+                        if (dir.name !== action.directiveName) {
+                            return dir;
+                        }
+                        return {
+                            ...dir,
+                            arguments: dir.arguments.concat(getInitialObject(actionTypes.SDL_ADD_DIRECTIVE_ARG_TO_TYPE, action.argumentInfo))
+                        };
+                    })
+                };
+            });
+        case actionTypes.SDL_REMOVE_DIRECTIVE_ARG_FROM_TYPE:
+            return state.map((type, index) => {
+                if (index !== action.typeIndex) {
+                    return type;
+                }
+                return {
+                    ...type,
+                    directives: type.directives.map(dir => {
+                        if (dir.name !== action.directiveName) {
+                            return dir;
+                        }
+                        return {
+                            ...dir,
+                            arguments: dir.arguments.filter((arg, index) => index !== action.argumentIndex)
+                        };
+                    })
+                };
+            });
         default: return state;
     }
 };

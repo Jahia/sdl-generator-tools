@@ -2,7 +2,9 @@ const actionTypes = {
     SDL_ADD_TYPE: 'SDL_ADD_TYPE',
     SDL_REMOVE_TYPE: 'SDL_REMOVE_TYPE',
     SDL_ADD_PROPERTY_TO_TYPE: 'SDL_ADD_PROPERTY_TO_TYPE',
-    SDL_REMOVE_PROPERTY_FROM_TYPE: 'SDL_REMOVE_PROPERTY_FROM_TYPE'
+    SDL_REMOVE_PROPERTY_FROM_TYPE: 'SDL_REMOVE_PROPERTY_FROM_TYPE',
+    SDL_ADD_DIRECTIVE_ARG_TO_TYPE: 'SDL_ADD_DIRECTIVE_ARG_TO_TYPE',
+    SDL_REMOVE_DIRECTIVE_ARG_FROM_TYPE: 'SDL_REMOVE_DIRECTIVE_ARG_FROM_TYPE'
 };
 
 const sdlAddType = typeInfo => ({
@@ -27,5 +29,27 @@ const sdlRemovePropertyFromType = (propertyIndex, typeIndex) => ({
     typeIndex: typeIndex
 });
 
-export {actionTypes, sdlAddType, sdlRemoveType, sdlAddPropertyToType, sdlRemovePropertyFromType};
+const sdlAddDirectiveArgToType = (typeIndex, directiveName, argumentInfo) => ({
+    type: actionTypes.SDL_ADD_DIRECTIVE_ARG_TO_TYPE,
+    argumentInfo: argumentInfo,
+    typeIndex: typeIndex,
+    directiveName: directiveName
+});
+
+const sdlRemoveDirectiveArgFromType = (typeIndex, directiveName, argumentIndex) => ({
+    type: actionTypes.SDL_ADD_DIRECTIVE_ARG_TO_TYPE,
+    argumentIndex: argumentIndex,
+    typeIndex: typeIndex,
+    directiveName: directiveName
+});
+
+export {
+    actionTypes,
+    sdlAddType,
+    sdlRemoveType,
+    sdlAddPropertyToType,
+    sdlRemovePropertyFromType,
+    sdlAddDirectiveArgToType,
+    sdlRemoveDirectiveArgFromType
+};
 

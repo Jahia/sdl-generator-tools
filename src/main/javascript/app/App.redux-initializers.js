@@ -34,12 +34,19 @@ const addProperty = fieldInfo => (Object.assign({}, {
     ]
 }));
 
+const addDirectiveArgument = argumentInfo => ({
+    name: argumentInfo.name,
+    value: argumentInfo.value
+});
+
 const getInitialObject = (actionType, vars) => {
     switch (actionType) {
         case actionTypes.SDL_ADD_TYPE:
             return addType(vars);
         case actionTypes.SDL_ADD_PROPERTY_TO_TYPE:
             return addProperty(vars);
+        case actionTypes.SDL_ADD_DIRECTIVE_ARG_TO_TYPE:
+            return addDirectiveArgument(vars);
         default: return {};
     }
 };
