@@ -34,10 +34,10 @@ const addProperty = fieldInfo => (Object.assign({}, {
     ]
 }));
 
-const addDirectiveArgument = argumentInfo => ({
+const addDirectiveArgument = argumentInfo => (Object.assign({}, {
     name: argumentInfo.name,
     value: argumentInfo.value
-});
+}));
 
 const getInitialObject = (actionType, vars) => {
     switch (actionType) {
