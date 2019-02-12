@@ -39,6 +39,5 @@
         sdlGeneratorToolsReactRender('${targetId}', contextJsParameters);
     })();
 </script>
-</div>
 </body>
 </html>
