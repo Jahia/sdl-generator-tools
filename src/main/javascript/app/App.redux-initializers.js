@@ -54,10 +54,18 @@ const getInitialObject = (actionType, vars) => {
 export {getInitialObject};
 
 // Example object
-// {
+// const exampleType = {
 //     "name": "sdlTest",
 //     "description": "",
-//     "queryName": "",
+//     "queries": [
+//         {
+//             "name": "sdlTestByDate",
+//             "multiple": true
+//         }
+//     ],
+//     "options": {
+//         "ignoreDefaultQueries": false
+//     },
 //     "fieldDefinitions": [
 //     {
 //         "name": "title",
