@@ -2,7 +2,7 @@
   "name": "sdl-generator-tools",
   "version": "1.0.0-SNAPSHOT",
   "description": "Jahia module for providing a set of tools for GraphQL schema generation",
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
     "build": "yarn test && yarn webpack",
     "webpack": "npx --node-arg=--max_old_space_size=2048 webpack",
@@ -66,6 +66,7 @@
     "redux": "^4.0.0",
     "redux-batched-actions": "^0.4.0",
     "redux-thunk": "^2.3.0",
-    "rxjs": "^6.3.3"
+    "rxjs": "^6.3.3",
+    "typeface-nunito-sans": "0.0.54"
   }
 }

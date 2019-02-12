@@ -1,4 +1,5 @@
 import React from "react";
+import styles from "./ToolsContainer.css";
 
 class ToolsContainer extends React.Component{
 
@@ -7,7 +8,7 @@ class ToolsContainer extends React.Component{
     }
 
     render () {
-        return <span>Something amazing is coming up ...</span>
+        return <div className={styles.container}>Something amazing is coming up ...</div>
     }
 
 }
