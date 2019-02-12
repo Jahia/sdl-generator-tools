@@ -18,12 +18,65 @@ const addType = typeInfo => (Object.assign({}, {
     ]
 }));
 
+const addProperty = fieldInfo => (Object.assign({}, {
+    name: fieldInfo.name,
+    type: fieldInfo.type,
+    directives: [
+        {
+            name: 'mapping',
+            arguments: [
+                {
+                    name: 'property',
+                    value: fieldInfo.property
+                }
+            ]
+        }
+    ]
+}));
+
 const getInitialObject = (actionType, vars) => {
     switch (actionType) {
         case actionTypes.SDL_ADD_TYPE:
             return addType(vars);
+        case actionTypes.SDL_ADD_PROPERTY_TO_TYPE:
+            return addProperty(vars);
         default: return {};
     }
 };
 
 export {getInitialObject};
+
+// Example object
+// {
+//     "name": "sdlTest",
+//     "description": "",
+//     "queryName": "",
+//     "fieldDefinitions": [
+//     {
+//         "name": "title",
+//         "type":  "String",
+//         "directives": [
+//             {
+//                 "name": "mapping",
+//                 "arguments": [
+//                     {
+//                         "name": "property",
+//                         "value": "jcr:title"
+//                     }
+//                 ]
+//             }
+//         ]
+//     }
+// ],
+//     "directives" : [
+//     {
+//         "name": "mapping",
+//         "arguments": [
+//             {
+//                 "name": "node",
+//                 "value": "sdl:test"
+//             }
+//         ]
+//     }
+// ]
+// }
