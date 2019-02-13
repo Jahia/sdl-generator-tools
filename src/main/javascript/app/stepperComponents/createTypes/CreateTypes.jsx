@@ -8,33 +8,39 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-const AddTypeDialog = ({open, closeDialog}) => (
-    <Dialog
-        open={open}
-        aria-labelledby="form-dialog-title"
-        onClose={closeDialog}
-    >
-        <DialogTitle id="form-dialog-title">Add new type</DialogTitle>
-        <DialogContent>
-            <TextField
-                autoFocus
-                fullWidth
-                margin="dense"
-                id="typeName"
-                label="Custom type name"
-                type="text"
-            />
-        </DialogContent>
-        <DialogActions>
-            <Button color="primary" onClick={closeDialog}>
-                Cancel
-            </Button>
-            <Button color="primary" onClick={closeDialog}>
-                Add
-            </Button>
-        </DialogActions>
-    </Dialog>
-);
+const AddTypeDialog = ({open, closeDialog}) => {
+    const [typeName, updateTypeName] = useState('');
+
+    return (
+        <Dialog
+            open={open}
+            aria-labelledby="form-dialog-title"
+            onClose={closeDialog}
+        >
+            <DialogTitle id="form-dialog-title">Add new type</DialogTitle>
+            <DialogContent>
+                <TextField
+                    autoFocus
+                    fullWidth
+                    margin="dense"
+                    id="typeName"
+                    label="Custom type name"
+                    type="text"
+                    value={typeName}
+                    onChange={e => updateTypeName(e.target.value)}
+                />
+            </DialogContent>
+            <DialogActions>
+                <Button color="primary" onClick={closeDialog}>
+                    Cancel
+                </Button>
+                <Button color="primary" onClick={closeDialog}>
+                    Add
+                </Button>
+            </DialogActions>
+        </Dialog>
+    );
+};
 
 const TypeItem = ({name}) => (
     <ListItem>
