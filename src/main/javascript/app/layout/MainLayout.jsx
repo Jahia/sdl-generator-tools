@@ -34,8 +34,8 @@ let styles = theme => ({
     mainPanel: {
         position: "absolute",
         width: "817px",
-        height: "753px",
-        left: "32px",
+        height: "84%",
+        left: "22px",
         top: "94px"
     },
     mainText: {
@@ -52,9 +52,9 @@ let styles = theme => ({
     },
     viewerPanel: {
         position: "absolute",
-        width: "549px",
-        height: "753px",
-        left: "867px",
+        width: "519px",
+        height: "84%",
+        left: "857px",
         top: "94px",
         background: "#1F262A",
         boxShadow: "0px 3px 2px rgba(54, 63, 69, 0.2), 0px 1px 8px rgba(54, 63, 69, 0.08)",
@@ -63,7 +63,6 @@ let styles = theme => ({
     viewerText: {
         position: "absolute",
         width: "114px",
-        height: "18px",
         left: "24px",
         top: "24px",
         fontStyle: "normal",
