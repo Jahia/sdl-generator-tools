@@ -18,7 +18,6 @@ let styles = theme => ({
     topBarText: {
         fontStyle: "normal",
         fontWeight: 600,
-        lineHeight: "20px",
         fontSize: "16px",
         color: "#FFFFFF"
     },
@@ -42,10 +41,9 @@ let styles = theme => ({
     mainText: {
         position: "absolute",
         width: "300px",
-        height: "20px",
+        height: "23px",
         left: "32px",
         top: "32px",
-        fontFamily: "Nunito Sans",
         fontStyle: "normal",
         fontWeight: 600,
         lineHeight: "20px",
@@ -68,7 +66,6 @@ let styles = theme => ({
         height: "18px",
         left: "24px",
         top: "24px",
-        fontFamily: "Nunito Sans",
         fontStyle: "normal",
         fontWeight: 600,
         lineHeight: "18px",
@@ -102,7 +99,7 @@ const MainLayout = ({classes, topBarProps, children}) => (
                     </Typography>
                 </Grid>
                 <Grid item>
-                    <ToolsSteps />
+                    <ToolsSteps children={children}/>
                 </Grid>
             </Paper>
         </Grid>

@@ -142,6 +142,7 @@ class ToolsSteps extends React.Component{
 
 ToolsSteps.propTypes = {
     classes: PropTypes.object,
+    children: PropTypes.object
 };
 
 export default withStyles(styles)(ToolsSteps);

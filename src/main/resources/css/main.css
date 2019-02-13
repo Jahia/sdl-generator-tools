@@ -2,12 +2,29 @@
     margin:0px;
     padding:0px;
     overflow-x: hidden;
+    font-family: "Nunito Sans";
 }
 
 BODY{
     color:#000;
     background: #F6FAFC;
-    font-family: "Nunito Sans";
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+}
+
+@font-face {
+    font-family: 'Nunito Sans';
+    font-style: normal;
+    font-weight: 400;
+    src:
+            local('Nunito Sans'),
+            local('nunito-sans-v3-latin-regular'),
+            url(../javascript/apps/fonts/nunito-sans-v3-latin-300.woff2) format('woff2'),
+            url(../javascript/apps/fonts/nunito-sans-v3-latin-300.woff) format('woff'),
+            url(../javascript/apps/fonts/nunito-sans-v3-latin-600.woff2) format('woff2'),
+            url(../javascript/apps/fonts/nunito-sans-v3-latin-600.woff) format('woff'),
+            url(../javascript/apps/fonts/nunito-sans-v3-latin-700.woff2) format('woff2'),
+            url(../javascript/apps/fonts/nunito-sans-v3-latin-700.woff) format('woff'),
+            url(../javascript/apps/fonts/nunito-sans-v3-latin-regular.woff2) format('woff2'),
+            url(../javascript/apps/fonts/nunito-sans-v3-latin-regular.woff) format('woff');
 }
