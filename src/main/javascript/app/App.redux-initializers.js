@@ -63,9 +63,6 @@ export {getInitialObject};
 //             "multiple": true
 //         }
 //     ],
-//     "options": {
-//         "ignoreDefaultQueries": false
-//     },
 //     "fieldDefinitions": [
 //     {
 //         "name": "title",
