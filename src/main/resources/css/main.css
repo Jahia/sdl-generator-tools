@@ -6,9 +6,8 @@
 
 BODY{
     color:#000;
-    background: #ededed;
+    background: #F6FAFC;
     font-family: "Nunito Sans";
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    font-size: 12px;
 }

@@ -1,12 +1,15 @@
 import React from 'react';
-import styles from './App.css';
 import {Provider} from 'react-redux';
 import store from './App.redux-store';
+import { BrowserRouter as Router, Link } from "react-router-dom";
+import MainLayout from './layout/MainLayout'
 
 const App = () => (
-    <Provider store={store}>
-        <div className={styles.container}>Something amazing is coming up ... &copy; Chooli Yip</div>
-    </Provider>
+    <Router>
+        <Provider store={store}>
+                <MainLayout />
+        </Provider>
+    </Router>
 );
 
 export default App;
