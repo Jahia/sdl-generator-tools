@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {withStyles, Stepper, Step, StepLabel, Button, Typography} from '@material-ui/core';
 import CreateTypes from './createTypes/index';
 import ExportResult from "./exportResult/ExportResult";
+import {copyToClipBoard, downloadFile} from "../util/documentUtils";
 
 const styles = theme => ({
     root: {
@@ -68,11 +69,13 @@ class StepperComponent extends React.Component {
     }
 
     handleCopy() {
-        //TODO copy SDL to clipboard
+        const sdlContent = 'dummy sdl';
+        copyToClipBoard(sdlContent);
     }
 
     handleDownload() {
-        //Download SDL file
+        const sdlContent = 'dummy sdl';
+        downloadFile(sdlContent, 'graphql-extension.sdl');
     }
 
     handleReset() {
@@ -103,6 +106,13 @@ class StepperComponent extends React.Component {
                 <div>
                     {getStepContent(activeStep)}
                     <div className={classes.bottomBar}>
+                        {activeStep !== 0 ? (
+                            <Button color="primary" className={classes.button} onClick={this.handleBack}>
+                                Back
+                            </Button>
+                        ) : (
+                            null
+                        )}
                         {activeStep === lastStep ? (
                             <React.Fragment>
                                 <Button className={classes.button} onClick={this.handleReset}>
