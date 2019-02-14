@@ -20,10 +20,9 @@ const PropertyItem = ({name}) => (
     </ListItem>
 );
 
-const CreateTypes = ({nodeTypes, addType, addProperty}) => {
+const CreateTypes = ({nodeTypes, selection, addType, addProperty, selectType}) => {
     const [addTypeDialogShown, showAddTypeDialog] = useState(false);
     const [addPropertyDialogShown, showAddPropertyDialog] = useState(false);
-    const [selectedTypeName, selectType] = useState(null);
 
     return (
         <React.Fragment>
@@ -39,7 +38,7 @@ const CreateTypes = ({nodeTypes, addType, addProperty}) => {
                                 nodeTypes.map(type => (
                                     <TypeItem key={type.name}
                                               {...type}
-                                              isSelected={type.name === selectedTypeName}
+                                              isSelected={type.name === selection}
                                               selectType={selectType}/>
 ))
                             }
@@ -55,7 +54,7 @@ const CreateTypes = ({nodeTypes, addType, addProperty}) => {
                             </Button>
                             {
                                 nodeTypes.reduce((acc, type) => {
-                                    if (type.name === selectedTypeName) {
+                                    if (type.name === selection) {
                                         acc = type.fieldDefinitions.map(field => (
                                             <PropertyItem {...field}/>
                                         ));
@@ -71,7 +70,7 @@ const CreateTypes = ({nodeTypes, addType, addProperty}) => {
                            closeDialog={() => showAddTypeDialog(false)}
                            addType={addType}/>
             <AddPropertyDialog open={addPropertyDialogShown}
-                               typeName={selectedTypeName}
+                               typeName={selection}
                                closeDialog={() => showAddPropertyDialog(false)}
                                addProperty={addProperty}/>
         </React.Fragment>
@@ -80,10 +79,12 @@ const CreateTypes = ({nodeTypes, addType, addProperty}) => {
 
 CreateTypes.propTypes = {
     nodeTypes: PropTypes.array.isRequired,
+    selectType: PropTypes.func.isRequired,
     addType: PropTypes.func.isRequired,
     removeType: PropTypes.func.isRequired,
     addProperty: PropTypes.func.isRequired,
-    removeProperty: PropTypes.func.isRequired
+    removeProperty: PropTypes.func.isRequired,
+    selection: PropTypes.string
 };
 
 export default CreateTypes;
