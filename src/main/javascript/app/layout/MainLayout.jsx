@@ -1,10 +1,8 @@
 import React from 'react';
 import {compose} from 'react-apollo';
 import {translate} from 'react-i18next';
-import {withStyles, Grid, Paper, Typography, Button} from '@material-ui/core';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import ToolsStepsContainer from '../stepperComponents/ToolsStepsContainer';
+import {withStyles, AppBar, Toolbar, Grid, Paper, Typography, Button} from '@material-ui/core';
+import Stepper from '../stepperComponents/StepperComponent';
 
 let styles = theme => ({
     topBar: {
@@ -84,10 +82,10 @@ const MainLayout = ({classes, t}) => {
 
             <AppBar position="static">
                 <Toolbar className={classes.topBar}>
-                    <Typography variant="topCaption" className={classes.topBarText}>
+                    <Typography className={classes.topBarText}>
                         {/*{t('label.sdlGeneratorTools.top.caption')}*/} SDL Generator Tools
                     </Typography>
-                    <Button variant="topButton" className={classes.topBarButton} onClick={backToTools}>Back to tools</Button>
+                    <Button className={classes.topBarButton} onClick={backToTools}>Back to tools</Button>
                 </Toolbar>
             </AppBar>
 
@@ -99,7 +97,7 @@ const MainLayout = ({classes, t}) => {
                         </Typography>
                     </Grid>
                     <Grid item>
-                        <ToolsStepsContainer/>
+                        <Stepper/>
                     </Grid>
                 </Paper>
             </Grid>
@@ -111,7 +109,6 @@ const MainLayout = ({classes, t}) => {
                     </Typography>
                 </Paper>
             </Grid>
-
         </Grid>
     );
 };

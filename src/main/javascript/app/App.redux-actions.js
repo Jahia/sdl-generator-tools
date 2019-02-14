@@ -4,7 +4,9 @@ const actionTypes = {
     SDL_ADD_PROPERTY_TO_TYPE: 'SDL_ADD_PROPERTY_TO_TYPE',
     SDL_REMOVE_PROPERTY_FROM_TYPE: 'SDL_REMOVE_PROPERTY_FROM_TYPE',
     SDL_ADD_DIRECTIVE_ARG_TO_TYPE: 'SDL_ADD_DIRECTIVE_ARG_TO_TYPE',
-    SDL_REMOVE_DIRECTIVE_ARG_FROM_TYPE: 'SDL_REMOVE_DIRECTIVE_ARG_FROM_TYPE'
+    SDL_REMOVE_DIRECTIVE_ARG_FROM_TYPE: 'SDL_REMOVE_DIRECTIVE_ARG_FROM_TYPE',
+    SDL_ADD_FINDER_TO_TYPE: 'SDL_ADD_FINDER_TO_TYPE',
+    SDL_REMOVE_FINDER_FROM_TYPE: 'SDL_REMOVE_FINDER_FROM_TYPE'
 };
 
 const sdlAddType = typeInfo => ({
@@ -17,10 +19,10 @@ const sdlRemoveType = typeName => ({
     typeName: typeName
 });
 
-const sdlAddPropertyToType = (propertyInfo, typeIndex) => ({
+const sdlAddPropertyToType = (propertyInfo, typeIndexOrName) => ({
     type: actionTypes.SDL_ADD_PROPERTY_TO_TYPE,
     propertyInfo: propertyInfo,
-    typeIndex: typeIndex
+    typeIndexOrName: typeIndexOrName
 });
 
 const sdlRemovePropertyFromType = (propertyIndex, typeIndex) => ({
@@ -43,6 +45,18 @@ const sdlRemoveDirectiveArgFromType = (typeIndex, directiveName, argumentIndex) 
     directiveName: directiveName
 });
 
+const sdlAddFinderToType = (finderInfo, typeIndex) => ({
+    type: actionTypes.SDL_ADD_FINDER_TO_TYPE,
+    propertyInfo: finderInfo,
+    typeIndex: typeIndex
+});
+
+const sdlRemoveFinderFromType = (finderIndex, typeIndex) => ({
+    type: actionTypes.SDL_REMOVE_FINDER_FROM_TYPE,
+    propertyInfo: finderIndex,
+    typeIndex: typeIndex
+});
+
 export {
     actionTypes,
     sdlAddType,
@@ -50,6 +64,8 @@ export {
     sdlAddPropertyToType,
     sdlRemovePropertyFromType,
     sdlAddDirectiveArgToType,
-    sdlRemoveDirectiveArgFromType
+    sdlRemoveDirectiveArgFromType,
+    sdlAddFinderToType,
+    sdlRemoveFinderFromType
 };
 

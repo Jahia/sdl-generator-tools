@@ -9,13 +9,13 @@ const nodeTypesReducer = (state = [], action) => {
             return state.filter(type => type.name !== action.typeName);
         case actionTypes.SDL_ADD_PROPERTY_TO_TYPE:
             return state.map((type, index) => {
-                if (index !== action.typeIndex) {
-                    return type;
+                if (index === action.typeIndexOrName || type.name === action.typeIndexOrName) {
+                    return {
+                        ...type,
+                        fieldDefinitions: type.fieldDefinitions.concat(getInitialObject(actionTypes.SDL_ADD_PROPERTY_TO_TYPE, action.propertyInfo))
+                    };
                 }
-                return {
-                    ...type,
-                    fieldDefinitions: type.fieldDefinitions.concat(getInitialObject(actionTypes.SDL_ADD_PROPERTY_TO_TYPE, action.propertyInfo))
-                };
+                return type;
             });
         case actionTypes.SDL_REMOVE_PROPERTY_FROM_TYPE:
             return state.map((type, index) => {
@@ -61,6 +61,26 @@ const nodeTypesReducer = (state = [], action) => {
                             arguments: dir.arguments.filter((arg, index) => index !== action.argumentIndex)
                         };
                     })
+                };
+            });
+        case actionTypes.SDL_ADD_FINDER_TO_TYPE:
+            return state.map((type, index) => {
+                if (index !== action.typeIndex) {
+                    return type;
+                }
+                return {
+                    ...type,
+                    queries: type.queries.concat(getInitialObject(actionTypes.SDL_ADD_FINDER_TO_TYPE, action.finderInfo))
+                };
+            });
+        case actionTypes.SDL_REMOVE_FINDER_FROM_TYPE:
+            return state.map((type, index) => {
+                if (index !== action.typeIndex) {
+                    return type;
+                }
+                return {
+                    ...type,
+                    queries: type.queries.filter((query, index) => index !== action.finderIndex)
                 };
             });
         default: return state;
