@@ -65,13 +65,13 @@ const nodeTypesReducer = (state = [], action) => {
             });
         case actionTypes.SDL_ADD_FINDER_TO_TYPE:
             return state.map((type, index) => {
-                if (index !== action.typeIndex) {
-                    return type;
+                if (index === action.typeIndexOrName || type.name === action.typeIndexOrName) {
+                    return {
+                        ...type,
+                        queries: type.queries.concat(getInitialObject(actionTypes.SDL_ADD_FINDER_TO_TYPE, action.finderInfo))
+                    };
                 }
-                return {
-                    ...type,
-                    queries: type.queries.concat(getInitialObject(actionTypes.SDL_ADD_FINDER_TO_TYPE, action.finderInfo))
-                };
+                return type;
             });
         case actionTypes.SDL_REMOVE_FINDER_FROM_TYPE:
             return state.map((type, index) => {

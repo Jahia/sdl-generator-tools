@@ -40,7 +40,9 @@ const addDirectiveArgument = argumentInfo => (Object.assign({}, {
 }));
 
 const addFinder = finderInfo => (Object.assign({}, {
-    name: finderInfo.name,
+    name: finderInfo.prefix + finderInfo.suffix,
+    prefix: finderInfo.prefix,
+    suffix: finderInfo.suffix,
     multiple: finderInfo.multiple
 }));
 
