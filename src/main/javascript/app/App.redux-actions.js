@@ -51,7 +51,7 @@ const sdlAddFinderToType = (finderInfo, typeIndex) => ({
     typeIndex: typeIndex
 });
 
-const sdlAddFinderToType = (finderIndex, typeIndex) => ({
+const sdlRemoveFinderFromType = (finderIndex, typeIndex) => ({
     type: actionTypes.SDL_REMOVE_FINDER_FROM_TYPE,
     propertyInfo: finderIndex,
     typeIndex: typeIndex
@@ -64,6 +64,8 @@ export {
     sdlAddPropertyToType,
     sdlRemovePropertyFromType,
     sdlAddDirectiveArgToType,
-    sdlRemoveDirectiveArgFromType
+    sdlRemoveDirectiveArgFromType,
+    sdlAddFinderToType,
+    sdlRemoveFinderFromType
 };
 
