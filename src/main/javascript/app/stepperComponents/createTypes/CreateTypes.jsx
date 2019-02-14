@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
-import {Grid, Paper, List, ListItem, ListItemText, ListSubheader, Button} from '@material-ui/core';
+import {Grid, Paper, List, ListItem, ListItemText, ListSubheader, Button, Select, MenuItem} from '@material-ui/core';
 import {Add} from '@material-ui/icons';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -8,8 +8,26 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-const AddTypeDialog = ({open, closeDialog}) => {
-    const [typeName, updateTypeName] = useState('');
+const NodeTypeSelect = ({value, open, handleClose, handleChange, handleOpen}) => (
+    <Select
+        open={open}
+        value={value}
+        onClose={handleClose}
+        onOpen={handleOpen}
+        onChange={handleChange}
+    >
+        <MenuItem value="">
+            <em>None</em>
+        </MenuItem>
+        <MenuItem value="jnt:news">jnt:news</MenuItem>
+        <MenuItem value="jnt:bigText">jnt:bigText</MenuItem>
+    </Select>
+);
+
+const AddTypeDialog = ({open, closeDialog, customTypeName = '', jcrNodeType = ''}) => {
+    const [typeName, updateTypeName] = useState(customTypeName);
+    const [nodeType, updateNodeType] = useState(jcrNodeType);
+    const [showNodeTypeSelector, setShowNodeTypeSelector] = useState(false);
 
     return (
         <Dialog
@@ -19,6 +37,11 @@ const AddTypeDialog = ({open, closeDialog}) => {
         >
             <DialogTitle id="form-dialog-title">Add new type</DialogTitle>
             <DialogContent>
+                <NodeTypeSelect open={showNodeTypeSelector}
+                                value={nodeType}
+                                handleOpen={() => setShowNodeTypeSelector(true)}
+                                handleClose={() => setShowNodeTypeSelector(false)}
+                                handleChange={event => updateNodeType(event.target.value)}/>
                 <TextField
                     autoFocus
                     fullWidth
