@@ -9,13 +9,13 @@ const nodeTypesReducer = (state = [], action) => {
             return state.filter(type => type.name !== action.typeName);
         case actionTypes.SDL_ADD_PROPERTY_TO_TYPE:
             return state.map((type, index) => {
-                if (index !== action.typeIndex) {
-                    return type;
+                if (index === action.typeIndexOrName || type.name === action.typeIndexOrName) {
+                    return {
+                        ...type,
+                        fieldDefinitions: type.fieldDefinitions.concat(getInitialObject(actionTypes.SDL_ADD_PROPERTY_TO_TYPE, action.propertyInfo))
+                    };
                 }
-                return {
-                    ...type,
-                    fieldDefinitions: type.fieldDefinitions.concat(getInitialObject(actionTypes.SDL_ADD_PROPERTY_TO_TYPE, action.propertyInfo))
-                };
+                return type;
             });
         case actionTypes.SDL_REMOVE_PROPERTY_FROM_TYPE:
             return state.map((type, index) => {

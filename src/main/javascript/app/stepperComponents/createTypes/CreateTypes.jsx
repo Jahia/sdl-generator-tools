@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import {Grid, Paper, List, ListItem, ListItemText, ListSubheader, Button} from '@material-ui/core';
 import {Add} from '@material-ui/icons';
 import AddTypeDialog from './addModifyTypeDialog';
+import AddPropertyDialog from './addModifyPropertyDialog';
 
 const TypeItem = ({name, isSelected, selectType}) => (
     <ListItem button
@@ -13,8 +14,15 @@ const TypeItem = ({name, isSelected, selectType}) => (
     </ListItem>
 );
 
-const CreateTypes = ({nodeTypes, addType}) => {
+const PropertyItem = ({name}) => (
+    <ListItem button>
+        <ListItemText primary={name}/>
+    </ListItem>
+);
+
+const CreateTypes = ({nodeTypes, addType, addProperty}) => {
     const [addTypeDialogShown, showAddTypeDialog] = useState(false);
+    const [addPropertyDialogShown, showAddPropertyDialog] = useState(false);
     const [selectedTypeName, selectType] = useState(null);
 
     return (
@@ -41,13 +49,20 @@ const CreateTypes = ({nodeTypes, addType}) => {
                 <Grid item>
                     <Paper>
                         <List subheader={<ListSubheader>Properties</ListSubheader>}>
-                            <Button>
+                            <Button onClick={() => showAddPropertyDialog(true)}>
                                 Add a new property
                                 <Add/>
-                                {
-                                    nodeTypes.filter(type => selectedTypeName === type.name)
-                                }
                             </Button>
+                            {
+                                nodeTypes.reduce((acc, type) => {
+                                    if (type.name === selectedTypeName) {
+                                        acc = type.fieldDefinitions.map(field => (
+                                            <PropertyItem {...field}/>
+                                        ));
+                                        return acc;
+                                    }
+                                }, [])
+                            }
                         </List>
                     </Paper>
                 </Grid>
@@ -55,6 +70,10 @@ const CreateTypes = ({nodeTypes, addType}) => {
             <AddTypeDialog open={addTypeDialogShown}
                            closeDialog={() => showAddTypeDialog(false)}
                            addType={addType}/>
+            <AddPropertyDialog open={addPropertyDialogShown}
+                               typeName={selectedTypeName}
+                               closeDialog={() => showAddPropertyDialog(false)}
+                               addProperty={addProperty}/>
         </React.Fragment>
     );
 };

@@ -19,10 +19,10 @@ const sdlRemoveType = typeName => ({
     typeName: typeName
 });
 
-const sdlAddPropertyToType = (propertyInfo, typeIndex) => ({
+const sdlAddPropertyToType = (propertyInfo, typeIndexOrName) => ({
     type: actionTypes.SDL_ADD_PROPERTY_TO_TYPE,
     propertyInfo: propertyInfo,
-    typeIndex: typeIndex
+    typeIndexOrName: typeIndexOrName
 });
 
 const sdlRemovePropertyFromType = (propertyIndex, typeIndex) => ({
