@@ -63,6 +63,26 @@ const nodeTypesReducer = (state = [], action) => {
                     })
                 };
             });
+        case actionTypes.SDL_ADD_FINDER_TO_TYPE:
+            return state.map((type, index) => {
+                if (index !== action.typeIndex) {
+                    return type;
+                }
+                return {
+                    ...type,
+                    queries: type.queries.concat(getInitialObject(actionTypes.SDL_ADD_FINDER_TO_TYPE, action.finderInfo))
+                };
+            });
+        case actionTypes.SDL_REMOVE_FINDER_FROM_TYPE:
+            return state.map((type, index) => {
+                if (index !== action.typeIndex) {
+                    return type;
+                }
+                return {
+                    ...type,
+                    queries: type.queries.filter((query, index) => index !== action.finderIndex)
+                };
+            });
         default: return state;
     }
 };

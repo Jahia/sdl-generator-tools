@@ -3,7 +3,7 @@ import {actionTypes} from './App.redux-actions';
 const addType = typeInfo => (Object.assign({}, {
     name: typeInfo.typeName,
     description: null,
-    queryName: null,
+    queries: [],
     fieldDefinitions: [],
     directives: [
         {
@@ -39,6 +39,11 @@ const addDirectiveArgument = argumentInfo => (Object.assign({}, {
     value: argumentInfo.value
 }));
 
+const addFinder = finderInfo => (Object.assign({}, {
+    name: finderInfo.name,
+    multiple: finderInfo.multiple
+}));
+
 const getInitialObject = (actionType, vars) => {
     switch (actionType) {
         case actionTypes.SDL_ADD_TYPE:
@@ -47,6 +52,8 @@ const getInitialObject = (actionType, vars) => {
             return addProperty(vars);
         case actionTypes.SDL_ADD_DIRECTIVE_ARG_TO_TYPE:
             return addDirectiveArgument(vars);
+        case actionTypes.SDL_ADD_FINDER_TO_TYPE:
+            return addFinder(vars);
         default: return {};
     }
 };
