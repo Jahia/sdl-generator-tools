@@ -1,12 +1,12 @@
 import {applyMiddleware, combineReducers, compose, createStore} from 'redux';
 import {batchDispatchMiddleware} from 'redux-batched-actions';
 import thunk from 'redux-thunk';
-import {
-    nodeTypesReducer
-} from './App.redux-reducer';
+import {nodeTypesReducer} from './App.redux-reducer';
+import {selectionReducer} from './stepperComponents/StepperComponent.redux-reducer';
 
 const rootReducer = combineReducers({
-    nodeTypes: nodeTypesReducer
+    nodeTypes: nodeTypesReducer,
+    selection: selectionReducer
 });
 
 const composeEnhancers = window.top.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
