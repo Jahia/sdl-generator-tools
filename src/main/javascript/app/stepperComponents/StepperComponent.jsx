@@ -115,19 +115,14 @@ class StepperComponent extends React.Component {
                             null
                         )}
                         {activeStep === lastStep ? (
-                            <React.Fragment>
-                                <Button className={classes.button} onClick={this.handleReset}>
-                                    Create an other SDL
-                                </Button>
-                                <Button
+                            <Button
                                     variant="contained"
                                     color="primary"
                                     className={classes.button}
                                     onClick={this.handleCopy}
-                                >
+                            >
                                     Copy to clipboard
-                                </Button>
-                            </React.Fragment>
+                            </Button>
                         ) : (
                             null
                         )}
