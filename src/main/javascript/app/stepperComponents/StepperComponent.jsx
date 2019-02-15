@@ -6,6 +6,8 @@ import {ExportResult} from './exportResult';
 import {downloadFile, copyToClipBoard} from '../util/documentUtils';
 import DefineFinder from './defineFinders/index';
 import {compose} from 'react-apollo';
+import SDLParser from '../parsing/sdlParser';
+import exampleTypes from '../parsing/typesExample';
 
 const styles = theme => ({
     root: {
@@ -51,7 +53,7 @@ class StepperComponent extends React.Component {
             case 1:
                 return <DefineFinder/>;
             case 2:
-                return <ExportResult/>;
+                return <ExportResult />;
             default:
                 return 'Unknown step';
         }
@@ -73,13 +75,15 @@ class StepperComponent extends React.Component {
     }
 
     handleCopy() {
-        const sdlContent = 'dummy sdl';
-        copyToClipBoard(sdlContent);
+        //TODO replace redux state
+        const sdlTypes = SDLParser.parse(exampleTypes);
+        copyToClipBoard(sdlTypes);
     }
 
     handleDownload() {
-        const sdlContent = 'dummy sdl';
-        downloadFile(sdlContent, 'graphql-extension.sdl');
+        //TODO replace redux state
+        const sdlTypes = SDLParser.parse(exampleTypes);
+        downloadFile(sdlTypes, 'graphql-extension.sdl');
     }
 
     handleReset() {

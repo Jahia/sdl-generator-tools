@@ -35,7 +35,9 @@ let styles = theme => ({
         width: '817px',
         height: '84%',
         left: '22px',
-        top: '94px'
+        top: '94px',
+        boxShadow: '0px 3px 2px rgba(54, 63, 69, 0.2), 0px 1px 8px rgba(54, 63, 69, 0.08)',
+        borderRadius: '3px'
     },
     mainText: {
         position: 'absolute',

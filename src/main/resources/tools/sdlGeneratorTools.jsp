@@ -19,8 +19,6 @@
 
 <html>
 <head>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/modules/sdl-generator-tools/css/main.css"
-          type="text/css"/>
 </head>
 
 <script src="${context}/modules/sdl-generator-tools/javascript/apps/sdlGeneratorTools.js" ></script>

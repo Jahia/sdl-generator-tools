@@ -8,7 +8,7 @@
             "steps": {
                 "createTypes": "Create types",
                 "defineFinder": "Define finder",
-                "exportResult": "Export result----"
+                "exportResult": "Export result"
             },
             "exportResult": {
                 "wellDoneText": "Well done!",
