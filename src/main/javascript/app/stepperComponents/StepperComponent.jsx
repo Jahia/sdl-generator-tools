@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {withStyles, Stepper, Step, StepLabel, Button, Typography} from '@material-ui/core';
 import CreateTypes from './createTypes/index';
-import ExportResult from "./exportResult/ExportResult";
-import {copyToClipBoard, downloadFile} from "../util/documentUtils";
+import {ExportResult} from './exportResult';
+import {copyToClipBoard, downloadFile} from '../util/documentUtils';
 
 const styles = theme => ({
     root: {
