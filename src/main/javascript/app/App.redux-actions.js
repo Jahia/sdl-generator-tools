@@ -45,15 +45,15 @@ const sdlRemoveDirectiveArgFromType = (typeIndex, directiveName, argumentIndex) 
     directiveName: directiveName
 });
 
-const sdlAddFinderToType = (finderInfo, typeIndex) => ({
+const sdlAddFinderToType = (finderInfo, typeIndexOrName) => ({
     type: actionTypes.SDL_ADD_FINDER_TO_TYPE,
-    propertyInfo: finderInfo,
-    typeIndex: typeIndex
+    finderInfo: finderInfo,
+    typeIndexOrName: typeIndexOrName
 });
 
 const sdlRemoveFinderFromType = (finderIndex, typeIndex) => ({
     type: actionTypes.SDL_REMOVE_FINDER_FROM_TYPE,
-    propertyInfo: finderIndex,
+    finderInfo: finderIndex,
     typeIndex: typeIndex
 });
 

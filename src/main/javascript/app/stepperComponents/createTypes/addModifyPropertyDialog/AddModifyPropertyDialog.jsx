@@ -39,7 +39,7 @@ const AddModifyPropertyDialog = ({open, closeDialog, customTypeName, jcrNodeType
             onClose={closeDialog}
         >
             <DialogTitle id="form-dialog-title">Add new property</DialogTitle>
-            <DialogContent>
+            <DialogContent style={{width: 400}}>
                 <PropertySelect open={showPropertySelector}
                                 value={jcrPropertyName}
                                 handleOpen={() => setShowPropertySelector(true)}

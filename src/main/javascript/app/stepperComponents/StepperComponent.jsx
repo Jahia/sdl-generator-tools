@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {withStyles, Stepper, Step, StepLabel, Button, Typography} from '@material-ui/core';
 import CreateTypes from './createTypes/index';
 import {ExportResult} from './exportResult';
-import {copyToClipBoard, downloadFile} from '../util/documentUtils';
+import DefineFinder from './defineFinders/index';
 
 const styles = theme => ({
     root: {
@@ -30,7 +30,7 @@ function getStepContent(step) {
         case 0:
             return <CreateTypes/>;
         case 1:
-            return 'Place Define finer component here';
+            return <DefineFinder/>;
         case 2:
             return <ExportResult/>;
         default:
@@ -114,19 +114,14 @@ class StepperComponent extends React.Component {
                             null
                         )}
                         {activeStep === lastStep ? (
-                            <React.Fragment>
-                                <Button className={classes.button} onClick={this.handleReset}>
-                                    Create an other SDL
-                                </Button>
-                                <Button
+                            <Button
                                     variant="contained"
                                     color="primary"
                                     className={classes.button}
                                     onClick={this.handleCopy}
-                                >
+                            >
                                     Copy to clipboard
-                                </Button>
-                            </React.Fragment>
+                            </Button>
                         ) : (
                             null
                         )}

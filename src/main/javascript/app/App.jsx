@@ -7,14 +7,7 @@ import store from './App.redux-store';
 import MainLayout from './layout/MainLayout';
 import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/es/styles';
 
-const THEME = createMuiTheme({
-    typography: {
-        useNextVariants: true,
-        fontFamily: 'Nunito Sans, Helvetica, Arial, sans-serif',
-        fontSize: 14,
-        fontWeight: 600
-    }
-});
+import {dsGenericTheme as theme} from '@jahia/ds-mui-theme';
 
 const App = () => {
     i18next
@@ -44,7 +37,7 @@ const App = () => {
         });
 
     return (
-        <MuiThemeProvider theme={THEME}>
+        <MuiThemeProvider theme={theme}>
             <Provider store={store}>
                 <I18nextProvider i18n={i18next}>
                     <MainLayout/>
@@ -52,6 +45,7 @@ const App = () => {
             </Provider>
         </MuiThemeProvider>
     );
+
 };
 
 export default App;

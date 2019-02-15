@@ -40,7 +40,7 @@ const AddTypeDialog = ({open, closeDialog, customTypeName, jcrNodeType, addType}
             onClose={closeDialog}
         >
             <DialogTitle id="form-dialog-title">Add new type</DialogTitle>
-            <DialogContent>
+            <DialogContent style={{width: 400}}>
                 <NodeTypeSelect open={showNodeTypeSelector}
                                 value={nodeType}
                                 handleOpen={() => setShowNodeTypeSelector(true)}

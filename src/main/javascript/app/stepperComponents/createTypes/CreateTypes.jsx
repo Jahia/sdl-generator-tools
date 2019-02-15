@@ -1,9 +1,17 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
-import {Grid, Paper, List, ListItem, ListItemText, ListSubheader, Button} from '@material-ui/core';
+import {withStyles, Grid, Paper, List, ListItem, ListItemText, ListSubheader, Button} from '@material-ui/core';
 import {Add} from '@material-ui/icons';
 import AddTypeDialog from './addModifyTypeDialog';
 import AddPropertyDialog from './addModifyPropertyDialog';
+import {compose} from 'react-apollo';
+
+const styles = theme => ({
+    paper: {
+        width: 360,
+        height: 400
+    }
+});
 
 const TypeItem = ({name, isSelected, selectType}) => (
     <ListItem button
@@ -20,7 +28,7 @@ const PropertyItem = ({name}) => (
     </ListItem>
 );
 
-const CreateTypes = ({nodeTypes, selection, addType, addProperty, selectType}) => {
+const CreateTypes = ({classes, nodeTypes, selection, addType, addProperty, selectType}) => {
     const [addTypeDialogShown, showAddTypeDialog] = useState(false);
     const [addPropertyDialogShown, showAddPropertyDialog] = useState(false);
 
@@ -28,7 +36,7 @@ const CreateTypes = ({nodeTypes, selection, addType, addProperty, selectType}) =
         <React.Fragment>
             <Grid container>
                 <Grid item>
-                    <Paper>
+                    <Paper className={classes.paper}>
                         <List subheader={<ListSubheader>Node type</ListSubheader>}>
                             <Button onClick={() => showAddTypeDialog(true)}>
                                 Add new type
@@ -46,7 +54,7 @@ const CreateTypes = ({nodeTypes, selection, addType, addProperty, selectType}) =
                     </Paper>
                 </Grid>
                 <Grid item>
-                    <Paper>
+                    <Paper className={classes.paper}>
                         <List subheader={<ListSubheader>Properties</ListSubheader>}>
                             <Button onClick={() => showAddPropertyDialog(true)}>
                                 Add a new property
@@ -87,4 +95,6 @@ CreateTypes.propTypes = {
     selection: PropTypes.string
 };
 
-export default CreateTypes;
+export default compose(
+    withStyles(styles)
+)(CreateTypes);
