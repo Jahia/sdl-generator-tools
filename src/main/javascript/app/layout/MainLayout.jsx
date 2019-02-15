@@ -83,7 +83,7 @@ const MainLayout = ({classes, t}) => {
             <AppBar position="static">
                 <Toolbar className={classes.topBar}>
                     <Typography className={classes.topBarText}>
-                        {/*{t('label.sdlGeneratorTools.top.caption')}*/} SDL Generator Tools
+                        {/* {t('label.sdlGeneratorTools.top.caption')} */} SDL Generator Tools
                     </Typography>
                     <Button className={classes.topBarButton} onClick={backToTools}>Back to tools</Button>
                 </Toolbar>
@@ -115,5 +115,5 @@ const MainLayout = ({classes, t}) => {
 
 export default compose(
     withStyles(styles),
-    // translate()
+    // Translate()
 )(MainLayout);
