@@ -1,9 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {translate} from 'react-i18next';
 import {withStyles, Stepper, Step, StepLabel, Button, Typography} from '@material-ui/core';
 import CreateTypes from './createTypes/index';
 import {ExportResult} from './exportResult';
+import {downloadFile, copyToClipBoard} from '../util/documentUtils';
 import DefineFinder from './defineFinders/index';
+import {compose} from 'react-apollo';
 
 const styles = theme => ({
     root: {
@@ -85,7 +88,7 @@ class StepperComponent extends React.Component {
     }
 
     render() {
-        const {classes} = this.props;
+        const {classes, t} = this.props;
         const steps = getSteps();
         const lastStep = steps.length - 1;
         const {activeStep} = this.state;
@@ -108,7 +111,7 @@ class StepperComponent extends React.Component {
                     <div className={classes.bottomBar}>
                         {activeStep !== 0 ? (
                             <Button color="primary" className={classes.button} onClick={this.handleBack}>
-                                Back
+                                {t('label.sdlGeneratorTools.backButton')}
                             </Button>
                         ) : (
                             null
@@ -120,7 +123,7 @@ class StepperComponent extends React.Component {
                                     className={classes.button}
                                     onClick={this.handleCopy}
                             >
-                                    Copy to clipboard
+                                {t('label.sdlGeneratorTools.copyToClipboardButton')}
                             </Button>
                         ) : (
                             null
@@ -131,7 +134,7 @@ class StepperComponent extends React.Component {
                             className={classes.button}
                             onClick={activeStep === lastStep ? this.handleDownload : this.handleNext}
                         >
-                            {activeStep === lastStep ? 'Download as a file' : 'Next'}
+                            {activeStep === lastStep ? t('label.sdlGeneratorTools.downloadFileButton') : t('label.sdlGeneratorTools.nextButton')}
                         </Button>
                     </div>
                 </div>
@@ -145,4 +148,7 @@ StepperComponent.propTypes = {
     children: PropTypes.object
 };
 
-export default withStyles(styles)(StepperComponent);
+export default compose(
+    withStyles(styles),
+    translate()
+)(StepperComponent);

@@ -46,6 +46,7 @@
     "webpack-node-externals": "^1.7.2"
   },
   "dependencies": {
+    "@jahia/i18next": "^1.0.0-beta.20180628145923",
     "@jahia/ds-mui-theme": "^1.0.0-beta.20190205085737",
     "@material-ui/core": "^3.6.2",
     "@material-ui/icons": "^3.0.1",

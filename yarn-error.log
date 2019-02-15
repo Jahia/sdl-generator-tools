@@ -1,0 +1,109 @@
+Arguments: 
+  /git/sdl-generator-tools/node/node /git/sdl-generator-tools/node/yarn/dist/bin/yarn.js
+
+PATH: 
+  /git/sdl-generator-tools/node:/git/sdl-generator-tools/node/yarn/dist/bin:/git/sdl-generator-tools/node_modules/.bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:
+
+Yarn version: 
+  1.10.1
+
+Node version: 
+  8.12.0
+
+Platform: 
+  darwin x64
+
+Trace: 
+  Error: https://registry.yarnpkg.com/@jahia%2fds-mui-theme: Not found
+      at Request.params.callback [as _callback] (/git/sdl-generator-tools/node/yarn/dist/lib/cli.js:61073:18)
+      at Request.self.callback (/git/sdl-generator-tools/node/yarn/dist/lib/cli.js:120166:22)
+      at emitTwo (events.js:126:13)
+      at Request.emit (events.js:214:7)
+      at Request.<anonymous> (/git/sdl-generator-tools/node/yarn/dist/lib/cli.js:121138:10)
+      at emitOne (events.js:116:13)
+      at Request.emit (events.js:211:7)
+      at IncomingMessage.<anonymous> (/git/sdl-generator-tools/node/yarn/dist/lib/cli.js:121060:12)
+      at Object.onceWrapper (events.js:313:30)
+      at emitNone (events.js:111:20)
+
+npm manifest: 
+  {
+    "name": "sdl-generator-tools",
+    "version": "1.0.0-SNAPSHOT",
+    "description": "Jahia module for providing a set of tools for GraphQL schema generation",
+    "main": "main.js",
+    "scripts": {
+      "build": "yarn test && yarn webpack",
+      "webpack": "npx --node-arg=--max_old_space_size=2048 webpack",
+      "build:analyze": "yarn build --analyze",
+      "build:production": "yarn build -p",
+      "build:production-analyze": "yarn build -p --analyze",
+      "dev": "yarn webpack --watch",
+      "clean": "rimraf *.log src/main/resources/javascript/apps",
+      "clean:all": "yarn clean && rimraf node_modules node",
+      "test": "yarn lint",
+      "lint": "eslint --ext js,jsx .",
+      "lint:fix": "eslint --ext js,jsx --fix ."
+    },
+    "author": "chooli yip <cyip@jahia.com>",
+    "repository": "https://github.com/Jahia/sdl-generator-tools.git",
+    "license": "MIT",
+    "devDependencies": {
+      "@babel/cli": "^7.1.5",
+      "@babel/core": "^7.1.6",
+      "@babel/plugin-external-helpers": "^7.0.0",
+      "@babel/plugin-syntax-dynamic-import": "^7.0.0",
+      "@babel/preset-env": "^7.1.6",
+      "@babel/preset-react": "^7.0.0",
+      "babel-eslint": "^10.0.1",
+      "babel-loader": "^8.0.4",
+      "babel-plugin-lodash": "^3.3.4",
+      "clean-webpack-plugin": "^1.0.0",
+      "css-loader": "^1.0.1",
+      "eslint": "^5.9.0",
+      "eslint-config-xo": "^0.25.0",
+      "eslint-config-xo-react": "^0.17.0",
+      "eslint-loader": "2.1.0",
+      "eslint-plugin-react": "^7.11.1",
+      "file-loader": "^2.0.0",
+      "pom-parser": "^1.1.1",
+      "rimraf": "^2.6.2",
+      "style-loader": "^0.23.1",
+      "webpack": "^4.26.0",
+      "webpack-bundle-analyzer": "^3.0.3",
+      "webpack-cli": "^3.1.2",
+      "webpack-node-externals": "^1.7.2"
+    },
+    "dependencies": {
+      "@jahia/ds-mui-theme": "^1.0.0-beta.20190115140458",
+      "@material-ui/core": "^3.6.2",
+      "@material-ui/icons": "^3.0.1",
+      "@material-ui/lab": "^3.0.0-alpha.16",
+      "apollo-client": "^2.4.12",
+      "graphql": "0.12.3",
+      "graphql-tag": "^2.9.1",
+      "i18next": "^15.0.2",
+      "i18next-xhr-backend": "^2.0.0",
+      "lodash": "4.17.11",
+      "react": "^16.2.0",
+      "react-apollo": "^2.1.3",
+      "react-dom": "^16.4.0",
+      "react-i18next": "^7.3.1",
+      "react-iframe": "^1.2.0",
+      "react-loadable": "^5.5.0",
+      "react-redux": "^5.0.7",
+      "react-router": "^4.3.1",
+      "react-select": "^2.0.0",
+      "redux": "^4.0.0",
+      "redux-batched-actions": "^0.4.0",
+      "redux-thunk": "^2.3.0",
+      "rxjs": "^6.3.3",
+      "typeface-nunito-sans": "0.0.54"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

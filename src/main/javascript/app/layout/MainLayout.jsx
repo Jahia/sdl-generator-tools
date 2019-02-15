@@ -61,7 +61,7 @@ let styles = theme => ({
     },
     viewerText: {
         position: 'absolute',
-        width: '114px',
+        width: '154px',
         left: '24px',
         top: '24px',
         fontStyle: 'normal',
@@ -72,10 +72,6 @@ let styles = theme => ({
     }
 });
 
-const backToTools = () => {
-    window.location = '/tools';
-};
-
 const MainLayout = ({classes, t}) => {
     return (
         <Grid container spacing={24}>
@@ -83,9 +79,11 @@ const MainLayout = ({classes, t}) => {
             <AppBar position="static">
                 <Toolbar className={classes.topBar}>
                     <Typography className={classes.topBarText}>
-                        {t('label.sdlGeneratorTools.top.caption')} {/*SDL Generator Tools*/}
+                        {t('label.sdlGeneratorTools.top.caption')}
                     </Typography>
-                    <Button className={classes.topBarButton} onClick={backToTools}>Back to tools</Button>
+                    <Button className={classes.topBarButton} onClick={()=>{window.location = '/tools';}}>
+                        {t('label.sdlGeneratorTools.top.backToToolsButton')}
+                    </Button>
                 </Toolbar>
             </AppBar>
 
@@ -93,7 +91,7 @@ const MainLayout = ({classes, t}) => {
                 <Paper className={classes.mainPanel}>
                     <Grid item>
                         <Typography variant="subtitle1" className={classes.mainText}>
-                            Build your GraphQL
+                            {t('label.sdlGeneratorTools.mainCaption')}
                         </Typography>
                     </Grid>
                     <Grid item>
@@ -105,7 +103,7 @@ const MainLayout = ({classes, t}) => {
             <Grid item xs={12} sm={5}>
                 <Paper className={classes.viewerPanel}>
                     <Typography className={classes.viewerText}>
-                        GraphQL Schema
+                        {t('label.sdlGeneratorTools.viewerCaption')}
                     </Typography>
                 </Paper>
             </Grid>

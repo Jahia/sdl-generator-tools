@@ -3,8 +3,18 @@
         "sdlGeneratorTools": {
             "top": {
                 "caption": "SDL Generator Tools",
-                "backToTools": "Back to tools"
-            }
+                "backToToolsButton": "Back to tools"
+            },
+            "exportResult": {
+                "wellDoneText": "Well done!",
+                "descriptionText": "All types have been correctly configured. You can now export your SDL file"
+            },
+            "mainCaption": "Build your GraphQL",
+            "viewerCaption": "GraphQL Schema",
+            "backButton": "Back",
+            "nextButton": "Next",
+            "copyToClipboardButton": "Copy to clipboard",
+            "downloadFileButton": "Download as a file"
         }
     }
 }

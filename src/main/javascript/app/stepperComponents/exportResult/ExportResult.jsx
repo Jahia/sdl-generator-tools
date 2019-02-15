@@ -1,11 +1,12 @@
 import React from 'react';
 import {Typography} from '@material-ui/core';
+import {translate} from 'react-i18next';
 
 const ExportResult = ({t}) => (
     <React.Fragment>
-        <Typography color="inherit">Well done!</Typography>
-        <Typography color="inherit">All types have been correctly configured. You can now export your SDL file</Typography>
+        <Typography color="inherit">{t('label.sdlGeneratorTools.exportResult.wellDoneText')}</Typography>
+        <Typography color="inherit">{t('label.sdlGeneratorTools.exportResult.descriptionText')}</Typography>
     </React.Fragment>
 );
 
-export default ExportResult;
+export default translate()(ExportResult);

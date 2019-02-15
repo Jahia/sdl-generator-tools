@@ -1,51 +1,29 @@
 import React from 'react';
 import {I18nextProvider} from 'react-i18next';
-import i18next from 'i18next';
-import XHR from 'i18next-xhr-backend';
+import {getI18n} from '@jahia/i18next';
 import {Provider} from 'react-redux';
 import store from './App.redux-store';
 import MainLayout from './layout/MainLayout';
-import {MuiThemeProvider, createMuiTheme} from '@material-ui/core/es/styles';
-
+import {MuiThemeProvider} from '@material-ui/core/es/styles';
 import {dsGenericTheme as theme} from '@jahia/ds-mui-theme';
 
-const App = () => {
-    i18next
-        .use(XHR)
-        .init({
-            interpolation: {escapeValue: false},
-            lng: 'en',
-            load: 'languageOnly',
-            fallbackLng: 'en',
-            // resources: {
-            //     en: {
-            //         translation: {
-            //             label: {
-            //                 sdlGeneratorTools: {
-            //                     top: {
-            //                         caption: 'SDL Generator Tools',
-            //                         backToTools: 'Back to tools'
-            //                     }
-            //                 }
-            //             }
-            //         }
-            //     }
-            // },
-            backend: {
-                loadPath: '/locales/{{lng}}/{{ns}}.json',
-            }
-        });
+const defaultNamespace = 'sdl-generator-tools';
 
-    return (
-        <MuiThemeProvider theme={theme}>
-            <Provider store={store}>
-                <I18nextProvider i18n={i18next}>
-                    <MainLayout/>
-                </I18nextProvider>
-            </Provider>
-        </MuiThemeProvider>
-    );
-
-};
+const App = () => (
+    <MuiThemeProvider theme={theme}>
+        <Provider store={store}>
+            <I18nextProvider i18n={getI18n({
+                lng: 'en',
+                ns: [defaultNamespace],
+                defaultNS: defaultNamespace,
+                namespaceResolvers: {
+                    defaultNamespace: lang => require('../../resources/javascript/locales/' + lang + '.json')
+                }
+            })}>
+                <MainLayout/>
+            </I18nextProvider>
+        </Provider>
+    </MuiThemeProvider>
+);
 
 export default App;
