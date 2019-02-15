@@ -5,6 +5,11 @@
                 "caption": "SDL Generator Tools",
                 "backToToolsButton": "Back to tools"
             },
+            "steps": {
+                "createTypes": "Create types",
+                "defineFinder": "Define finder",
+                "exportResult": "Export result----"
+            },
             "exportResult": {
                 "wellDoneText": "Well done!",
                 "descriptionText": "All types have been correctly configured. You can now export your SDL file"

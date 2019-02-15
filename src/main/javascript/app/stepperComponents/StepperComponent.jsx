@@ -1,7 +1,6 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import {translate} from 'react-i18next';
-import {withStyles, Stepper, Step, StepLabel, Button, Typography} from '@material-ui/core';
+import {withStyles, Stepper, Step, StepLabel, Button} from '@material-ui/core';
 import CreateTypes from './createTypes/index';
 import {ExportResult} from './exportResult';
 import {downloadFile, copyToClipBoard} from '../util/documentUtils';
@@ -24,36 +23,38 @@ const styles = theme => ({
     }
 });
 
-function getSteps() {
-    return ['Create types', 'Define finder', 'Export result'];
-}
-
-function getStepContent(step) {
-    switch (step) {
-        case 0:
-            return <CreateTypes/>;
-        case 1:
-            return <DefineFinder/>;
-        case 2:
-            return <ExportResult/>;
-        default:
-            return 'Unknown step';
-    }
-}
-
 class StepperComponent extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
             activeStep: 0,
-            skipped: new Set()
+            skipped: new Set(),
+            steps: [
+                props.t('label.sdlGeneratorTools.steps.createTypes'),
+                props.t('label.sdlGeneratorTools.steps.defineFinder'),
+                props.t('label.sdlGeneratorTools.steps.exportResult')
+            ]
         };
+        this.getStepContent = this.getStepContent.bind(this);
         this.handleNext = this.handleNext.bind(this);
         this.handleBack = this.handleBack.bind(this);
         this.handleCopy = this.handleCopy.bind(this);
         this.handleDownload = this.handleDownload.bind(this);
         this.handleReset = this.handleReset.bind(this);
+    }
+
+    getStepContent(step) {
+        switch (step) {
+            case 0:
+                return <CreateTypes/>;
+            case 1:
+                return <DefineFinder/>;
+            case 2:
+                return <ExportResult/>;
+            default:
+                return 'Unknown step';
+        }
     }
 
     handleNext() {
@@ -89,9 +90,8 @@ class StepperComponent extends React.Component {
 
     render() {
         const {classes, t} = this.props;
-        const steps = getSteps();
+        const {activeStep, steps} = this.state;
         const lastStep = steps.length - 1;
-        const {activeStep} = this.state;
 
         return (
             <div className={classes.root}>
@@ -107,7 +107,7 @@ class StepperComponent extends React.Component {
                     })}
                 </Stepper>
                 <div>
-                    {getStepContent(activeStep)}
+                    {this.getStepContent(activeStep)}
                     <div className={classes.bottomBar}>
                         {activeStep !== 0 ? (
                             <Button color="primary" className={classes.button} onClick={this.handleBack}>
@@ -142,11 +142,6 @@ class StepperComponent extends React.Component {
         );
     }
 }
-
-StepperComponent.propTypes = {
-    classes: PropTypes.object,
-    children: PropTypes.object
-};
 
 export default compose(
     withStyles(styles),

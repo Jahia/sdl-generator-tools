@@ -81,7 +81,11 @@ const MainLayout = ({classes, t}) => {
                     <Typography className={classes.topBarText}>
                         {t('label.sdlGeneratorTools.top.caption')}
                     </Typography>
-                    <Button className={classes.topBarButton} onClick={()=>{window.location = '/tools';}}>
+                    <Button className={classes.topBarButton}
+                            onClick={() => {
+                                window.location = '/tools';
+                            }}
+                    >
                         {t('label.sdlGeneratorTools.top.backToToolsButton')}
                     </Button>
                 </Toolbar>
