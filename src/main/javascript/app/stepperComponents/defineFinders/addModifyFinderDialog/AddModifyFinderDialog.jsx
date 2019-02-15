@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
-import {Grid, Paper, List, ListItem, ListItemText, ListSubheader, Button, Select, MenuItem, Dialog} from '@material-ui/core';
+import {Button, Select, MenuItem, Dialog} from '@material-ui/core';
 import DialogTitle from '@material-ui/core/DialogTitle/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent/DialogContent';
 import TextField from '@material-ui/core/TextField/TextField';
@@ -40,7 +40,7 @@ const AddModifyFinderDialog = ({open, close, finderInfo, addFinder, selection}) 
         close={close}
         >
             <DialogTitle id="form-dialog-title">Add a finder</DialogTitle>
-            <DialogContent>
+            <DialogContent style={{width: 400}}>
                 <FinderSelect open={showFinderSelector}
                               value={finderSuffix}
                               handleOpen={() => setFinderSelectorStatus(true)}

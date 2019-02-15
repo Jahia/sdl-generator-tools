@@ -1,16 +1,24 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
-import {Grid, Paper, List, ListItem, ListItemText, ListSubheader} from '@material-ui/core';
+import {withStyles, Grid, Paper, List, ListItem, ListItemText, ListSubheader, Button} from '@material-ui/core';
 import {Add} from '@material-ui/icons';
 import AddModifyFinderDialog from './addModifyFinderDialog/index';
+import {compose} from 'react-apollo';
 
-const DefineFinders = ({addFinder, removeFinder, nodeTypes, selection, selectType}) => {
+const styles = theme => ({
+    paper: {
+        width: 360,
+        height: 400
+    }
+});
+
+const DefineFinders = ({classes, addFinder, removeFinder, nodeTypes, selection, selectType}) => {
     const [isDialogOpen, setDialogState] = useState(false);
     return (
         <React.Fragment>
             <Grid container>
                 <Grid item>
-                    <Paper>
+                    <Paper className={classes.paper}>
                         <List subheader={<ListSubheader>Type</ListSubheader>}>
                             {
                                 nodeTypes.map(type => (
@@ -24,17 +32,17 @@ const DefineFinders = ({addFinder, removeFinder, nodeTypes, selection, selectTyp
                     </Paper>
                 </Grid>
                 <Grid item>
-                    <Paper>
+                    <Paper className={classes.paper}>
                         <List subheader={<ListSubheader>Finders</ListSubheader>}>
-                            <ListItem button onClick={() => setDialogState(true)}>
-                                Add Finder <Add/>
-                            </ListItem>
+                            <Button onClick={() => setDialogState(true)}>
+                                Add Finder
+                                <Add/>
+                            </Button>
                             {
                                 nodeTypes.filter(type => type.name === selection).map(type => type.queries.map(finder => {
                                         return (
-                                            <ListItem>
-                                                <ListItemText primary={finder.name}/>
-                                            </ListItem>
+                                            <FinderItem key={finder.name}
+                                                        name={finder.name}/>
                                         );
                                     }
                                 ))
@@ -57,6 +65,12 @@ const TypeItem = ({name, isSelected, selectType}) => (
     </ListItem>
 );
 
+const FinderItem = ({name}) => (
+    <ListItem button>
+        <ListItemText primary={name}/>
+    </ListItem>
+);
+
 DefineFinders.propTypes = {
     nodeTypes: PropTypes.array.isRequired,
     addFinder: PropTypes.func.isRequired,
@@ -65,4 +79,6 @@ DefineFinders.propTypes = {
     selection: PropTypes.string
 };
 
-export default DefineFinders;
+export default compose(
+    withStyles(styles)
+)(DefineFinders);
