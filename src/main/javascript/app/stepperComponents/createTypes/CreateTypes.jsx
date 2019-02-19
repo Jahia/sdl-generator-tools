@@ -61,14 +61,12 @@ const CreateTypes = ({classes, nodeTypes, selection, addType, addProperty, selec
                                 <Add/>
                             </Button>
                             {
-                                nodeTypes.reduce((acc, type) => {
-                                    if (type.name === selection) {
-                                        acc = type.fieldDefinitions.map(field => (
-                                            <PropertyItem {...field}/>
-                                        ));
-                                        return acc;
+                                nodeTypes.filter(type => type.name === selection).map(type => type.fieldDefinitions.map((field, i) => {
+                                        return (
+                                            <PropertyItem key={`${field.name}_${i}`} {...field}/>
+                                        );
                                     }
-                                }, [])
+                                ))
                             }
                         </List>
                     </Paper>
