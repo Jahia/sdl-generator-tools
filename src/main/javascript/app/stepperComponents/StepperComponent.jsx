@@ -76,14 +76,12 @@ class StepperComponent extends React.Component {
     }
 
     handleCopy() {
-        //TODO replace redux state
-        const sdlTypes = SDLParser.parse(exampleTypes);
+        const sdlTypes = SDLParser.parse(this.props.nodeTypes);
         copyToClipBoard(sdlTypes);
     }
 
     handleDownload() {
-        //TODO replace redux state
-        const sdlTypes = SDLParser.parse(exampleTypes);
+        const sdlTypes = SDLParser.parse(this.props.nodeTypes);
         downloadFile(sdlTypes, 'graphql-extension.sdl');
     }
 
