@@ -10,14 +10,32 @@
                 "defineFinder": "Define finder",
                 "exportResult": "Export result"
             },
+            "createTypes": {
+                "nodeTypeText": "Node type",
+                "propertiesText": "Properties",
+                "addNewTypeButton": "Add new type",
+                "addNewPropertyButton": "Add a new property",
+                "customTypeNameText": "Custom type name",
+                "customPropertyNameText": "Custom property name"
+            },
+            "defineFinder": {
+                "finders": "Finders",
+                "addAFinderCaption": "Add a finder",
+                "customFinderPrefixText": "Custom finder prefix"
+            },
             "exportResult": {
                 "wellDoneText": "Well done!",
                 "descriptionText": "All types have been correctly configured. You can now export your SDL file"
             },
+            "type": "type",
+            "Type": "Type",
+            "types": "types",
             "mainCaption": "Build your GraphQL",
             "viewerCaption": "GraphQL Schema",
             "backButton": "Back",
             "nextButton": "Next",
+            "addButton": "Add",
+            "cancelButton": "Cancel",
             "copyToClipboardButton": "Copy to clipboard",
             "downloadFileButton": "Download as a file"
         }

@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import {translate} from 'react-i18next';
 import PropTypes from 'prop-types';
 import {withStyles, Grid, Paper, List, ListItem, ListItemText, ListSubheader, Button} from '@material-ui/core';
 import {Add} from '@material-ui/icons';
@@ -28,7 +29,7 @@ const PropertyItem = ({name}) => (
     </ListItem>
 );
 
-const CreateTypes = ({classes, nodeTypes, selection, addType, addProperty, selectType}) => {
+const CreateTypes = ({classes,t, nodeTypes, selection, addType, addProperty, selectType}) => {
     const [addTypeDialogShown, showAddTypeDialog] = useState(false);
     const [addPropertyDialogShown, showAddPropertyDialog] = useState(false);
 
@@ -37,9 +38,9 @@ const CreateTypes = ({classes, nodeTypes, selection, addType, addProperty, selec
             <Grid container>
                 <Grid item>
                     <Paper className={classes.paper}>
-                        <List subheader={<ListSubheader>Node type</ListSubheader>}>
+                        <List subheader={<ListSubheader>{t('label.sdlGeneratorTools.createTypes.nodeTypeText')}</ListSubheader>}>
                             <Button onClick={() => showAddTypeDialog(true)}>
-                                Add new type
+                                {t('label.sdlGeneratorTools.createTypes.addNewTypeButton')}
                                 <Add/>
                             </Button>
                             {
@@ -55,9 +56,9 @@ const CreateTypes = ({classes, nodeTypes, selection, addType, addProperty, selec
                 </Grid>
                 <Grid item>
                     <Paper className={classes.paper}>
-                        <List subheader={<ListSubheader>Properties</ListSubheader>}>
+                        <List subheader={<ListSubheader>{t('label.sdlGeneratorTools.createTypes.propertiesText')}</ListSubheader>}>
                             <Button onClick={() => showAddPropertyDialog(true)}>
-                                Add a new property
+                                {t('label.sdlGeneratorTools.createTypes.addNewPropertyButton')}
                                 <Add/>
                             </Button>
                             {
@@ -96,5 +97,6 @@ CreateTypes.propTypes = {
 };
 
 export default compose(
-    withStyles(styles)
+    withStyles(styles),
+    translate()
 )(CreateTypes);

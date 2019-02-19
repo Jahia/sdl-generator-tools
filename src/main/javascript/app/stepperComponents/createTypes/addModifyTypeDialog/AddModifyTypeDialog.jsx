@@ -6,6 +6,7 @@ import DialogContent from '@material-ui/core/DialogContent/DialogContent';
 import TextField from '@material-ui/core/TextField/TextField';
 import DialogActions from '@material-ui/core/DialogActions/DialogActions';
 import {Button, MenuItem, Select} from '@material-ui/core';
+import {translate} from "react-i18next";
 
 const NodeTypeSelect = ({value, open, handleClose, handleChange, handleOpen}) => (
     <Select
@@ -23,7 +24,7 @@ const NodeTypeSelect = ({value, open, handleClose, handleChange, handleOpen}) =>
     </Select>
 );
 
-const AddTypeDialog = ({open, closeDialog, customTypeName, jcrNodeType, addType}) => {
+const AddTypeDialog = ({t, open, closeDialog, customTypeName, jcrNodeType, addType}) => {
     const [typeName, updateTypeName] = useState(customTypeName);
     const [nodeType, updateNodeType] = useState(jcrNodeType);
     const [showNodeTypeSelector, setShowNodeTypeSelector] = useState(false);
@@ -39,7 +40,7 @@ const AddTypeDialog = ({open, closeDialog, customTypeName, jcrNodeType, addType}
             aria-labelledby="form-dialog-title"
             onClose={closeDialog}
         >
-            <DialogTitle id="form-dialog-title">Add new type</DialogTitle>
+            <DialogTitle id="form-dialog-title">{t('label.sdlGeneratorTools.createTypes.addNewTypeButton')}</DialogTitle>
             <DialogContent style={{width: 400}}>
                 <NodeTypeSelect open={showNodeTypeSelector}
                                 value={nodeType}
@@ -51,7 +52,7 @@ const AddTypeDialog = ({open, closeDialog, customTypeName, jcrNodeType, addType}
                     fullWidth
                     margin="dense"
                     id="typeName"
-                    label="Custom type name"
+                    label={t('label.sdlGeneratorTools.createTypes.customTypeNameText')}
                     type="text"
                     value={typeName}
                     onChange={e => updateTypeName(e.target.value)}
@@ -59,12 +60,12 @@ const AddTypeDialog = ({open, closeDialog, customTypeName, jcrNodeType, addType}
             </DialogContent>
             <DialogActions>
                 <Button color="primary" onClick={closeDialog}>
-                    Cancel
+                    {t('label.sdlGeneratorTools.cancelButton')}
                 </Button>
                 <Button color="primary"
                         onClick={addTypeAndClose}
                 >
-                    Add
+                    {t('label.sdlGeneratorTools.addButton')}
                 </Button>
             </DialogActions>
         </Dialog>
@@ -84,4 +85,4 @@ AddTypeDialog.defaultProps = {
     jcrNodeType: ''
 };
 
-export default AddTypeDialog;
+export default translate()(AddTypeDialog);

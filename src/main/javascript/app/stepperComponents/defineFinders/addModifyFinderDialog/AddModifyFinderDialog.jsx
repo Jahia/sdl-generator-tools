@@ -5,6 +5,7 @@ import DialogTitle from '@material-ui/core/DialogTitle/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent/DialogContent';
 import TextField from '@material-ui/core/TextField/TextField';
 import DialogActions from '@material-ui/core/DialogActions/DialogActions';
+import {translate} from "react-i18next";
 
 const FinderSelect = ({open, close, handleClose, handleOpen, handleChange, value}) => {
     return (
@@ -22,7 +23,7 @@ const FinderSelect = ({open, close, handleClose, handleOpen, handleChange, value
     );
 };
 
-const AddModifyFinderDialog = ({open, close, finderInfo, addFinder, selection}) => {
+const AddModifyFinderDialog = ({t, open, close, finderInfo, addFinder, selection}) => {
     const [finderPrefix, updateFinderPrefix] = useState(finderInfo.prefix);
     const [finderSuffix, updateFinderSuffix] = useState(finderInfo.suffix);
     const [finderMultiple, updateFinderMultiple] = useState(finderInfo.multiple);
@@ -39,7 +40,7 @@ const AddModifyFinderDialog = ({open, close, finderInfo, addFinder, selection}) 
         aria-labelledby="form-dialog-title"
         close={close}
         >
-            <DialogTitle id="form-dialog-title">Add a finder</DialogTitle>
+            <DialogTitle id="form-dialog-title">{t('label.sdlGeneratorTools.defineFinder.addAFinderCaption')}</DialogTitle>
             <DialogContent style={{width: 400}}>
                 <FinderSelect open={showFinderSelector}
                               value={finderSuffix}
@@ -51,7 +52,7 @@ const AddModifyFinderDialog = ({open, close, finderInfo, addFinder, selection}) 
                 fullWidth
                 margin="dense"
                 id="propertyName"
-                label="Custom finder prefix"
+                label={t('label.sdlGeneratorTools.defineFinder.customFinderPrefixText')}
                 type="text"
                 value={finderPrefix}
                 onChange={e => updateFinderPrefix(e.target.value)}
@@ -59,12 +60,12 @@ const AddModifyFinderDialog = ({open, close, finderInfo, addFinder, selection}) 
             </DialogContent>
             <DialogActions>
                 <Button color="primary" onClick={close}>
-                Cancel
+                    {t('label.sdlGeneratorTools.cancelButton')}
                 </Button>
                 <Button color="primary"
                         onClick={addFinderAndClose}
                 >
-                Add
+                    {t('label.sdlGeneratorTools.addButton')}
                 </Button>
             </DialogActions>
         </Dialog>
@@ -83,4 +84,4 @@ AddModifyFinderDialog.defaultProps = {
     }
 };
 
-export default AddModifyFinderDialog;
+export default translate()(AddModifyFinderDialog);

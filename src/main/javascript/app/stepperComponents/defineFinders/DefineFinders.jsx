@@ -4,6 +4,7 @@ import {withStyles, Grid, Paper, List, ListItem, ListItemText, ListSubheader, Bu
 import {Add} from '@material-ui/icons';
 import AddModifyFinderDialog from './addModifyFinderDialog/index';
 import {compose} from 'react-apollo';
+import {translate} from "react-i18next";
 
 const styles = theme => ({
     paper: {
@@ -12,14 +13,14 @@ const styles = theme => ({
     }
 });
 
-const DefineFinders = ({classes, addFinder, removeFinder, nodeTypes, selection, selectType}) => {
+const DefineFinders = ({classes, t, addFinder, removeFinder, nodeTypes, selection, selectType}) => {
     const [isDialogOpen, setDialogState] = useState(false);
     return (
         <React.Fragment>
             <Grid container>
                 <Grid item>
                     <Paper className={classes.paper}>
-                        <List subheader={<ListSubheader>Type</ListSubheader>}>
+                        <List subheader={<ListSubheader>{t('label.sdlGeneratorTools.Type')}</ListSubheader>}>
                             {
                                 nodeTypes.map(type => (
                                     <TypeItem key={type.name}
@@ -33,9 +34,9 @@ const DefineFinders = ({classes, addFinder, removeFinder, nodeTypes, selection, 
                 </Grid>
                 <Grid item>
                     <Paper className={classes.paper}>
-                        <List subheader={<ListSubheader>Finders</ListSubheader>}>
+                        <List subheader={<ListSubheader>{t('label.sdlGeneratorTools.defineFinder.finders')}</ListSubheader>}>
                             <Button onClick={() => setDialogState(true)}>
-                                Add Finder
+                                {t('label.sdlGeneratorTools.defineFinder.addAFinderCaption')}
                                 <Add/>
                             </Button>
                             {
@@ -80,5 +81,6 @@ DefineFinders.propTypes = {
 };
 
 export default compose(
-    withStyles(styles)
+    withStyles(styles),
+    translate()
 )(DefineFinders);

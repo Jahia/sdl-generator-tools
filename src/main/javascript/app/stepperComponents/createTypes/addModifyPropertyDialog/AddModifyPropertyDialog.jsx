@@ -6,6 +6,7 @@ import DialogContent from '@material-ui/core/DialogContent/DialogContent';
 import TextField from '@material-ui/core/TextField/TextField';
 import DialogActions from '@material-ui/core/DialogActions/DialogActions';
 import {Button, MenuItem, Select} from '@material-ui/core';
+import {translate} from "react-i18next";
 
 const PropertySelect = ({value, open, handleClose, handleChange, handleOpen}) => (
     <Select
@@ -22,7 +23,7 @@ const PropertySelect = ({value, open, handleClose, handleChange, handleOpen}) =>
     </Select>
 );
 
-const AddModifyPropertyDialog = ({open, closeDialog, customTypeName, jcrNodeType, addProperty, typeName}) => {
+const AddModifyPropertyDialog = ({t, open, closeDialog, customTypeName, jcrNodeType, addProperty, typeName}) => {
     const [propertyName, updatePropertyName] = useState(customTypeName);
     const [jcrPropertyName, updateJcrPropertyName] = useState(jcrNodeType);
     const [showPropertySelector, setShowPropertySelector] = useState(false);
@@ -38,7 +39,7 @@ const AddModifyPropertyDialog = ({open, closeDialog, customTypeName, jcrNodeType
             aria-labelledby="form-dialog-title"
             onClose={closeDialog}
         >
-            <DialogTitle id="form-dialog-title">Add new property</DialogTitle>
+            <DialogTitle id="form-dialog-title">{t('label.sdlGeneratorTools.createTypes.addNewPropertyButton')}</DialogTitle>
             <DialogContent style={{width: 400}}>
                 <PropertySelect open={showPropertySelector}
                                 value={jcrPropertyName}
@@ -50,7 +51,7 @@ const AddModifyPropertyDialog = ({open, closeDialog, customTypeName, jcrNodeType
                     fullWidth
                     margin="dense"
                     id="propertyName"
-                    label="Custom property name"
+                    label={t('label.sdlGeneratorTools.createTypes.customPropertyNameText')}
                     type="text"
                     value={propertyName}
                     onChange={e => updatePropertyName(e.target.value)}
@@ -58,12 +59,12 @@ const AddModifyPropertyDialog = ({open, closeDialog, customTypeName, jcrNodeType
             </DialogContent>
             <DialogActions>
                 <Button color="primary" onClick={closeDialog}>
-                    Cancel
+                    {t('label.sdlGeneratorTools.cancelButton')}
                 </Button>
                 <Button color="primary"
                         onClick={addPropertyAndClose}
                 >
-                    Add
+                    {t('label.sdlGeneratorTools.addButton')}
                 </Button>
             </DialogActions>
         </Dialog>
@@ -82,4 +83,4 @@ AddModifyPropertyDialog.defaultProps = {
     jcrNodeType: ''
 };
 
-export default AddModifyPropertyDialog;
+export default translate()(AddModifyPropertyDialog);
