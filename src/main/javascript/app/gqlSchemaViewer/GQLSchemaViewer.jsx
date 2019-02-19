@@ -1,6 +1,5 @@
 import React from 'react';
 import {compose} from 'react-apollo';
-import {connect} from 'react-redux';
 import {translate} from 'react-i18next';
 import {withStyles, Typography, Grid} from '@material-ui/core';
 import AceEditor from 'react-ace';
@@ -47,12 +46,7 @@ const GQLSchemaViewer = ({classes, t, nodeTypes}) => {
     );
 };
 
-const mapStateToProps = state => {
-    return state;
-};
-
 export default compose(
     withStyles(styles),
-    translate(),
-    connect(mapStateToProps, null)
+    translate()
 )(GQLSchemaViewer);

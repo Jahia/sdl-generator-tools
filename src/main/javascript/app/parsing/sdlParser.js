@@ -1,10 +1,5 @@
-import exampleTypes from './typesExample.js';
-
 export default class SDLParser {
     static parse(types) {
-        // For testing purposes
-        // console.log(parseTypes(exampleTypes));
-        console.log(parseTypes(types));
         return parseTypes(types);
     }
 }

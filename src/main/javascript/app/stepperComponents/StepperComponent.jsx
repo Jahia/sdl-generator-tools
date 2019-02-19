@@ -7,7 +7,6 @@ import {downloadFile, copyToClipBoard} from '../util/documentUtils';
 import DefineFinder from './defineFinders/index';
 import {compose} from 'react-apollo';
 import SDLParser from '../parsing/sdlParser';
-import exampleTypes from '../parsing/typesExample';
 
 const styles = theme => ({
     root: {
