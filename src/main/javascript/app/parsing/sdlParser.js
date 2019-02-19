@@ -2,8 +2,9 @@ import exampleTypes from './typesExample.js';
 
 export default class SDLParser {
     static parse(types) {
-        //For testing purposes
-        //console.log(parseTypes(exampleTypes));
+        // For testing purposes
+        // console.log(parseTypes(exampleTypes));
+        console.log(parseTypes(types));
         return parseTypes(types);
     }
 }
@@ -13,10 +14,10 @@ const parseTypes = types => {
     let parsedQueries = [];
     types.map(type => {
         let description = formatDescription(type.description);
-        parsedTypes.push(`${description !== null ? `${description}\n` : ""}type ${type.name} ${parseDirectives(type.directives)} {\n\t${parseFields(type.fieldDefinitions).join('\n\t')}\n}`);
+        parsedTypes.push(`${description !== null ? `${description}\n` : ''}type ${type.name} ${parseDirectives(type.directives)} {\n\t${parseFields(type.fieldDefinitions).join('\n\t')}\n}`);
         parsedQueries = parsedQueries.concat(parseQueries(type.queries, type.name));
     });
-    return `${parsedTypes.join('\n')}\n\nextend type Query {\n\t${parsedQueries.join('\n\t')}\n}`;
+    return `${parsedTypes.join('\n')}${parsedQueries.length > 0 ? `\n\nextend type Query {\n\t${parsedQueries.join('\n\t')}\n}` : ''}`;
 };
 
 const parseQueries = (queries, type) => {
@@ -32,7 +33,7 @@ const parseFields = fields => {
     fields.map(field => {
         let parsedDirectives = field.directives != null ? parseDirectives(field.directives) : '';
         let description = formatDescription(field.description);
-        parsedFields.push(`${description !== null ? `${description}\n\t` : ""}${field.name}: ${field.type} ${parsedDirectives}`);
+        parsedFields.push(`${description !== null ? `${description}\n\t` : ''}${field.name}: ${field.type} ${parsedDirectives}`);
     });
     return parsedFields;
 };

@@ -3,6 +3,7 @@ import {compose} from 'react-apollo';
 import {translate} from 'react-i18next';
 import {withStyles, AppBar, Toolbar, Grid, Paper, Typography, Button} from '@material-ui/core';
 import Stepper from '../stepperComponents/StepperComponent';
+import GQLSchemaViewer from '../gqlSchemaViewer/index';
 
 let styles = theme => ({
     topBar: {
@@ -55,23 +56,13 @@ let styles = theme => ({
     viewerPanel: {
         position: 'absolute',
         width: '519px',
-        height: '84%',
+        height: '79%',
         left: '857px',
         top: '94px',
         background: '#1F262A',
         boxShadow: '0px 3px 2px rgba(54, 63, 69, 0.2), 0px 1px 8px rgba(54, 63, 69, 0.08)',
-        borderRadius: '3px'
-    },
-    viewerText: {
-        position: 'absolute',
-        width: '154px',
-        left: '24px',
-        top: '24px',
-        fontStyle: 'normal',
-        fontWeight: 600,
-        lineHeight: '18px',
-        fontSize: '14px',
-        color: '#fff'
+        borderRadius: '3px',
+        backgroundColor: '#272822'
     }
 });
 
@@ -109,9 +100,7 @@ const MainLayout = ({classes, t}) => {
 
             <Grid item xs={12} sm={5}>
                 <Paper className={classes.viewerPanel}>
-                    <Typography className={classes.viewerText}>
-                        {t('label.sdlGeneratorTools.viewerCaption')}
-                    </Typography>
+                    <GQLSchemaViewer/>
                 </Paper>
             </Grid>
         </Grid>
