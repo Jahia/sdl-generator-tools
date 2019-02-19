@@ -1,5 +1,6 @@
 import React from 'react';
 import {translate} from 'react-i18next';
+import {connect} from "react-redux";
 import {withStyles, Stepper, Step, StepLabel, Button} from '@material-ui/core';
 import CreateTypes from './createTypes/index';
 import {ExportResult} from './exportResult';
@@ -147,7 +148,12 @@ class StepperComponent extends React.Component {
     }
 }
 
+const mapStateToProps = state => {
+    return state;
+};
+
 export default compose(
     withStyles(styles),
-    translate()
+    translate(),
+    connect(mapStateToProps)
 )(StepperComponent);
