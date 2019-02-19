@@ -1,3 +1,3 @@
-import GQLSchemaViewer from './GQLSchemaViewer';
+import GQLSchemaViewerContainer from './GQLSchemaViewer.container';
 
-export default GQLSchemaViewer;
+export default GQLSchemaViewerContainer;
