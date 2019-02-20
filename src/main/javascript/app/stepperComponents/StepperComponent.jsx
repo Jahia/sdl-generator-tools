@@ -10,10 +10,7 @@ import SDLParser from '../parsing/sdlParser';
 
 const styles = theme => ({
     root: {
-        position: 'absolute',
-        width: '780px',
-        left: '32px',
-        top: '84px'
+        margin: "10px 16px"
     },
     bottomBar: {
         margin: '21px 6px',

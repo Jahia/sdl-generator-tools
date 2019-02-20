@@ -37,7 +37,7 @@ const GQLSchemaViewer = ({classes, t, nodeTypes}) => {
                     theme="monokai"
                     value={SDLParser.parse(nodeTypes)}
                     name="gqlschema"
-                    height="100%"
+                    height="93%"
                     width="100%"
                     editorProps={{$blockScrolling: false}}
                 />
