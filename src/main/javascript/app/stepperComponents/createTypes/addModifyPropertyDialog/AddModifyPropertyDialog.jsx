@@ -6,7 +6,7 @@ import DialogContent from '@material-ui/core/DialogContent/DialogContent';
 import TextField from '@material-ui/core/TextField/TextField';
 import DialogActions from '@material-ui/core/DialogActions/DialogActions';
 import {Button, MenuItem, Select} from '@material-ui/core';
-import {translate} from "react-i18next";
+import {translate} from 'react-i18next';
 
 const PropertySelect = ({value, open, handleClose, handleChange, handleOpen}) => (
     <Select

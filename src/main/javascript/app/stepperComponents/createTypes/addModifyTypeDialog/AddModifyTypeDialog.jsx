@@ -5,8 +5,8 @@ import DialogTitle from '@material-ui/core/DialogTitle/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent/DialogContent';
 import TextField from '@material-ui/core/TextField/TextField';
 import DialogActions from '@material-ui/core/DialogActions/DialogActions';
-import {Button, MenuItem, Select} from '@material-ui/core';
-import {translate} from "react-i18next";
+import {Button, FormControlLabel, FormGroup, MenuItem, Select, Switch} from '@material-ui/core';
+import {translate} from 'react-i18next';
 
 const NodeTypeSelect = ({value, open, handleClose, handleChange, handleOpen}) => (
     <Select
@@ -24,10 +24,21 @@ const NodeTypeSelect = ({value, open, handleClose, handleChange, handleOpen}) =>
     </Select>
 );
 
-const AddTypeDialog = ({t, open, closeDialog, customTypeName, jcrNodeType, addType}) => {
+const AddTypeDialog = ({t, open, closeDialog, customTypeName, addArgToDirective, removeArgFromDirective, jcrNodeType, addType, selectedType}) => {
     const [typeName, updateTypeName] = useState(customTypeName);
     const [nodeType, updateNodeType] = useState(jcrNodeType);
     const [showNodeTypeSelector, setShowNodeTypeSelector] = useState(false);
+    const mappingDirective = selectedType != null ? selectedType.directives.reduce((acc, dir) => dir.name === 'mapping' ? dir : acc, {}) : null;
+    const [ignoreDefaultQueries, updateIgnoreDefaultQueries] = useState(mappingDirective != null ? mappingDirective.arguments.reduce((acc, arg) => arg.name === 'ignoreDefaultQueries' ? arg.value : acc, false) : false);
+
+    function handleIgnoreDefaultQueries(e) {
+        updateIgnoreDefaultQueries(e.target.checked);
+        if (e.target.checked) {
+            addArgToDirective(selectedType.idx, 'mapping', {value: true, name: 'ignoreDefaultQueries'});
+        } else {
+            removeArgFromDirective(selectedType.idx, 'mapping', mappingDirective.arguments.reduce((acc, curr, idx) => curr.name === 'ignoreDefaultQueries' ? idx : curr));
+        }
+    }
 
     function addTypeAndClose() {
         addType({typeName: typeName, nodeType: nodeType});
@@ -57,6 +68,16 @@ const AddTypeDialog = ({t, open, closeDialog, customTypeName, jcrNodeType, addTy
                     value={typeName}
                     onChange={e => updateTypeName(e.target.value)}
                 />
+                {/* <FormGroup row> */}
+                {/* <FormControlLabel control={ */}
+                {/* <Switch */}
+                {/* checked={ignoreDefaultQueries} */}
+                {/* onChange={handleIgnoreDefaultQueries} */}
+                {/* color="primary" */}
+                {/* /> */}
+                {/* } */}
+                {/* label="Ignore Default Queries"/> */}
+                {/* </FormGroup> */}
             </DialogContent>
             <DialogActions>
                 <Button color="primary" onClick={closeDialog}>

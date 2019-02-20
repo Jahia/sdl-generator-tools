@@ -27,9 +27,9 @@ let styles = theme => ({
         color: '#fff'
     },
     mainPanel: {
-        width: "100%",
-        height: "91%",
-        margin: "10px 0px 0px 10px",
+        width: '100%',
+        height: '91%',
+        margin: '10px 0px 0px 10px',
         boxShadow: '0px 3px 2px rgba(54, 63, 69, 0.2), 0px 1px 8px rgba(54, 63, 69, 0.08)',
         borderRadius: '3px',
         overflow: 'auto'
@@ -37,14 +37,14 @@ let styles = theme => ({
     mainText: {
         fontStyle: 'normal',
         fontWeight: 600,
-        margin: "10px 16px",
+        margin: '10px 16px',
         fontSize: '16px',
         color: '#373C42'
     },
     viewerPanel: {
-        width: "100%",
-        height: "91%",
-        margin: "10px 20px",
+        width: '100%',
+        height: '91%',
+        margin: '10px 20px',
         boxShadow: '0px 3px 2px rgba(54, 63, 69, 0.2), 0px 1px 8px rgba(54, 63, 69, 0.08)',
         borderRadius: '3px',
         backgroundColor: '#272822'

@@ -10,7 +10,7 @@ import SDLParser from '../parsing/sdlParser';
 
 const styles = theme => ({
     root: {
-        margin: "10px 16px"
+        margin: '10px 16px'
     },
     bottomBar: {
         margin: '21px 6px',
@@ -49,7 +49,7 @@ class StepperComponent extends React.Component {
             case 1:
                 return <DefineFinder/>;
             case 2:
-                return <ExportResult />;
+                return <ExportResult/>;
             default:
                 return 'Unknown step';
         }

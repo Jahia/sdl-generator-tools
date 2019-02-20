@@ -2,9 +2,10 @@ import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {withStyles, Grid, Paper, List, ListItem, ListItemText, ListSubheader, Button} from '@material-ui/core';
 import {Add} from '@material-ui/icons';
-import AddModifyFinderDialog from './addModifyFinderDialog/index';
+import AddModifyFinderDialog from './addModifyFinderDialog';
 import {compose} from 'react-apollo';
-import {translate} from "react-i18next";
+import {translate} from 'react-i18next';
+import {upperCaseFirst} from '../../util/helperFunctions';
 
 const styles = theme => ({
     paper: {
@@ -15,6 +16,8 @@ const styles = theme => ({
 
 const DefineFinders = ({classes, t, addFinder, removeFinder, nodeTypes, selection, selectType}) => {
     const [isDialogOpen, setDialogState] = useState(false);
+    const selectedType = nodeTypes.reduce((acc, type, idx) => type.name === selection ? Object.assign({idx: idx}, type) : acc, null);
+    const availableFinders = selectedType ? filterAvailableFinders(selectedType) : [];
     return (
         <React.Fragment>
             <Grid container>
@@ -35,7 +38,9 @@ const DefineFinders = ({classes, t, addFinder, removeFinder, nodeTypes, selectio
                 <Grid item>
                     <Paper className={classes.paper}>
                         <List subheader={<ListSubheader>{t('label.sdlGeneratorTools.defineFinder.finders')}</ListSubheader>}>
-                            <Button onClick={() => setDialogState(true)}>
+                            <Button disabled={selectedType === null || availableFinders.length === 0}
+                                    onClick={() => setDialogState(true)}
+                            >
                                 {t('label.sdlGeneratorTools.defineFinder.addAFinderCaption')}
                                 <Add/>
                             </Button>
@@ -52,9 +57,24 @@ const DefineFinders = ({classes, t, addFinder, removeFinder, nodeTypes, selectio
                     </Paper>
                 </Grid>
             </Grid>
-            <AddModifyFinderDialog open={isDialogOpen} close={() => setDialogState(false)} addFinder={addFinder} selection={selection}/>
+            <AddModifyFinderDialog open={isDialogOpen}
+                                   close={() => setDialogState(false)}
+                                   addFinder={addFinder}
+                                   selectedType={selectedType}
+                                   availableFinders={availableFinders}
+                                   selection={selection}/>
         </React.Fragment>
     );
+
+    function filterAvailableFinders(selectedType) {
+        return selectedType.fieldDefinitions.reduce((acc, curr) => {
+            let finder = `by${upperCaseFirst(curr.name)}`;
+            if (selectedType.queries.reduce((found, query) => query.suffix === finder ? false : found, true)) {
+                acc.push(finder);
+            }
+            return acc;
+        }, []);
+    }
 };
 
 const TypeItem = ({name, isSelected, selectType}) => (

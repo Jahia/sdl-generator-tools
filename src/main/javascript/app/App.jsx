@@ -19,7 +19,8 @@ const App = () => (
                 namespaceResolvers: {
                     defaultNamespace: lang => require('../../resources/javascript/locales/' + lang + '.json')
                 }
-            })}>
+            })}
+            >
                 <MainLayout/>
             </I18nextProvider>
         </Provider>
