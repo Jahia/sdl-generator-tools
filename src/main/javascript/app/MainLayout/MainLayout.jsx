@@ -29,7 +29,6 @@ let styles = theme => ({
     mainPanel: {
         width: "100%",
         height: "91%",
-        margin: "10px 0px 0px 10px",
         boxShadow: '0px 3px 2px rgba(54, 63, 69, 0.2), 0px 1px 8px rgba(54, 63, 69, 0.08)',
         borderRadius: '3px',
         overflow: 'auto'
@@ -44,7 +43,6 @@ let styles = theme => ({
     viewerPanel: {
         width: "100%",
         height: "91%",
-        margin: "10px 20px",
         boxShadow: '0px 3px 2px rgba(54, 63, 69, 0.2), 0px 1px 8px rgba(54, 63, 69, 0.08)',
         borderRadius: '3px',
         backgroundColor: '#272822'
@@ -55,37 +53,31 @@ const MainLayout = ({classes, t}) => {
     return (
         <Grid container spacing={24}>
 
-            <Grid container xs={12}>
-                <AppBar position="static">
-                    <Toolbar className={classes.topBar}>
-                        <Typography className={classes.topBarText}>
-                            {t('label.sdlGeneratorTools.top.caption')}
-                        </Typography>
-                        <Button className={classes.topBarButton}
-                                onClick={() => {
-                                    window.location = '/tools';
-                                }}
-                        >
-                            {t('label.sdlGeneratorTools.top.backToToolsButton')}
-                        </Button>
-                    </Toolbar>
-                </AppBar>
-            </Grid>
+            <AppBar position="static">
+                <Toolbar className={classes.topBar}>
+                    <Typography className={classes.topBarText}>
+                        {t('label.sdlGeneratorTools.top.caption')}
+                    </Typography>
+                    <Button className={classes.topBarButton}
+                            onClick={() => {
+                                window.location = '/tools';
+                            }}
+                    >
+                        {t('label.sdlGeneratorTools.top.backToToolsButton')}
+                    </Button>
+                </Toolbar>
+            </AppBar>
 
-            <Grid container xs={12} sm={7}>
+            <Grid item xs={12} sm={7}>
                 <Paper className={classes.mainPanel}>
-                    <Grid item>
-                        <Typography variant="subtitle1" className={classes.mainText}>
-                            {t('label.sdlGeneratorTools.mainCaption')}
-                        </Typography>
-                    </Grid>
-                    <Grid item>
-                        <Stepper/>
-                    </Grid>
+                    <Typography className={classes.mainText}>
+                        {t('label.sdlGeneratorTools.mainCaption')}
+                    </Typography>
+                    <Stepper/>
                 </Paper>
             </Grid>
 
-            <Grid container xs={12} sm={5}>
+            <Grid item xs={12} sm={5}>
                 <Paper className={classes.viewerPanel}><GQLSchemaViewer/></Paper>
             </Grid>
         </Grid>

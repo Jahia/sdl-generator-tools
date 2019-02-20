@@ -1,7 +1,9 @@
 package org.jahia.modules.graphql.provider.dxm.extensions;
 
 import graphql.annotations.annotationTypes.*;
+import org.apache.commons.lang.StringUtils;
 import org.jahia.modules.graphql.provider.dxm.DXGraphQLProvider;
+import org.jahia.modules.graphql.provider.dxm.extensions.node.GqlName;
 import org.jahia.modules.graphql.provider.dxm.extensions.node.GqlProperty;
 import org.jahia.services.content.nodetypes.ExtendedNodeType;
 import org.jahia.services.content.nodetypes.ExtendedPropertyDefinition;
@@ -54,4 +56,19 @@ public class JCRNodePropertiesExtensions {
 
         return jcrProps;
     }
+
+    @GraphQLField
+    public static List<GqlName> nodeTypeNames(@GraphQLName("namePrefix") @GraphQLDescription("prefix of name") String  prefix) {
+        List<GqlName> typeNames = new ArrayList<>();
+        NodeTypeRegistry.getInstance().getAllNodeTypes().forEach( nodeType -> {
+            if(!StringUtils.isBlank(prefix) && nodeType.getName().startsWith(prefix)) {
+                typeNames.add(new GqlName(nodeType.getName()));
+            } else if(StringUtils.isBlank(prefix)) {
+                typeNames.add(new GqlName(nodeType.getName()));
+            }
+        });
+
+        return typeNames;
+    }
+
 }

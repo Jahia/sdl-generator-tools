@@ -3,7 +3,7 @@ import {I18nextProvider} from 'react-i18next';
 import {getI18n} from '@jahia/i18next';
 import {Provider} from 'react-redux';
 import store from './App.redux-store';
-import {MainLayout} from './MainLayout';
+import MainLayout from './MainLayout';
 import {MuiThemeProvider} from '@material-ui/core/es/styles';
 import {dsGenericTheme as theme} from '@jahia/ds-mui-theme';
 

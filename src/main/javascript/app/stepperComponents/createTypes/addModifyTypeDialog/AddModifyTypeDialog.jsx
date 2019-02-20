@@ -1,14 +1,17 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
+import {translate} from "react-i18next";
+import {compose, withApollo, graphql} from "react-apollo";
+import gqlQueries from "../../../gql/gqlQueries";
 import Dialog from '@material-ui/core/Dialog/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent/DialogContent';
 import TextField from '@material-ui/core/TextField/TextField';
 import DialogActions from '@material-ui/core/DialogActions/DialogActions';
 import {Button, MenuItem, Select} from '@material-ui/core';
-import {translate} from "react-i18next";
+import * as _ from 'lodash';
 
-const NodeTypeSelect = ({value, open, handleClose, handleChange, handleOpen}) => (
+const NodeTypeSelect = ({value, open, handleClose, handleChange, handleOpen, nodeTypeNames}) => (
     <Select
         open={open}
         value={value}
@@ -19,12 +22,15 @@ const NodeTypeSelect = ({value, open, handleClose, handleChange, handleOpen}) =>
         <MenuItem value="">
             <em>None</em>
         </MenuItem>
-        <MenuItem value="jnt:news">jnt:news</MenuItem>
-        <MenuItem value="jnt:bigText">jnt:bigText</MenuItem>
+        {
+            !_.isNil(nodeTypeNames) ? nodeTypeNames.map( (galName, index) => {
+                return <MenuItem key={index} value={galName.name}>{galName.name}</MenuItem>
+            }) : ""
+        }
     </Select>
 );
 
-const AddTypeDialog = ({t, open, closeDialog, customTypeName, jcrNodeType, addType}) => {
+const AddTypeDialog = ({data, t, open, closeDialog, customTypeName, jcrNodeType, addType}) => {
     const [typeName, updateTypeName] = useState(customTypeName);
     const [nodeType, updateNodeType] = useState(jcrNodeType);
     const [showNodeTypeSelector, setShowNodeTypeSelector] = useState(false);
@@ -44,6 +50,7 @@ const AddTypeDialog = ({t, open, closeDialog, customTypeName, jcrNodeType, addTy
             <DialogContent style={{width: 400}}>
                 <NodeTypeSelect open={showNodeTypeSelector}
                                 value={nodeType}
+                                nodeTypeNames={data.nodeTypeNames}
                                 handleOpen={() => setShowNodeTypeSelector(true)}
                                 handleClose={() => setShowNodeTypeSelector(false)}
                                 handleChange={event => updateNodeType(event.target.value)}/>
@@ -85,4 +92,17 @@ AddTypeDialog.defaultProps = {
     jcrNodeType: ''
 };
 
-export default translate()(AddTypeDialog);
+const CompositeComp = graphql(gqlQueries.NODE_TYPE_NAMES, {
+    options(props) {
+        return {
+            variables  : {
+                namePrefix: ''
+            },
+            fetchPolicy: 'network-only'
+        }
+    }
+})(AddTypeDialog);
+
+const AddTypeDialogWithApolloComp = withApollo(CompositeComp);
+
+export default translate()(AddTypeDialogWithApolloComp);

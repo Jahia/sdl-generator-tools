@@ -2,7 +2,7 @@ import React from 'react';
 import {translate} from 'react-i18next';
 import {withStyles, Stepper, Step, StepLabel, Button} from '@material-ui/core';
 import CreateTypes from './createTypes/index';
-import {ExportResult} from './exportResult';
+import ExportResult from './ExportResult';
 import {downloadFile, copyToClipBoard} from '../util/documentUtils';
 import DefineFinder from './defineFinders/index';
 import {compose} from 'react-apollo';
