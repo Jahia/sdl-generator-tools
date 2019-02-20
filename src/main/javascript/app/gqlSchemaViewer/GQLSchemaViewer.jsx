@@ -17,7 +17,7 @@ let styles = theme => ({
         color: '#fff'
     },
     editor: {
-        borderRadius: "0 0 3px 3px"
+        borderRadius: '0 0 3px 3px'
     }
 });
 

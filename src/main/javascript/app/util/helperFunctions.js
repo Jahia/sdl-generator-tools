@@ -4,4 +4,4 @@ const upperCaseFirst = val => {
 
 export {
     upperCaseFirst
-}
+};

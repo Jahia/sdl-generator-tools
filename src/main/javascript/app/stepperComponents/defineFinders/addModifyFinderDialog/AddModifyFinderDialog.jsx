@@ -5,9 +5,9 @@ import DialogTitle from '@material-ui/core/DialogTitle/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent/DialogContent';
 import TextField from '@material-ui/core/TextField/TextField';
 import DialogActions from '@material-ui/core/DialogActions/DialogActions';
-import {translate} from "react-i18next";
+import {translate} from 'react-i18next';
 
-const FinderSelect = ({open, close, handleClose, handleOpen, handleChange, value}) => {
+const FinderSelect = ({open, close, handleClose, handleOpen, handleChange, value, values}) => {
     return (
         <Select
         open={open}
@@ -16,14 +16,14 @@ const FinderSelect = ({open, close, handleClose, handleOpen, handleChange, value
         onOpen={handleOpen}
         onChange={handleChange}
         >
-            <MenuItem value="byPath">byPath</MenuItem>
-            <MenuItem value="byId">byId</MenuItem>
-            <MenuItem value="all">all</MenuItem>
+            {
+                values.map(finder => <MenuItem value={finder}>{finder}</MenuItem>)
+            }
         </Select>
     );
 };
 
-const AddModifyFinderDialog = ({t, open, close, finderInfo, addFinder, selection}) => {
+const AddModifyFinderDialog = ({t, open, close, finderInfo, addFinder, selection, selectedType, availableFinders}) => {
     const [finderPrefix, updateFinderPrefix] = useState(finderInfo.prefix);
     const [finderSuffix, updateFinderSuffix] = useState(finderInfo.suffix);
     const [finderMultiple, updateFinderMultiple] = useState(finderInfo.multiple);
@@ -43,6 +43,7 @@ const AddModifyFinderDialog = ({t, open, close, finderInfo, addFinder, selection
             <DialogTitle id="form-dialog-title">{t('label.sdlGeneratorTools.defineFinder.addAFinderCaption')}</DialogTitle>
             <DialogContent style={{width: 400}}>
                 <FinderSelect open={showFinderSelector}
+                              values={availableFinders}
                               value={finderSuffix}
                               handleOpen={() => setFinderSelectorStatus(true)}
                               handleClose={() => setFinderSelectorStatus(false)}
@@ -56,7 +57,7 @@ const AddModifyFinderDialog = ({t, open, close, finderInfo, addFinder, selection
                 type="text"
                 value={finderPrefix}
                 onChange={e => updateFinderPrefix(e.target.value)}
-            />
+                />
             </DialogContent>
             <DialogActions>
                 <Button color="primary" onClick={close}>
@@ -74,13 +75,15 @@ const AddModifyFinderDialog = ({t, open, close, finderInfo, addFinder, selection
 
 AddModifyFinderDialog.propTypes = {
     open: PropTypes.bool.isRequired,
-    close: PropTypes.func.isRequired
+    close: PropTypes.func.isRequired,
+    selectedType: PropTypes.object.isRequired,
+    availableFinders: PropTypes.array.isRequired
 };
 
 AddModifyFinderDialog.defaultProps = {
     finderInfo: {
-        suffix: 'byPath',
-        prefix: 'myCustom'
+        suffix: '',
+        prefix: ''
     }
 };
 

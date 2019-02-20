@@ -29,9 +29,10 @@ const PropertyItem = ({name}) => (
     </ListItem>
 );
 
-const CreateTypes = ({classes,t, nodeTypes, selection, addType, addProperty, selectType}) => {
+const CreateTypes = ({classes, t, nodeTypes, selection, addType, addProperty, addArgToDirective, removeArgFromDirective, selectType}) => {
     const [addTypeDialogShown, showAddTypeDialog] = useState(false);
     const [addPropertyDialogShown, showAddPropertyDialog] = useState(false);
+    const selectedType = nodeTypes.reduce((acc, type, idx) => type.name === selection ? Object.assign({idx: idx}, type) : acc, null);
 
     return (
         <React.Fragment>
@@ -75,7 +76,8 @@ const CreateTypes = ({classes,t, nodeTypes, selection, addType, addProperty, sel
             </Grid>
             <AddTypeDialog open={addTypeDialogShown}
                            closeDialog={() => showAddTypeDialog(false)}
-                           addType={addType}/>
+                           addType={addType}
+                           selectedType={selectedType}/>
             <AddPropertyDialog open={addPropertyDialogShown}
                                typeName={selection}
                                closeDialog={() => showAddPropertyDialog(false)}
@@ -91,6 +93,8 @@ CreateTypes.propTypes = {
     removeType: PropTypes.func.isRequired,
     addProperty: PropTypes.func.isRequired,
     removeProperty: PropTypes.func.isRequired,
+    addArgToDirective: PropTypes.func.isRequired,
+    removeArgFromDirective: PropTypes.func.isRequired,
     selection: PropTypes.string
 };
 

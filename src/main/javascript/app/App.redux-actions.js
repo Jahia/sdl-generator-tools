@@ -39,7 +39,7 @@ const sdlAddDirectiveArgToType = (typeIndex, directiveName, argumentInfo) => ({
 });
 
 const sdlRemoveDirectiveArgFromType = (typeIndex, directiveName, argumentIndex) => ({
-    type: actionTypes.SDL_ADD_DIRECTIVE_ARG_TO_TYPE,
+    type: actionTypes.SDL_REMOVE_DIRECTIVE_ARG_FROM_TYPE,
     argumentIndex: argumentIndex,
     typeIndex: typeIndex,
     directiveName: directiveName
