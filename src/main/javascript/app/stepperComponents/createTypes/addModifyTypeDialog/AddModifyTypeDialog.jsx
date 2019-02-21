@@ -10,6 +10,13 @@ import TextField from '@material-ui/core/TextField/TextField';
 import DialogActions from '@material-ui/core/DialogActions/DialogActions';
 import {Button, FormControlLabel, FormGroup, MenuItem, Select, Switch} from '@material-ui/core';
 import * as _ from 'lodash';
+import {translate} from 'react-i18next';
+import {sdlAddType, sdlAddDirectiveArgToType, sdlRemoveDirectiveArgFromType} from '../../../App.redux-actions';
+
+const dialogMode = {
+    ADD: 'ADD',
+    EDIT: 'EDIT'
+};
 
 const NodeTypeSelect = ({value, open, handleClose, handleChange, handleOpen, nodeTypeNames}) => (
     <Select
@@ -41,14 +48,20 @@ const AddTypeDialog = ({data, t, open, closeDialog, customTypeName, addArgToDire
     function handleIgnoreDefaultQueries(e) {
         updateIgnoreDefaultQueries(e.target.checked);
         if (e.target.checked) {
-            addArgToDirective(selectedType.idx, 'mapping', {value: true, name: 'ignoreDefaultQueries'});
+            dispatch(sdlAddDirectiveArgToType(selectedType.idx, 'mapping', {value: true, name: 'ignoreDefaultQueries'}));
         } else {
-            removeArgFromDirective(selectedType.idx, 'mapping', mappingDirective.arguments.reduce((acc, curr, idx) => curr.name === 'ignoreDefaultQueries' ? idx : curr));
+            dispatch(sdlRemoveDirectiveArgFromType(selectedType.idx, 'mapping', mappingDirective.arguments.reduce((acc, curr, idx) => curr.name === 'ignoreDefaultQueries' ? idx : curr)));
         }
     }
 
     function addTypeAndClose() {
-        addType({typeName: typeName, nodeType: nodeType});
+        let actions = [
+            sdlAddType({typeName: typeName, nodeType: nodeType})
+        ];
+        if (ignoreDefaultQueries) {
+            actions.push(sdlAddDirectiveArgToType(typeName, 'mapping', {value: ignoreDefaultQueries, name: 'ignoreDefaultQueries'}));
+        }
+        dispatchBatch(actions);
         closeDialog();
     }
 
@@ -76,16 +89,16 @@ const AddTypeDialog = ({data, t, open, closeDialog, customTypeName, addArgToDire
                     value={typeName}
                     onChange={e => updateTypeName(e.target.value)}
                 />
-                {/* <FormGroup row> */}
-                {/* <FormControlLabel control={ */}
-                {/* <Switch */}
-                {/* checked={ignoreDefaultQueries} */}
-                {/* onChange={handleIgnoreDefaultQueries} */}
-                {/* color="primary" */}
-                {/* /> */}
-                {/* } */}
-                {/* label="Ignore Default Queries"/> */}
-                {/* </FormGroup> */}
+                <FormGroup row>
+                    <FormControlLabel
+                        label={t('label.sdlGeneratorTools.createTypes.ignoreDefaultQueries')}
+                        control={
+                            <Switch
+                                 checked={ignoreDefaultQueries}
+                                 onChange={e => mode === dialogMode.ADD ? updateIgnoreDefaultQueries(e.target.checked) : handleIgnoreDefaultQueries(e)}
+                                 color="primary"/>
+                        }/>
+                </FormGroup>
             </DialogContent>
             <DialogActions>
                 <Button color="primary" onClick={closeDialog}>
@@ -128,3 +141,7 @@ const CompositeComp = graphql(gqlQueries.NODE_TYPE_NAMES, {
 const AddTypeDialogWithApolloComp = withApollo(CompositeComp);
 
 export default translate()(AddTypeDialogWithApolloComp);
+
+export {
+    dialogMode
+};

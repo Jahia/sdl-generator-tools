@@ -16,7 +16,8 @@
                 "addNewTypeButton": "Add new type",
                 "addNewPropertyButton": "Add a new property",
                 "customTypeNameText": "Custom type name",
-                "customPropertyNameText": "Custom property name"
+                "customPropertyNameText": "Custom property name",
+                "ignoreDefaultQueries": "Ignore Default Queries"
             },
             "defineFinder": {
                 "finders": "Finders",

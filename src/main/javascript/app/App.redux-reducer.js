@@ -29,21 +29,21 @@ const nodeTypesReducer = (state = [], action) => {
             });
         case actionTypes.SDL_ADD_DIRECTIVE_ARG_TO_TYPE:
             return state.map((type, index) => {
-                if (index !== action.typeIndex) {
-                    return type;
+                if (index === action.typeIndexOrName || type.name === action.typeIndexOrName) {
+                    return {
+                        ...type,
+                        directives: type.directives.map(dir => {
+                            if (dir.name !== action.directiveName) {
+                                return dir;
+                            }
+                            return {
+                                ...dir,
+                                arguments: dir.arguments.concat(getInitialObject(actionTypes.SDL_ADD_DIRECTIVE_ARG_TO_TYPE, action.argumentInfo))
+                            };
+                        })
+                    };
                 }
-                return {
-                    ...type,
-                    directives: type.directives.map(dir => {
-                        if (dir.name !== action.directiveName) {
-                            return dir;
-                        }
-                        return {
-                            ...dir,
-                            arguments: dir.arguments.concat(getInitialObject(actionTypes.SDL_ADD_DIRECTIVE_ARG_TO_TYPE, action.argumentInfo))
-                        };
-                    })
-                };
+                return type;
             });
         case actionTypes.SDL_REMOVE_DIRECTIVE_ARG_FROM_TYPE:
             return state.map((type, index) => {
