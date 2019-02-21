@@ -6,6 +6,7 @@ import {Add} from '@material-ui/icons';
 import AddTypeDialog from './AddModifyTypeDialog';
 import AddPropertyDialog from './addModifyPropertyDialog';
 import {compose} from 'react-apollo';
+import {dialogMode} from './addModifyTypeDialog/AddModifyTypeDialog';
 
 const styles = theme => ({
     paper: {
@@ -29,9 +30,11 @@ const PropertyItem = ({name}) => (
     </ListItem>
 );
 
-const CreateTypes = ({classes, t, nodeTypes, selection, addType, addProperty, addArgToDirective, removeArgFromDirective, selectType}) => {
+const CreateTypes = ({classes, t, nodeTypes, selection, dispatch, dispatchBatch, addProperty, addArgToDirective, removeArgFromDirective, selectType}) => {
     const [addTypeDialogShown, showAddTypeDialog] = useState(false);
     const [addPropertyDialogShown, showAddPropertyDialog] = useState(false);
+    const [typeDialogMode, updateTypeDialogMode] = useState(dialogMode.ADD);
+
     const selectedType = nodeTypes.reduce((acc, type, idx) => type.name === selection ? Object.assign({idx: idx}, type) : acc, null);
 
     return (
@@ -40,7 +43,7 @@ const CreateTypes = ({classes, t, nodeTypes, selection, addType, addProperty, ad
                 <Grid item>
                     <Paper className={classes.paper}>
                         <List subheader={<ListSubheader>{t('label.sdlGeneratorTools.createTypes.nodeTypeText')}</ListSubheader>}>
-                            <Button onClick={() => showAddTypeDialog(true)}>
+                            <Button onClick={() => showAddTypeDialog(true) && updateTypeDialogMode(dialogMode.ADD)}>
                                 {t('label.sdlGeneratorTools.createTypes.addNewTypeButton')}
                                 <Add/>
                             </Button>
@@ -75,8 +78,10 @@ const CreateTypes = ({classes, t, nodeTypes, selection, addType, addProperty, ad
                 </Grid>
             </Grid>
             <AddTypeDialog open={addTypeDialogShown}
+                           mode={typeDialogMode}
+                           dispatch={dispatch}
+                           dispatchBatch={dispatchBatch}
                            closeDialog={() => showAddTypeDialog(false)}
-                           addType={addType}
                            selectedType={selectedType}/>
             <AddPropertyDialog open={addPropertyDialogShown}
                                typeName={selection}
@@ -89,12 +94,11 @@ const CreateTypes = ({classes, t, nodeTypes, selection, addType, addProperty, ad
 CreateTypes.propTypes = {
     nodeTypes: PropTypes.array.isRequired,
     selectType: PropTypes.func.isRequired,
-    addType: PropTypes.func.isRequired,
     removeType: PropTypes.func.isRequired,
     addProperty: PropTypes.func.isRequired,
     removeProperty: PropTypes.func.isRequired,
-    addArgToDirective: PropTypes.func.isRequired,
-    removeArgFromDirective: PropTypes.func.isRequired,
+    dispatch: PropTypes.func.isRequired,
+    dispatchBatch: PropTypes.func.isRequired,
     selection: PropTypes.string
 };
 

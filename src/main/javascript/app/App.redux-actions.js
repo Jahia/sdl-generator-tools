@@ -31,10 +31,10 @@ const sdlRemovePropertyFromType = (propertyIndex, typeIndex) => ({
     typeIndex: typeIndex
 });
 
-const sdlAddDirectiveArgToType = (typeIndex, directiveName, argumentInfo) => ({
+const sdlAddDirectiveArgToType = (typeIndexOrName, directiveName, argumentInfo) => ({
     type: actionTypes.SDL_ADD_DIRECTIVE_ARG_TO_TYPE,
     argumentInfo: argumentInfo,
-    typeIndex: typeIndex,
+    typeIndexOrName: typeIndexOrName,
     directiveName: directiveName
 });
 
