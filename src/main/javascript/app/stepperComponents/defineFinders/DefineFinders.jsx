@@ -67,13 +67,27 @@ const DefineFinders = ({classes, t, addFinder, removeFinder, nodeTypes, selectio
     );
 
     function filterAvailableFinders(selectedType) {
+        let finders = [];
+        if (selectedType.queries.reduce((acc, curr) => curr.suffix === 'all' ? false : acc, true)) {
+            finders.push('all');
+        }
         return selectedType.fieldDefinitions.reduce((acc, curr) => {
             let finder = `by${upperCaseFirst(curr.name)}`;
-            if (selectedType.queries.reduce((found, query) => query.suffix === finder ? false : found, true)) {
+            let connectionVariant = `${finder}Connection`;
+            let connectionVariantExists = false;
+            if (selectedType.queries.reduce((found, query) => {
+                if (connectionVariant === query.suffix) {
+                    connectionVariantExists = true;
+                }
+                return query.suffix === finder ? false : found;
+            }, true)) {
                 acc.push(finder);
+                if (!connectionVariantExists) {
+                    acc.push(connectionVariant);
+                }
             }
             return acc;
-        }, []);
+        }, finders);
     }
 };
 
