@@ -20,6 +20,7 @@ import {
 } from '@material-ui/core';
 import * as _ from 'lodash';
 import {sdlAddType, sdlAddDirectiveArgToType, sdlRemoveDirectiveArgFromType} from '../../../App.redux-actions';
+import {sdlSelectType} from "../../StepperComponent.redux-actions";
 
 const dialogMode = {
     ADD: 'ADD',
@@ -72,7 +73,8 @@ const AddTypeDialog = ({data, t, open, closeDialog, customTypeName, mode, dispat
 
     function addTypeAndClose() {
         let actions = [
-            sdlAddType({typeName: typeName, nodeType: nodeType})
+            sdlAddType({typeName: typeName, nodeType: nodeType}),
+            sdlSelectType(typeName)
         ];
         if (ignoreDefaultQueries) {
             actions.push(sdlAddDirectiveArgToType(typeName, 'mapping', {value: ignoreDefaultQueries, name: 'ignoreDefaultQueries'}));
@@ -103,6 +105,11 @@ const AddTypeDialog = ({data, t, open, closeDialog, customTypeName, mode, dispat
                     label={t('label.sdlGeneratorTools.createTypes.customTypeNameText')}
                     type="text"
                     value={typeName}
+                    onKeyPress={(e) => {
+                        if (e.key === 'Enter') {
+                            addTypeAndClose();
+                        }
+                    }}
                     onChange={e => updateTypeName(e.target.value)}
                 />
                 <FormGroup row>
