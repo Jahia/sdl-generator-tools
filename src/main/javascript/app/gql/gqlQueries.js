@@ -16,6 +16,6 @@ const gqlQueries = {
             }
         }
     }`
-}
+};
 
 export default gqlQueries;

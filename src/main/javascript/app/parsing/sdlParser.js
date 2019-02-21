@@ -18,7 +18,11 @@ const parseTypes = types => {
 const parseQueries = (queries, type) => {
     let parsedQueries = [];
     queries.map(query => {
-        parsedQueries.push(`${query.name}: ${query.multiple ? `[${type}]` : type}`);
+        if (query.name.endsWith('Connection')) {
+            parsedQueries.push(`${query.name}: ${type}Connection`);
+        } else {
+            parsedQueries.push(`${query.name}: [${type}]`);
+        }
     });
     return parsedQueries;
 };

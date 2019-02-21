@@ -1,5 +1,4 @@
 import {actionTypes} from './App.redux-actions';
-import {upperCaseFirst} from './util/helperFunctions';
 
 const addType = typeInfo => (Object.assign({}, {
     name: typeInfo.typeName,
@@ -41,10 +40,9 @@ const addDirectiveArgument = argumentInfo => (Object.assign({}, {
 }));
 
 const addFinder = finderInfo => (Object.assign({}, {
-    name: finderInfo.prefix + upperCaseFirst(finderInfo.suffix),
+    name: finderInfo.name,
     prefix: finderInfo.prefix,
-    suffix: finderInfo.suffix,
-    multiple: finderInfo.multiple
+    suffix: finderInfo.suffix
 }));
 
 const getInitialObject = (actionType, vars) => {

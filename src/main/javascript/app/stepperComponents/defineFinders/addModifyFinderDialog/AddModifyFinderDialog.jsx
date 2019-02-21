@@ -6,6 +6,7 @@ import DialogContent from '@material-ui/core/DialogContent/DialogContent';
 import TextField from '@material-ui/core/TextField/TextField';
 import DialogActions from '@material-ui/core/DialogActions/DialogActions';
 import {translate} from 'react-i18next';
+import {upperCaseFirst} from '../../../util/helperFunctions';
 
 const FinderSelect = ({open, close, handleClose, handleOpen, handleChange, value, values}) => {
     return (
@@ -26,11 +27,11 @@ const FinderSelect = ({open, close, handleClose, handleOpen, handleChange, value
 const AddModifyFinderDialog = ({t, open, close, finderInfo, addFinder, selection, selectedType, availableFinders}) => {
     const [finderPrefix, updateFinderPrefix] = useState(finderInfo.prefix);
     const [finderSuffix, updateFinderSuffix] = useState(finderInfo.suffix);
-    const [finderMultiple, updateFinderMultiple] = useState(finderInfo.multiple);
     const [showFinderSelector, setFinderSelectorStatus] = useState(false);
 
     function addFinderAndClose() {
-        addFinder({prefix: finderPrefix, suffix: finderSuffix, multiple: finderMultiple}, selection);
+        let name = finderSuffix === 'all' ? finderSuffix + upperCaseFirst(finderPrefix) : finderPrefix + upperCaseFirst(finderSuffix);
+        addFinder({name: name, prefix: finderPrefix, suffix: finderSuffix}, selection);
         close();
     }
 
