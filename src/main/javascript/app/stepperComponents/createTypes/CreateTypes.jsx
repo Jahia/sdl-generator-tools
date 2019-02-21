@@ -3,7 +3,7 @@ import {translate} from 'react-i18next';
 import PropTypes from 'prop-types';
 import {withStyles, Grid, Paper, List, ListItem, ListItemText, ListSubheader, Button} from '@material-ui/core';
 import {Add} from '@material-ui/icons';
-import AddTypeDialog from './addModifyTypeDialog';
+import AddTypeDialog from './AddModifyTypeDialog';
 import AddPropertyDialog from './addModifyPropertyDialog';
 import {compose} from 'react-apollo';
 
