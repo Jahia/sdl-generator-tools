@@ -20,7 +20,7 @@ import {
 } from '@material-ui/core';
 import * as _ from 'lodash';
 import {sdlAddType, sdlAddDirectiveArgToType, sdlRemoveDirectiveArgFromType} from '../../../App.redux-actions';
-import {sdlSelectType} from "../../StepperComponent.redux-actions";
+import {sdlSelectType} from '../../StepperComponent.redux-actions';
 
 const dialogMode = {
     ADD: 'ADD',
@@ -39,10 +39,12 @@ const NodeTypeSelectCom = ({classes, value, open, handleClose, handleChange, han
             <em>None</em>
         </MenuItem>
         {
-            !_.isNil(nodeTypeNames) ? nodeTypeNames.map((typeName, idx) => {
-                return (<MenuItem key={typeName.name} value={typeName.name} classes={classes}>
-                    <ListItemText primary={typeName.name} secondary={typeName.displayName}/>
-                </MenuItem>);
+            !_.isNil(nodeTypeNames) ? nodeTypeNames.map(typeName => {
+                return (
+                    <MenuItem key={typeName.name} value={typeName.name} classes={classes}>
+                        <ListItemText primary={typeName.name} secondary={typeName.displayName}/>
+                    </MenuItem>
+                );
             }) : null
         }
     </Select>
@@ -54,13 +56,18 @@ const NodeTypeSelect = withStyles({
     }
 })(NodeTypeSelectCom);
 
-const AddTypeDialog = ({data, t, open, closeDialog, customTypeName, mode, dispatch, dispatchBatch, jcrNodeType, addType, selectedType}) => {
+const AddTypeDialog = ({data, t, open, closeDialog, customTypeName, mode, dispatch, dispatchBatch, jcrNodeType, addType, selectedType, isDuplicatedTypeName}) => {
     const [typeName, updateTypeName] = useState(customTypeName);
     const [nodeType, updateNodeType] = useState(jcrNodeType);
     const [showNodeTypeSelector, setShowNodeTypeSelector] = useState(false);
     const mappingDirective = selectedType != null ? selectedType.directives.reduce((acc, dir) => dir.name === 'mapping' ? dir : acc, {}) : null;
     const [ignoreDefaultQueries, updateIgnoreDefaultQueries] = useState(mappingDirective != null ? mappingDirective.arguments.reduce((acc, arg) => arg.name === 'ignoreDefaultQueries' ? arg.value : acc, false) : false);
     const nodeTypeNames = !_.isNil(data.jcr) ? data.jcr.nodeTypes.nodes : null;
+
+    const cleanUp = () => {
+        updateTypeName(null);
+        updateNodeType(null);
+    };
 
     function handleIgnoreDefaultQueries(e) {
         updateIgnoreDefaultQueries(e.target.checked);
@@ -71,7 +78,10 @@ const AddTypeDialog = ({data, t, open, closeDialog, customTypeName, mode, dispat
         }
     }
 
-    function addTypeAndClose() {
+    const addTypeAndClose = () => {
+        if (_.isNil(typeName) || _.isNil(nodeType) || isDuplicatedTypeName(typeName)) {
+            return;
+        }
         let actions = [
             sdlAddType({typeName: typeName, nodeType: nodeType}),
             sdlSelectType(typeName)
@@ -81,7 +91,13 @@ const AddTypeDialog = ({data, t, open, closeDialog, customTypeName, mode, dispat
         }
         dispatchBatch(actions);
         closeDialog();
-    }
+        cleanUp();
+    };
+
+    const cancelAndClose = () => {
+        closeDialog();
+        cleanUp();
+    };
 
     return (
         <Dialog
@@ -105,7 +121,8 @@ const AddTypeDialog = ({data, t, open, closeDialog, customTypeName, mode, dispat
                     label={t('label.sdlGeneratorTools.createTypes.customTypeNameText')}
                     type="text"
                     value={typeName}
-                    onKeyPress={(e) => {
+                    error={isDuplicatedTypeName(typeName)}
+                    onKeyPress={e => {
                         if (e.key === 'Enter') {
                             addTypeAndClose();
                         }
@@ -124,7 +141,7 @@ const AddTypeDialog = ({data, t, open, closeDialog, customTypeName, mode, dispat
                 </FormGroup>
             </DialogContent>
             <DialogActions>
-                <Button color="primary" onClick={closeDialog}>
+                <Button color="primary" onClick={cancelAndClose}>
                     {t('label.sdlGeneratorTools.cancelButton')}
                 </Button>
                 <Button color="primary"
@@ -142,7 +159,8 @@ AddTypeDialog.propTypes = {
     closeDialog: PropTypes.func.isRequired,
     addType: PropTypes.func.isRequired,
     customTypeName: PropTypes.string,
-    jcrNodeType: PropTypes.string
+    jcrNodeType: PropTypes.string,
+    isDuplicatedTypeName: PropTypes.func.isRequired
 };
 
 AddTypeDialog.defaultProps = {

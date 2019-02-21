@@ -37,6 +37,17 @@ const CreateTypes = ({classes, t, nodeTypes, selection, dispatch, dispatchBatch,
 
     const selectedType = nodeTypes.reduce((acc, type, idx) => type.name === selection ? Object.assign({idx: idx}, type) : acc, null);
 
+    const isDuplicatedTypeName = typeName => {
+        let isDuplicated = false;
+        nodeTypes.map( type => {
+            if(type.name === typeName) {
+                isDuplicated = true;
+                return;
+            }
+        })
+        return isDuplicated;
+    }
+
     return (
         <React.Fragment>
             <Grid container>
@@ -82,7 +93,8 @@ const CreateTypes = ({classes, t, nodeTypes, selection, dispatch, dispatchBatch,
                            dispatch={dispatch}
                            dispatchBatch={dispatchBatch}
                            closeDialog={() => showAddTypeDialog(false)}
-                           selectedType={selectedType}/>
+                           selectedType={selectedType}
+                           isDuplicatedTypeName={isDuplicatedTypeName}/>
             <AddPropertyDialog open={addPropertyDialogShown}
                                typeName={selection}
                                closeDialog={() => showAddPropertyDialog(false)}
