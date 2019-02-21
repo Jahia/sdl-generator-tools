@@ -10,7 +10,6 @@ import TextField from '@material-ui/core/TextField/TextField';
 import DialogActions from '@material-ui/core/DialogActions/DialogActions';
 import {Button, FormControlLabel, FormGroup, MenuItem, Select, Switch} from '@material-ui/core';
 import * as _ from 'lodash';
-import {translate} from 'react-i18next';
 import {sdlAddType, sdlAddDirectiveArgToType, sdlRemoveDirectiveArgFromType} from '../../../App.redux-actions';
 
 const dialogMode = {
@@ -38,7 +37,7 @@ const NodeTypeSelect = ({value, open, handleClose, handleChange, handleOpen, nod
 );
 
 
-const AddTypeDialog = ({data, t, open, closeDialog, customTypeName, addArgToDirective, removeArgFromDirective, jcrNodeType, addType, selectedType}) => {
+const AddTypeDialog = ({data, t, open, closeDialog, customTypeName, mode, dispatch, dispatchBatch, jcrNodeType, addType, selectedType}) => {
     const [typeName, updateTypeName] = useState(customTypeName);
     const [nodeType, updateNodeType] = useState(jcrNodeType);
     const [showNodeTypeSelector, setShowNodeTypeSelector] = useState(false);
