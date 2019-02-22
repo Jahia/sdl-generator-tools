@@ -1,5 +1,6 @@
 const actionTypes = {
-    SDL_SELECT_TYPE: 'SDL_SELECT_TYPE'
+    SDL_SELECT_TYPE: 'SDL_SELECT_TYPE',
+    SDL_SELECT_FINDER: 'SDL_SELECT_FINDER'
 };
 
 const sdlSelectType = typeName => ({
@@ -7,7 +8,13 @@ const sdlSelectType = typeName => ({
     typeName: typeName
 });
 
+const sdlSelectFinder = finderName => ({
+    type: actionTypes.SDL_SELECT_FINDER,
+    finderName: finderName
+});
+
 export {
     actionTypes,
-    sdlSelectType
+    sdlSelectType,
+    sdlSelectFinder
 };

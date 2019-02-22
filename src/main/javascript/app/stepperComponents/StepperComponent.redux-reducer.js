@@ -8,4 +8,15 @@ const selectionReducer = (state = null, action) => {
     }
 };
 
-export {selectionReducer};
+const selectedFinderReducer = (state = null, action) => {
+    switch (action.type) {
+        case actionTypes.SDL_SELECT_FINDER:
+            return action.finderName;
+        default: return state;
+    }
+};
+
+export {
+    selectionReducer,
+    selectedFinderReducer
+};

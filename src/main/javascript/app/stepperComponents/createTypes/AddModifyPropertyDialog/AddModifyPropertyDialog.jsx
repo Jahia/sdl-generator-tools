@@ -61,7 +61,7 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, customTypeName, jc
         addProperty({name: propertyName, property: jcrPropertyName, type: 'String'}, typeName);
         closeDialog();
         cleanUp();
-    }
+    };
 
     const cancelAndClose = () => {
         closeDialog();

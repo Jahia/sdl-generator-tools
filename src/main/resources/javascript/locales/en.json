@@ -22,6 +22,7 @@
             "defineFinder": {
                 "finders": "Finders",
                 "addAFinderCaption": "Add a finder",
+                "editAFinderCaption": "Edit a finder",
                 "customFinderPrefixText": "Custom finder prefix"
             },
             "exportResult": {
@@ -36,6 +37,7 @@
             "backButton": "Back",
             "nextButton": "Next",
             "addButton": "Add",
+            "applyButton": "Apply",
             "cancelButton": "Cancel",
             "copyToClipboardButton": "Copy to clipboard",
             "downloadFileButton": "Download as a file"

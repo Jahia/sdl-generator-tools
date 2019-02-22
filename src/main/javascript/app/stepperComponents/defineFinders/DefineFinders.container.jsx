@@ -1,17 +1,20 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {compose} from 'react-apollo';
-import {sdlAddFinderToType, sdlRemoveFinderFromType} from '../../App.redux-actions';
+import {sdlAddFinderToType, sdlModifyFinderOfType, sdlRemoveFinderFromType} from '../../App.redux-actions';
 import DefineFinders from './DefineFinders';
-import {sdlSelectType} from '../StepperComponent.redux-actions';
+import {sdlSelectFinder, sdlSelectType} from '../StepperComponent.redux-actions';
 
-const DefineFinderContainer = ({nodeTypes, addFinder, removeFinder, selectType, selection}) => {
+const DefineFinderContainer = ({nodeTypes, addFinder, modifyFinder, removeFinder, selectType, selectFinder, selectedFinder, selection}) => {
     return (
         <DefineFinders nodeTypes={nodeTypes}
                        selection={selection}
                        addFinder={addFinder}
+                       modifyFinder={modifyFinder}
                        removeFinder={removeFinder}
                        selectType={selectType}
+                       selectFinder={selectFinder}
+                       selectedFinder={selectedFinder}
             />
     );
 };
@@ -22,9 +25,11 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        addFinder: (finderInfo, typeIndex) => dispatch(sdlAddFinderToType(finderInfo, typeIndex)),
-        removeFinder: (finderIndex, typeIndex) => dispatch(sdlRemoveFinderFromType(finderIndex, typeIndex)),
-        selectType: typeName => dispatch(sdlSelectType(typeName))
+        addFinder: (typeIndex, finderInfo) => dispatch(sdlAddFinderToType(typeIndex, finderInfo)),
+        modifyFinder: (typeIndex, finderIndex, finderInfo) => dispatch(sdlModifyFinderOfType(typeIndex, finderIndex, finderInfo)),
+        removeFinder: (typeIndex, finderIndex) => dispatch(sdlRemoveFinderFromType(typeIndex, finderIndex)),
+        selectType: typeName => dispatch(sdlSelectType(typeName)),
+        selectFinder: finderName => dispatch(sdlSelectFinder(finderName))
     };
 };
 

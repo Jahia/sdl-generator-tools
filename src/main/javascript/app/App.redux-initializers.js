@@ -54,6 +54,7 @@ const getInitialObject = (actionType, vars) => {
         case actionTypes.SDL_ADD_DIRECTIVE_ARG_TO_TYPE:
             return addDirectiveArgument(vars);
         case actionTypes.SDL_ADD_FINDER_TO_TYPE:
+        case actionTypes.SDL_MODIFY_FINDER_OF_TYPE:
             return addFinder(vars);
         default: return {};
     }

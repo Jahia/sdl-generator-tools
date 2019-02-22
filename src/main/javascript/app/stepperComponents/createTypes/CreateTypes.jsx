@@ -45,7 +45,7 @@ const CreateTypes = ({classes, t, nodeTypes, selection, dispatch, dispatchBatch,
 
     const isDuplicatedPropertyName = propertyName => {
         let isDuplicated = false;
-        if(!_.isNil(selectedType)){
+        if (!_.isNil(selectedType)) {
             for (let field of selectedType.fieldDefinitions) {
                 if (field.name === propertyName) {
                     isDuplicated = true;
@@ -54,18 +54,18 @@ const CreateTypes = ({classes, t, nodeTypes, selection, dispatch, dispatchBatch,
             }
         }
         return isDuplicated;
-    }
+    };
 
     const isDuplicatedTypeName = typeName => {
         let isDuplicated = false;
         for (let type of nodeTypes) {
-            if(type.name === typeName) {
+            if (type.name === typeName) {
                 isDuplicated = true;
                 break;
             }
         }
         return isDuplicated;
-    }
+    };
 
     return (
         <React.Fragment>
