@@ -39,12 +39,12 @@ const CreateTypes = ({classes, t, nodeTypes, selection, dispatch, dispatchBatch,
 
     const isDuplicatedTypeName = typeName => {
         let isDuplicated = false;
-        nodeTypes.map( type => {
+        for (let type of nodeTypes) {
             if(type.name === typeName) {
                 isDuplicated = true;
-                return;
+                break;
             }
-        })
+        }
         return isDuplicated;
     }
 

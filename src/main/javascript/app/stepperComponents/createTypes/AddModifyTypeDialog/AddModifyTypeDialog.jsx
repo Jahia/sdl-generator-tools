@@ -42,7 +42,7 @@ const NodeTypeSelectCom = ({classes, value, open, handleClose, handleChange, han
             !_.isNil(nodeTypeNames) ? nodeTypeNames.map(typeName => {
                 return (
                     <MenuItem key={typeName.name} value={typeName.name} classes={classes}>
-                        <ListItemText primary={typeName.name} secondary={typeName.displayName}/>
+                        <ListItemText primary={typeName.displayName} secondary={typeName.name}/>
                     </MenuItem>
                 );
             }) : null
@@ -125,6 +125,9 @@ const AddTypeDialog = ({data, t, open, closeDialog, customTypeName, mode, dispat
                     onKeyPress={e => {
                         if (e.key === 'Enter') {
                             addTypeAndClose();
+                        } else if (e.which ==32) {
+                            e.preventDefault();
+                            return false;
                         }
                     }}
                     onChange={e => updateTypeName(e.target.value)}
