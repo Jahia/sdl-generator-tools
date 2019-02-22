@@ -125,7 +125,7 @@ const AddTypeDialog = ({data, t, open, closeDialog, customTypeName, mode, dispat
                     onKeyPress={e => {
                         if (e.key === 'Enter') {
                             addTypeAndClose();
-                        } else if (e.which ==32) {
+                        } else if (e.which === 32) {
                             e.preventDefault();
                             return false;
                         }

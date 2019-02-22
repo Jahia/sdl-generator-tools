@@ -41,7 +41,7 @@ const PropertySelect = withStyles({
     }
 })(PropertySelectCom);
 
-const AddModifyPropertyDialog = ({data, t, open, closeDialog, customTypeName, jcrNodeType, addProperty, typeName, selectedType}) => {
+const AddModifyPropertyDialog = ({data, t, open, closeDialog, customTypeName, jcrNodeType, addProperty, typeName, isDuplicatedPropertyName}) => {
     const [propertyName, updatePropertyName] = useState(customTypeName);
     const [jcrPropertyName, updateJcrPropertyName] = useState(jcrNodeType);
     const [showPropertySelector, setShowPropertySelector] = useState(false);
@@ -49,10 +49,24 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, customTypeName, jc
     const nodes = !_.isNil(data.jcr) ? data.jcr.nodeTypes.nodes : null;
     const nodeProperties = !_.isNil(nodes) && nodes.length > 0 ? nodes[0].properties : null;
 
-    function addPropertyAndClose() {
+    const cleanUp = () => {
+        updatePropertyName(null);
+        updateJcrPropertyName(null);
+    };
+
+    const addPropertyAndClose = () => {
+        if (_.isNil(propertyName) || _.isNil(jcrPropertyName) || isDuplicatedPropertyName(propertyName)) {
+            return;
+        }
         addProperty({name: propertyName, property: jcrPropertyName, type: 'String'}, typeName);
         closeDialog();
+        cleanUp();
     }
+
+    const cancelAndClose = () => {
+        closeDialog();
+        cleanUp();
+    };
 
     return (
         <Dialog
@@ -76,11 +90,20 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, customTypeName, jc
                     label={t('label.sdlGeneratorTools.createTypes.customPropertyNameText')}
                     type="text"
                     value={propertyName}
+                    error={isDuplicatedPropertyName(propertyName)}
+                    onKeyPress={e => {
+                        if (e.key === 'Enter') {
+                            addPropertyAndClose();
+                        } else if (e.which === 32) {
+                            e.preventDefault();
+                            return false;
+                        }
+                    }}
                     onChange={e => updatePropertyName(e.target.value)}
                 />
             </DialogContent>
             <DialogActions>
-                <Button color="primary" onClick={closeDialog}>
+                <Button color="primary" onClick={cancelAndClose}>
                     {t('label.sdlGeneratorTools.cancelButton')}
                 </Button>
                 <Button color="primary"

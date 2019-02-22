@@ -7,6 +7,7 @@ import AddTypeDialog from './AddModifyTypeDialog';
 import AddPropertyDialog from './AddModifyPropertyDialog';
 import {compose} from 'react-apollo';
 import {dialogMode} from './addModifyTypeDialog/AddModifyTypeDialog';
+import * as _ from 'lodash';
 
 const styles = theme => ({
     paper: {
@@ -41,6 +42,19 @@ const CreateTypes = ({classes, t, nodeTypes, selection, dispatch, dispatchBatch,
     const [typeDialogMode, updateTypeDialogMode] = useState(dialogMode.ADD);
 
     const selectedType = nodeTypes.reduce((acc, type, idx) => type.name === selection ? Object.assign({idx: idx}, type) : acc, null);
+
+    const isDuplicatedPropertyName = propertyName => {
+        let isDuplicated = false;
+        if(!_.isNil(selectedType)){
+            for (let field of selectedType.fieldDefinitions) {
+                if (field.name === propertyName) {
+                    isDuplicated = true;
+                    break;
+                }
+            }
+        }
+        return isDuplicated;
+    }
 
     const isDuplicatedTypeName = typeName => {
         let isDuplicated = false;
@@ -105,7 +119,8 @@ const CreateTypes = ({classes, t, nodeTypes, selection, dispatch, dispatchBatch,
                                typeName={selection}
                                selectedType={selectedType}
                                closeDialog={() => showAddPropertyDialog(false)}
-                               addProperty={addProperty}/>
+                               addProperty={addProperty}
+                               isDuplicatedPropertyName={isDuplicatedPropertyName}/>
         </React.Fragment>
     );
 };
