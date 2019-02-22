@@ -160,7 +160,6 @@ const AddTypeDialog = ({data, t, open, closeDialog, customTypeName, mode, dispat
 AddTypeDialog.propTypes = {
     open: PropTypes.bool.isRequired,
     closeDialog: PropTypes.func.isRequired,
-    addType: PropTypes.func.isRequired,
     customTypeName: PropTypes.string,
     jcrNodeType: PropTypes.string,
     isDuplicatedTypeName: PropTypes.func.isRequired

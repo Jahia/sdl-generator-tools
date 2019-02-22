@@ -5,10 +5,14 @@ import DialogTitle from '@material-ui/core/DialogTitle/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent/DialogContent';
 import TextField from '@material-ui/core/TextField/TextField';
 import DialogActions from '@material-ui/core/DialogActions/DialogActions';
-import {Button, MenuItem, Select} from '@material-ui/core';
+import {Button, ListItemText, MenuItem, Select, withStyles} from '@material-ui/core';
 import {translate} from 'react-i18next';
+import {compose, graphql, withApollo} from 'react-apollo';
+import gqlQueries from '../../../gql/gqlQueries';
+import * as _ from 'lodash';
+import {upperCaseFirst} from '../../../util/helperFunctions';
 
-const PropertySelect = ({value, open, handleClose, handleChange, handleOpen}) => (
+const PropertySelectCom = ({classes, value, open, handleClose, handleChange, handleOpen, nodeProperties}) => (
     <Select
         open={open}
         value={value}
@@ -19,14 +23,31 @@ const PropertySelect = ({value, open, handleClose, handleChange, handleOpen}) =>
         <MenuItem value="">
             <em>None</em>
         </MenuItem>
-        <MenuItem value="text">text</MenuItem>
+        {
+            !_.isNil(nodeProperties) ? nodeProperties.map(property => {
+                return (
+                    <MenuItem key={property.name} value={property.name} classes={classes}>
+                        <ListItemText primary={property.name} secondary={upperCaseFirst(property.requiredType.toLowerCase())}/>
+                    </MenuItem>
+                );
+            }) : null
+        }
     </Select>
 );
 
-const AddModifyPropertyDialog = ({t, open, closeDialog, customTypeName, jcrNodeType, addProperty, typeName}) => {
+const PropertySelect = withStyles({
+    root: {
+        padding: '15px 12px'
+    }
+})(PropertySelectCom);
+
+const AddModifyPropertyDialog = ({data, t, open, closeDialog, customTypeName, jcrNodeType, addProperty, typeName, selectedType}) => {
     const [propertyName, updatePropertyName] = useState(customTypeName);
     const [jcrPropertyName, updateJcrPropertyName] = useState(jcrNodeType);
     const [showPropertySelector, setShowPropertySelector] = useState(false);
+
+    const nodes = !_.isNil(data.jcr) ? data.jcr.nodeTypes.nodes : null;
+    const nodeProperties = !_.isNil(nodes) && nodes.length > 0 ? nodes[0].properties : null;
 
     function addPropertyAndClose() {
         addProperty({name: propertyName, property: jcrPropertyName, type: 'String'}, typeName);
@@ -42,6 +63,7 @@ const AddModifyPropertyDialog = ({t, open, closeDialog, customTypeName, jcrNodeT
             <DialogTitle id="form-dialog-title">{t('label.sdlGeneratorTools.createTypes.addNewPropertyButton')}</DialogTitle>
             <DialogContent style={{width: 400}}>
                 <PropertySelect open={showPropertySelector}
+                                nodeProperties={nodeProperties}
                                 value={jcrPropertyName}
                                 handleOpen={() => setShowPropertySelector(true)}
                                 handleClose={() => setShowPropertySelector(false)}
@@ -83,4 +105,34 @@ AddModifyPropertyDialog.defaultProps = {
     jcrNodeType: ''
 };
 
-export default translate()(AddModifyPropertyDialog);
+const getNodeTypeInfo = selectedType => {
+    if (!_.isNil(selectedType) && !_.isNil(selectedType.directives) && selectedType.directives.length > 0) {
+        for (let directive of selectedType.directives) {
+            if (directive.name === 'mapping') {
+                for (let argument of directive.arguments) {
+                    if (argument.name === 'node') {
+                        return argument.value;
+                    }
+                }
+            }
+        }
+    }
+
+    return '';
+};
+
+const CompositeComp = compose(
+    graphql(gqlQueries.NODE_TYPE_PROPERTIES, {
+        options(props) {
+            return {
+                variables: {
+                    includeTypes: [getNodeTypeInfo(props.selectedType)]
+                },
+                fetchPolicy: 'network-only'
+            };
+        }
+    }),
+    translate()
+)(AddModifyPropertyDialog);
+
+export default withApollo(CompositeComp);

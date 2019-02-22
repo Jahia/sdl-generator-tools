@@ -4,14 +4,19 @@ import PropTypes from 'prop-types';
 import {withStyles, Grid, Paper, List, ListItem, ListItemText, ListSubheader, Button} from '@material-ui/core';
 import {Add} from '@material-ui/icons';
 import AddTypeDialog from './AddModifyTypeDialog';
-import AddPropertyDialog from './addModifyPropertyDialog';
+import AddPropertyDialog from './AddModifyPropertyDialog';
 import {compose} from 'react-apollo';
 import {dialogMode} from './addModifyTypeDialog/AddModifyTypeDialog';
 
 const styles = theme => ({
     paper: {
-        width: 360,
-        height: 400
+        width: '100%',
+        minHeight: '50%',
+        padding: '6px 6px',
+        '& button': {
+            paddingTop: 0,
+            paddingBottom: 0
+        }
     }
 });
 
@@ -50,8 +55,8 @@ const CreateTypes = ({classes, t, nodeTypes, selection, dispatch, dispatchBatch,
 
     return (
         <React.Fragment>
-            <Grid container>
-                <Grid item>
+            <Grid container spacing={24}>
+                <Grid item xs={12} sm={6}>
                     <Paper className={classes.paper}>
                         <List subheader={<ListSubheader>{t('label.sdlGeneratorTools.createTypes.nodeTypeText')}</ListSubheader>}>
                             <Button onClick={() => showAddTypeDialog(true) && updateTypeDialogMode(dialogMode.ADD)}>
@@ -63,13 +68,14 @@ const CreateTypes = ({classes, t, nodeTypes, selection, dispatch, dispatchBatch,
                                     <TypeItem key={type.name}
                                               {...type}
                                               isSelected={type.name === selection}
-                                              selectType={selectType}/>
-))
+                                              selectType={selectType}
+                                    />
+                                ))
                             }
                         </List>
                     </Paper>
                 </Grid>
-                <Grid item>
+                <Grid item xs={12} sm={6}>
                     <Paper className={classes.paper}>
                         <List subheader={<ListSubheader>{t('label.sdlGeneratorTools.createTypes.propertiesText')}</ListSubheader>}>
                             <Button onClick={() => showAddPropertyDialog(true)}>
@@ -97,6 +103,7 @@ const CreateTypes = ({classes, t, nodeTypes, selection, dispatch, dispatchBatch,
                            isDuplicatedTypeName={isDuplicatedTypeName}/>
             <AddPropertyDialog open={addPropertyDialogShown}
                                typeName={selection}
+                               selectedType={selectedType}
                                closeDialog={() => showAddPropertyDialog(false)}
                                addProperty={addProperty}/>
         </React.Fragment>
