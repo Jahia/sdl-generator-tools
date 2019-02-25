@@ -79,7 +79,7 @@ const AddTypeDialog = ({data, t, open, closeDialog, customTypeName, mode, dispat
     }
 
     const addTypeAndClose = () => {
-        if (_.isNil(typeName) || _.isNil(nodeType) || isDuplicatedTypeName(typeName)) {
+        if (_.isNil(typeName) || _.isEmpty(typeName) || isDuplicatedTypeName(typeName) || _.isNil(nodeType) || _.isEmpty(nodeType)) {
             return;
         }
         let actions = [

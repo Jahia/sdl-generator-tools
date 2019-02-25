@@ -55,7 +55,7 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, customTypeName, jc
     };
 
     const addPropertyAndClose = () => {
-        if (_.isNil(propertyName) || _.isNil(jcrPropertyName) || isDuplicatedPropertyName(propertyName)) {
+        if (_.isNil(propertyName) || isDuplicatedPropertyName(propertyName)  || _.isEmpty(propertyName) || _.isNil(jcrPropertyName) || _.isEmpty(jcrPropertyName)) {
             return;
         }
         addProperty({name: propertyName, property: jcrPropertyName, type: 'String'}, typeName);
