@@ -5,6 +5,16 @@ const nodeTypesReducer = (state = [], action) => {
     switch (action.type) {
         case actionTypes.SDL_ADD_TYPE:
             return state.concat(getInitialObject(actionTypes.SDL_ADD_TYPE, action.typeInfo));
+        case actionTypes.SDL_EDIT_TYPE:
+            return state.map(type => {
+                if (type.name === action.typeInfo.typeName) {
+                    return {
+                        ...type,
+                        directives: getInitialObject(actionTypes.SDL_ADD_TYPE, action.typeInfo).directives
+                    };
+                }
+                return type;
+            });
         case actionTypes.SDL_REMOVE_TYPE:
             return state.filter(type => type.name !== action.typeName);
         case actionTypes.SDL_ADD_PROPERTY_TO_TYPE:

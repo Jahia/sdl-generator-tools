@@ -19,8 +19,9 @@ import {
     withStyles
 } from '@material-ui/core';
 import * as _ from 'lodash';
-import {sdlAddType, sdlAddDirectiveArgToType, sdlRemoveDirectiveArgFromType} from '../../../App.redux-actions';
+import {sdlAddType, sdlEditType, sdlAddDirectiveArgToType} from '../../../App.redux-actions';
 import {sdlSelectType} from '../../StepperComponent.redux-actions';
+import {getNodeTypeInfo, getNodeTypeIgnoreDefaultQueries} from '../../../util/helperFunctions';
 
 const dialogMode = {
     ADD: 'ADD',
@@ -56,36 +57,42 @@ const NodeTypeSelect = withStyles({
     }
 })(NodeTypeSelectCom);
 
-const AddTypeDialog = ({data, t, open, closeDialog, customTypeName, mode, dispatch, dispatchBatch, jcrNodeType, addType, selectedType, isDuplicatedTypeName}) => {
+const AddTypeDialog = ({data, t, open, closeDialog, mode, dispatch, dispatchBatch, addType, selectedType, isDuplicatedTypeName}) => {
+    const customTypeName = !_.isNil(selectedType) ? selectedType.name : '';
+    const jcrNodeType = getNodeTypeInfo(selectedType);
+    const ignoreDefaultQueriesDirective = getNodeTypeIgnoreDefaultQueries(selectedType);
     const [typeName, updateTypeName] = useState(customTypeName);
     const [nodeType, updateNodeType] = useState(jcrNodeType);
     const [showNodeTypeSelector, setShowNodeTypeSelector] = useState(false);
-    const mappingDirective = selectedType != null ? selectedType.directives.reduce((acc, dir) => dir.name === 'mapping' ? dir : acc, {}) : null;
-    const [ignoreDefaultQueries, updateIgnoreDefaultQueries] = useState(mappingDirective != null ? mappingDirective.arguments.reduce((acc, arg) => arg.name === 'ignoreDefaultQueries' ? arg.value : acc, false) : false);
+    const [ignoreDefaultQueries, updateIgnoreDefaultQueries] = useState(ignoreDefaultQueriesDirective);
     const nodeTypeNames = !_.isNil(data.jcr) ? data.jcr.nodeTypes.nodes : null;
 
     const cleanUp = () => {
         updateTypeName(null);
         updateNodeType(null);
+        updateIgnoreDefaultQueries(false);
     };
 
-    function handleIgnoreDefaultQueries(e) {
-        updateIgnoreDefaultQueries(e.target.checked);
-        if (e.target.checked) {
-            dispatch(sdlAddDirectiveArgToType(selectedType.idx, 'mapping', {value: true, name: 'ignoreDefaultQueries'}));
+    const saveTypeAndClose = () => {
+        let actions;
+        if (mode === dialogMode.ADD) {
+            if (_.isNil(typeName) || _.isEmpty(typeName) || isDuplicatedTypeName(typeName) || _.isNil(nodeType) || _.isEmpty(nodeType)) {
+                return;
+            }
+            actions = [
+                sdlAddType({typeName: typeName, nodeType: nodeType}),
+                sdlSelectType(typeName)
+            ];
         } else {
-            dispatch(sdlRemoveDirectiveArgFromType(selectedType.idx, 'mapping', mappingDirective.arguments.reduce((acc, curr, idx) => curr.name === 'ignoreDefaultQueries' ? idx : curr)));
+            if (_.isNil(nodeType) || _.isEmpty(nodeType)) {
+                return;
+            }
+            actions = [
+                sdlEditType({typeName: typeName, nodeType: nodeType}),
+                sdlSelectType(typeName)
+            ];
         }
-    }
 
-    const addTypeAndClose = () => {
-        if (_.isNil(typeName) || _.isEmpty(typeName) || isDuplicatedTypeName(typeName) || _.isNil(nodeType) || _.isEmpty(nodeType)) {
-            return;
-        }
-        let actions = [
-            sdlAddType({typeName: typeName, nodeType: nodeType}),
-            sdlSelectType(typeName)
-        ];
         if (ignoreDefaultQueries) {
             actions.push(sdlAddDirectiveArgToType(typeName, 'mapping', {value: ignoreDefaultQueries, name: 'ignoreDefaultQueries'}));
         }
@@ -95,8 +102,16 @@ const AddTypeDialog = ({data, t, open, closeDialog, customTypeName, mode, dispat
     };
 
     const cancelAndClose = () => {
-        closeDialog();
         cleanUp();
+        closeDialog();
+    };
+
+    const openDialog = (mode, typeName, nodeType, ignoreDefaultQueries) => {
+        if (mode === dialogMode.EDIT) {
+            updateTypeName(typeName);
+            updateNodeType(nodeType);
+            updateIgnoreDefaultQueries(ignoreDefaultQueries);
+        }
     };
 
     return (
@@ -104,8 +119,11 @@ const AddTypeDialog = ({data, t, open, closeDialog, customTypeName, mode, dispat
             open={open}
             aria-labelledby="form-dialog-title"
             onClose={closeDialog}
+            onEnter={() => {
+                openDialog(mode, customTypeName, jcrNodeType, ignoreDefaultQueriesDirective);
+            }}
         >
-            <DialogTitle id="form-dialog-title">{t('label.sdlGeneratorTools.createTypes.addNewTypeButton')}</DialogTitle>
+            <DialogTitle id="form-dialog-title">{mode === dialogMode.EDIT ? t('label.sdlGeneratorTools.createTypes.editTypeButton') : t('label.sdlGeneratorTools.createTypes.addNewTypeButton')}</DialogTitle>
             <DialogContent style={{width: 400}}>
                 <NodeTypeSelect open={showNodeTypeSelector}
                                 value={nodeType}
@@ -116,15 +134,16 @@ const AddTypeDialog = ({data, t, open, closeDialog, customTypeName, mode, dispat
                 <TextField
                     autoFocus
                     fullWidth
+                    disabled={mode === dialogMode.EDIT}
                     margin="dense"
                     id="typeName"
                     label={t('label.sdlGeneratorTools.createTypes.customTypeNameText')}
                     type="text"
                     value={typeName}
-                    error={isDuplicatedTypeName(typeName)}
+                    error={mode === dialogMode.ADD ? isDuplicatedTypeName(typeName) : false}
                     onKeyPress={e => {
                         if (e.key === 'Enter') {
-                            addTypeAndClose();
+                            saveTypeAndClose();
                         } else if (e.which === 32) {
                             e.preventDefault();
                             return false;
@@ -137,9 +156,10 @@ const AddTypeDialog = ({data, t, open, closeDialog, customTypeName, mode, dispat
                         label={t('label.sdlGeneratorTools.createTypes.ignoreDefaultQueries')}
                         control={
                             <Switch
-                                 checked={ignoreDefaultQueries}
-                                 onChange={e => mode === dialogMode.ADD ? updateIgnoreDefaultQueries(e.target.checked) : handleIgnoreDefaultQueries(e)}
-                                 color="primary"/>
+                                color="primary"
+                                checked={ignoreDefaultQueries}
+                                onChange={e => updateIgnoreDefaultQueries(e.target.checked)}
+                            />
                         }/>
                 </FormGroup>
             </DialogContent>
@@ -148,9 +168,9 @@ const AddTypeDialog = ({data, t, open, closeDialog, customTypeName, mode, dispat
                     {t('label.sdlGeneratorTools.cancelButton')}
                 </Button>
                 <Button color="primary"
-                        onClick={addTypeAndClose}
+                        onClick={saveTypeAndClose}
                 >
-                    {t('label.sdlGeneratorTools.addButton')}
+                    {t('label.sdlGeneratorTools.saveButton')}
                 </Button>
             </DialogActions>
         </Dialog>
@@ -160,14 +180,7 @@ const AddTypeDialog = ({data, t, open, closeDialog, customTypeName, mode, dispat
 AddTypeDialog.propTypes = {
     open: PropTypes.bool.isRequired,
     closeDialog: PropTypes.func.isRequired,
-    customTypeName: PropTypes.string,
-    jcrNodeType: PropTypes.string,
     isDuplicatedTypeName: PropTypes.func.isRequired
-};
-
-AddTypeDialog.defaultProps = {
-    customTypeName: '',
-    jcrNodeType: ''
 };
 
 const CompositeComp = compose(

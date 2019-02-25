@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import {translate} from 'react-i18next';
 import PropTypes from 'prop-types';
-import {withStyles, Grid, Paper, List, ListItem, ListItemText, ListSubheader, Button} from '@material-ui/core';
-import {Add} from '@material-ui/icons';
+import {withStyles, Grid, Paper, List, ListItem, ListItemText, ListSubheader, ListItemSecondaryAction, IconButton, Button} from '@material-ui/core';
+import {Add, Edit, Delete} from '@material-ui/icons';
 import AddTypeDialog from './AddModifyTypeDialog';
 import AddPropertyDialog from './AddModifyPropertyDialog';
 import {compose} from 'react-apollo';
@@ -21,12 +21,26 @@ const styles = theme => ({
     }
 });
 
-const TypeItem = ({name, isSelected, selectType}) => (
+const TypeItem = ({name, isSelected, selectType, updateTypeDialogMode, removeType, showAddTypeDialog}) => (
     <ListItem button
               selected={isSelected}
               onClick={() => selectType(name)}
     >
         <ListItemText primary={name}/>
+        <ListItemSecondaryAction>
+            <IconButton aria-label="Edit" onClick={()=>{
+                selectType(name);
+                updateTypeDialogMode(dialogMode.EDIT);
+                showAddTypeDialog(true);
+            }}>
+                <Edit/>
+            </IconButton>
+            <IconButton aria-label="Remove" onClick={()=>{
+                removeType(name);
+            }}>
+                <Delete/>
+            </IconButton>
+        </ListItemSecondaryAction>
     </ListItem>
 );
 
@@ -36,7 +50,7 @@ const PropertyItem = ({name}) => (
     </ListItem>
 );
 
-const CreateTypes = ({classes, t, nodeTypes, selection, dispatch, dispatchBatch, addProperty, addArgToDirective, removeArgFromDirective, selectType}) => {
+const CreateTypes = ({classes, t, nodeTypes, selection, dispatch, dispatchBatch, addProperty, addArgToDirective, removeType, removeArgFromDirective, selectType}) => {
     const [addTypeDialogShown, showAddTypeDialog] = useState(false);
     const [addPropertyDialogShown, showAddPropertyDialog] = useState(false);
     const [typeDialogMode, updateTypeDialogMode] = useState(dialogMode.ADD);
@@ -73,7 +87,10 @@ const CreateTypes = ({classes, t, nodeTypes, selection, dispatch, dispatchBatch,
                 <Grid item xs={12} sm={6}>
                     <Paper className={classes.paper}>
                         <List subheader={<ListSubheader>{t('label.sdlGeneratorTools.createTypes.nodeTypeText')}</ListSubheader>}>
-                            <Button onClick={() => showAddTypeDialog(true) && updateTypeDialogMode(dialogMode.ADD)}>
+                            <Button onClick={() => {
+                                updateTypeDialogMode(dialogMode.ADD);
+                                showAddTypeDialog(true);
+                            }}>
                                 {t('label.sdlGeneratorTools.createTypes.addNewTypeButton')}
                                 <Add/>
                             </Button>
@@ -83,6 +100,9 @@ const CreateTypes = ({classes, t, nodeTypes, selection, dispatch, dispatchBatch,
                                               {...type}
                                               isSelected={type.name === selection}
                                               selectType={selectType}
+                                              updateTypeDialogMode={updateTypeDialogMode}
+                                              showAddTypeDialog={showAddTypeDialog}
+                                              removeType={removeType}
                                     />
                                 ))
                             }
