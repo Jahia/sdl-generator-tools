@@ -8,6 +8,11 @@ import DialogActions from '@material-ui/core/DialogActions/DialogActions';
 import {translate} from 'react-i18next';
 import {upperCaseFirst} from '../../../util/helperFunctions';
 
+const finderDialogMode = {
+    ADD: 'ADD',
+    EDIT: 'EDIT'
+};
+
 const FinderSelect = ({open, close, handleClose, handleOpen, handleChange, value, values}) => {
     return (
         <Select
@@ -18,20 +23,20 @@ const FinderSelect = ({open, close, handleClose, handleOpen, handleChange, value
         onChange={handleChange}
         >
             {
-                values.map(finder => <MenuItem value={finder}>{finder}</MenuItem>)
+                values.map(finder => <MenuItem key={finder} value={finder}>{finder}</MenuItem>)
             }
         </Select>
     );
 };
 
-const AddModifyFinderDialog = ({t, open, close, finderInfo, addFinder, selection, selectedType, availableFinders}) => {
-    const [finderPrefix, updateFinderPrefix] = useState(finderInfo.prefix);
-    const [finderSuffix, updateFinderSuffix] = useState(finderInfo.suffix);
+const AddModifyFinderDialog = ({t, open, close, mode, finderInfo, addOrModifyFinder, selection, selectedFinder, selectedType, availableFinders}) => {
+    const [finderPrefix, updateFinderPrefix] = useState(selectedFinder != null ? selectedFinder.prefix : '');
+    const [finderSuffix, updateFinderSuffix] = useState(selectedFinder != null ? selectedFinder.suffix : '');
     const [showFinderSelector, setFinderSelectorStatus] = useState(false);
 
     function addFinderAndClose() {
         let name = finderSuffix === 'all' ? finderSuffix + upperCaseFirst(finderPrefix) : finderPrefix + upperCaseFirst(finderSuffix);
-        addFinder({name: name, prefix: finderPrefix, suffix: finderSuffix}, selection);
+        addOrModifyFinder({name: name, prefix: finderPrefix, suffix: finderSuffix});
         close();
     }
 
@@ -41,7 +46,7 @@ const AddModifyFinderDialog = ({t, open, close, finderInfo, addFinder, selection
         aria-labelledby="form-dialog-title"
         close={close}
         >
-            <DialogTitle id="form-dialog-title">{t('label.sdlGeneratorTools.defineFinder.addAFinderCaption')}</DialogTitle>
+            <DialogTitle id="form-dialog-title">{t(mode === finderDialogMode.ADD ? 'label.sdlGeneratorTools.defineFinder.addAFinderCaption' : 'label.sdlGeneratorTools.defineFinder.editAFinderCaption')}</DialogTitle>
             <DialogContent style={{width: 400}}>
                 <FinderSelect open={showFinderSelector}
                               values={availableFinders}
@@ -67,7 +72,7 @@ const AddModifyFinderDialog = ({t, open, close, finderInfo, addFinder, selection
                 <Button color="primary"
                         onClick={addFinderAndClose}
                 >
-                    {t('label.sdlGeneratorTools.addButton')}
+                    {t(mode === finderDialogMode.ADD ? 'label.sdlGeneratorTools.addButton' : 'label.sdlGeneratorTools.applyButton')}
                 </Button>
             </DialogActions>
         </Dialog>
@@ -89,3 +94,6 @@ AddModifyFinderDialog.defaultProps = {
 };
 
 export default translate()(AddModifyFinderDialog);
+export {
+    finderDialogMode
+};

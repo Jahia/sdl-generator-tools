@@ -73,6 +73,23 @@ const nodeTypesReducer = (state = [], action) => {
                 }
                 return type;
             });
+        case actionTypes.SDL_MODIFY_FINDER_OF_TYPE:
+            return state.map((type, index) => {
+                if (index === action.typeIndexOrName || type.name === action.typeIndexOrName) {
+                    return {
+                        ...type,
+                        queries: type.queries.reduce((acc, curr, idx) => {
+                            if (idx === action.finderIndex) {
+                                acc.push(getInitialObject(actionTypes.SDL_MODIFY_FINDER_OF_TYPE, action.finderInfo));
+                            } else {
+                                acc.push(curr);
+                            }
+                            return acc;
+                        }, [])
+                    };
+                }
+                return type;
+            });
         case actionTypes.SDL_REMOVE_FINDER_FROM_TYPE:
             return state.map((type, index) => {
                 if (index !== action.typeIndex) {
