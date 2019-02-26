@@ -70,7 +70,17 @@ const AddTypeDialog = ({data, t, open, closeDialog, mode, dispatch, dispatchBatc
     const [nodeType, updateNodeType] = useState(jcrNodeType);
     const [showNodeTypeSelector, setShowNodeTypeSelector] = useState(false);
     const [ignoreDefaultQueries, updateIgnoreDefaultQueries] = useState(ignoreDefaultQueriesDirective);
-    const nodeTypeNames = !_.isNil(data.jcr) ? data.jcr.nodeTypes.nodes : null;
+    const nodeTypeNames = !_.isNil(data.jcr) ? data.jcr.nodeTypes.nodes.sort((a, b) => {
+        a = a.displayName.toLowerCase();
+        b = b.displayName.toLowerCase();
+        if (a < b) {
+            return -1;
+        }
+        if (a > b) {
+            return 1;
+        }
+        return 0;
+    }) : null;
 
     const cleanUp = () => {
         updateTypeName(null);
@@ -98,7 +108,10 @@ const AddTypeDialog = ({data, t, open, closeDialog, mode, dispatch, dispatchBatc
         }
 
         if (ignoreDefaultQueries) {
-            actions.push(sdlAddDirectiveArgToType(typeName, 'mapping', {value: ignoreDefaultQueries, name: 'ignoreDefaultQueries'}));
+            actions.push(sdlAddDirectiveArgToType(typeName, 'mapping', {
+                value: ignoreDefaultQueries,
+                name: 'ignoreDefaultQueries'
+            }));
         } else if (mode === C.EDIT && !_.isNil(selectedType)) {
             actions.push(sdlRemoveDirectiveArgFromType(selectedType.idx, 'mapping', lookUpMappingArgumentIndex(selectedType, 'ignoreDefaultQueries')));
         }
@@ -135,7 +148,10 @@ const AddTypeDialog = ({data, t, open, closeDialog, mode, dispatch, dispatchBatc
                 openDialog(mode, customTypeName, jcrNodeType, ignoreDefaultQueriesDirective);
             }}
         >
-            <DialogTitle id="form-dialog-title">{mode === C.EDIT ? t('label.sdlGeneratorTools.createTypes.editTypeButton') : t('label.sdlGeneratorTools.createTypes.addNewTypeButton')}</DialogTitle>
+            <DialogTitle
+                id="form-dialog-title"
+            >{mode === C.EDIT ? t('label.sdlGeneratorTools.createTypes.editTypeButton') : t('label.sdlGeneratorTools.createTypes.addNewTypeButton')}
+            </DialogTitle>
             <DialogContent style={{width: 400}}>
                 <NodeTypeSelect open={showNodeTypeSelector}
                                 disabled={mode === C.EDIT}
