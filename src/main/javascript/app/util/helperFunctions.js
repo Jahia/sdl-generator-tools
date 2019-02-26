@@ -1,39 +1,40 @@
-import * as _ from "lodash";
+import * as _ from 'lodash';
 
 const upperCaseFirst = val => {
     return val.substr(0, 1).toUpperCase().concat(val.substr(1));
 };
 
-const getMappingDirective = selectedType => {
-    if (!_.isNil(selectedType) && !_.isNil(selectedType.directives) && selectedType.directives.length > 0) {
-        const mappingDirective = selectedType.directives.filter(directive => directive.name === 'mapping');
+const getMappingDirective = selected => {
+    if (!_.isNil(selected) && !_.isNil(selected.directives) && selected.directives.length > 0) {
+        const mappingDirective = selected.directives.filter(directive => directive.name === 'mapping');
         return !_.isNil(mappingDirective) ? mappingDirective[0].arguments : null;
-    } else {
-        return null;
     }
-}
-
-const getNodeTypeInfo = selectedType => {
-    const mappingDirective = getMappingDirective(selectedType);
-    if (!_.isNil(mappingDirective)) {
-        const nodeArg =  mappingDirective.filter(argument => argument.name === 'node')[0];
-        return !_.isNil(nodeArg) ? nodeArg.value : '';
-    }
-    return '';
+    return null;
 };
 
-const getNodeTypeIgnoreDefaultQueries = selectedType => {
-    const mappingDirective = getMappingDirective(selectedType);
+const lookUpMappingArgumentInfo = (selected, argName) => {
+    const mappingDirective = getMappingDirective(selected);
     if (!_.isNil(mappingDirective)) {
-        const defaultQueriesArg = mappingDirective.filter(argument => argument.name === 'ignoreDefaultQueries')[0];
-        return !_.isNil(defaultQueriesArg) ? defaultQueriesArg.value : false;
+        const arg = mappingDirective.filter(argument => argument.name === argName)[0];
+        return !_.isNil(arg) ? arg.value : null;
     }
-    return false;
+    return null;
+};
+
+const lookUpMappingStringArgumentInfo = (selected, argName) => {
+    const info = lookUpMappingArgumentInfo(selected, argName);
+    return !_.isNil(info) ? info : '';
+};
+
+const lookUpMappingBooleanArgumentInfo = (selected, argName) => {
+    const info = lookUpMappingArgumentInfo(selected, argName);
+    return !_.isNil(info) ? info : false;
 };
 
 export {
     upperCaseFirst,
     getMappingDirective,
-    getNodeTypeInfo,
-    getNodeTypeIgnoreDefaultQueries
+    lookUpMappingArgumentInfo,
+    lookUpMappingStringArgumentInfo,
+    lookUpMappingBooleanArgumentInfo
 };

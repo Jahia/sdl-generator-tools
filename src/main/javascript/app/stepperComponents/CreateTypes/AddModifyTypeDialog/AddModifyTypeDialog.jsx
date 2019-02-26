@@ -21,7 +21,8 @@ import {
 import * as _ from 'lodash';
 import {sdlAddType, sdlEditType, sdlAddDirectiveArgToType} from '../../../App.redux-actions';
 import {sdlSelectType} from '../../StepperComponent.redux-actions';
-import {getNodeTypeInfo, getNodeTypeIgnoreDefaultQueries} from '../../../util/helperFunctions';
+import {lookUpMappingStringArgumentInfo, lookUpMappingBooleanArgumentInfo} from '../../../util/helperFunctions';
+import {Close} from '@material-ui/icons';
 
 const dialogMode = {
     ADD: 'ADD',
@@ -57,10 +58,10 @@ const NodeTypeSelect = withStyles({
     }
 })(NodeTypeSelectCom);
 
-const AddTypeDialog = ({data, t, open, closeDialog, mode, dispatch, dispatchBatch, addType, selectedType, isDuplicatedTypeName}) => {
+const AddTypeDialog = ({data, t, open, closeDialog, mode, dispatch, dispatchBatch, selectedType, isDuplicatedTypeName, removeType}) => {
     const customTypeName = !_.isNil(selectedType) ? selectedType.name : '';
-    const jcrNodeType = getNodeTypeInfo(selectedType);
-    const ignoreDefaultQueriesDirective = getNodeTypeIgnoreDefaultQueries(selectedType);
+    const jcrNodeType = lookUpMappingStringArgumentInfo(selectedType, 'node');
+    const ignoreDefaultQueriesDirective = lookUpMappingBooleanArgumentInfo(selectedType, 'ignoreDefaultQueries');
     const [typeName, updateTypeName] = useState(customTypeName);
     const [nodeType, updateNodeType] = useState(jcrNodeType);
     const [showNodeTypeSelector, setShowNodeTypeSelector] = useState(false);
@@ -102,8 +103,14 @@ const AddTypeDialog = ({data, t, open, closeDialog, mode, dispatch, dispatchBatc
     };
 
     const cancelAndClose = () => {
-        cleanUp();
         closeDialog();
+        cleanUp();
+    };
+
+    const removeAndClose = () => {
+        removeType(typeName);
+        closeDialog();
+        cleanUp();
     };
 
     const openDialog = (mode, typeName, nodeType, ignoreDefaultQueries) => {
@@ -126,6 +133,7 @@ const AddTypeDialog = ({data, t, open, closeDialog, mode, dispatch, dispatchBatc
             <DialogTitle id="form-dialog-title">{mode === dialogMode.EDIT ? t('label.sdlGeneratorTools.createTypes.editTypeButton') : t('label.sdlGeneratorTools.createTypes.addNewTypeButton')}</DialogTitle>
             <DialogContent style={{width: 400}}>
                 <NodeTypeSelect open={showNodeTypeSelector}
+                                disabled={mode === dialogMode.EDIT}
                                 value={nodeType}
                                 nodeTypeNames={nodeTypeNames}
                                 handleOpen={() => setShowNodeTypeSelector(true)}
@@ -162,6 +170,10 @@ const AddTypeDialog = ({data, t, open, closeDialog, mode, dispatch, dispatchBatc
                             />
                         }/>
                 </FormGroup>
+                <Button disabled={mode === dialogMode.ADD} color="primary" onClick={removeAndClose}>
+                    {t('label.sdlGeneratorTools.deleteButton')}
+                    <Close/>
+                </Button>
             </DialogContent>
             <DialogActions>
                 <Button color="primary" onClick={cancelAndClose}>
@@ -180,7 +192,8 @@ const AddTypeDialog = ({data, t, open, closeDialog, mode, dispatch, dispatchBatc
 AddTypeDialog.propTypes = {
     open: PropTypes.bool.isRequired,
     closeDialog: PropTypes.func.isRequired,
-    isDuplicatedTypeName: PropTypes.func.isRequired
+    isDuplicatedTypeName: PropTypes.func.isRequired,
+    removeType: PropTypes.func.isRequired
 };
 
 const CompositeComp = compose(

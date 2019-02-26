@@ -16,6 +16,7 @@
                 "addNewTypeButton": "Add new type",
                 "editTypeButton": "Edit type",
                 "addNewPropertyButton": "Add a new property",
+                "viewProperty": "View property",
                 "customTypeNameText": "Custom type name",
                 "customPropertyNameText": "Custom property name",
                 "ignoreDefaultQueries": "Ignore Default Queries"
@@ -39,6 +40,7 @@
             "nextButton": "Next",
             "addButton": "Add",
             "saveButton": "Save",
+            "deleteButton": "Delete",
             "applyButton": "Apply",
             "cancelButton": "Cancel",
             "copyToClipboardButton": "Copy to clipboard",

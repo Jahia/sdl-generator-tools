@@ -2,11 +2,12 @@ import {applyMiddleware, combineReducers, compose, createStore} from 'redux';
 import {batchDispatchMiddleware} from 'redux-batched-actions';
 import thunk from 'redux-thunk';
 import {nodeTypesReducer} from './App.redux-reducer';
-import {selectedFinderReducer, selectionReducer} from './stepperComponents/StepperComponent.redux-reducer';
+import {selectedPropertyReducer, selectedFinderReducer, selectionReducer} from './stepperComponents/StepperComponent.redux-reducer';
 
 const rootReducer = combineReducers({
     nodeTypes: nodeTypesReducer,
     selection: selectionReducer,
+    selectedProperty: selectedPropertyReducer,
     selectedFinder: selectedFinderReducer
 });
 

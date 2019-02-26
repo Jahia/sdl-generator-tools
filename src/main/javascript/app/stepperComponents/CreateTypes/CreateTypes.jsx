@@ -2,58 +2,62 @@ import React, {useState} from 'react';
 import {translate} from 'react-i18next';
 import PropTypes from 'prop-types';
 import {withStyles, Grid, Paper, List, ListItem, ListItemText, ListSubheader, ListItemSecondaryAction, IconButton, Button} from '@material-ui/core';
-import {Add, Edit, Delete} from '@material-ui/icons';
+import {Add, Edit} from '@material-ui/icons';
 import AddTypeDialog from './AddModifyTypeDialog';
 import AddPropertyDialog from './AddModifyPropertyDialog';
 import {compose} from 'react-apollo';
 import {dialogMode} from './addModifyTypeDialog/AddModifyTypeDialog';
 import * as _ from 'lodash';
+import {lookUpMappingStringArgumentInfo} from '../../util/helperFunctions';
 
 const styles = theme => ({
     paper: {
         width: '100%',
         minHeight: '50%',
-        padding: '6px 6px',
-        '& button': {
-            paddingTop: 0,
-            paddingBottom: 0
-        }
+        padding: '6px 0px'
+    },
+    root: {
+        position: 'absolute',
+        textAlign: 'right'
     }
 });
 
-const TypeItem = ({name, isSelected, selectType, updateTypeDialogMode, removeType, showAddTypeDialog}) => (
-    <ListItem button
-              selected={isSelected}
+const TypeItem = withStyles(styles)(({classes, name, isSelected, selectType, updateTypeDialogMode, showAddTypeDialog}) => (
+    <ListItem selected={isSelected}
               onClick={() => selectType(name)}
     >
         <ListItemText primary={name}/>
-        <ListItemSecondaryAction>
-            <IconButton aria-label="Edit" onClick={()=>{
-                selectType(name);
-                updateTypeDialogMode(dialogMode.EDIT);
-                showAddTypeDialog(true);
-            }}>
+        <ListItemSecondaryAction classes={classes}>
+            <IconButton aria-label="Edit"
+                        onClick={() => {
+                            selectType(name);
+                            updateTypeDialogMode(dialogMode.EDIT);
+                            showAddTypeDialog(true);
+                        }}
+            >
                 <Edit/>
-            </IconButton>
-            <IconButton aria-label="Remove" onClick={()=>{
-                removeType(name);
-            }}>
-                <Delete/>
             </IconButton>
         </ListItemSecondaryAction>
     </ListItem>
-);
+));
 
-const PropertyItem = ({name}) => (
-    <ListItem button>
+const PropertyItem = ({index, name, jcrName, selectProperty, updatePropertyDialogMode, showAddPropertyDialog}) => (
+    <ListItem button
+              onClick={() => {
+                  selectProperty(index, name, jcrName);
+                  updatePropertyDialogMode(dialogMode.EDIT);
+                  showAddPropertyDialog(true);
+                }}
+    >
         <ListItemText primary={name}/>
     </ListItem>
 );
 
-const CreateTypes = ({classes, t, nodeTypes, selection, dispatch, dispatchBatch, addProperty, addArgToDirective, removeType, removeArgFromDirective, selectType}) => {
+const CreateTypes = ({classes, t, nodeTypes, selection, selectedProperty, dispatch, dispatchBatch, addProperty, addArgToDirective, removeType, removeProperty, removeArgFromDirective, selectType, selectProperty}) => {
     const [addTypeDialogShown, showAddTypeDialog] = useState(false);
     const [addPropertyDialogShown, showAddPropertyDialog] = useState(false);
     const [typeDialogMode, updateTypeDialogMode] = useState(dialogMode.ADD);
+    const [propertyDialogMode, updatePropertyDialogMode] = useState(dialogMode.ADD);
 
     const selectedType = nodeTypes.reduce((acc, type, idx) => type.name === selection ? Object.assign({idx: idx}, type) : acc, null);
 
@@ -83,17 +87,20 @@ const CreateTypes = ({classes, t, nodeTypes, selection, dispatch, dispatchBatch,
 
     return (
         <React.Fragment>
-            <Grid container spacing={24}>
+            <Grid container>
                 <Grid item xs={12} sm={6}>
                     <Paper className={classes.paper}>
                         <List subheader={<ListSubheader>{t('label.sdlGeneratorTools.createTypes.nodeTypeText')}</ListSubheader>}>
-                            <Button onClick={() => {
-                                updateTypeDialogMode(dialogMode.ADD);
-                                showAddTypeDialog(true);
-                            }}>
-                                {t('label.sdlGeneratorTools.createTypes.addNewTypeButton')}
-                                <Add/>
-                            </Button>
+                            <ListItem>
+                                <Button onClick={() => {
+                                    updateTypeDialogMode(dialogMode.ADD);
+                                    showAddTypeDialog(true);
+                                }}
+                                >
+                                    {t('label.sdlGeneratorTools.createTypes.addNewTypeButton')}
+                                    <Add/>
+                                </Button>
+                            </ListItem>
                             {
                                 nodeTypes.map(type => (
                                     <TypeItem key={type.name}
@@ -112,15 +119,27 @@ const CreateTypes = ({classes, t, nodeTypes, selection, dispatch, dispatchBatch,
                 <Grid item xs={12} sm={6}>
                     <Paper className={classes.paper}>
                         <List subheader={<ListSubheader>{t('label.sdlGeneratorTools.createTypes.propertiesText')}</ListSubheader>}>
-                            <Button onClick={() => showAddPropertyDialog(true)}>
-                                {t('label.sdlGeneratorTools.createTypes.addNewPropertyButton')}
-                                <Add/>
-                            </Button>
+                            <ListItem>
+                                <Button onClick={() => {
+                                    updatePropertyDialogMode(dialogMode.ADD);
+                                    showAddPropertyDialog(true);
+                                }}
+                                >
+                                    {t('label.sdlGeneratorTools.createTypes.addNewPropertyButton')}
+                                    <Add/>
+                                </Button>
+                            </ListItem>
                             {
                                 nodeTypes.filter(type => type.name === selection).map(type => type.fieldDefinitions.map((field, i) => {
-                                        return (
-                                            <PropertyItem key={`${field.name}_${i}`} {...field}/>
-                                        );
+                                    return (
+                                        <PropertyItem key={`${field.name}_${i}`}
+                                                      index={i}
+                                                      name={field.name}
+                                                      jcrName={lookUpMappingStringArgumentInfo(field, 'property')}
+                                                      selectProperty={selectProperty}
+                                                      showAddPropertyDialog={showAddPropertyDialog}
+                                                      updatePropertyDialogMode={updatePropertyDialogMode}/>
+                                    );
                                     }
                                 ))
                             }
@@ -134,13 +153,16 @@ const CreateTypes = ({classes, t, nodeTypes, selection, dispatch, dispatchBatch,
                            dispatchBatch={dispatchBatch}
                            closeDialog={() => showAddTypeDialog(false)}
                            selectedType={selectedType}
-                           isDuplicatedTypeName={isDuplicatedTypeName}/>
+                           isDuplicatedTypeName={isDuplicatedTypeName}
+                           removeType={removeType}/>
             <AddPropertyDialog open={addPropertyDialogShown}
-                               typeName={selection}
+                               mode={propertyDialogMode}
                                selectedType={selectedType}
+                               selectedProperty={selectedProperty}
                                closeDialog={() => showAddPropertyDialog(false)}
                                addProperty={addProperty}
-                               isDuplicatedPropertyName={isDuplicatedPropertyName}/>
+                               isDuplicatedPropertyName={isDuplicatedPropertyName}
+                               removeProperty={removeProperty}/>
         </React.Fragment>
     );
 };
@@ -154,6 +176,10 @@ CreateTypes.propTypes = {
     dispatch: PropTypes.func.isRequired,
     dispatchBatch: PropTypes.func.isRequired,
     selection: PropTypes.string
+};
+
+CreateTypes.defaultProps = {
+    selection: ''
 };
 
 export default compose(

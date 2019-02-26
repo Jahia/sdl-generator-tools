@@ -29,7 +29,7 @@ const nodeTypesReducer = (state = [], action) => {
             });
         case actionTypes.SDL_REMOVE_PROPERTY_FROM_TYPE:
             return state.map((type, index) => {
-                if (index !== action.typeIndex) {
+                if (index !== action.typeIndexOrName && type.name !== action.typeIndexOrName) {
                     return type;
                 }
                 return {

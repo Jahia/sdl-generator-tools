@@ -10,15 +10,17 @@ import {translate} from 'react-i18next';
 import {compose, graphql, withApollo} from 'react-apollo';
 import gqlQueries from '../../../gql/gqlQueries';
 import * as _ from 'lodash';
-import {upperCaseFirst} from '../../../util/helperFunctions';
+import {lookUpMappingStringArgumentInfo, upperCaseFirst} from '../../../util/helperFunctions';
+import {Close} from '@material-ui/icons';
+import {dialogMode} from '../AddModifyTypeDialog/AddModifyTypeDialog';
 
-const PropertySelectCom = ({classes, value, open, handleClose, handleChange, handleOpen, nodeProperties}) => (
-    <Select
-        open={open}
-        value={value}
-        onClose={handleClose}
-        onOpen={handleOpen}
-        onChange={handleChange}
+const PropertySelectCom = ({classes, disabled, value, open, handleClose, handleChange, handleOpen, nodeProperties}) => (
+    <Select disabled={disabled}
+            open={open}
+            value={value}
+            onClose={handleClose}
+            onOpen={handleOpen}
+            onChange={handleChange}
     >
         <MenuItem value="">
             <em>None</em>
@@ -41,9 +43,12 @@ const PropertySelect = withStyles({
     }
 })(PropertySelectCom);
 
-const AddModifyPropertyDialog = ({data, t, open, closeDialog, customTypeName, jcrNodeType, addProperty, typeName, isDuplicatedPropertyName}) => {
-    const [propertyName, updatePropertyName] = useState(customTypeName);
-    const [jcrPropertyName, updateJcrPropertyName] = useState(jcrNodeType);
+const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, selectedType, selectedProperty, addProperty, removeProperty, isDuplicatedPropertyName}) => {
+    const typeName = !_.isNil(selectedType) ? selectedType.name : '';
+    const selectedPropertyName = !_.isNil(selectedProperty) ? selectedProperty.propertyName : '';
+    const selectedJcrPropertyName = !_.isNil(selectedProperty) ? selectedProperty.jcrPropertyName : '';
+    const [propertyName, updatePropertyName] = useState(selectedPropertyName);
+    const [jcrPropertyName, updateJcrPropertyName] = useState(selectedJcrPropertyName);
     const [showPropertySelector, setShowPropertySelector] = useState(false);
 
     const nodes = !_.isNil(data.jcr) ? data.jcr.nodeTypes.nodes : null;
@@ -55,7 +60,7 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, customTypeName, jc
     };
 
     const addPropertyAndClose = () => {
-        if (_.isNil(propertyName) || isDuplicatedPropertyName(propertyName)  || _.isEmpty(propertyName) || _.isNil(jcrPropertyName) || _.isEmpty(jcrPropertyName)) {
+        if (_.isNil(propertyName) || isDuplicatedPropertyName(propertyName) || _.isEmpty(propertyName) || _.isNil(jcrPropertyName) || _.isEmpty(jcrPropertyName)) {
             return;
         }
         addProperty({name: propertyName, property: jcrPropertyName, type: 'String'}, typeName);
@@ -68,15 +73,32 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, customTypeName, jc
         cleanUp();
     };
 
+    const removeAndClose = () => {
+        removeProperty(selectedProperty.propertyIndex, typeName);
+        closeDialog();
+        cleanUp();
+    };
+
+    const openDialog = (mode, selectedPropertyName, selectedJcrPropertyName) => {
+        if (mode === dialogMode.EDIT) {
+            updatePropertyName(selectedPropertyName);
+            updateJcrPropertyName(selectedJcrPropertyName);
+        }
+    };
+
     return (
         <Dialog
             open={open}
             aria-labelledby="form-dialog-title"
             onClose={closeDialog}
+            onEnter={() => {
+                openDialog(mode, selectedPropertyName, selectedJcrPropertyName);
+            }}
         >
-            <DialogTitle id="form-dialog-title">{t('label.sdlGeneratorTools.createTypes.addNewPropertyButton')}</DialogTitle>
+            <DialogTitle id="form-dialog-title">{mode === dialogMode.EDIT ? t('label.sdlGeneratorTools.createTypes.viewProperty') : t('label.sdlGeneratorTools.createTypes.addNewPropertyButton')}</DialogTitle>
             <DialogContent style={{width: 400}}>
                 <PropertySelect open={showPropertySelector}
+                                disabled={mode === dialogMode.EDIT}
                                 nodeProperties={nodeProperties}
                                 value={jcrPropertyName}
                                 handleOpen={() => setShowPropertySelector(true)}
@@ -85,12 +107,13 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, customTypeName, jc
                 <TextField
                     autoFocus
                     fullWidth
+                    disabled={mode === dialogMode.EDIT}
                     margin="dense"
                     id="propertyName"
                     label={t('label.sdlGeneratorTools.createTypes.customPropertyNameText')}
                     type="text"
                     value={propertyName}
-                    error={isDuplicatedPropertyName(propertyName)}
+                    error={mode === dialogMode.ADD ? isDuplicatedPropertyName(propertyName) : false}
                     onKeyPress={e => {
                         if (e.key === 'Enter') {
                             addPropertyAndClose();
@@ -101,15 +124,20 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, customTypeName, jc
                     }}
                     onChange={e => updatePropertyName(e.target.value)}
                 />
+                <Button disabled={mode === dialogMode.ADD} color="primary" onClick={removeAndClose}>
+                    {t('label.sdlGeneratorTools.deleteButton')}
+                    <Close/>
+                </Button>
             </DialogContent>
             <DialogActions>
                 <Button color="primary" onClick={cancelAndClose}>
                     {t('label.sdlGeneratorTools.cancelButton')}
                 </Button>
-                <Button color="primary"
+                <Button disabled={mode === dialogMode.EDIT}
+                        color="primary"
                         onClick={addPropertyAndClose}
                 >
-                    {t('label.sdlGeneratorTools.addButton')}
+                    {t('label.sdlGeneratorTools.saveButton')}
                 </Button>
             </DialogActions>
         </Dialog>
@@ -118,30 +146,14 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, customTypeName, jc
 
 AddModifyPropertyDialog.propTypes = {
     open: PropTypes.bool.isRequired,
-    typeName: PropTypes.string.isRequired,
     closeDialog: PropTypes.func.isRequired,
-    addProperty: PropTypes.func.isRequired
+    addProperty: PropTypes.func.isRequired,
+    removeProperty: PropTypes.func.isRequired,
+    selectedProperty: PropTypes.object
 };
 
 AddModifyPropertyDialog.defaultProps = {
-    customTypeName: '',
-    jcrNodeType: ''
-};
-
-const getNodeTypeInfo = selectedType => {
-    if (!_.isNil(selectedType) && !_.isNil(selectedType.directives) && selectedType.directives.length > 0) {
-        for (let directive of selectedType.directives) {
-            if (directive.name === 'mapping') {
-                for (let argument of directive.arguments) {
-                    if (argument.name === 'node') {
-                        return argument.value;
-                    }
-                }
-            }
-        }
-    }
-
-    return '';
+    selectedProperty: {}
 };
 
 const CompositeComp = compose(
@@ -149,7 +161,7 @@ const CompositeComp = compose(
         options(props) {
             return {
                 variables: {
-                    includeTypes: [getNodeTypeInfo(props.selectedType)]
+                    includeTypes: [lookUpMappingStringArgumentInfo(props.selectedType, 'node')]
                 },
                 fetchPolicy: 'network-only'
             };

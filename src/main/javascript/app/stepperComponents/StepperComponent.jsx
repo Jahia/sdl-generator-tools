@@ -1,7 +1,7 @@
 import React from 'react';
 import {translate} from 'react-i18next';
 import {withStyles, Stepper, Step, StepLabel, Button} from '@material-ui/core';
-import CreateTypes from './createTypes/index';
+import CreateTypes from './CreateTypes/index';
 import ExportResult from './ExportResult';
 import {downloadFile, copyToClipBoard} from '../util/documentUtils';
 import DefineFinder from './defineFinders/index';

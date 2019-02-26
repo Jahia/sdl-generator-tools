@@ -16,7 +16,20 @@ const selectedFinderReducer = (state = null, action) => {
     }
 };
 
+const selectedPropertyReducer = (state = null, action) => {
+    switch (action.type) {
+        case actionTypes.SDL_SELECT_PROPERTY:
+            return {
+                propertyIndex: action.propertyIndex,
+                propertyName: action.propertyName,
+                jcrPropertyName: action.jcrPropertyName
+            };
+        default: return state;
+    }
+}
+
 export {
     selectionReducer,
-    selectedFinderReducer
+    selectedFinderReducer,
+    selectedPropertyReducer
 };
