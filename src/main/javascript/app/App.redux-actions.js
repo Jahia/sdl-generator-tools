@@ -1,6 +1,5 @@
 const actionTypes = {
     SDL_ADD_TYPE: 'SDL_ADD_TYPE',
-    SDL_EDIT_TYPE: 'SDL_EDIT_TYPE',
     SDL_REMOVE_TYPE: 'SDL_REMOVE_TYPE',
     SDL_ADD_PROPERTY_TO_TYPE: 'SDL_ADD_PROPERTY_TO_TYPE',
     SDL_REMOVE_PROPERTY_FROM_TYPE: 'SDL_REMOVE_PROPERTY_FROM_TYPE',
@@ -13,11 +12,6 @@ const actionTypes = {
 
 const sdlAddType = typeInfo => ({
     type: actionTypes.SDL_ADD_TYPE,
-    typeInfo: typeInfo
-});
-
-const sdlEditType = typeInfo => ({
-    type: actionTypes.SDL_EDIT_TYPE,
     typeInfo: typeInfo
 });
 
@@ -74,7 +68,6 @@ const sdlRemoveFinderFromType = (typeIndex, finderIndex) => ({
 export {
     actionTypes,
     sdlAddType,
-    sdlEditType,
     sdlRemoveType,
     sdlAddPropertyToType,
     sdlRemovePropertyFromType,

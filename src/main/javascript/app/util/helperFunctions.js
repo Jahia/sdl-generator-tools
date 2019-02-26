@@ -4,7 +4,7 @@ const upperCaseFirst = val => {
     return val.substr(0, 1).toUpperCase().concat(val.substr(1));
 };
 
-const getMappingDirective = selected => {
+const getMappingDirectiveArguments = selected => {
     if (!_.isNil(selected) && !_.isNil(selected.directives) && selected.directives.length > 0) {
         const mappingDirective = selected.directives.filter(directive => directive.name === 'mapping');
         return !_.isNil(mappingDirective) ? mappingDirective[0].arguments : null;
@@ -12,10 +12,18 @@ const getMappingDirective = selected => {
     return null;
 };
 
+const lookUpMappingArgumentIndex = (selected, argName) => {
+    const mappingDirectiveArgs = getMappingDirectiveArguments(selected);
+    if (!_.isNil(mappingDirectiveArgs)) {
+        return mappingDirectiveArgs.findIndex(argument => argument.name === argName);
+    }
+    return null;
+}
+
 const lookUpMappingArgumentInfo = (selected, argName) => {
-    const mappingDirective = getMappingDirective(selected);
-    if (!_.isNil(mappingDirective)) {
-        const arg = mappingDirective.filter(argument => argument.name === argName)[0];
+    const mappingDirectiveArgs = getMappingDirectiveArguments(selected);
+    if (!_.isNil(mappingDirectiveArgs)) {
+        const arg = mappingDirectiveArgs.filter(argument => argument.name === argName)[0];
         return !_.isNil(arg) ? arg.value : null;
     }
     return null;
@@ -33,7 +41,8 @@ const lookUpMappingBooleanArgumentInfo = (selected, argName) => {
 
 export {
     upperCaseFirst,
-    getMappingDirective,
+    getMappingDirectiveArguments,
+    lookUpMappingArgumentIndex,
     lookUpMappingArgumentInfo,
     lookUpMappingStringArgumentInfo,
     lookUpMappingBooleanArgumentInfo

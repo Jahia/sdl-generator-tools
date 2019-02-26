@@ -19,9 +19,17 @@ import {
     withStyles
 } from '@material-ui/core';
 import * as _ from 'lodash';
-import {sdlAddType, sdlEditType, sdlAddDirectiveArgToType} from '../../../App.redux-actions';
+import {
+    sdlAddType,
+    sdlAddDirectiveArgToType,
+    sdlRemoveDirectiveArgFromType
+} from '../../../App.redux-actions';
 import {sdlSelectType} from '../../StepperComponent.redux-actions';
-import {lookUpMappingStringArgumentInfo, lookUpMappingBooleanArgumentInfo} from '../../../util/helperFunctions';
+import {
+    lookUpMappingStringArgumentInfo,
+    lookUpMappingBooleanArgumentInfo,
+    lookUpMappingArgumentIndex
+} from '../../../util/helperFunctions';
 import {Close} from '@material-ui/icons';
 import * as C from '../../../util/constants';
 
@@ -85,13 +93,14 @@ const AddTypeDialog = ({data, t, open, closeDialog, mode, dispatch, dispatchBatc
                 return;
             }
             actions = [
-                sdlEditType({typeName: typeName, nodeType: nodeType}),
                 sdlSelectType(typeName)
             ];
         }
 
         if (ignoreDefaultQueries) {
             actions.push(sdlAddDirectiveArgToType(typeName, 'mapping', {value: ignoreDefaultQueries, name: 'ignoreDefaultQueries'}));
+        } else if (mode === C.EDIT && !_.isNil(selectedType)) {
+            actions.push(sdlRemoveDirectiveArgFromType(selectedType.idx, 'mapping', lookUpMappingArgumentIndex(selectedType, 'ignoreDefaultQueries')));
         }
         dispatchBatch(actions);
         closeDialog();
