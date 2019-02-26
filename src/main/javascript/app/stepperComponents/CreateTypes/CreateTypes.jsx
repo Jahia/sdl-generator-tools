@@ -6,7 +6,7 @@ import {Add, Edit} from '@material-ui/icons';
 import AddTypeDialog from './AddModifyTypeDialog';
 import AddPropertyDialog from './AddModifyPropertyDialog';
 import {compose} from 'react-apollo';
-import {dialogMode} from './addModifyTypeDialog/AddModifyTypeDialog';
+import * as C from '../../util/constants';
 import * as _ from 'lodash';
 import {lookUpMappingStringArgumentInfo} from '../../util/helperFunctions';
 
@@ -31,7 +31,7 @@ const TypeItem = withStyles(styles)(({classes, name, isSelected, selectType, upd
             <IconButton aria-label="Edit"
                         onClick={() => {
                             selectType(name);
-                            updateTypeDialogMode(dialogMode.EDIT);
+                            updateTypeDialogMode(C.EDIT);
                             showAddTypeDialog(true);
                         }}
             >
@@ -45,7 +45,7 @@ const PropertyItem = ({index, name, jcrName, selectProperty, updatePropertyDialo
     <ListItem button
               onClick={() => {
                   selectProperty(index, name, jcrName);
-                  updatePropertyDialogMode(dialogMode.EDIT);
+                  updatePropertyDialogMode(C.EDIT);
                   showAddPropertyDialog(true);
                 }}
     >
@@ -56,8 +56,8 @@ const PropertyItem = ({index, name, jcrName, selectProperty, updatePropertyDialo
 const CreateTypes = ({classes, t, nodeTypes, selection, selectedProperty, dispatch, dispatchBatch, addProperty, addArgToDirective, removeType, removeProperty, removeArgFromDirective, selectType, selectProperty}) => {
     const [addTypeDialogShown, showAddTypeDialog] = useState(false);
     const [addPropertyDialogShown, showAddPropertyDialog] = useState(false);
-    const [typeDialogMode, updateTypeDialogMode] = useState(dialogMode.ADD);
-    const [propertyDialogMode, updatePropertyDialogMode] = useState(dialogMode.ADD);
+    const [typeDialogMode, updateTypeDialogMode] = useState(C.ADD);
+    const [propertyDialogMode, updatePropertyDialogMode] = useState(C.ADD);
 
     const selectedType = nodeTypes.reduce((acc, type, idx) => type.name === selection ? Object.assign({idx: idx}, type) : acc, null);
 
@@ -93,7 +93,7 @@ const CreateTypes = ({classes, t, nodeTypes, selection, selectedProperty, dispat
                         <List subheader={<ListSubheader>{t('label.sdlGeneratorTools.createTypes.nodeTypeText')}</ListSubheader>}>
                             <ListItem>
                                 <Button onClick={() => {
-                                    updateTypeDialogMode(dialogMode.ADD);
+                                    updateTypeDialogMode(C.ADD);
                                     showAddTypeDialog(true);
                                 }}
                                 >
@@ -121,7 +121,7 @@ const CreateTypes = ({classes, t, nodeTypes, selection, selectedProperty, dispat
                         <List subheader={<ListSubheader>{t('label.sdlGeneratorTools.createTypes.propertiesText')}</ListSubheader>}>
                             <ListItem>
                                 <Button onClick={() => {
-                                    updatePropertyDialogMode(dialogMode.ADD);
+                                    updatePropertyDialogMode(C.ADD);
                                     showAddPropertyDialog(true);
                                 }}
                                 >

@@ -12,7 +12,7 @@ import gqlQueries from '../../../gql/gqlQueries';
 import * as _ from 'lodash';
 import {lookUpMappingStringArgumentInfo, upperCaseFirst} from '../../../util/helperFunctions';
 import {Close} from '@material-ui/icons';
-import {dialogMode} from '../AddModifyTypeDialog/AddModifyTypeDialog';
+import * as C from '../../../util/constants';
 
 const PropertySelectCom = ({classes, disabled, value, open, handleClose, handleChange, handleOpen, nodeProperties}) => (
     <Select disabled={disabled}
@@ -80,7 +80,7 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, selectedType
     };
 
     const openDialog = (mode, selectedPropertyName, selectedJcrPropertyName) => {
-        if (mode === dialogMode.EDIT) {
+        if (mode === C.EDIT) {
             updatePropertyName(selectedPropertyName);
             updateJcrPropertyName(selectedJcrPropertyName);
         }
@@ -95,10 +95,10 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, selectedType
                 openDialog(mode, selectedPropertyName, selectedJcrPropertyName);
             }}
         >
-            <DialogTitle id="form-dialog-title">{mode === dialogMode.EDIT ? t('label.sdlGeneratorTools.createTypes.viewProperty') : t('label.sdlGeneratorTools.createTypes.addNewPropertyButton')}</DialogTitle>
+            <DialogTitle id="form-dialog-title">{mode === C.EDIT ? t('label.sdlGeneratorTools.createTypes.viewProperty') : t('label.sdlGeneratorTools.createTypes.addNewPropertyButton')}</DialogTitle>
             <DialogContent style={{width: 400}}>
                 <PropertySelect open={showPropertySelector}
-                                disabled={mode === dialogMode.EDIT}
+                                disabled={mode === C.EDIT}
                                 nodeProperties={nodeProperties}
                                 value={jcrPropertyName}
                                 handleOpen={() => setShowPropertySelector(true)}
@@ -107,13 +107,13 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, selectedType
                 <TextField
                     autoFocus
                     fullWidth
-                    disabled={mode === dialogMode.EDIT}
+                    disabled={mode === C.EDIT}
                     margin="dense"
                     id="propertyName"
                     label={t('label.sdlGeneratorTools.createTypes.customPropertyNameText')}
                     type="text"
                     value={propertyName}
-                    error={mode === dialogMode.ADD ? isDuplicatedPropertyName(propertyName) : false}
+                    error={mode === C.ADD ? isDuplicatedPropertyName(propertyName) : false}
                     onKeyPress={e => {
                         if (e.key === 'Enter') {
                             addPropertyAndClose();
@@ -124,7 +124,7 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, selectedType
                     }}
                     onChange={e => updatePropertyName(e.target.value)}
                 />
-                <Button disabled={mode === dialogMode.ADD} color="primary" onClick={removeAndClose}>
+                <Button disabled={mode === C.ADD} color="primary" onClick={removeAndClose}>
                     {t('label.sdlGeneratorTools.deleteButton')}
                     <Close/>
                 </Button>
@@ -133,7 +133,7 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, selectedType
                 <Button color="primary" onClick={cancelAndClose}>
                     {t('label.sdlGeneratorTools.cancelButton')}
                 </Button>
-                <Button disabled={mode === dialogMode.EDIT}
+                <Button disabled={mode === C.EDIT}
                         color="primary"
                         onClick={addPropertyAndClose}
                 >

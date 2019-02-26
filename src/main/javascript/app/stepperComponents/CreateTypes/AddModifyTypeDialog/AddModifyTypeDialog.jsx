@@ -23,19 +23,15 @@ import {sdlAddType, sdlEditType, sdlAddDirectiveArgToType} from '../../../App.re
 import {sdlSelectType} from '../../StepperComponent.redux-actions';
 import {lookUpMappingStringArgumentInfo, lookUpMappingBooleanArgumentInfo} from '../../../util/helperFunctions';
 import {Close} from '@material-ui/icons';
+import * as C from '../../../util/constants';
 
-const dialogMode = {
-    ADD: 'ADD',
-    EDIT: 'EDIT'
-};
-
-const NodeTypeSelectCom = ({classes, value, open, handleClose, handleChange, handleOpen, nodeTypeNames}) => (
-    <Select
-        open={open}
-        value={value}
-        onClose={handleClose}
-        onOpen={handleOpen}
-        onChange={handleChange}
+const NodeTypeSelectCom = ({classes, disabled, value, open, handleClose, handleChange, handleOpen, nodeTypeNames}) => (
+    <Select disabled={disabled}
+            open={open}
+            value={value}
+            onClose={handleClose}
+            onOpen={handleOpen}
+            onChange={handleChange}
     >
         <MenuItem value="">
             <em>None</em>
@@ -76,7 +72,7 @@ const AddTypeDialog = ({data, t, open, closeDialog, mode, dispatch, dispatchBatc
 
     const saveTypeAndClose = () => {
         let actions;
-        if (mode === dialogMode.ADD) {
+        if (mode === C.ADD) {
             if (_.isNil(typeName) || _.isEmpty(typeName) || isDuplicatedTypeName(typeName) || _.isNil(nodeType) || _.isEmpty(nodeType)) {
                 return;
             }
@@ -114,7 +110,7 @@ const AddTypeDialog = ({data, t, open, closeDialog, mode, dispatch, dispatchBatc
     };
 
     const openDialog = (mode, typeName, nodeType, ignoreDefaultQueries) => {
-        if (mode === dialogMode.EDIT) {
+        if (mode === C.EDIT) {
             updateTypeName(typeName);
             updateNodeType(nodeType);
             updateIgnoreDefaultQueries(ignoreDefaultQueries);
@@ -130,10 +126,10 @@ const AddTypeDialog = ({data, t, open, closeDialog, mode, dispatch, dispatchBatc
                 openDialog(mode, customTypeName, jcrNodeType, ignoreDefaultQueriesDirective);
             }}
         >
-            <DialogTitle id="form-dialog-title">{mode === dialogMode.EDIT ? t('label.sdlGeneratorTools.createTypes.editTypeButton') : t('label.sdlGeneratorTools.createTypes.addNewTypeButton')}</DialogTitle>
+            <DialogTitle id="form-dialog-title">{mode === C.EDIT ? t('label.sdlGeneratorTools.createTypes.editTypeButton') : t('label.sdlGeneratorTools.createTypes.addNewTypeButton')}</DialogTitle>
             <DialogContent style={{width: 400}}>
                 <NodeTypeSelect open={showNodeTypeSelector}
-                                disabled={mode === dialogMode.EDIT}
+                                disabled={mode === C.EDIT}
                                 value={nodeType}
                                 nodeTypeNames={nodeTypeNames}
                                 handleOpen={() => setShowNodeTypeSelector(true)}
@@ -142,13 +138,13 @@ const AddTypeDialog = ({data, t, open, closeDialog, mode, dispatch, dispatchBatc
                 <TextField
                     autoFocus
                     fullWidth
-                    disabled={mode === dialogMode.EDIT}
+                    disabled={mode === C.EDIT}
                     margin="dense"
                     id="typeName"
                     label={t('label.sdlGeneratorTools.createTypes.customTypeNameText')}
                     type="text"
                     value={typeName}
-                    error={mode === dialogMode.ADD ? isDuplicatedTypeName(typeName) : false}
+                    error={mode === C.ADD ? isDuplicatedTypeName(typeName) : false}
                     onKeyPress={e => {
                         if (e.key === 'Enter') {
                             saveTypeAndClose();
@@ -170,7 +166,7 @@ const AddTypeDialog = ({data, t, open, closeDialog, mode, dispatch, dispatchBatc
                             />
                         }/>
                 </FormGroup>
-                <Button disabled={mode === dialogMode.ADD} color="primary" onClick={removeAndClose}>
+                <Button disabled={mode === C.ADD} color="primary" onClick={removeAndClose}>
                     {t('label.sdlGeneratorTools.deleteButton')}
                     <Close/>
                 </Button>
@@ -210,6 +206,3 @@ const CompositeComp = compose(
 
 export default withApollo(CompositeComp);
 
-export {
-    dialogMode
-};
