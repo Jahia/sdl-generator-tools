@@ -44,14 +44,13 @@ class StepperComponent extends React.Component {
 
     getStepContent(step) {
         switch (step) {
-            case 0:
-                return <CreateTypes/>;
             case 1:
                 return <DefineFinder/>;
             case 2:
                 return <ExportResult/>;
+            case 0:
             default:
-                return 'Unknown step';
+                return <CreateTypes/>;
         }
     }
 
@@ -116,10 +115,10 @@ class StepperComponent extends React.Component {
                         )}
                         {activeStep === lastStep ? (
                             <Button
-                                    variant="contained"
-                                    color="primary"
-                                    className={classes.button}
-                                    onClick={this.handleCopy}
+                                variant="contained"
+                                color="primary"
+                                className={classes.button}
+                                onClick={this.handleCopy}
                             >
                                 {t('label.sdlGeneratorTools.copyToClipboardButton')}
                             </Button>
