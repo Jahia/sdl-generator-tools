@@ -19,7 +19,8 @@
                 "viewProperty": "View property",
                 "customTypeNameText": "Custom type name",
                 "customPropertyNameText": "Custom property name",
-                "ignoreDefaultQueries": "Ignore Default Queries"
+                "ignoreDefaultQueries": "Ignore Default Queries",
+                "mapToCustomType": "Map to pre-defined type"
             },
             "defineFinder": {
                 "finders": "Finders",

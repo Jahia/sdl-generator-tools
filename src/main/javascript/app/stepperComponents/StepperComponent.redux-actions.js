@@ -9,11 +9,12 @@ const sdlSelectType = typeName => ({
     typeName: typeName
 });
 
-const sdlSelectProperty = (propertyIndex, propertyName, jcrPropertyName) => ({
+const sdlSelectProperty = (propertyIndex, propertyName, jcrPropertyName, propertyType) => ({
     type: actionTypes.SDL_SELECT_PROPERTY,
     propertyIndex: propertyIndex,
     propertyName: propertyName,
-    jcrPropertyName: jcrPropertyName
+    jcrPropertyName: jcrPropertyName,
+    propertyType: propertyType
 });
 
 const sdlSelectFinder = finderName => ({

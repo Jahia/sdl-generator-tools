@@ -1,7 +1,18 @@
 import React, {useState} from 'react';
 import {translate} from 'react-i18next';
 import PropTypes from 'prop-types';
-import {withStyles, Grid, Paper, List, ListItem, ListItemText, ListSubheader, ListItemSecondaryAction, IconButton, Button} from '@material-ui/core';
+import {
+    withStyles,
+    Grid,
+    Paper,
+    List,
+    ListItem,
+    ListItemText,
+    ListSubheader,
+    ListItemSecondaryAction,
+    IconButton,
+    Button
+} from '@material-ui/core';
 import {Add, Edit} from '@material-ui/icons';
 import AddTypeDialog from './AddModifyTypeDialog';
 import AddPropertyDialog from './AddModifyPropertyDialog';
@@ -41,13 +52,13 @@ const TypeItem = withStyles(styles)(({classes, name, isSelected, selectType, upd
     </ListItem>
 ));
 
-const PropertyItem = ({index, name, jcrName, selectProperty, updatePropertyDialogMode, showAddPropertyDialog}) => (
+const PropertyItem = ({index, name, type, jcrName, selectProperty, updatePropertyDialogMode, showAddPropertyDialog}) => (
     <ListItem button
               onClick={() => {
-                  selectProperty(index, name, jcrName);
+                  selectProperty(index, name, jcrName, type);
                   updatePropertyDialogMode(C.DIALOG_MODE_EDIT);
                   showAddPropertyDialog(true);
-                }}
+              }}
     >
         <ListItemText primary={name}/>
     </ListItem>
@@ -58,7 +69,7 @@ const CreateTypes = ({classes, t, nodeTypes, selection, selectedProperty, dispat
     const [addPropertyDialogShown, showAddPropertyDialog] = useState(false);
     const [typeDialogMode, updateTypeDialogMode] = useState(C.DIALOG_MODE_ADD);
     const [propertyDialogMode, updatePropertyDialogMode] = useState(C.DIALOG_MODE_ADD);
-
+    console.log(nodeTypes, selection, selectedProperty);
     const selectedType = nodeTypes.reduce((acc, type, idx) => type.name === selection ? Object.assign({idx: idx}, type) : acc, null);
 
     const isDuplicatedPropertyName = propertyName => {
@@ -90,7 +101,8 @@ const CreateTypes = ({classes, t, nodeTypes, selection, selectedProperty, dispat
             <Grid container>
                 <Grid item xs={12} sm={6}>
                     <Paper className={classes.paper}>
-                        <List subheader={<ListSubheader>{t('label.sdlGeneratorTools.createTypes.nodeTypeText')}</ListSubheader>}>
+                        <List subheader={
+                            <ListSubheader>{t('label.sdlGeneratorTools.createTypes.nodeTypeText')}</ListSubheader>}>
                             <ListItem>
                                 <Button onClick={() => {
                                     updateTypeDialogMode(C.DIALOG_MODE_ADD);
@@ -118,7 +130,8 @@ const CreateTypes = ({classes, t, nodeTypes, selection, selectedProperty, dispat
                 </Grid>
                 <Grid item xs={12} sm={6}>
                     <Paper className={classes.paper}>
-                        <List subheader={<ListSubheader>{t('label.sdlGeneratorTools.createTypes.propertiesText')}</ListSubheader>}>
+                        <List subheader={
+                            <ListSubheader>{t('label.sdlGeneratorTools.createTypes.propertiesText')}</ListSubheader>}>
                             <ListItem>
                                 <Button onClick={() => {
                                     updatePropertyDialogMode(C.DIALOG_MODE_ADD);
@@ -130,17 +143,22 @@ const CreateTypes = ({classes, t, nodeTypes, selection, selectedProperty, dispat
                                 </Button>
                             </ListItem>
                             {
-                                nodeTypes.filter(type => type.name === selection).map(type => type.fieldDefinitions.map((field, i) => (
-                                        <PropertyItem key={`${field.name}_${i}`}
-                                                      index={i}
-                                                      name={field.name}
-                                                      jcrName={lookUpMappingStringArgumentInfo(field, 'property')}
-                                                      selectProperty={selectProperty}
-                                                      showAddPropertyDialog={showAddPropertyDialog}
-                                                      updatePropertyDialogMode={updatePropertyDialogMode}
-                                        />
-                                    )
-                                ))
+                                nodeTypes
+                                    .filter(type => type.name === selection)
+                                    .map(type => type.fieldDefinitions
+                                        .map((field, i) => {
+                                                return (
+                                                    <PropertyItem key={`${field.name}_${i}`}
+                                                                  index={i}
+                                                                  name={field.name}
+                                                                  type={field.type}
+                                                                  jcrName={lookUpMappingStringArgumentInfo(field, 'property')}
+                                                                  selectProperty={selectProperty}
+                                                                  showAddPropertyDialog={showAddPropertyDialog}
+                                                                  updatePropertyDialogMode={updatePropertyDialogMode}/>
+                                                );
+                                            }
+                                        ))
                             }
                         </List>
                     </Paper>

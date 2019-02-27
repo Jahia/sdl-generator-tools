@@ -32,7 +32,7 @@ const mapDispatchToProps = dispatch => {
         addProperty: (propertyInfo, typeIndex) => dispatch(sdlAddPropertyToType(propertyInfo, typeIndex)),
         removeProperty: (propertyIndex, typeIndexOrName) => dispatch(sdlRemovePropertyFromType(propertyIndex, typeIndexOrName)),
         selectType: typeName => dispatch(sdlSelectType(typeName)),
-        selectProperty: (propertyIndex, propertyName, jcrPropertyName) => dispatch(sdlSelectProperty(propertyIndex, propertyName, jcrPropertyName)),
+        selectProperty: (propertyIndex, propertyName, jcrPropertyName, propertyType) => dispatch(sdlSelectProperty(propertyIndex, propertyName, jcrPropertyName, propertyType)),
         dispatch: action => dispatch(action),
         dispatchBatch: actions => dispatch(batchActions(actions))
     };

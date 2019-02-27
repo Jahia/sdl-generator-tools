@@ -1,4 +1,5 @@
 import {actionTypes} from './StepperComponent.redux-actions';
+import {isPredefinedType} from '../util/helperFunctions';
 
 const selectionReducer = (state = null, action) => {
     switch (action.type) {
@@ -22,7 +23,9 @@ const selectedPropertyReducer = (state = null, action) => {
             return {
                 propertyIndex: action.propertyIndex,
                 propertyName: action.propertyName,
-                jcrPropertyName: action.jcrPropertyName
+                propertyType: action.propertyType,
+                jcrPropertyName: action.jcrPropertyName,
+                isPredefinedType: isPredefinedType(action.propertyType)
             };
         default: return state;
     }

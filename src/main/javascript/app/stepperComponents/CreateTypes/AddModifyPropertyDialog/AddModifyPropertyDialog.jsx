@@ -5,12 +5,20 @@ import DialogTitle from '@material-ui/core/DialogTitle/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent/DialogContent';
 import TextField from '@material-ui/core/TextField/TextField';
 import DialogActions from '@material-ui/core/DialogActions/DialogActions';
-import {Button, ListItemText, MenuItem, Select, withStyles} from '@material-ui/core';
+import {
+    Button,
+    FormControlLabel,
+    FormGroup,
+    ListItemText,
+    MenuItem,
+    Select,
+    Switch,
+    withStyles
+} from '@material-ui/core';
 import {translate} from 'react-i18next';
-import {compose, graphql, withApollo} from 'react-apollo';
-import gqlQueries from '../../../gql/gqlQueries';
+import {compose} from 'react-apollo';
 import * as _ from 'lodash';
-import {lookUpMappingStringArgumentInfo, upperCaseFirst} from '../../../util/helperFunctions';
+import {upperCaseFirst} from '../../../util/helperFunctions';
 import {Close} from '@material-ui/icons';
 import C from '../../../App.constants';
 
@@ -43,16 +51,19 @@ const PropertySelect = withStyles({
     }
 })(PropertySelectCom);
 
-const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, selectedType, selectedProperty, addProperty, removeProperty, isDuplicatedPropertyName}) => {
+const AddModifyPropertyDialog = ({t, open, closeDialog, mode, selectedType, selectedProperty, addProperty, removeProperty, isDuplicatedPropertyName, selectableProps}) => {
+    console.log("Dialog refresh");
     const typeName = !_.isNil(selectedType) ? selectedType.name : '';
     const selectedPropertyName = !_.isNil(selectedProperty) ? selectedProperty.propertyName : '';
     const selectedJcrPropertyName = !_.isNil(selectedProperty) ? selectedProperty.jcrPropertyName : '';
+    const selectedPropertyType = !_.isNil(selectedProperty) ? selectedProperty.propertyType : '';
+    const selectedIsPredifinedType = !_.isNil(selectedProperty) ? selectedProperty.isPredefinedType : '';
     const [propertyName, updatePropertyName] = useState(selectedPropertyName);
     const [jcrPropertyName, updateJcrPropertyName] = useState(selectedJcrPropertyName);
     const [showPropertySelector, setShowPropertySelector] = useState(false);
-
-    const nodes = !_.isNil(data.jcr) ? data.jcr.nodeTypes.nodes : null;
-    const nodeProperties = !_.isNil(nodes) && nodes.length > 0 ? nodes[0].properties : null;
+    const [mapToPredefinedType, setMapToPredefinedType] = useState(false);
+    const nodeProperties = selectableProps;
+    console.log("PT", selectedIsPredifinedType);
 
     const cleanUp = () => {
         updatePropertyName(null);
@@ -99,6 +110,17 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, selectedType
         >
             <DialogTitle id="form-dialog-title">{mode === C.DIALOG_MODE_EDIT ? t('label.sdlGeneratorTools.createTypes.viewProperty') : t('label.sdlGeneratorTools.createTypes.addNewPropertyButton')}</DialogTitle>
             <DialogContent style={{width: 400}}>
+                <FormGroup row>
+                    <FormControlLabel
+                        label={t('label.sdlGeneratorTools.createTypes.mapToCustomType')}
+                        control={
+                            <Switch
+                                color="primary"
+                                checked={mapToPredefinedType}
+                                onChange={e => setMapToPredefinedType(e.target.checked)}
+                            />
+                        }/>
+                </FormGroup>
                 <PropertySelect open={showPropertySelector}
                                 disabled={mode === C.DIALOG_MODE_EDIT}
                                 nodeProperties={nodeProperties}
@@ -154,7 +176,11 @@ AddModifyPropertyDialog.propTypes = {
     closeDialog: PropTypes.func.isRequired,
     addProperty: PropTypes.func.isRequired,
     removeProperty: PropTypes.func.isRequired,
-    selectedProperty: PropTypes.object
+    mode: PropTypes.string.isRequired,
+    selectedType: PropTypes.string.isRequired,
+    isDuplicatedPropertyName: PropTypes.func.isRequired,
+    selectedProperty: PropTypes.object,
+    selectableProps: PropTypes.array
 };
 
 AddModifyPropertyDialog.defaultProps = {
@@ -162,17 +188,7 @@ AddModifyPropertyDialog.defaultProps = {
 };
 
 const CompositeComp = compose(
-    graphql(gqlQueries.NODE_TYPE_PROPERTIES, {
-        options(props) {
-            return {
-                variables: {
-                    includeTypes: [lookUpMappingStringArgumentInfo(props.selectedType, 'node')]
-                },
-                fetchPolicy: 'network-only'
-            };
-        }
-    }),
     translate()
 )(AddModifyPropertyDialog);
 
-export default withApollo(CompositeComp);
+export default CompositeComp;
