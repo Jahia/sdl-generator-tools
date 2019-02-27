@@ -1,13 +1,14 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
+import * as _ from 'lodash';
 import {withStyles, Grid, Paper, List, ListItem, ListItemText, ListSubheader, ListItemSecondaryAction, Button, IconButton} from '@material-ui/core';
 import {Edit} from '@material-ui/icons';
 import {Add} from '@material-ui/icons';
-import AddModifyFinderDialog from './AddModifyFinderDialog';
+import AddModifyFinderDialog from './addModifyFinderDialog';
 import {compose} from 'react-apollo';
 import {translate} from 'react-i18next';
 import {upperCaseFirst} from '../../util/helperFunctions';
-import * as C from '../../util/constants';
+import C from '../../App.constants';
 
 const styles = theme => ({
     paper: {
@@ -22,17 +23,17 @@ const styles = theme => ({
 });
 
 const DefineFinders = ({classes, t, addFinder, modifyFinder, removeFinder, nodeTypes, selection, selectType, selectedFinder, selectFinder}) => {
-    const [dialogState, updateDialogState] = useState({open: false, mode: C.ADD});
+    const [dialogState, updateDialogState] = useState({open: false, mode: C.DIALOG_MODE_ADD});
     const selectedType = nodeTypes.reduce((acc, type, idx) => type.name === selection ? Object.assign({idx: idx}, type) : acc, null);
     const availableFinders = selectedType ? filterAvailableFinders(selectedType) : [];
 
     function handleEditFinder(finderName) {
-        updateDialogState(Object.assign({}, dialogState, {open: true, mode: C.EDIT}));
+        updateDialogState(Object.assign({}, dialogState, {open: true, mode: C.DIALOG_MODE_EDIT}));
         selectFinder(finderName);
     }
 
     function addOrModifyFinder(finderInfo) {
-        if (dialogState.mode === C.ADD) {
+        if (dialogState.mode === C.DIALOG_MODE_ADD) {
             addFinder(selection, finderInfo);
         } else {
             let finderIndex = selectedType.queries.reduce((acc, curr, idx) => curr.name === selectedFinder ? idx : acc, null);
@@ -62,19 +63,22 @@ const DefineFinders = ({classes, t, addFinder, modifyFinder, removeFinder, nodeT
                         <List subheader={<ListSubheader>{t('label.sdlGeneratorTools.defineFinder.finders')}</ListSubheader>}>
                             <ListItem>
                                 <Button disabled={selectedType === null || availableFinders.length === 0}
-                                        onClick={() => updateDialogState(Object.assign({}, dialogState, {open: true, mode: C.ADD}))}
+                                        onClick={() => updateDialogState(Object.assign({}, dialogState, {open: true, mode: C.DIALOG_MODE_ADD}))}
                                 >
                                     {t('label.sdlGeneratorTools.defineFinder.addAFinderCaption')}
                                     <Add/>
                                 </Button>
                             </ListItem>
                             {
-                                nodeTypes.filter(type => type.name === selection).map(type => type.queries.map((finder, idx) => (
-                                    <FinderItem key={finder.name}
-                                                handleEditFinder={handleEditFinder}
-                                                name={finder.name}
-                                    />
-                                    )
+                                nodeTypes.filter(type => type.name === selection).map(type => type.queries.map((finder, idx) => {
+                                        return (
+                                            <FinderItem key={finder.name}
+                                                        handleEditFinder={handleEditFinder}
+                                                        removeFinder={() => removeFinder(selectedType.idx, idx)}
+                                                        name={finder.name}
+                                            />
+                                        );
+                                    }
                                 ))
                             }
                         </List>
@@ -94,26 +98,14 @@ const DefineFinders = ({classes, t, addFinder, modifyFinder, removeFinder, nodeT
     );
 
     function filterAvailableFinders(selectedType) {
-        let finders = [];
-        let editingFinder = getSelectedFinder();
-        if (editingFinder && editingFinder.suffix === 'all') {
-            finders.push('all');
-        } else if (selectedType.queries.reduce((acc, curr) => curr.suffix === 'all' ? false : acc, true)) {
-            finders.push('all');
-        }
-        return selectedType.fieldDefinitions.reduce((acc, curr) => {
+        let finders = ['all', 'allConnection'];
+        // Check and filter out all/allConnection if it already is mapped to an existing finder
+        finders = _.without(finders, ...selectedType.queries.filter(finder => finders.indexOf(finder.suffix) !== -1).map(finder => finder.suffix));
+        // Add finders based on type properties, omit those that have already been created.
+        finders = selectedType.fieldDefinitions.reduce((acc, curr) => {
             let finder = `by${upperCaseFirst(curr.name)}`;
             let connectionVariant = `${finder}Connection`;
             let connectionVariantExists = false;
-            if (editingFinder && editingFinder.suffix === finder) {
-                // If dialog mode is EDIT and the selected finder is this one
-                // Then add it to the list
-                acc.push(finder);
-            } else if (editingFinder && editingFinder.suffix === connectionVariant) {
-                // If dialog mode is EDIT and the selected finder is this one
-                // Then add it to the list
-                acc.push(connectionVariant);
-            }
             if (selectedType.queries.reduce((found, query) => {
                 if (connectionVariant === query.suffix) {
                     connectionVariantExists = true;
@@ -127,10 +119,17 @@ const DefineFinders = ({classes, t, addFinder, modifyFinder, removeFinder, nodeT
             }
             return acc;
         }, finders);
+        // If we are editing, add the suffix of the editing finder to the finders list and sort it.
+        let editingFinder = getSelectedFinder();
+        if (editingFinder) {
+            finders.push(editingFinder.suffix);
+            finders.sort();
+        }
+        return finders;
     }
 
     function getSelectedFinder() {
-        if (dialogState.mode === C.EDIT) {
+        if (dialogState.mode === C.DIALOG_MODE_EDIT) {
             return selectedType.queries.reduce((acc, curr) => curr.name === selectedFinder ? curr : acc, null);
         }
         return null;

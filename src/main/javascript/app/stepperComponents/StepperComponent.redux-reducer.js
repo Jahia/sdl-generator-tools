@@ -26,7 +26,7 @@ const selectedPropertyReducer = (state = null, action) => {
             };
         default: return state;
     }
-}
+};
 
 export {
     selectionReducer,

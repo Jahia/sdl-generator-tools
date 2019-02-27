@@ -19,6 +19,7 @@ import {
     withStyles
 } from '@material-ui/core';
 import * as _ from 'lodash';
+import C from '../../../App.constants';
 import {
     sdlAddType,
     sdlAddDirectiveArgToType,
@@ -31,7 +32,6 @@ import {
     lookUpMappingArgumentIndex
 } from '../../../util/helperFunctions';
 import {Close} from '@material-ui/icons';
-import * as C from '../../../util/constants';
 
 const NodeTypeSelectCom = ({classes, disabled, value, open, handleClose, handleChange, handleOpen, nodeTypeNames}) => (
     <Select disabled={disabled}
@@ -70,7 +70,17 @@ const AddTypeDialog = ({data, t, open, closeDialog, mode, dispatch, dispatchBatc
     const [nodeType, updateNodeType] = useState(jcrNodeType);
     const [showNodeTypeSelector, setShowNodeTypeSelector] = useState(false);
     const [ignoreDefaultQueries, updateIgnoreDefaultQueries] = useState(ignoreDefaultQueriesDirective);
-    const nodeTypeNames = !_.isNil(data.jcr) ? data.jcr.nodeTypes.nodes : null;
+    const nodeTypeNames = !_.isNil(data.jcr) ? data.jcr.nodeTypes.nodes.sort((a, b) => {
+        a = a.displayName.toLowerCase();
+        b = b.displayName.toLowerCase();
+        if (a < b) {
+            return -1;
+        }
+        if (a > b) {
+            return 1;
+        }
+        return 0;
+    }) : null;
 
     const cleanUp = () => {
         updateTypeName(null);
@@ -78,10 +88,12 @@ const AddTypeDialog = ({data, t, open, closeDialog, mode, dispatch, dispatchBatc
         updateIgnoreDefaultQueries(false);
     };
 
+    const duplicateName = isDuplicatedTypeName(typeName);
+
     const saveTypeAndClose = () => {
         let actions;
-        if (mode === C.ADD) {
-            if (_.isNil(typeName) || _.isEmpty(typeName) || isDuplicatedTypeName(typeName) || _.isNil(nodeType) || _.isEmpty(nodeType)) {
+        if (mode === C.DIALOG_MODE_ADD) {
+            if (_.isNil(typeName) || _.isEmpty(typeName) || _.isNil(nodeType) || _.isEmpty(nodeType)) {
                 return;
             }
             actions = [
@@ -98,8 +110,11 @@ const AddTypeDialog = ({data, t, open, closeDialog, mode, dispatch, dispatchBatc
         }
 
         if (ignoreDefaultQueries) {
-            actions.push(sdlAddDirectiveArgToType(typeName, 'mapping', {value: ignoreDefaultQueries, name: 'ignoreDefaultQueries'}));
-        } else if (mode === C.EDIT && !_.isNil(selectedType)) {
+            actions.push(sdlAddDirectiveArgToType(typeName, 'mapping', {
+                value: ignoreDefaultQueries,
+                name: 'ignoreDefaultQueries'
+            }));
+        } else if (mode === C.DIALOG_MODE_EDIT && !_.isNil(selectedType)) {
             actions.push(sdlRemoveDirectiveArgFromType(selectedType.idx, 'mapping', lookUpMappingArgumentIndex(selectedType, 'ignoreDefaultQueries')));
         }
         dispatchBatch(actions);
@@ -119,7 +134,7 @@ const AddTypeDialog = ({data, t, open, closeDialog, mode, dispatch, dispatchBatc
     };
 
     const openDialog = (mode, typeName, nodeType, ignoreDefaultQueries) => {
-        if (mode === C.EDIT) {
+        if (mode === C.DIALOG_MODE_EDIT) {
             updateTypeName(typeName);
             updateNodeType(nodeType);
             updateIgnoreDefaultQueries(ignoreDefaultQueries);
@@ -135,10 +150,13 @@ const AddTypeDialog = ({data, t, open, closeDialog, mode, dispatch, dispatchBatc
                 openDialog(mode, customTypeName, jcrNodeType, ignoreDefaultQueriesDirective);
             }}
         >
-            <DialogTitle id="form-dialog-title">{mode === C.EDIT ? t('label.sdlGeneratorTools.createTypes.editTypeButton') : t('label.sdlGeneratorTools.createTypes.addNewTypeButton')}</DialogTitle>
+            <DialogTitle
+                id="form-dialog-title"
+            >{mode === C.DIALOG_MODE_EDIT ? t('label.sdlGeneratorTools.createTypes.editTypeButton') : t('label.sdlGeneratorTools.createTypes.addNewTypeButton')}
+            </DialogTitle>
             <DialogContent style={{width: 400}}>
                 <NodeTypeSelect open={showNodeTypeSelector}
-                                disabled={mode === C.EDIT}
+                                disabled={mode === C.DIALOG_MODE_EDIT}
                                 value={nodeType}
                                 nodeTypeNames={nodeTypeNames}
                                 handleOpen={() => setShowNodeTypeSelector(true)}
@@ -147,13 +165,13 @@ const AddTypeDialog = ({data, t, open, closeDialog, mode, dispatch, dispatchBatc
                 <TextField
                     autoFocus
                     fullWidth
-                    disabled={mode === C.EDIT}
+                    disabled={mode === C.DIALOG_MODE_EDIT}
                     margin="dense"
                     id="typeName"
                     label={t('label.sdlGeneratorTools.createTypes.customTypeNameText')}
                     type="text"
                     value={!_.isNil(typeName) ? typeName : ''}
-                    error={mode === C.ADD ? isDuplicatedTypeName(typeName) : false}
+                    error={mode === C.DIALOG_MODE_ADD ? duplicateName : false}
                     onKeyPress={e => {
                         if (e.key === 'Enter') {
                             saveTypeAndClose();
@@ -175,16 +193,20 @@ const AddTypeDialog = ({data, t, open, closeDialog, mode, dispatch, dispatchBatc
                             />
                         }/>
                 </FormGroup>
-                <Button disabled={mode === C.ADD} color="primary" onClick={removeAndClose}>
-                    {t('label.sdlGeneratorTools.deleteButton')}
-                    <Close/>
-                </Button>
+                {
+                    mode === C.DIALOG_MODE_EDIT &&
+                    <Button color="primary" onClick={removeAndClose}>
+                        {t('label.sdlGeneratorTools.deleteButton')}
+                        <Close/>
+                    </Button>
+                }
             </DialogContent>
             <DialogActions>
                 <Button color="primary" onClick={cancelAndClose}>
                     {t('label.sdlGeneratorTools.cancelButton')}
                 </Button>
                 <Button color="primary"
+                        disabled={duplicateName}
                         onClick={saveTypeAndClose}
                 >
                     {t('label.sdlGeneratorTools.saveButton')}
@@ -214,3 +236,4 @@ const CompositeComp = compose(
 )(AddTypeDialog);
 
 export default withApollo(CompositeComp);
+

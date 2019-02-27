@@ -7,7 +7,7 @@ import TextField from '@material-ui/core/TextField/TextField';
 import DialogActions from '@material-ui/core/DialogActions/DialogActions';
 import {translate} from 'react-i18next';
 import {upperCaseFirst} from '../../../util/helperFunctions';
-import * as C from '../../../util/constants';
+import C from '../../../App.constants';
 import * as _ from 'lodash';
 import {Close} from '@material-ui/icons';
 
@@ -27,10 +27,10 @@ const FinderSelect = ({open, handleClose, handleOpen, handleChange, value, value
 };
 
 const AddModifyFinderDialog = ({t, open, close, mode, addOrModifyFinder, removeFinder, selectedFinder, selectedType, availableFinders}) => {
-    const currentFinder = selectedType.queries.filter(query => query.name === selectedFinder)[0];
+    const currentFinder = !_.isNil(selectedType) ? selectedType.queries.filter(query => query.name === selectedFinder)[0] : null;
     const currentFinderPrefix = !_.isNil(currentFinder) ? currentFinder.prefix : '';
     const currentFinderSuffix = !_.isNil(currentFinder) ? currentFinder.suffix : '';
-    const [finderPrefix, updateFinderPrefix] = useState();
+    const [finderPrefix, updateFinderPrefix] = useState(currentFinderPrefix);
     const [finderSuffix, updateFinderSuffix] = useState(currentFinderSuffix);
     const [showFinderSelector, setFinderSelectorStatus] = useState(false);
 
@@ -39,15 +39,24 @@ const AddModifyFinderDialog = ({t, open, close, mode, addOrModifyFinder, removeF
         updateFinderSuffix(null);
     };
 
-    function addFinderAndClose() {
+    const addFinderAndClose = () => {
         if (_.isNil(finderPrefix) || _.isEmpty(finderPrefix) || _.isNil(finderSuffix) || _.isEmpty(finderSuffix)) {
             return;
         }
-        let name = finderSuffix === 'all' ? finderSuffix + upperCaseFirst(finderPrefix) : finderPrefix + upperCaseFirst(finderSuffix);
-        addOrModifyFinder({name: name, prefix: finderPrefix, suffix: finderSuffix});
+        addOrModifyFinder({name: formatName(), prefix: finderPrefix, suffix: finderSuffix});
         close();
         cleanUp();
-    }
+        function formatName() {
+            switch (finderSuffix) {
+                case 'all':
+                    return finderSuffix + upperCaseFirst(finderPrefix);
+                case 'allConnection':
+                    return 'all' + upperCaseFirst(finderPrefix) + 'Connection';
+                default:
+                    return finderPrefix + upperCaseFirst(finderSuffix);
+            }
+        }
+    };
 
     const removeAndClose = () => {
         removeFinder(selectedType.name, currentFinder.name);
@@ -61,7 +70,7 @@ const AddModifyFinderDialog = ({t, open, close, mode, addOrModifyFinder, removeF
     };
 
     const openDialog = (mode, finderPrefix, finderSuffix) => {
-        if (mode === C.EDIT) {
+        if (mode === C.DIALOG_MODE_EDIT) {
             updateFinderPrefix(finderPrefix);
             updateFinderSuffix(finderSuffix);
         }
@@ -74,7 +83,9 @@ const AddModifyFinderDialog = ({t, open, close, mode, addOrModifyFinder, removeF
                     openDialog(mode, currentFinderPrefix, currentFinderSuffix);
                 }}
         >
-            <DialogTitle id="form-dialog-title">{t(mode === C.ADD ? 'label.sdlGeneratorTools.defineFinder.addAFinderCaption' : 'label.sdlGeneratorTools.defineFinder.editAFinderCaption')}</DialogTitle>
+            <DialogTitle id="form-dialog-title">{t(mode === C.DIALOG_MODE_ADD ? 'label.sdlGeneratorTools.defineFinder.addAFinderCaption' :
+                'label.sdlGeneratorTools.defineFinder.editAFinderCaption')}
+            </DialogTitle>
             <DialogContent style={{width: 400}}>
                 <FinderSelect open={showFinderSelector}
                               values={availableFinders}
@@ -99,7 +110,7 @@ const AddModifyFinderDialog = ({t, open, close, mode, addOrModifyFinder, removeF
                            }}
                            onChange={e => updateFinderPrefix(e.target.value)}
                 />
-                <Button disabled={mode === C.ADD} color="primary" onClick={removeAndClose}>
+                <Button disabled={mode === C.DIALOG_MODE_ADD} color="primary" onClick={removeAndClose}>
                     {t('label.sdlGeneratorTools.deleteButton')}
                     <Close/>
                 </Button>
