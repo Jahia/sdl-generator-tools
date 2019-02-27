@@ -57,17 +57,22 @@ const AddModifyPropertyDialog = ({t, open, closeDialog, mode, selectedType, sele
     const selectedPropertyName = !_.isNil(selectedProperty) ? selectedProperty.propertyName : '';
     const selectedJcrPropertyName = !_.isNil(selectedProperty) ? selectedProperty.jcrPropertyName : '';
     const selectedPropertyType = !_.isNil(selectedProperty) ? selectedProperty.propertyType : '';
-    const selectedIsPredifinedType = !_.isNil(selectedProperty) ? selectedProperty.isPredefinedType : '';
+    const selectedIsPredifinedType = !_.isNil(selectedProperty) ? selectedProperty.isPredefinedType : false;
     const [propertyName, updatePropertyName] = useState(selectedPropertyName);
     const [jcrPropertyName, updateJcrPropertyName] = useState(selectedJcrPropertyName);
     const [showPropertySelector, setShowPropertySelector] = useState(false);
-    const [mapToPredefinedType, setMapToPredefinedType] = useState(false);
-    const nodeProperties = selectableProps;
-    console.log("PT", selectedIsPredifinedType);
+    const [mapToPredefinedType, setMapToPredefinedType] = useState(selectedIsPredifinedType);
+    let nodeProperties = selectableProps;
+
+    if (mapToPredefinedType) {
+        nodeProperties = selectableProps.filter(props => ["WEAKREFERENCE"].indexOf(props.requiredType) !== -1);
+        //TODO add children as well
+    }
 
     const cleanUp = () => {
         updatePropertyName(null);
         updateJcrPropertyName(null);
+        setMapToPredefinedType(false);
     };
 
     const duplicateName = isDuplicatedPropertyName(propertyName);
@@ -121,6 +126,9 @@ const AddModifyPropertyDialog = ({t, open, closeDialog, mode, selectedType, sele
                             />
                         }/>
                 </FormGroup>
+                {
+                    mapToPredefinedType && "Predefined!!!"
+                }
                 <PropertySelect open={showPropertySelector}
                                 disabled={mode === C.DIALOG_MODE_EDIT}
                                 nodeProperties={nodeProperties}
