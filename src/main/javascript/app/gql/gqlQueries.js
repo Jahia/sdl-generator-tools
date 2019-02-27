@@ -20,6 +20,12 @@ const gqlQueries = {
                         name
                         requiredType
                     }
+                    childNodes: nodes {
+                        name
+                        requiredPrimaryType{
+                            name
+                        }
+                    }
                 }
             }
         }
