@@ -7,7 +7,7 @@ import AddModifyFinderDialog from './addModifyFinderDialog';
 import {compose} from 'react-apollo';
 import {translate} from 'react-i18next';
 import {upperCaseFirst} from '../../util/helperFunctions';
-import {finderDialogMode} from './addModifyFinderDialog/AddModifyFinderDialog';
+import C from '../../App.constants';
 
 const styles = theme => ({
     paper: {
@@ -20,17 +20,17 @@ const styles = theme => ({
 });
 
 const DefineFinders = ({classes, t, addFinder, modifyFinder, removeFinder, nodeTypes, selection, selectType, selectedFinder, selectFinder}) => {
-    const [dialogState, updateDialogState] = useState({open: false, mode: finderDialogMode.ADD});
+    const [dialogState, updateDialogState] = useState({open: false, mode: C.DIALOG_MODE_ADD});
     const selectedType = nodeTypes.reduce((acc, type, idx) => type.name === selection ? Object.assign({idx: idx}, type) : acc, null);
     const availableFinders = selectedType ? filterAvailableFinders(selectedType) : [];
 
     function handleEditFinder(finderName) {
-        updateDialogState(Object.assign({}, dialogState, {open: true, mode: finderDialogMode.EDIT}));
+        updateDialogState(Object.assign({}, dialogState, {open: true, mode: C.DIALOG_MODE_EDIT}));
         selectFinder(finderName);
     }
 
     function addOrModifyFinder(finderInfo) {
-        if (dialogState.mode === finderDialogMode.ADD) {
+        if (dialogState.mode === C.DIALOG_MODE_ADD) {
             addFinder(selection, finderInfo);
         } else {
             let finderIndex = selectedType.queries.reduce((acc, curr, idx) => curr.name === selectedFinder ? idx : acc, null);
@@ -59,7 +59,7 @@ const DefineFinders = ({classes, t, addFinder, modifyFinder, removeFinder, nodeT
                     <Paper className={classes.paper}>
                         <List subheader={<ListSubheader>{t('label.sdlGeneratorTools.defineFinder.finders')}</ListSubheader>}>
                             <Button disabled={selectedType === null || availableFinders.length === 0}
-                                    onClick={() => updateDialogState(Object.assign({}, dialogState, {open: true, mode: finderDialogMode.ADD}))}
+                                    onClick={() => updateDialogState(Object.assign({}, dialogState, {open: true, mode: C.DIALOG_MODE_ADD}))}
                             >
                                 {t('label.sdlGeneratorTools.defineFinder.addAFinderCaption')}
                                 <Add/>
@@ -105,11 +105,11 @@ const DefineFinders = ({classes, t, addFinder, modifyFinder, removeFinder, nodeT
             let connectionVariant = `${finder}Connection`;
             let connectionVariantExists = false;
             if (editingFinder && editingFinder.suffix === finder) {
-                // If dialog mode is EDIT and the selected finder is this one
+                // If dialog mode is DIALOG_MODE_EDIT and the selected finder is this one
                 // Then add it to the list
                 acc.push(finder);
             } else if (editingFinder && editingFinder.suffix === connectionVariant) {
-                // If dialog mode is EDIT and the selected finder is this one
+                // If dialog mode is DIALOG_MODE_EDIT and the selected finder is this one
                 // Then add it to the list
                 acc.push(connectionVariant);
             }
@@ -129,7 +129,7 @@ const DefineFinders = ({classes, t, addFinder, modifyFinder, removeFinder, nodeT
     }
 
     function getSelectedFinder() {
-        if (dialogState.mode === finderDialogMode.EDIT) {
+        if (dialogState.mode === C.DIALOG_MODE_EDIT) {
             return selectedType.queries.reduce((acc, curr) => curr.name === selectedFinder ? curr : acc, null);
         }
         return null;

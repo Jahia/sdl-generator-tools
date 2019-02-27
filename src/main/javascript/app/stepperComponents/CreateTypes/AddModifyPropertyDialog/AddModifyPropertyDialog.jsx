@@ -12,7 +12,7 @@ import gqlQueries from '../../../gql/gqlQueries';
 import * as _ from 'lodash';
 import {lookUpMappingStringArgumentInfo, upperCaseFirst} from '../../../util/helperFunctions';
 import {Close} from '@material-ui/icons';
-import * as C from '../../../util/constants';
+import C from '../../../App.constants';
 
 const PropertySelectCom = ({classes, disabled, value, open, handleClose, handleChange, handleOpen, nodeProperties}) => (
     <Select disabled={disabled}
@@ -59,8 +59,10 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, selectedType
         updateJcrPropertyName(null);
     };
 
+    const duplicateName = isDuplicatedPropertyName(propertyName);
+
     const addPropertyAndClose = () => {
-        if (_.isNil(propertyName) || isDuplicatedPropertyName(propertyName) || _.isEmpty(propertyName) || _.isNil(jcrPropertyName) || _.isEmpty(jcrPropertyName)) {
+        if (_.isNil(propertyName) || _.isEmpty(propertyName) || _.isNil(jcrPropertyName) || _.isEmpty(jcrPropertyName)) {
             return;
         }
         addProperty({name: propertyName, property: jcrPropertyName, type: 'String'}, typeName);
@@ -80,7 +82,7 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, selectedType
     };
 
     const openDialog = (mode, selectedPropertyName, selectedJcrPropertyName) => {
-        if (mode === C.EDIT) {
+        if (mode === C.DIALOG_MODE_EDIT) {
             updatePropertyName(selectedPropertyName);
             updateJcrPropertyName(selectedJcrPropertyName);
         }
@@ -95,10 +97,10 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, selectedType
                 openDialog(mode, selectedPropertyName, selectedJcrPropertyName);
             }}
         >
-            <DialogTitle id="form-dialog-title">{mode === C.EDIT ? t('label.sdlGeneratorTools.createTypes.viewProperty') : t('label.sdlGeneratorTools.createTypes.addNewPropertyButton')}</DialogTitle>
+            <DialogTitle id="form-dialog-title">{mode === C.DIALOG_MODE_EDIT ? t('label.sdlGeneratorTools.createTypes.viewProperty') : t('label.sdlGeneratorTools.createTypes.addNewPropertyButton')}</DialogTitle>
             <DialogContent style={{width: 400}}>
                 <PropertySelect open={showPropertySelector}
-                                disabled={mode === C.EDIT}
+                                disabled={mode === C.DIALOG_MODE_EDIT}
                                 nodeProperties={nodeProperties}
                                 value={jcrPropertyName}
                                 handleOpen={() => setShowPropertySelector(true)}
@@ -107,13 +109,13 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, selectedType
                 <TextField
                     autoFocus
                     fullWidth
-                    disabled={mode === C.EDIT}
+                    disabled={mode === C.DIALOG_MODE_EDIT}
                     margin="dense"
                     id="propertyName"
                     label={t('label.sdlGeneratorTools.createTypes.customPropertyNameText')}
                     type="text"
                     value={propertyName}
-                    error={mode === C.ADD ? isDuplicatedPropertyName(propertyName) : false}
+                    error={mode === C.DIALOG_MODE_ADD ? duplicateName : false}
                     onKeyPress={e => {
                         if (e.key === 'Enter') {
                             addPropertyAndClose();
@@ -124,16 +126,19 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, selectedType
                     }}
                     onChange={e => updatePropertyName(e.target.value)}
                 />
-                <Button disabled={mode === C.ADD} color="primary" onClick={removeAndClose}>
-                    {t('label.sdlGeneratorTools.deleteButton')}
-                    <Close/>
-                </Button>
+                {
+                    mode === C.DIALOG_MODE_EDIT &&
+                    <Button color="primary" onClick={removeAndClose}>
+                        {t('label.sdlGeneratorTools.deleteButton')}
+                        <Close/>
+                    </Button>
+                }
             </DialogContent>
             <DialogActions>
                 <Button color="primary" onClick={cancelAndClose}>
                     {t('label.sdlGeneratorTools.cancelButton')}
                 </Button>
-                <Button disabled={mode === C.EDIT}
+                <Button disabled={mode === C.DIALOG_MODE_EDIT || duplicateName}
                         color="primary"
                         onClick={addPropertyAndClose}
                 >

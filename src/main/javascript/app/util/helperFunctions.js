@@ -18,7 +18,7 @@ const lookUpMappingArgumentIndex = (selected, argName) => {
         return mappingDirectiveArgs.findIndex(argument => argument.name === argName);
     }
     return null;
-}
+};
 
 const lookUpMappingArgumentInfo = (selected, argName) => {
     const mappingDirectiveArgs = getMappingDirectiveArguments(selected);

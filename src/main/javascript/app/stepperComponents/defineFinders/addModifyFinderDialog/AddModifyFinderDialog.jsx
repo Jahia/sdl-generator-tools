@@ -7,11 +7,7 @@ import TextField from '@material-ui/core/TextField/TextField';
 import DialogActions from '@material-ui/core/DialogActions/DialogActions';
 import {translate} from 'react-i18next';
 import {upperCaseFirst} from '../../../util/helperFunctions';
-
-const finderDialogMode = {
-    ADD: 'ADD',
-    EDIT: 'EDIT'
-};
+import C from '../../../App.constants';
 
 const FinderSelect = ({open, close, handleClose, handleOpen, handleChange, value, values}) => {
     return (
@@ -46,7 +42,7 @@ const AddModifyFinderDialog = ({t, open, close, mode, finderInfo, addOrModifyFin
         aria-labelledby="form-dialog-title"
         close={close}
         >
-            <DialogTitle id="form-dialog-title">{t(mode === finderDialogMode.ADD ? 'label.sdlGeneratorTools.defineFinder.addAFinderCaption' : 'label.sdlGeneratorTools.defineFinder.editAFinderCaption')}</DialogTitle>
+            <DialogTitle id="form-dialog-title">{t(mode === C.DIALOG_MODE_ADD ? 'label.sdlGeneratorTools.defineFinder.addAFinderCaption' : 'label.sdlGeneratorTools.defineFinder.editAFinderCaption')}</DialogTitle>
             <DialogContent style={{width: 400}}>
                 <FinderSelect open={showFinderSelector}
                               values={availableFinders}
@@ -72,7 +68,7 @@ const AddModifyFinderDialog = ({t, open, close, mode, finderInfo, addOrModifyFin
                 <Button color="primary"
                         onClick={addFinderAndClose}
                 >
-                    {t(mode === finderDialogMode.ADD ? 'label.sdlGeneratorTools.addButton' : 'label.sdlGeneratorTools.applyButton')}
+                    {t(mode === C.DIALOG_MODE_ADD ? 'label.sdlGeneratorTools.addButton' : 'label.sdlGeneratorTools.applyButton')}
                 </Button>
             </DialogActions>
         </Dialog>
@@ -94,6 +90,3 @@ AddModifyFinderDialog.defaultProps = {
 };
 
 export default translate()(AddModifyFinderDialog);
-export {
-    finderDialogMode
-};
