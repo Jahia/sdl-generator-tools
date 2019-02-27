@@ -31,9 +31,18 @@ const AddModifyFinderDialog = ({t, open, close, mode, finderInfo, addOrModifyFin
     const [showFinderSelector, setFinderSelectorStatus] = useState(false);
 
     function addFinderAndClose() {
-        let name = finderSuffix === 'all' ? finderSuffix + upperCaseFirst(finderPrefix) : finderPrefix + upperCaseFirst(finderSuffix);
-        addOrModifyFinder({name: name, prefix: finderPrefix, suffix: finderSuffix});
+        addOrModifyFinder({name: formatName(), prefix: finderPrefix, suffix: finderSuffix});
         close();
+        function formatName() {
+            switch (finderSuffix) {
+                case 'all':
+                    return finderSuffix + upperCaseFirst(finderPrefix);
+                case 'allConnection':
+                    return 'all' + upperCaseFirst(finderPrefix) + 'Connection';
+                default:
+                    return finderPrefix + upperCaseFirst(finderSuffix);
+            }
+        }
     }
 
     return (

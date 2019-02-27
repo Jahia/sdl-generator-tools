@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
+import * as _ from 'lodash';
 import {withStyles, Grid, Paper, List, ListItem, ListItemText, ListSubheader, ListItemSecondaryAction, Button, IconButton} from '@material-ui/core';
 import {Delete, Edit} from '@material-ui/icons';
 import {Add} from '@material-ui/icons';
@@ -93,26 +94,14 @@ const DefineFinders = ({classes, t, addFinder, modifyFinder, removeFinder, nodeT
     );
 
     function filterAvailableFinders(selectedType) {
-        let finders = [];
-        let editingFinder = getSelectedFinder();
-        if (editingFinder && editingFinder.suffix === 'all') {
-            finders.push('all');
-        } else if (selectedType.queries.reduce((acc, curr) => curr.suffix === 'all' ? false : acc, true)) {
-            finders.push('all');
-        }
-        return selectedType.fieldDefinitions.reduce((acc, curr) => {
+        let finders = ['all', 'allConnection'];
+        // Check and filter out all/allConnection if it already is mapped to an existing finder
+        finders = _.without(finders, ...selectedType.queries.filter(finder => finders.indexOf(finder.suffix) !== -1).map(finder => finder.suffix));
+        // Add finders based on type properties, omit those that have already been created.
+        finders = selectedType.fieldDefinitions.reduce((acc, curr) => {
             let finder = `by${upperCaseFirst(curr.name)}`;
             let connectionVariant = `${finder}Connection`;
             let connectionVariantExists = false;
-            if (editingFinder && editingFinder.suffix === finder) {
-                // If dialog mode is DIALOG_MODE_EDIT and the selected finder is this one
-                // Then add it to the list
-                acc.push(finder);
-            } else if (editingFinder && editingFinder.suffix === connectionVariant) {
-                // If dialog mode is DIALOG_MODE_EDIT and the selected finder is this one
-                // Then add it to the list
-                acc.push(connectionVariant);
-            }
             if (selectedType.queries.reduce((found, query) => {
                 if (connectionVariant === query.suffix) {
                     connectionVariantExists = true;
@@ -126,6 +115,13 @@ const DefineFinders = ({classes, t, addFinder, modifyFinder, removeFinder, nodeT
             }
             return acc;
         }, finders);
+        // If we are editing, add the suffix of the editing finder to the finders list and sort it.
+        let editingFinder = getSelectedFinder();
+        if (editingFinder) {
+            finders.push(editingFinder.suffix);
+            finders.sort();
+        }
+        return finders;
     }
 
     function getSelectedFinder() {
