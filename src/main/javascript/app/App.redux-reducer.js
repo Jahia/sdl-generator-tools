@@ -102,12 +102,12 @@ const nodeTypesReducer = (state = [], action) => {
             });
         case actionTypes.SDL_REMOVE_FINDER_FROM_TYPE:
             return state.map((type, index) => {
-                if (index !== action.typeIndex) {
+                if (index !== action.typeIndexOrName && type.name !== action.typeIndexOrName) {
                     return type;
                 }
                 return {
                     ...type,
-                    queries: type.queries.filter((query, index) => index !== action.finderIndex)
+                    queries: type.queries.filter((query, index) => index !== action.finderIndexOrName && query.name !== action.finderIndexOrName)
                 };
             });
         default: return state;

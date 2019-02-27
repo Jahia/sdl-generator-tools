@@ -59,10 +59,10 @@ const sdlModifyFinderOfType = (typeIndexOrName, finderIndex, finderInfo) => ({
     typeIndexOrName: typeIndexOrName
 });
 
-const sdlRemoveFinderFromType = (typeIndex, finderIndex) => ({
+const sdlRemoveFinderFromType = (typeIndexOrName, finderIndexOrName) => ({
     type: actionTypes.SDL_REMOVE_FINDER_FROM_TYPE,
-    finderIndex: finderIndex,
-    typeIndex: typeIndex
+    finderIndexOrName: finderIndexOrName,
+    typeIndexOrName: typeIndexOrName
 });
 
 export {

@@ -36,7 +36,7 @@ import * as C from '../../../util/constants';
 const NodeTypeSelectCom = ({classes, disabled, value, open, handleClose, handleChange, handleOpen, nodeTypeNames}) => (
     <Select disabled={disabled}
             open={open}
-            value={value}
+            value={!_.isNil(value) ? value : ''}
             onClose={handleClose}
             onOpen={handleOpen}
             onChange={handleChange}
@@ -152,7 +152,7 @@ const AddTypeDialog = ({data, t, open, closeDialog, mode, dispatch, dispatchBatc
                     id="typeName"
                     label={t('label.sdlGeneratorTools.createTypes.customTypeNameText')}
                     type="text"
-                    value={typeName}
+                    value={!_.isNil(typeName) ? typeName : ''}
                     error={mode === C.ADD ? isDuplicatedTypeName(typeName) : false}
                     onKeyPress={e => {
                         if (e.key === 'Enter') {
@@ -214,4 +214,3 @@ const CompositeComp = compose(
 )(AddTypeDialog);
 
 export default withApollo(CompositeComp);
-

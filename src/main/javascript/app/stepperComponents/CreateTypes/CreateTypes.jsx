@@ -130,17 +130,16 @@ const CreateTypes = ({classes, t, nodeTypes, selection, selectedProperty, dispat
                                 </Button>
                             </ListItem>
                             {
-                                nodeTypes.filter(type => type.name === selection).map(type => type.fieldDefinitions.map((field, i) => {
-                                    return (
+                                nodeTypes.filter(type => type.name === selection).map(type => type.fieldDefinitions.map((field, i) => (
                                         <PropertyItem key={`${field.name}_${i}`}
                                                       index={i}
                                                       name={field.name}
                                                       jcrName={lookUpMappingStringArgumentInfo(field, 'property')}
                                                       selectProperty={selectProperty}
                                                       showAddPropertyDialog={showAddPropertyDialog}
-                                                      updatePropertyDialogMode={updatePropertyDialogMode}/>
-                                    );
-                                    }
+                                                      updatePropertyDialogMode={updatePropertyDialogMode}
+                                        />
+                                    )
                                 ))
                             }
                         </List>

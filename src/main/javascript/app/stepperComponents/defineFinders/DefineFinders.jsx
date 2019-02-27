@@ -1,36 +1,38 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {withStyles, Grid, Paper, List, ListItem, ListItemText, ListSubheader, ListItemSecondaryAction, Button, IconButton} from '@material-ui/core';
-import {Delete, Edit} from '@material-ui/icons';
+import {Edit} from '@material-ui/icons';
 import {Add} from '@material-ui/icons';
-import AddModifyFinderDialog from './addModifyFinderDialog';
+import AddModifyFinderDialog from './AddModifyFinderDialog';
 import {compose} from 'react-apollo';
 import {translate} from 'react-i18next';
 import {upperCaseFirst} from '../../util/helperFunctions';
-import {finderDialogMode} from './addModifyFinderDialog/AddModifyFinderDialog';
+import * as C from '../../util/constants';
 
 const styles = theme => ({
     paper: {
-        width: 360,
-        height: 400
+        width: '100%',
+        minHeight: '50%',
+        padding: '6px 0px'
     },
-    finderItem: {
-        flex: 2
+    root: {
+        position: 'absolute',
+        textAlign: 'right'
     }
 });
 
 const DefineFinders = ({classes, t, addFinder, modifyFinder, removeFinder, nodeTypes, selection, selectType, selectedFinder, selectFinder}) => {
-    const [dialogState, updateDialogState] = useState({open: false, mode: finderDialogMode.ADD});
+    const [dialogState, updateDialogState] = useState({open: false, mode: C.ADD});
     const selectedType = nodeTypes.reduce((acc, type, idx) => type.name === selection ? Object.assign({idx: idx}, type) : acc, null);
     const availableFinders = selectedType ? filterAvailableFinders(selectedType) : [];
 
     function handleEditFinder(finderName) {
-        updateDialogState(Object.assign({}, dialogState, {open: true, mode: finderDialogMode.EDIT}));
+        updateDialogState(Object.assign({}, dialogState, {open: true, mode: C.EDIT}));
         selectFinder(finderName);
     }
 
     function addOrModifyFinder(finderInfo) {
-        if (dialogState.mode === finderDialogMode.ADD) {
+        if (dialogState.mode === C.ADD) {
             addFinder(selection, finderInfo);
         } else {
             let finderIndex = selectedType.queries.reduce((acc, curr, idx) => curr.name === selectedFinder ? idx : acc, null);
@@ -41,7 +43,7 @@ const DefineFinders = ({classes, t, addFinder, modifyFinder, removeFinder, nodeT
     return (
         <React.Fragment>
             <Grid container>
-                <Grid item>
+                <Grid item xs={12} sm={6}>
                     <Paper className={classes.paper}>
                         <List subheader={<ListSubheader>{t('label.sdlGeneratorTools.Type')}</ListSubheader>}>
                             {
@@ -55,26 +57,24 @@ const DefineFinders = ({classes, t, addFinder, modifyFinder, removeFinder, nodeT
                         </List>
                     </Paper>
                 </Grid>
-                <Grid item>
+                <Grid item xs={12} sm={6}>
                     <Paper className={classes.paper}>
                         <List subheader={<ListSubheader>{t('label.sdlGeneratorTools.defineFinder.finders')}</ListSubheader>}>
-                            <Button disabled={selectedType === null || availableFinders.length === 0}
-                                    onClick={() => updateDialogState(Object.assign({}, dialogState, {open: true, mode: finderDialogMode.ADD}))}
-                            >
-                                {t('label.sdlGeneratorTools.defineFinder.addAFinderCaption')}
-                                <Add/>
-                            </Button>
+                            <ListItem>
+                                <Button disabled={selectedType === null || availableFinders.length === 0}
+                                        onClick={() => updateDialogState(Object.assign({}, dialogState, {open: true, mode: C.ADD}))}
+                                >
+                                    {t('label.sdlGeneratorTools.defineFinder.addAFinderCaption')}
+                                    <Add/>
+                                </Button>
+                            </ListItem>
                             {
-                                nodeTypes.filter(type => type.name === selection).map(type => type.queries.map((finder, idx) => {
-                                        return (
-                                            <List dense={false}>
-                                                <FinderItem key={idx}
-                                                            handleEditFinder={handleEditFinder}
-                                                            removeFinder={() => removeFinder(selectedType.idx, idx)}
-                                                            name={finder.name}/>
-                                            </List>
-                                        );
-                                    }
+                                nodeTypes.filter(type => type.name === selection).map(type => type.queries.map((finder, idx) => (
+                                    <FinderItem key={finder.name}
+                                                handleEditFinder={handleEditFinder}
+                                                name={finder.name}
+                                    />
+                                    )
                                 ))
                             }
                         </List>
@@ -85,8 +85,9 @@ const DefineFinders = ({classes, t, addFinder, modifyFinder, removeFinder, nodeT
                                    close={() => updateDialogState(Object.assign({}, dialogState, {open: false}))}
                                    mode={dialogState.mode}
                                    addOrModifyFinder={addOrModifyFinder}
+                                   removeFinder={removeFinder}
                                    selectedType={selectedType}
-                                   selectedFinder={getSelectedFinder()}
+                                   selectedFinder={selectedFinder}
                                    availableFinders={availableFinders}
                                    selection={selection}/>
         </React.Fragment>
@@ -129,7 +130,7 @@ const DefineFinders = ({classes, t, addFinder, modifyFinder, removeFinder, nodeT
     }
 
     function getSelectedFinder() {
-        if (dialogState.mode === finderDialogMode.EDIT) {
+        if (dialogState.mode === C.EDIT) {
             return selectedType.queries.reduce((acc, curr) => curr.name === selectedFinder ? curr : acc, null);
         }
         return null;
@@ -145,15 +146,12 @@ const TypeItem = ({name, isSelected, selectType}) => (
     </ListItem>
 );
 
-const FinderItem = withStyles(styles)(({classes, name, handleEditFinder, idx, removeFinder}) => (
-    <ListItem classes={{root: classes.finderItem}}>
+const FinderItem = withStyles(styles)(({classes, name, handleEditFinder}) => (
+    <ListItem button>
         <ListItemText primary={name}/>
-        <ListItemSecondaryAction>
+        <ListItemSecondaryAction classes={classes}>
             <IconButton onClick={() => handleEditFinder(name)}>
                 <Edit/>
-            </IconButton>
-            <IconButton onClick={e => removeFinder(idx)}>
-                <Delete/>
             </IconButton>
         </ListItemSecondaryAction>
     </ListItem>
