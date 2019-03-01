@@ -10,7 +10,7 @@ import {translate} from 'react-i18next';
 import {upperCaseFirst} from '../StepperComponent.utils';
 import C from '../../App.constants';
 
-const styles = theme => ({
+const styles = () => ({
     paper: {
         width: '100%',
         minHeight: '50%',
@@ -162,6 +162,10 @@ DefineFinders.propTypes = {
     removeFinder: PropTypes.func.isRequired,
     selectType: PropTypes.func.isRequired,
     selection: PropTypes.string
+};
+
+DefineFinders.defaultProps = {
+    selection: null
 };
 
 export default compose(

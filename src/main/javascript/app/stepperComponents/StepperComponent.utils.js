@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import C from "../App.constants";
+import C from '../App.constants';
 
 const upperCaseFirst = val => {
     return val.substr(0, 1).toUpperCase().concat(val.substr(1));

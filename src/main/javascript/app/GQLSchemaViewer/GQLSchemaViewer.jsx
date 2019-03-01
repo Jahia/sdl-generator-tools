@@ -7,7 +7,7 @@ import 'brace/mode/graphqlschema';
 import 'brace/theme/monokai';
 import SDLParser from '../parsing/sdlParser';
 
-let styles = theme => ({
+let styles = () => ({
     viewerText: {
         padding: '12px 24px',
         fontStyle: 'normal',
@@ -31,14 +31,14 @@ const GQLSchemaViewer = ({classes, t, nodeTypes}) => {
             </Grid>
             <Grid item>
                 <AceEditor
-                    className={classes.editor}
                     readOnly
                     mode="graphqlschema"
                     theme="monokai"
-                    value={SDLParser.parse(nodeTypes)}
                     name="gqlschema"
                     height="93%"
                     width="100%"
+                    className={classes.editor}
+                    value={SDLParser.parse(nodeTypes)}
                     editorProps={{$blockScrolling: false}}
                 />
             </Grid>
