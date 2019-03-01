@@ -6,7 +6,7 @@ import DialogContent from '@material-ui/core/DialogContent/DialogContent';
 import TextField from '@material-ui/core/TextField/TextField';
 import DialogActions from '@material-ui/core/DialogActions/DialogActions';
 import {
-    Button,
+    Button, FormControl,
     FormControlLabel,
     FormGroup,
     ListItemText,
@@ -23,26 +23,51 @@ import {Close} from '@material-ui/icons';
 import C from '../../../App.constants';
 
 const PropertySelectCom = ({classes, disabled, value, open, handleClose, handleChange, handleOpen, nodeProperties}) => (
-    <Select disabled={disabled}
-            open={open}
-            value={value}
-            onClose={handleClose}
-            onOpen={handleOpen}
-            onChange={handleChange}
-    >
-        <MenuItem value="">
-            <em>None</em>
-        </MenuItem>
-        {
-            !_.isNil(nodeProperties) ? nodeProperties.map(property => {
-                return (
-                    <MenuItem key={property.name} value={property.name} classes={classes}>
-                        <ListItemText primary={property.name} secondary={upperCaseFirst(property.requiredType.toLowerCase())}/>
+    <FormControl className={classes.formControl} disabled={disabled}>
+        <Select disabled={disabled}
+                open={open}
+                value={value}
+                onClose={handleClose}
+                onOpen={handleOpen}
+                onChange={handleChange}
+        >
+            <MenuItem value="">
+                <em>None</em>
+            </MenuItem>
+            {
+                !_.isNil(nodeProperties) ? nodeProperties.map(property => {
+                    return (
+                        <MenuItem key={property.name} value={property.name} classes={classes}>
+                            <ListItemText primary={property.name} secondary={upperCaseFirst(property.requiredType.toLowerCase())}/>
+                        </MenuItem>
+                    );
+                }) : null
+            }
+        </Select>
+    </FormControl>
+);
+
+const PredefinedTypeSelector = ({classes, disabled, value, open, handleClose, handleChange, handleOpen, types}) => (
+    <FormControl className={classes.formControl} disabled={disabled}>
+        <Select disabled={disabled}
+                open={open}
+                value={value}
+                onClose={handleClose}
+                onOpen={handleOpen}
+                onChange={handleChange}
+        >
+            <MenuItem value="">
+                <em>None</em>
+            </MenuItem>
+            {
+                types.map(type => (
+                    <MenuItem key={type} value={type} classes={classes} >
+                        <ListItemText primary={type}/>
                     </MenuItem>
-                );
-            }) : null
-        }
-    </Select>
+                ))
+            }
+        </Select>
+    </FormControl>
 );
 
 const PropertySelect = withStyles({
@@ -57,22 +82,26 @@ const AddModifyPropertyDialog = ({t, open, closeDialog, mode, selectedType, sele
     const selectedPropertyName = !_.isNil(selectedProperty) ? selectedProperty.propertyName : '';
     const selectedJcrPropertyName = !_.isNil(selectedProperty) ? selectedProperty.jcrPropertyName : '';
     const selectedPropertyType = !_.isNil(selectedProperty) ? selectedProperty.propertyType : '';
-    const selectedIsPredifinedType = !_.isNil(selectedProperty) ? selectedProperty.isPredefinedType : false;
+    const selectedIsPredefinedType = !_.isNil(selectedProperty) ? selectedProperty.isPredefinedType : false;
     const [propertyName, updatePropertyName] = useState(selectedPropertyName);
     const [jcrPropertyName, updateJcrPropertyName] = useState(selectedJcrPropertyName);
     const [showPropertySelector, setShowPropertySelector] = useState(false);
-    const [mapToPredefinedType, setMapToPredefinedType] = useState(selectedIsPredifinedType);
     let nodeProperties = selectableProps;
 
-    if (mapToPredefinedType) {
-        nodeProperties = selectableProps.filter(props => ["WEAKREFERENCE"].indexOf(props.requiredType) !== -1);
-        //TODO add children as well
+    if (selectedIsPredefinedType) {
+        nodeProperties = nodeProperties.filter(props => ["WEAKREFERENCE"].indexOf(props.requiredType) !== -1);
+
+        if (nodes.length > 0) {
+            nodeProperties = nodeProperties.concat(nodes[0].childNodes.map(node => ({
+                name: node.name,
+                requiredType: node.requiredPrimaryType[0].name
+            })));
+        }
     }
 
     const cleanUp = () => {
         updatePropertyName(null);
         updateJcrPropertyName(null);
-        setMapToPredefinedType(false);
     };
 
     const duplicateName = isDuplicatedPropertyName(propertyName);
