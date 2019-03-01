@@ -139,6 +139,8 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, definedTypes
         // }
 
         let propType;
+        let jcrPropName = selectedJcrPropertyName;
+
         if (selectedIsPredefinedType) {
             propType = selectedPropertyType;
         }
@@ -154,17 +156,20 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, definedTypes
             propType = propType.replace(/(\[|])/g, "");
         }
 
+        if (jcrPropName === "*") {
+            jcrPropName = '';
+        }
 
         if (mode === C.DIALOG_MODE_EDIT) {
             console.log("Edit", selectedIsListType);
-            updateProperty({name: selectedPropertyName, property: selectedJcrPropertyName, type: propType}, typeName, selectedProperty.propertyIndex);
+            updateProperty({name: selectedPropertyName, property: jcrPropName, type: propType}, typeName, selectedProperty.propertyIndex);
         }
         else {
-            addProperty({name: selectedPropertyName, property: selectedJcrPropertyName, type: propType}, typeName);
+            addProperty({name: selectedPropertyName, property: jcrPropName, type: propType}, typeName);
         }
 
         console.log("Saved prop", propType, typeName);
-        console.log(selectedPropertyName, selectedJcrPropertyName, propType, typeName);
+        console.log(selectedPropertyName, jcrPropName, propType, typeName);
 
         closeDialog();
         cleanUp();
