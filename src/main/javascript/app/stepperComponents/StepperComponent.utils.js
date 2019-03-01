@@ -40,8 +40,8 @@ const lookUpMappingBooleanArgumentInfo = (selected, argName) => {
     return !_.isNil(info) ? info : false;
 };
 
-const isPredefinedType = (type) => {
-    const regex = new RegExp(`[\\[]{0,1}${Object.getOwnPropertyNames(C.JCR_TO_SDL_TYPE_MAP).join("|")}[\\]]{0,1}`, 'i');
+const isPredefinedType = type => {
+    const regex = new RegExp(`[\\[]{0,1}${Object.getOwnPropertyNames(C.JCR_TO_SDL_TYPE_MAP).join('|')}[\\]]{0,1}`, 'i');
     return !regex.exec(type);
 };
 

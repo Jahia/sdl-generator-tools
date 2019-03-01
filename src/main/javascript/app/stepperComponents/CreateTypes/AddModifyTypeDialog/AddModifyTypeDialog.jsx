@@ -37,7 +37,7 @@ import {
 import {Close} from '@material-ui/icons';
 
 const NodeTypeSelectCom = ({classes, t, disabled, value, open, handleClose, handleChange, handleOpen, nodeTypeNames}) => (
-    <FormControl className={classes.formControl} disabled={disabled}>
+    <FormControl classes={classes} disabled={disabled}>
         <InputLabel shrink htmlFor="type-name">{t('label.sdlGeneratorTools.createTypes.selectNodeType')}</InputLabel>
         <Select disabled={disabled}
                 open={open}
@@ -51,13 +51,11 @@ const NodeTypeSelectCom = ({classes, t, disabled, value, open, handleClose, hand
                 <em>None</em>
             </MenuItem>
             {
-                !_.isNil(nodeTypeNames) ? nodeTypeNames.map(typeName => {
-                    return (
-                        <MenuItem key={typeName.name} value={typeName.name} classes={classes}>
-                            <ListItemText primary={typeName.displayName} secondary={typeName.name}/>
-                        </MenuItem>
-                    );
-                }) : null
+                !_.isNil(nodeTypeNames) ? nodeTypeNames.map(typeName => (
+                    <MenuItem key={typeName.name} value={typeName.name} classes={{root: classes.menuItem}}>
+                        <ListItemText primary={typeName.displayName} secondary={typeName.name}/>
+                    </MenuItem>
+                )) : null
             }
         </Select>
     </FormControl>
@@ -65,11 +63,11 @@ const NodeTypeSelectCom = ({classes, t, disabled, value, open, handleClose, hand
 
 const NodeTypeSelect = withStyles({
     root: {
-        padding: '15px 12px'
-    },
-    formControl: {
         margin: '0px 0px',
         width: '100%'
+    },
+    menuItem: {
+        padding: '15px 12px'
     }
 })(NodeTypeSelectCom);
 

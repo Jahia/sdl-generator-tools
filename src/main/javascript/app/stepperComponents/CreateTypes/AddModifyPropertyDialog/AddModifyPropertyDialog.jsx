@@ -23,7 +23,7 @@ import {Close} from '@material-ui/icons';
 import C from '../../../App.constants';
 
 const PropertySelectCom = ({classes, t, disabled, value, open, handleClose, handleChange, handleOpen, nodeProperties}) => (
-    <FormControl className={classes.formControl} disabled={disabled}>
+    <FormControl classes={classes} disabled={disabled}>
         <InputLabel shrink htmlFor="property-name">{t('label.sdlGeneratorTools.createTypes.selectNodeProperty')}</InputLabel>
         <Select disabled={disabled}
                 open={open}
@@ -37,13 +37,11 @@ const PropertySelectCom = ({classes, t, disabled, value, open, handleClose, hand
                 <em>None</em>
             </MenuItem>
             {
-                !_.isNil(nodeProperties) ? nodeProperties.map(property => {
-                    return (
-                        <MenuItem key={property.name} value={property.name} classes={classes}>
-                            <ListItemText primary={property.name} secondary={upperCaseFirst(property.requiredType.toLowerCase())}/>
-                        </MenuItem>
-                    );
-                }) : null
+                !_.isNil(nodeProperties) ? nodeProperties.map(property => (
+                    <MenuItem key={property.name} value={property.name} classes={{root: classes.menuItem}}>
+                        <ListItemText primary={property.name} secondary={upperCaseFirst(property.requiredType.toLowerCase())}/>
+                    </MenuItem>
+                )) : null
             }
         </Select>
     </FormControl>
@@ -51,11 +49,11 @@ const PropertySelectCom = ({classes, t, disabled, value, open, handleClose, hand
 
 const PropertySelect = withStyles({
     root: {
-        padding: '15px 12px'
-    },
-    formControl: {
         margin: '0px 0px',
         width: '100%'
+    },
+    menuItem: {
+        padding: '15px 12px'
     }
 })(PropertySelectCom);
 

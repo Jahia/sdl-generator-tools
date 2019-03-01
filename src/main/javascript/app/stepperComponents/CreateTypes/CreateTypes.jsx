@@ -86,7 +86,9 @@ const CreateTypes = ({classes, t, nodeTypes, selection, selectedProperty, dispat
                 <Grid item xs={12} sm={6}>
                     <Paper className={classes.paper}>
                         <List subheader={
-                            <ListSubheader>{t('label.sdlGeneratorTools.createTypes.nodeTypeText')}</ListSubheader>}>
+                            <ListSubheader>{t('label.sdlGeneratorTools.createTypes.nodeTypeText')}</ListSubheader>
+                        }
+                        >
                             <ListItem>
                                 <Button onClick={() => {
                                     updateTypeDialogMode(C.DIALOG_MODE_ADD);
@@ -115,7 +117,9 @@ const CreateTypes = ({classes, t, nodeTypes, selection, selectedProperty, dispat
                 <Grid item xs={12} sm={6}>
                     <Paper className={classes.paper}>
                         <List subheader={
-                            <ListSubheader>{t('label.sdlGeneratorTools.createTypes.propertiesText')}</ListSubheader>}>
+                            <ListSubheader>{t('label.sdlGeneratorTools.createTypes.propertiesText')}</ListSubheader>
+                        }
+                        >
                             <ListItem>
                                 <Button onClick={() => {
                                     updatePropertyDialogMode(C.DIALOG_MODE_ADD);

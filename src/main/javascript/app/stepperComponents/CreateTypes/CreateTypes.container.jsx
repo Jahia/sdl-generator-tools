@@ -10,20 +10,6 @@ import {
 } from '../../App.redux-actions';
 import {sdlSelectType, sdlSelectProperty} from '../StepperComponent.redux-actions';
 
-const CreateTypesContainer = ({nodeTypes, selection, selectedProperty, dispatch, dispatchBatch, addProperty, removeProperty, removeType, removeArgFromDirective, selectType, selectProperty}) => (
-    <CreateTypes nodeTypes={nodeTypes}
-                 dispatch={dispatch}
-                 dispatchBatch={dispatchBatch}
-                 selection={selection}
-                 selectedProperty={selectedProperty}
-                 addProperty={addProperty}
-                 removeProperty={removeProperty}
-                 removeType={removeType}
-                 removeArgFromDirective={removeArgFromDirective}
-                 selectType={selectType}
-                 selectProperty={selectProperty}/>
-);
-
 const mapStateToProps = state => (state);
 
 const mapDispatchToProps = dispatch => {
@@ -40,4 +26,4 @@ const mapDispatchToProps = dispatch => {
 
 export default compose(
     connect(mapStateToProps, mapDispatchToProps)
-)(CreateTypesContainer);
+)(CreateTypes);

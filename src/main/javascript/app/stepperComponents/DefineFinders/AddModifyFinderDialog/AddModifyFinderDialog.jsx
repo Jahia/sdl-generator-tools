@@ -12,7 +12,7 @@ import * as _ from 'lodash';
 import {Close} from '@material-ui/icons';
 
 const FinderSelectCom = ({classes, t, open, handleClose, handleOpen, handleChange, value, values}) => (
-    <FormControl className={classes.formControl}>
+    <FormControl classes={classes}>
         <InputLabel shrink htmlFor="finder-name">{t('label.sdlGeneratorTools.defineFinder.selectAFinder')}</InputLabel>
         <Select open={open}
                 value={value}
@@ -22,7 +22,7 @@ const FinderSelectCom = ({classes, t, open, handleClose, handleOpen, handleChang
                 onChange={handleChange}
         >
             {
-                values.map(finder => <MenuItem key={finder} value={finder} classes={classes}>{finder}</MenuItem>)
+                values.map(finder => <MenuItem key={finder} value={finder} classes={{root: classes.menuItem}}>{finder}</MenuItem>)
             }
         </Select>
     </FormControl>
@@ -30,11 +30,11 @@ const FinderSelectCom = ({classes, t, open, handleClose, handleOpen, handleChang
 
 const FinderSelect = withStyles({
     root: {
-        padding: '15px 12px'
-    },
-    formControl: {
         margin: '0px 0px',
         width: '100%'
+    },
+    menuItem: {
+        padding: '15px 12px'
     }
 })(FinderSelectCom);
 
