@@ -6,12 +6,12 @@ import store from './App.redux-store';
 import MainLayout from './MainLayout';
 import {MuiThemeProvider} from '@material-ui/core/es/styles';
 import {dsGenericTheme as theme} from '@jahia/ds-mui-theme';
-import ApolloProvider from "react-apollo/ApolloProvider";
-import {client} from "@jahia/apollo-dx";
+import ApolloProvider from 'react-apollo/ApolloProvider';
+import {client} from '@jahia/apollo-dx';
 
 const defaultNamespace = 'sdl-generator-tools';
 
-const App = () => (
+const App = ({dxContext}) => (
     <MuiThemeProvider theme={theme}>
         <Provider store={store}>
             <I18nextProvider i18n={getI18n({
@@ -23,7 +23,12 @@ const App = () => (
                 }
             })}
             >
-                <ApolloProvider client={client()}>
+                <ApolloProvider client={client({
+                    contextPath: dxContext.contextPath,
+                    useBatch: true,
+                    httpOptions: {batchMax: 50}
+                })}
+                >
                     <MainLayout/>
                 </ApolloProvider>
             </I18nextProvider>
