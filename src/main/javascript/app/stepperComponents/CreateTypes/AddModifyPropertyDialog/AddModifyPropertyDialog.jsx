@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import Dialog from '@material-ui/core/Dialog/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle/DialogTitle';
@@ -15,12 +15,17 @@ import {
     Switch,
     withStyles
 } from '@material-ui/core';
+import {compose, graphql, withApollo} from 'react-apollo';
+import {connect} from 'react-redux';
 import {translate} from 'react-i18next';
-import {compose} from 'react-apollo';
 import * as _ from 'lodash';
-import {upperCaseFirst} from '../../../util/helperFunctions';
+import {lookUpMappingStringArgumentInfo, upperCaseFirst} from '../../../util/helperFunctions';
 import {Close} from '@material-ui/icons';
 import C from '../../../App.constants';
+import gqlQueries from "../../../gql/gqlQueries";
+import {sdlAddPropertyToType, sdlRemovePropertyFromType} from "../../../App.redux-actions";
+import {sdlUpdateSelectedProperty, sdlUpdateAddModifyPropertyDialog} from "../../StepperComponent.redux-actions";
+
 
 const PropertySelectCom = ({classes, disabled, value, open, handleClose, handleChange, handleOpen, nodeProperties}) => (
     <Select disabled={disabled}
@@ -45,43 +50,84 @@ const PropertySelectCom = ({classes, disabled, value, open, handleClose, handleC
     </Select>
 );
 
+const PredefinedTypeSelector = ({classes, disabled, value, open, handleClose, handleChange, handleOpen, types}) => (
+    <Select disabled={disabled}
+            open={open}
+            value={value}
+            onClose={handleClose}
+            onOpen={handleOpen}
+            onChange={handleChange}
+    >
+        <MenuItem value="">
+            <em>None</em>
+        </MenuItem>
+        {
+            types.map(type => (
+                <MenuItem key={type} value={type} classes={classes} >
+                    <ListItemText primary={type}/>
+                </MenuItem>
+                ))
+        }
+    </Select>
+);
+
 const PropertySelect = withStyles({
     root: {
         padding: '15px 12px'
     }
 })(PropertySelectCom);
 
-const AddModifyPropertyDialog = ({t, open, closeDialog, mode, selectedType, selectedProperty, addProperty, removeProperty, isDuplicatedPropertyName, selectableProps}) => {
-    console.log("Dialog refresh");
-    const typeName = !_.isNil(selectedType) ? selectedType.name : '';
+const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, definedTypes, selectedType, selectedProperty, addProperty, removeProperty, isDuplicatedPropertyName, updateSelectedProp}) => {
+    const nodes = !_.isNil(data.jcr) ? data.jcr.nodeTypes.nodes : [];
+    let nodeProperties = nodes.length > 0 ? nodes[0].properties : [];
+
+    const typeName = !_.isNil(selectedType) ? selectedType : '';
     const selectedPropertyName = !_.isNil(selectedProperty) ? selectedProperty.propertyName : '';
     const selectedJcrPropertyName = !_.isNil(selectedProperty) ? selectedProperty.jcrPropertyName : '';
     const selectedPropertyType = !_.isNil(selectedProperty) ? selectedProperty.propertyType : '';
-    const selectedIsPredifinedType = !_.isNil(selectedProperty) ? selectedProperty.isPredefinedType : false;
-    const [propertyName, updatePropertyName] = useState(selectedPropertyName);
-    const [jcrPropertyName, updateJcrPropertyName] = useState(selectedJcrPropertyName);
-    const [showPropertySelector, setShowPropertySelector] = useState(false);
-    const [mapToPredefinedType, setMapToPredefinedType] = useState(selectedIsPredifinedType);
-    let nodeProperties = selectableProps;
+    const selectedIsPredefinedType = !_.isNil(selectedProperty) ? selectedProperty.isPredefinedType : false;
+    const selectedIsListType = !_.isNil(selectedProperty) ? selectedProperty.isListType : false;
 
-    if (mapToPredefinedType) {
-        nodeProperties = selectableProps.filter(props => ["WEAKREFERENCE"].indexOf(props.requiredType) !== -1);
-        //TODO add children as well
+    const [showPropertySelector, setShowPropertySelector] = useState(false);
+    const [showPredefinedTypeSelector, setPredefinedTypeSelector] = useState(false);
+
+    if (selectedIsPredefinedType) {
+        nodeProperties = nodeProperties.filter(props => ["WEAKREFERENCE"].indexOf(props.requiredType) !== -1);
+
+        if (nodes.length > 0) {
+            nodeProperties = nodeProperties.concat(nodes[0].childNodes.map(node => ({
+                name: node.name,
+                requiredType: node.requiredPrimaryType[0].name
+            })));
+        }
     }
 
     const cleanUp = () => {
-        updatePropertyName(null);
-        updateJcrPropertyName(null);
-        setMapToPredefinedType(false);
+        updateSelectedProp('', '', '', '');
     };
 
-    const duplicateName = isDuplicatedPropertyName(propertyName);
+    const duplicateName = false;//isDuplicatedPropertyName(selectedPropertyName);
 
     const addPropertyAndClose = () => {
-        if (_.isNil(propertyName) || _.isEmpty(propertyName) || _.isNil(jcrPropertyName) || _.isEmpty(jcrPropertyName)) {
-            return;
+        // if (_.isNil(selectedPropertyName) || _.isEmpty(selectedPropertyName) || _.isNil(selectedJcrPropertyName) || _.isEmpty(selectedJcrPropertyName)) {
+        //     return;
+        // }
+
+        let propType;
+
+        if (selectedIsPredefinedType) {
+            propType = selectedPropertyType;
         }
-        addProperty({name: propertyName, property: jcrPropertyName, type: 'String'}, typeName);
+        else {
+            propType = nodeProperties.find(prop => prop.name === selectedJcrPropertyName).requiredType;
+            propType = C.JCR_TO_SDL_TYPE_MAP[propType];
+        }
+
+        propType = selectedProperty.isListType && !propType.startsWith("[") ? `[${propType}]` : propType;
+
+        console.log("Saved prop", propType, typeName);
+
+        addProperty({name: selectedPropertyName, property: selectedJcrPropertyName, type: propType}, typeName);
         closeDialog();
         cleanUp();
     };
@@ -99,8 +145,6 @@ const AddModifyPropertyDialog = ({t, open, closeDialog, mode, selectedType, sele
 
     const openDialog = (mode, selectedPropertyName, selectedJcrPropertyName) => {
         if (mode === C.DIALOG_MODE_EDIT) {
-            updatePropertyName(selectedPropertyName);
-            updateJcrPropertyName(selectedJcrPropertyName);
         }
     };
 
@@ -121,21 +165,36 @@ const AddModifyPropertyDialog = ({t, open, closeDialog, mode, selectedType, sele
                         control={
                             <Switch
                                 color="primary"
-                                checked={mapToPredefinedType}
-                                onChange={e => setMapToPredefinedType(e.target.checked)}
+                                checked={selectedIsPredefinedType}
+                                onChange={e => updateSelectedProp({ isPredefinedType: e.target.checked})}
+                            />
+                        }/>
+                    <FormControlLabel
+                        label={"As list"}
+                        control={
+                            <Switch
+                                color="primary"
+                                checked={selectedIsListType}
+                                onChange={() => updateSelectedProp({isListType: !selectedIsListType})}
                             />
                         }/>
                 </FormGroup>
                 {
-                    mapToPredefinedType && "Predefined!!!"
+                    selectedIsPredefinedType &&
+                    <PredefinedTypeSelector open={showPredefinedTypeSelector}
+                                    types={C.PREDEFINED_SDL_TYPES.concat(definedTypes)}
+                                    value={selectedPropertyType.replace(/\[/g, "")}
+                                    handleOpen={() => setPredefinedTypeSelector(true)}
+                                    handleClose={() => setPredefinedTypeSelector(false)}
+                                    handleChange={event => updateSelectedProp({propertyType: event.target.value})}/>
                 }
                 <PropertySelect open={showPropertySelector}
                                 disabled={mode === C.DIALOG_MODE_EDIT}
                                 nodeProperties={nodeProperties}
-                                value={jcrPropertyName}
+                                value={selectedJcrPropertyName}
                                 handleOpen={() => setShowPropertySelector(true)}
                                 handleClose={() => setShowPropertySelector(false)}
-                                handleChange={event => updateJcrPropertyName(event.target.value)}/>
+                                handleChange={event => updateSelectedProp({jcrPropertyName: event.target.value})}/>
                 <TextField
                     autoFocus
                     fullWidth
@@ -144,7 +203,7 @@ const AddModifyPropertyDialog = ({t, open, closeDialog, mode, selectedType, sele
                     id="propertyName"
                     label={t('label.sdlGeneratorTools.createTypes.customPropertyNameText')}
                     type="text"
-                    value={propertyName}
+                    value={selectedPropertyName}
                     error={mode === C.DIALOG_MODE_ADD ? duplicateName : false}
                     onKeyPress={e => {
                         if (e.key === 'Enter') {
@@ -154,7 +213,7 @@ const AddModifyPropertyDialog = ({t, open, closeDialog, mode, selectedType, sele
                             return false;
                         }
                     }}
-                    onChange={e => updatePropertyName(e.target.value)}
+                    onChange={e => updateSelectedProp({propertyName: e.target.value})}
                 />
                 {
                     mode === C.DIALOG_MODE_EDIT &&
@@ -168,7 +227,8 @@ const AddModifyPropertyDialog = ({t, open, closeDialog, mode, selectedType, sele
                 <Button color="primary" onClick={cancelAndClose}>
                     {t('label.sdlGeneratorTools.cancelButton')}
                 </Button>
-                <Button disabled={mode === C.DIALOG_MODE_EDIT || duplicateName}
+                <Button
+                        //disabled={duplicateName}
                         color="primary"
                         onClick={addPropertyAndClose}
                 >
@@ -181,22 +241,70 @@ const AddModifyPropertyDialog = ({t, open, closeDialog, mode, selectedType, sele
 
 AddModifyPropertyDialog.propTypes = {
     open: PropTypes.bool.isRequired,
+    mode: PropTypes.string.isRequired,
     closeDialog: PropTypes.func.isRequired,
     addProperty: PropTypes.func.isRequired,
     removeProperty: PropTypes.func.isRequired,
-    mode: PropTypes.string.isRequired,
-    selectedType: PropTypes.string.isRequired,
-    isDuplicatedPropertyName: PropTypes.func.isRequired,
+    updateSelectedProp: PropTypes.func.isRequired,
+    // isDuplicatedPropertyName: PropTypes.func.isRequired,
     selectedProperty: PropTypes.object,
-    selectableProps: PropTypes.array
+    selectedType: PropTypes.string.isRequired
 };
 
-AddModifyPropertyDialog.defaultProps = {
-    selectedProperty: {}
+const getJCRType = (nodeTypes, selection) => {
+    if (nodeTypes && nodeTypes[0] && selection) {
+        const node = nodeTypes.find(node => node.name === selection);
+        return node.directives[0].arguments.find(arg => arg.name === 'node').value
+    }
+    return '';
+};
+
+const getDefinedTypes = (nodeTypes, selection) => {
+    if (nodeTypes && nodeTypes[0] && selection) {
+        return nodeTypes.reduce((acc, node) => {
+            if (node.name !== selection) {
+                acc.push(node.name)
+            }
+            return acc;
+        }, [])
+    }
+    return [];
+};
+
+const mapStateToProps = state => {
+    //TODO we need better management of node type selection
+    return {
+        definedTypes: getDefinedTypes(state.nodeTypes, state.selection),
+        jcrType: getJCRType(state.nodeTypes, state.selection),
+        selectedType: state.selection,
+        selectedProperty: state.selectedProperty,
+        ...state.addModifyPropertyDialog
+    }
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        addProperty: (propertyInfo, typeIndex) => dispatch(sdlAddPropertyToType(propertyInfo, typeIndex)),
+        updateSelectedProp: propertyFields => dispatch(sdlUpdateSelectedProperty(propertyFields)),
+        removeProperty: (propertyIndex, typeIndexOrName) => dispatch(sdlRemovePropertyFromType(propertyIndex, typeIndexOrName)),
+        closeDialog: () => dispatch(sdlUpdateAddModifyPropertyDialog({open: false}))
+    };
 };
 
 const CompositeComp = compose(
+    connect(mapStateToProps, mapDispatchToProps),
+    graphql(gqlQueries.NODE_TYPE_PROPERTIES, {
+        options(props) {
+            console.log("D", props, lookUpMappingStringArgumentInfo(props.selectedType, 'node'));
+            return {
+                variables: {
+                    includeTypes: [props.jcrType]
+                },
+                fetchPolicy: 'cache-first'
+            };
+        }
+    }),
     translate()
 )(AddModifyPropertyDialog);
 
-export default CompositeComp;
+export default withApollo(CompositeComp);

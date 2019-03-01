@@ -1,3 +1,3 @@
-import AddModifyPropertyDialogContainer from './AddModifyPropertyDialog.container';
+import AddModifyPropertyDialog from './AddModifyPropertyDialog';
 
-export default AddModifyPropertyDialogContainer;
+export default AddModifyPropertyDialog;

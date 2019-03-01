@@ -1,12 +1,15 @@
 const actionTypes = {
     SDL_SELECT_TYPE: 'SDL_SELECT_TYPE',
     SDL_SELECT_PROPERTY: 'SDL_SELECT_PROPERTY',
-    SDL_SELECT_FINDER: 'SDL_SELECT_FINDER'
+    SDL_UPDATE_SELECTED_PROPERTY: 'SDL_UPDATE_SELECTED_PROPERTY',
+    SDL_SELECT_FINDER: 'SDL_SELECT_FINDER',
+    SDL_UPDATE_ADD_MOD_PROPERTY_DIALOG: 'SDL_UPDATE_ADD_MOD_PROPERTY_DIALOG'
 };
 
-const sdlSelectType = typeName => ({
+const sdlSelectType = (typeName, jcrType) => ({
     type: actionTypes.SDL_SELECT_TYPE,
-    typeName: typeName
+    typeName: typeName,
+    jcrType: jcrType
 });
 
 const sdlSelectProperty = (propertyIndex, propertyName, jcrPropertyName, propertyType) => ({
@@ -17,14 +20,26 @@ const sdlSelectProperty = (propertyIndex, propertyName, jcrPropertyName, propert
     propertyType: propertyType
 });
 
+const sdlUpdateSelectedProperty = (propertyFields) => ({
+    type: actionTypes.SDL_UPDATE_SELECTED_PROPERTY,
+    propertyFields: propertyFields
+});
+
 const sdlSelectFinder = finderName => ({
     type: actionTypes.SDL_SELECT_FINDER,
     finderName: finderName
+});
+
+const sdlUpdateAddModifyPropertyDialog = updateObject => ({
+    type: actionTypes.SDL_UPDATE_ADD_MOD_PROPERTY_DIALOG,
+    updateObject: updateObject
 });
 
 export {
     actionTypes,
     sdlSelectType,
     sdlSelectProperty,
-    sdlSelectFinder
+    sdlSelectFinder,
+    sdlUpdateSelectedProperty,
+    sdlUpdateAddModifyPropertyDialog
 };

@@ -7,6 +7,7 @@ const gqlQueries = {
               nodes {
                 name
                 displayName(language:"en")
+                icon
               }
             }
         }
@@ -19,6 +20,8 @@ const gqlQueries = {
                     properties{
                         name
                         requiredType
+                        multiple
+                        mandatory
                     }
                     childNodes: nodes {
                         name

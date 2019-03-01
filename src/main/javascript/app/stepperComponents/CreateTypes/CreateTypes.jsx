@@ -64,12 +64,12 @@ const PropertyItem = ({index, name, type, jcrName, selectProperty, updatePropert
     </ListItem>
 );
 
-const CreateTypes = ({classes, t, nodeTypes, selection, selectedProperty, dispatch, dispatchBatch, addProperty, addArgToDirective, removeType, removeProperty, removeArgFromDirective, selectType, selectProperty}) => {
+const CreateTypes = ({classes, t, nodeTypes, selection, selectedProperty, dispatch, dispatchBatch, addProperty, addArgToDirective, removeType, removeProperty, removeArgFromDirective, selectType, selectProperty, addModifyPropertyDialog}) => {
     const [addTypeDialogShown, showAddTypeDialog] = useState(false);
     const [addPropertyDialogShown, showAddPropertyDialog] = useState(false);
     const [typeDialogMode, updateTypeDialogMode] = useState(C.DIALOG_MODE_ADD);
     const [propertyDialogMode, updatePropertyDialogMode] = useState(C.DIALOG_MODE_ADD);
-    console.log(nodeTypes, selection, selectedProperty);
+
     const selectedType = nodeTypes.reduce((acc, type, idx) => type.name === selection ? Object.assign({idx: idx}, type) : acc, null);
 
     const isDuplicatedPropertyName = propertyName => {
@@ -134,8 +134,10 @@ const CreateTypes = ({classes, t, nodeTypes, selection, selectedProperty, dispat
                             <ListSubheader>{t('label.sdlGeneratorTools.createTypes.propertiesText')}</ListSubheader>}>
                             <ListItem>
                                 <Button onClick={() => {
-                                    updatePropertyDialogMode(C.DIALOG_MODE_ADD);
-                                    showAddPropertyDialog(true);
+                                    if (selectedProperty === null) {
+                                        selectProperty(selectType, '', '', '')
+                                    }
+                                    addModifyPropertyDialog({open: true, mode: C.DIALOG_MODE_ADD})
                                 }}
                                 >
                                     {t('label.sdlGeneratorTools.createTypes.addNewPropertyButton')}
@@ -172,14 +174,6 @@ const CreateTypes = ({classes, t, nodeTypes, selection, selectedProperty, dispat
                            selectedType={selectedType}
                            isDuplicatedTypeName={isDuplicatedTypeName}
                            removeType={removeType}/>
-            <AddPropertyDialog open={addPropertyDialogShown}
-                               mode={propertyDialogMode}
-                               selectedType={selectedType}
-                               selectedProperty={selectedProperty}
-                               closeDialog={() => showAddPropertyDialog(false)}
-                               addProperty={addProperty}
-                               isDuplicatedPropertyName={isDuplicatedPropertyName}
-                               removeProperty={removeProperty}/>
         </React.Fragment>
     );
 };
