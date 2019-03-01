@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {compose, graphql, withApollo} from 'react-apollo';
-import gqlQueries from '../../../gql/gqlQueries';
+import gqlQueries from '../CreateTypes.gql-queries';
 import AddModifyPropertyDialog from './AddModifyPropertyDialog';
-import {lookUpMappingStringArgumentInfo} from '../../../util/helperFunctions';
+import {lookUpMappingStringArgumentInfo} from '../../StepperComponent.utils';
 import * as _ from "lodash";
 
 const AddModifyPropertyDialogContainer = ({data, open, closeDialog, mode, selectedType, selectedProperty, addProperty, removeProperty, isDuplicatedPropertyName}) => {

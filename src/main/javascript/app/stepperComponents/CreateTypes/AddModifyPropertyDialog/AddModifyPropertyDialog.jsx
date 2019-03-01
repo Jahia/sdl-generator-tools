@@ -18,7 +18,7 @@ import {
 import {translate} from 'react-i18next';
 import {compose} from 'react-apollo';
 import * as _ from 'lodash';
-import {upperCaseFirst} from '../../../util/helperFunctions';
+import {upperCaseFirst} from '../../StepperComponent.utils';
 import {Close} from '@material-ui/icons';
 import C from '../../../App.constants';
 

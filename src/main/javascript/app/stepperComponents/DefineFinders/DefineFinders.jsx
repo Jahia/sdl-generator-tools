@@ -7,7 +7,7 @@ import {Add} from '@material-ui/icons';
 import AddModifyFinderDialog from './addModifyFinderDialog';
 import {compose} from 'react-apollo';
 import {translate} from 'react-i18next';
-import {upperCaseFirst} from '../../util/helperFunctions';
+import {upperCaseFirst} from '../StepperComponent.utils';
 import C from '../../App.constants';
 
 const styles = theme => ({
@@ -65,7 +65,7 @@ const DefineFinders = ({classes, t, addFinder, modifyFinder, removeFinder, nodeT
                                 <Button disabled={selectedType === null || availableFinders.length === 0}
                                         onClick={() => updateDialogState(Object.assign({}, dialogState, {open: true, mode: C.DIALOG_MODE_ADD}))}
                                 >
-                                    {t('label.sdlGeneratorTools.defineFinder.addAFinderCaption')}
+                                    {t('label.sdlGeneratorTools.defineFinder.addAFinder')}
                                     <Add/>
                                 </Button>
                             </ListItem>

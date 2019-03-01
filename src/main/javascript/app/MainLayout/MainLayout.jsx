@@ -3,7 +3,7 @@ import {compose} from 'react-apollo';
 import {translate} from 'react-i18next';
 import {withStyles, AppBar, Toolbar, Grid, Paper, Typography, Button} from '@material-ui/core';
 import StepperComponent from '../stepperComponents';
-import GQLSchemaViewer from '../gqlSchemaViewer/index';
+import GQLSchemaViewer from '../GQLSchemaViewer/index';
 
 let styles = theme => ({
     topBar: {

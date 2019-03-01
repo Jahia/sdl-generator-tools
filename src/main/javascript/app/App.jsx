@@ -11,7 +11,7 @@ import {client} from "@jahia/apollo-dx";
 
 const defaultNamespace = 'sdl-generator-tools';
 
-const App = () => (
+const App = dxContext => (
     <MuiThemeProvider theme={theme}>
         <Provider store={store}>
             <I18nextProvider i18n={getI18n({
@@ -23,7 +23,7 @@ const App = () => (
                 }
             })}
             >
-                <ApolloProvider client={client()}>
+                <ApolloProvider client={client({contextPath: dxContext.contextPath})}>
                     <MainLayout/>
                 </ApolloProvider>
             </I18nextProvider>

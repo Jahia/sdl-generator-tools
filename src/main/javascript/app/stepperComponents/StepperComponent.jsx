@@ -1,10 +1,10 @@
 import React from 'react';
 import {translate} from 'react-i18next';
 import {withStyles, Stepper, Step, StepLabel, Button} from '@material-ui/core';
-import CreateTypes from './CreateTypes/index';
+import CreateTypes from './CreateTypes';
 import ExportResult from './ExportResult';
 import {downloadFile, copyToClipBoard} from './StepperComponent.document-utils';
-import DefineFinder from './defineFinders/index';
+import DefineFinder from './DefineFinders';
 import {compose} from 'react-apollo';
 import SDLParser from '../parsing/sdlParser';
 

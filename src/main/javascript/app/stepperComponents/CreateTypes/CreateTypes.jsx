@@ -19,7 +19,7 @@ import AddPropertyDialog from './AddModifyPropertyDialog';
 import {compose} from 'react-apollo';
 import C from '../../App.constants';
 import * as _ from 'lodash';
-import {lookUpMappingStringArgumentInfo} from '../../util/helperFunctions';
+import {lookUpMappingStringArgumentInfo} from '../StepperComponent.utils';
 
 const styles = theme => ({
     paper: {

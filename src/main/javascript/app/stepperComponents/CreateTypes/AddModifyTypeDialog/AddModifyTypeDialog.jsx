@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {translate} from 'react-i18next';
 import {compose, withApollo, graphql} from 'react-apollo';
-import gqlQueries from '../../../gql/gqlQueries';
+import gqlQueries from '../CreateTypes.gql-queries';
 import Dialog from '@material-ui/core/Dialog/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent/DialogContent';
@@ -33,7 +33,7 @@ import {
     lookUpMappingStringArgumentInfo,
     lookUpMappingBooleanArgumentInfo,
     lookUpMappingArgumentIndex
-} from '../../../util/helperFunctions';
+} from '../../StepperComponent.utils';
 import {Close} from '@material-ui/icons';
 
 const NodeTypeSelectCom = ({classes, t, disabled, value, open, handleClose, handleChange, handleOpen, nodeTypeNames}) => (

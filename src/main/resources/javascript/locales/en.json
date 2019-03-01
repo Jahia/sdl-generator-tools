@@ -26,8 +26,9 @@
             },
             "defineFinder": {
                 "finders": "Finders",
-                "addAFinderCaption": "Add a finder",
-                "editAFinderCaption": "Edit a finder",
+                "addAFinder": "Add a finder",
+                "editAFinder": "Edit a finder",
+                "selectAFinder": "Select a finder",
                 "customFinderPrefixText": "Custom finder prefix"
             },
             "exportResult": {
