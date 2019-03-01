@@ -6,6 +6,8 @@ import store from './App.redux-store';
 import MainLayout from './MainLayout';
 import {MuiThemeProvider} from '@material-ui/core/es/styles';
 import {dsGenericTheme as theme} from '@jahia/ds-mui-theme';
+import ApolloProvider from "react-apollo/ApolloProvider";
+import {client} from "@jahia/apollo-dx";
 
 const defaultNamespace = 'sdl-generator-tools';
 
@@ -21,7 +23,9 @@ const App = () => (
                 }
             })}
             >
-                <MainLayout/>
+                <ApolloProvider client={client()}>
+                    <MainLayout/>
+                </ApolloProvider>
             </I18nextProvider>
         </Provider>
     </MuiThemeProvider>

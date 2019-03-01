@@ -9,11 +9,14 @@ import DialogContent from '@material-ui/core/DialogContent/DialogContent';
 import TextField from '@material-ui/core/TextField/TextField';
 import DialogActions from '@material-ui/core/DialogActions/DialogActions';
 import {
+    Input,
+    FormControl,
+    InputLabel,
+    Select,
     Button,
     FormControlLabel,
     FormGroup,
     MenuItem,
-    Select,
     Switch,
     ListItemText,
     withStyles
@@ -33,32 +36,40 @@ import {
 } from '../../../util/helperFunctions';
 import {Close} from '@material-ui/icons';
 
-const NodeTypeSelectCom = ({classes, disabled, value, open, handleClose, handleChange, handleOpen, nodeTypeNames}) => (
-    <Select disabled={disabled}
-            open={open}
-            value={!_.isNil(value) ? value : ''}
-            onClose={handleClose}
-            onOpen={handleOpen}
-            onChange={handleChange}
-    >
-        <MenuItem value="">
-            <em>None</em>
-        </MenuItem>
-        {
-            !_.isNil(nodeTypeNames) ? nodeTypeNames.map(typeName => {
-                return (
-                    <MenuItem key={typeName.name} value={typeName.name} classes={classes}>
-                        <ListItemText primary={typeName.displayName} secondary={typeName.name}/>
-                    </MenuItem>
-                );
-            }) : null
-        }
-    </Select>
+const NodeTypeSelectCom = ({classes, t, disabled, value, open, handleClose, handleChange, handleOpen, nodeTypeNames}) => (
+    <FormControl className={classes.formControl} disabled={disabled}>
+        <InputLabel shrink htmlFor="type-name">{t('label.sdlGeneratorTools.createTypes.selectNodeType')}</InputLabel>
+        <Select disabled={disabled}
+                open={open}
+                value={!_.isNil(value) ? value : ''}
+                input={<Input id="type-name"/>}
+                onClose={handleClose}
+                onOpen={handleOpen}
+                onChange={handleChange}
+        >
+            <MenuItem value="">
+                <em>None</em>
+            </MenuItem>
+            {
+                !_.isNil(nodeTypeNames) ? nodeTypeNames.map(typeName => {
+                    return (
+                        <MenuItem key={typeName.name} value={typeName.name} classes={classes}>
+                            <ListItemText primary={typeName.displayName} secondary={typeName.name}/>
+                        </MenuItem>
+                    );
+                }) : null
+            }
+        </Select>
+    </FormControl>
 );
 
 const NodeTypeSelect = withStyles({
     root: {
         padding: '15px 12px'
+    },
+    formControl: {
+        margin: '0px 0px',
+        width: '100%'
     }
 })(NodeTypeSelectCom);
 
@@ -93,7 +104,7 @@ const AddTypeDialog = ({data, t, open, closeDialog, mode, dispatch, dispatchBatc
     const saveTypeAndClose = () => {
         let actions;
         if (mode === C.DIALOG_MODE_ADD) {
-            if (_.isNil(typeName) || _.isEmpty(typeName) || _.isNil(nodeType) || _.isEmpty(nodeType)) {
+            if (_.isNil(typeName) || _.isEmpty(typeName) || duplicateName || _.isNil(nodeType) || _.isEmpty(nodeType)) {
                 return;
             }
             actions = [
@@ -156,6 +167,7 @@ const AddTypeDialog = ({data, t, open, closeDialog, mode, dispatch, dispatchBatc
             </DialogTitle>
             <DialogContent style={{width: 400}}>
                 <NodeTypeSelect open={showNodeTypeSelector}
+                                t={t}
                                 disabled={mode === C.DIALOG_MODE_EDIT}
                                 value={nodeType}
                                 nodeTypeNames={nodeTypeNames}
@@ -168,6 +180,9 @@ const AddTypeDialog = ({data, t, open, closeDialog, mode, dispatch, dispatchBatc
                     disabled={mode === C.DIALOG_MODE_EDIT}
                     margin="dense"
                     id="typeName"
+                    InputLabelProps={{
+                        shrink: true
+                    }}
                     label={t('label.sdlGeneratorTools.createTypes.customTypeNameText')}
                     type="text"
                     value={!_.isNil(typeName) ? typeName : ''}
@@ -206,7 +221,7 @@ const AddTypeDialog = ({data, t, open, closeDialog, mode, dispatch, dispatchBatc
                     {t('label.sdlGeneratorTools.cancelButton')}
                 </Button>
                 <Button color="primary"
-                        disabled={duplicateName}
+                        disabled={mode === C.DIALOG_MODE_ADD ? duplicateName : false}
                         onClick={saveTypeAndClose}
                 >
                     {t('label.sdlGeneratorTools.saveButton')}
@@ -236,4 +251,3 @@ const CompositeComp = compose(
 )(AddTypeDialog);
 
 export default withApollo(CompositeComp);
-
