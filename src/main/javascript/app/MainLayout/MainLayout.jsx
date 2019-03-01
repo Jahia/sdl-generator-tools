@@ -5,7 +5,7 @@ import {withStyles, AppBar, Toolbar, Grid, Paper, Typography, Button} from '@mat
 import StepperComponent from '../stepperComponents';
 import GQLSchemaViewer from '../GQLSchemaViewer/index';
 
-let styles = theme => ({
+let styles = () => ({
     topBar: {
         background: '#3B3D40',
         color: '#fff'

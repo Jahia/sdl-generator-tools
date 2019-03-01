@@ -8,7 +8,7 @@ import DefineFinder from './DefineFinders';
 import {compose} from 'react-apollo';
 import SDLParser from '../parsing/sdlParser';
 
-const styles = theme => ({
+const styles = () => ({
     root: {
         margin: '10px 16px'
     },
@@ -93,7 +93,7 @@ class StepperComponent extends React.Component {
         return (
             <div className={classes.root}>
                 <Stepper activeStep={activeStep}>
-                    {steps.map((label, index) => {
+                    {steps.map(label => {
                         const props = {};
                         const labelProps = {};
                         return (
