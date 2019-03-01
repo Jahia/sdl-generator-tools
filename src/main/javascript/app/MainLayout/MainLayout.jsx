@@ -2,7 +2,7 @@ import React from 'react';
 import {compose} from 'react-apollo';
 import {translate} from 'react-i18next';
 import {withStyles, AppBar, Toolbar, Grid, Paper, Typography, Button} from '@material-ui/core';
-import Stepper from '../stepperComponents/StepperComponentContainer';
+import StepperComponent from '../stepperComponents';
 import GQLSchemaViewer from '../gqlSchemaViewer/index';
 
 let styles = theme => ({
@@ -73,7 +73,7 @@ const MainLayout = ({classes, t}) => {
                     <Typography className={classes.mainText}>
                         {t('label.sdlGeneratorTools.mainCaption')}
                     </Typography>
-                    <Stepper/>
+                    <StepperComponent/>
                 </Paper>
             </Grid>
 

@@ -6,9 +6,9 @@ import DialogContent from '@material-ui/core/DialogContent/DialogContent';
 import TextField from '@material-ui/core/TextField/TextField';
 import DialogActions from '@material-ui/core/DialogActions/DialogActions';
 import {
-    Button,
+    Button, FormControl,
     FormControlLabel,
-    FormGroup,
+    FormGroup, Input, InputLabel,
     ListItemText,
     MenuItem,
     Select,
@@ -22,32 +22,40 @@ import {upperCaseFirst} from '../../../util/helperFunctions';
 import {Close} from '@material-ui/icons';
 import C from '../../../App.constants';
 
-const PropertySelectCom = ({classes, disabled, value, open, handleClose, handleChange, handleOpen, nodeProperties}) => (
-    <Select disabled={disabled}
-            open={open}
-            value={value}
-            onClose={handleClose}
-            onOpen={handleOpen}
-            onChange={handleChange}
-    >
-        <MenuItem value="">
-            <em>None</em>
-        </MenuItem>
-        {
-            !_.isNil(nodeProperties) ? nodeProperties.map(property => {
-                return (
-                    <MenuItem key={property.name} value={property.name} classes={classes}>
-                        <ListItemText primary={property.name} secondary={upperCaseFirst(property.requiredType.toLowerCase())}/>
-                    </MenuItem>
-                );
-            }) : null
-        }
-    </Select>
+const PropertySelectCom = ({classes, t, disabled, value, open, handleClose, handleChange, handleOpen, nodeProperties}) => (
+    <FormControl className={classes.formControl} disabled={disabled}>
+        <InputLabel shrink htmlFor="property-name">{t('label.sdlGeneratorTools.createTypes.selectNodeProperty')}</InputLabel>
+        <Select disabled={disabled}
+                open={open}
+                value={value}
+                input={<Input id="property-name"/>}
+                onClose={handleClose}
+                onOpen={handleOpen}
+                onChange={handleChange}
+        >
+            <MenuItem value="">
+                <em>None</em>
+            </MenuItem>
+            {
+                !_.isNil(nodeProperties) ? nodeProperties.map(property => {
+                    return (
+                        <MenuItem key={property.name} value={property.name} classes={classes}>
+                            <ListItemText primary={property.name} secondary={upperCaseFirst(property.requiredType.toLowerCase())}/>
+                        </MenuItem>
+                    );
+                }) : null
+            }
+        </Select>
+    </FormControl>
 );
 
 const PropertySelect = withStyles({
     root: {
         padding: '15px 12px'
+    },
+    formControl: {
+        margin: '0px 0px',
+        width: '100%'
     }
 })(PropertySelectCom);
 
@@ -57,11 +65,11 @@ const AddModifyPropertyDialog = ({t, open, closeDialog, mode, selectedType, sele
     const selectedPropertyName = !_.isNil(selectedProperty) ? selectedProperty.propertyName : '';
     const selectedJcrPropertyName = !_.isNil(selectedProperty) ? selectedProperty.jcrPropertyName : '';
     const selectedPropertyType = !_.isNil(selectedProperty) ? selectedProperty.propertyType : '';
-    const selectedIsPredifinedType = !_.isNil(selectedProperty) ? selectedProperty.isPredefinedType : false;
+    const selectedIsPredefinedType = !_.isNil(selectedProperty) ? selectedProperty.isPredefinedType : false;
     const [propertyName, updatePropertyName] = useState(selectedPropertyName);
     const [jcrPropertyName, updateJcrPropertyName] = useState(selectedJcrPropertyName);
     const [showPropertySelector, setShowPropertySelector] = useState(false);
-    const [mapToPredefinedType, setMapToPredefinedType] = useState(selectedIsPredifinedType);
+    const [mapToPredefinedType, setMapToPredefinedType] = useState(selectedIsPredefinedType);
     let nodeProperties = selectableProps;
 
     if (mapToPredefinedType) {
@@ -130,6 +138,7 @@ const AddModifyPropertyDialog = ({t, open, closeDialog, mode, selectedType, sele
                     mapToPredefinedType && "Predefined!!!"
                 }
                 <PropertySelect open={showPropertySelector}
+                                t={t}
                                 disabled={mode === C.DIALOG_MODE_EDIT}
                                 nodeProperties={nodeProperties}
                                 value={jcrPropertyName}
@@ -142,6 +151,9 @@ const AddModifyPropertyDialog = ({t, open, closeDialog, mode, selectedType, sele
                     disabled={mode === C.DIALOG_MODE_EDIT}
                     margin="dense"
                     id="propertyName"
+                    InputLabelProps={{
+                        shrink: true
+                    }}
                     label={t('label.sdlGeneratorTools.createTypes.customPropertyNameText')}
                     type="text"
                     value={propertyName}

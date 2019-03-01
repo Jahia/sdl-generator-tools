@@ -3,7 +3,7 @@ import {translate} from 'react-i18next';
 import {withStyles, Stepper, Step, StepLabel, Button} from '@material-ui/core';
 import CreateTypes from './CreateTypes/index';
 import ExportResult from './ExportResult';
-import {downloadFile, copyToClipBoard} from '../util/documentUtils';
+import {downloadFile, copyToClipBoard} from './StepperComponent.document-utils';
 import DefineFinder from './defineFinders/index';
 import {compose} from 'react-apollo';
 import SDLParser from '../parsing/sdlParser';
