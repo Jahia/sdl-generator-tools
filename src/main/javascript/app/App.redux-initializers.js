@@ -18,21 +18,30 @@ const addType = typeInfo => (Object.assign({}, {
     ]
 }));
 
-const addProperty = fieldInfo => (Object.assign({}, {
-    name: fieldInfo.name,
-    type: fieldInfo.type,
-    directives: [
-        {
-            name: 'mapping',
-            arguments: [
-                {
-                    name: 'property',
-                    value: fieldInfo.property
-                }
-            ]
-        }
-    ]
-}));
+const addProperty = fieldInfo => {
+    if (fieldInfo.property === '' || fieldInfo.property === null) {
+        return Object.assign({}, {
+            name: fieldInfo.name,
+            type: fieldInfo.type,
+            directives: []
+        });
+    }
+    return Object.assign({}, {
+        name: fieldInfo.name,
+        type: fieldInfo.type,
+        directives: [
+            {
+                name: 'mapping',
+                arguments: [
+                    {
+                        name: 'property',
+                        value: fieldInfo.property
+                    }
+                ]
+            }
+        ]
+    })
+};
 
 const addDirectiveArgument = argumentInfo => (Object.assign({}, {
     name: argumentInfo.name,
@@ -56,7 +65,8 @@ const getInitialObject = (actionType, vars) => {
         case actionTypes.SDL_ADD_FINDER_TO_TYPE:
         case actionTypes.SDL_MODIFY_FINDER_OF_TYPE:
             return addFinder(vars);
-        default: return {};
+        default:
+            return {};
     }
 };
 

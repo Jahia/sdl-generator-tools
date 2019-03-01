@@ -10,7 +10,14 @@ const constants = {
         "FLOAT": "Float",
         "DECIMAL": "BigDecimal",
         "DOUBLE": "BigDecimal"
-    }
+    },
+    RESERVED_JCR_TYPES: [
+        "jcr:uuid",
+        "jcr:created",
+        "jcr:createdBy",
+        "jcr:lastModified",
+        "jcr:lastModifiedBy",
+    ]
 };
 
 export default constants;

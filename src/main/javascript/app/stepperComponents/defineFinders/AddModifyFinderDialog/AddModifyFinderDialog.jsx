@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
-import {Button, Select, MenuItem, Dialog} from '@material-ui/core';
+import {Button, Select, MenuItem, Dialog, withStyles, InputLabel, FormControl} from '@material-ui/core';
 import DialogTitle from '@material-ui/core/DialogTitle/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent/DialogContent';
 import TextField from '@material-ui/core/TextField/TextField';
@@ -11,20 +11,33 @@ import C from '../../../App.constants';
 import * as _ from 'lodash';
 import {Close} from '@material-ui/icons';
 
-const FinderSelect = ({open, handleClose, handleOpen, handleChange, value, values}) => {
+const FinderSelect = ({classes, open, handleClose, handleOpen, handleChange, value, values}) => {
     return (
-        <Select open={open}
-                value={value}
-                onClose={handleClose}
-                onOpen={handleOpen}
-                onChange={handleChange}
-        >
-            {
-                values.map(finder => <MenuItem key={finder} value={finder}>{finder}</MenuItem>)
-            }
-        </Select>
+        <FormControl className={classes.formControl} >
+            <InputLabel shrink htmlFor="type-name">{"Custom finder"}</InputLabel>
+            <Select open={open}
+                    value={value}
+                    onClose={handleClose}
+                    onOpen={handleOpen}
+                    onChange={handleChange}
+            >
+                {
+                    values.map(finder => <MenuItem key={finder} value={finder}>{finder}</MenuItem>)
+                }
+            </Select>
+        </FormControl>
     );
 };
+
+const FinderSelection = withStyles({
+    root: {
+        padding: '15px 12px'
+    },
+    formControl: {
+        margin: '0px 0px',
+        width: '100%'
+    }
+})(FinderSelect);
 
 const AddModifyFinderDialog = ({t, open, close, mode, addOrModifyFinder, removeFinder, selectedFinder, selectedType, availableFinders}) => {
     const currentFinder = !_.isNil(selectedType) ? selectedType.queries.filter(query => query.name === selectedFinder)[0] : null;
@@ -87,7 +100,7 @@ const AddModifyFinderDialog = ({t, open, close, mode, addOrModifyFinder, removeF
                 'label.sdlGeneratorTools.defineFinder.editAFinderCaption')}
             </DialogTitle>
             <DialogContent style={{width: 400}}>
-                <FinderSelect open={showFinderSelector}
+                <FinderSelection open={showFinderSelector}
                               values={availableFinders}
                               value={finderSuffix}
                               handleOpen={() => setFinderSelectorStatus(true)}

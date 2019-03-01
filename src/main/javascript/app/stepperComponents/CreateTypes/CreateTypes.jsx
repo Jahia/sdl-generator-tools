@@ -52,12 +52,11 @@ const TypeItem = withStyles(styles)(({classes, name, isSelected, selectType, upd
     </ListItem>
 ));
 
-const PropertyItem = ({index, name, type, jcrName, selectProperty, updatePropertyDialogMode, showAddPropertyDialog}) => (
+const PropertyItem = ({index, name, type, jcrName, selectProperty, showAddPropertyDialog}) => (
     <ListItem button
               onClick={() => {
                   selectProperty(index, name, jcrName, type);
-                  updatePropertyDialogMode(C.DIALOG_MODE_EDIT);
-                  showAddPropertyDialog(true);
+                  showAddPropertyDialog();
               }}
     >
         <ListItemText primary={name}/>
@@ -66,9 +65,7 @@ const PropertyItem = ({index, name, type, jcrName, selectProperty, updatePropert
 
 const CreateTypes = ({classes, t, nodeTypes, selection, selectedProperty, dispatch, dispatchBatch, addProperty, addArgToDirective, removeType, removeProperty, removeArgFromDirective, selectType, selectProperty, addModifyPropertyDialog}) => {
     const [addTypeDialogShown, showAddTypeDialog] = useState(false);
-    const [addPropertyDialogShown, showAddPropertyDialog] = useState(false);
     const [typeDialogMode, updateTypeDialogMode] = useState(C.DIALOG_MODE_ADD);
-    const [propertyDialogMode, updatePropertyDialogMode] = useState(C.DIALOG_MODE_ADD);
 
     const selectedType = nodeTypes.reduce((acc, type, idx) => type.name === selection ? Object.assign({idx: idx}, type) : acc, null);
 
@@ -156,8 +153,8 @@ const CreateTypes = ({classes, t, nodeTypes, selection, selectedProperty, dispat
                                                                   type={field.type}
                                                                   jcrName={lookUpMappingStringArgumentInfo(field, 'property')}
                                                                   selectProperty={selectProperty}
-                                                                  showAddPropertyDialog={showAddPropertyDialog}
-                                                                  updatePropertyDialogMode={updatePropertyDialogMode}/>
+                                                                  showAddPropertyDialog={() => addModifyPropertyDialog({open: true, mode: C.DIALOG_MODE_EDIT})}
+                                                    />
                                                 );
                                             }
                                         ))

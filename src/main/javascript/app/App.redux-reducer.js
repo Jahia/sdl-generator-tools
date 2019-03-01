@@ -20,13 +20,23 @@ const nodeTypesReducer = (state = [], action) => {
         case actionTypes.SDL_ADD_PROPERTY_TO_TYPE:
             return state.map((type, index) => {
                 if (index === action.typeIndexOrName || type.name === action.typeIndexOrName) {
-                    console.log("Here");
                     return {
                         ...type,
                         fieldDefinitions: type.fieldDefinitions.concat(getInitialObject(actionTypes.SDL_ADD_PROPERTY_TO_TYPE, action.propertyInfo))
                     };
                 }
-                console.log("Here1");
+                return type;
+            });
+        case actionTypes.SDL_UPDATE_PROPERTY_OF_TYPE:
+            console.log("A", action)
+            return state.map((type, index) => {
+                if (index === action.typeIndexOrName || type.name === action.typeIndexOrName) {
+                    type.fieldDefinitions.splice(action.propertyIndex, 1, getInitialObject(actionTypes.SDL_ADD_PROPERTY_TO_TYPE, action.propertyInfo));
+                    return {
+                        ...type,
+                        fieldDefinitions: type.fieldDefinitions.slice()
+                    };
+                }
                 return type;
             });
         case actionTypes.SDL_REMOVE_PROPERTY_FROM_TYPE:

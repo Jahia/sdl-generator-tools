@@ -7,8 +7,9 @@ import TextField from '@material-ui/core/TextField/TextField';
 import DialogActions from '@material-ui/core/DialogActions/DialogActions';
 import {
     Button,
+    FormControl,
     FormControlLabel,
-    FormGroup,
+    FormGroup, InputLabel,
     ListItemText,
     MenuItem,
     Select,
@@ -23,61 +24,81 @@ import {lookUpMappingStringArgumentInfo, upperCaseFirst} from '../../../util/hel
 import {Close} from '@material-ui/icons';
 import C from '../../../App.constants';
 import gqlQueries from "../../../gql/gqlQueries";
-import {sdlAddPropertyToType, sdlRemovePropertyFromType} from "../../../App.redux-actions";
-import {sdlUpdateSelectedProperty, sdlUpdateAddModifyPropertyDialog} from "../../StepperComponent.redux-actions";
+import {sdlAddPropertyToType, sdlRemovePropertyFromType, sdlUpdatePropertyOfType} from "../../../App.redux-actions";
+import {sdlUpdateSelectedProperty, sdlUpdateAddModifyPropertyDialog, sdlSelectProperty} from "../../StepperComponent.redux-actions";
 
 
 const PropertySelectCom = ({classes, disabled, value, open, handleClose, handleChange, handleOpen, nodeProperties}) => (
-    <Select disabled={disabled}
-            open={open}
-            value={value}
-            onClose={handleClose}
-            onOpen={handleOpen}
-            onChange={handleChange}
-    >
-        <MenuItem value="">
-            <em>None</em>
-        </MenuItem>
-        {
-            !_.isNil(nodeProperties) ? nodeProperties.map(property => {
-                return (
-                    <MenuItem key={property.name} value={property.name} classes={classes}>
-                        <ListItemText primary={property.name} secondary={upperCaseFirst(property.requiredType.toLowerCase())}/>
-                    </MenuItem>
-                );
-            }) : null
-        }
-    </Select>
+    <FormControl className={classes.formControl} disabled={disabled}>
+        <InputLabel shrink htmlFor="type-name">{"JCR type property/child"}</InputLabel>
+        <Select disabled={disabled}
+                open={open}
+                value={value}
+                onClose={handleClose}
+                onOpen={handleOpen}
+                onChange={handleChange}
+        >
+            <MenuItem value="">
+                <em>None</em>
+            </MenuItem>
+            {
+                !_.isNil(nodeProperties) ? nodeProperties.map(property => {
+                    return (
+                        <MenuItem key={property.name} value={property.name} classes={classes}>
+                            <ListItemText primary={property.name} secondary={upperCaseFirst(property.requiredType.toLowerCase())}/>
+                        </MenuItem>
+                    );
+                }) : null
+            }
+        </Select>
+    </FormControl>
 );
 
 const PredefinedTypeSelector = ({classes, disabled, value, open, handleClose, handleChange, handleOpen, types}) => (
-    <Select disabled={disabled}
-            open={open}
-            value={value}
-            onClose={handleClose}
-            onOpen={handleOpen}
-            onChange={handleChange}
-    >
-        <MenuItem value="">
-            <em>None</em>
-        </MenuItem>
-        {
-            types.map(type => (
-                <MenuItem key={type} value={type} classes={classes} >
-                    <ListItemText primary={type}/>
-                </MenuItem>
+    <FormControl className={classes.formControl} disabled={disabled}>
+        <InputLabel shrink htmlFor="type-name">{"Predefined type"}</InputLabel>
+        <Select disabled={disabled}
+                open={open}
+                value={value}
+                onClose={handleClose}
+                onOpen={handleOpen}
+                onChange={handleChange}
+        >
+            <MenuItem value="">
+                <em>None</em>
+            </MenuItem>
+            {
+                types.map(type => (
+                    <MenuItem key={type} value={type} classes={classes}>
+                        <ListItemText primary={type}/>
+                    </MenuItem>
                 ))
-        }
-    </Select>
+            }
+        </Select>
+    </FormControl>
 );
 
 const PropertySelect = withStyles({
     root: {
         padding: '15px 12px'
+    },
+    formControl: {
+        margin: '0px 0px',
+        width: '100%'
     }
 })(PropertySelectCom);
 
-const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, definedTypes, selectedType, selectedProperty, addProperty, removeProperty, isDuplicatedPropertyName, updateSelectedProp}) => {
+const PredefinedTypeSelect = withStyles({
+    root: {
+        padding: '15px 12px'
+    },
+    formControl: {
+        margin: '0px 0px',
+        width: '100%'
+    }
+})(PredefinedTypeSelector);
+
+const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, definedTypes, selectedType, selectedProperty, addProperty, removeProperty, isDuplicatedPropertyName, updateSelectedProp, unselectProperty, updateProperty}) => {
     const nodes = !_.isNil(data.jcr) ? data.jcr.nodeTypes.nodes : [];
     let nodeProperties = nodes.length > 0 ? nodes[0].properties : [];
 
@@ -101,9 +122,13 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, definedTypes
             })));
         }
     }
+    else {
+        nodeProperties = nodeProperties
+            .filter(props => ["WEAKREFERENCE", "REFERENCE"].indexOf(props.requiredType) === -1 && C.RESERVED_JCR_TYPES.indexOf(props.name) === -1);
+    }
 
     const cleanUp = () => {
-        updateSelectedProp('', '', '', '');
+        unselectProperty();
     };
 
     const duplicateName = false;//isDuplicatedPropertyName(selectedPropertyName);
@@ -114,7 +139,6 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, definedTypes
         // }
 
         let propType;
-
         if (selectedIsPredefinedType) {
             propType = selectedPropertyType;
         }
@@ -123,11 +147,25 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, definedTypes
             propType = C.JCR_TO_SDL_TYPE_MAP[propType];
         }
 
-        propType = selectedProperty.isListType && !propType.startsWith("[") ? `[${propType}]` : propType;
+        if (selectedProperty.isListType && !propType.startsWith("[")) {
+            propType = `[${propType}]`;
+        }
+        else if (!selectedProperty.isListType && propType.startsWith("[")) {
+            propType = propType.replace(/(\[|])/g, "");
+        }
+
+
+        if (mode === C.DIALOG_MODE_EDIT) {
+            console.log("Edit", selectedIsListType);
+            updateProperty({name: selectedPropertyName, property: selectedJcrPropertyName, type: propType}, typeName, selectedProperty.propertyIndex);
+        }
+        else {
+            addProperty({name: selectedPropertyName, property: selectedJcrPropertyName, type: propType}, typeName);
+        }
 
         console.log("Saved prop", propType, typeName);
+        console.log(selectedPropertyName, selectedJcrPropertyName, propType, typeName);
 
-        addProperty({name: selectedPropertyName, property: selectedJcrPropertyName, type: propType}, typeName);
         closeDialog();
         cleanUp();
     };
@@ -143,19 +181,11 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, definedTypes
         cleanUp();
     };
 
-    const openDialog = (mode, selectedPropertyName, selectedJcrPropertyName) => {
-        if (mode === C.DIALOG_MODE_EDIT) {
-        }
-    };
-
     return (
         <Dialog
             open={open}
             aria-labelledby="form-dialog-title"
             onClose={closeDialog}
-            onEnter={() => {
-                openDialog(mode, selectedPropertyName, selectedJcrPropertyName);
-            }}
         >
             <DialogTitle id="form-dialog-title">{mode === C.DIALOG_MODE_EDIT ? t('label.sdlGeneratorTools.createTypes.viewProperty') : t('label.sdlGeneratorTools.createTypes.addNewPropertyButton')}</DialogTitle>
             <DialogContent style={{width: 400}}>
@@ -181,9 +211,9 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, definedTypes
                 </FormGroup>
                 {
                     selectedIsPredefinedType &&
-                    <PredefinedTypeSelector open={showPredefinedTypeSelector}
+                    <PredefinedTypeSelect open={showPredefinedTypeSelector}
                                     types={C.PREDEFINED_SDL_TYPES.concat(definedTypes)}
-                                    value={selectedPropertyType.replace(/\[/g, "")}
+                                    value={selectedPropertyType.replace(/(\[|])/g, "")}
                                     handleOpen={() => setPredefinedTypeSelector(true)}
                                     handleClose={() => setPredefinedTypeSelector(false)}
                                     handleChange={event => updateSelectedProp({propertyType: event.target.value})}/>
@@ -272,7 +302,7 @@ const getDefinedTypes = (nodeTypes, selection) => {
 };
 
 const mapStateToProps = state => {
-    //TODO we need better management of node type selection
+    //TODO we need better management of node type selection it should contain jcr type
     return {
         definedTypes: getDefinedTypes(state.nodeTypes, state.selection),
         jcrType: getJCRType(state.nodeTypes, state.selection),
@@ -285,6 +315,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         addProperty: (propertyInfo, typeIndex) => dispatch(sdlAddPropertyToType(propertyInfo, typeIndex)),
+        updateProperty: (propertyInfo, typeIndex, propIndex) => dispatch(sdlUpdatePropertyOfType(propertyInfo, typeIndex, propIndex)),
+        unselectProperty: () => dispatch(sdlSelectProperty('','','','')),
         updateSelectedProp: propertyFields => dispatch(sdlUpdateSelectedProperty(propertyFields)),
         removeProperty: (propertyIndex, typeIndexOrName) => dispatch(sdlRemovePropertyFromType(propertyIndex, typeIndexOrName)),
         closeDialog: () => dispatch(sdlUpdateAddModifyPropertyDialog({open: false}))
@@ -295,7 +327,6 @@ const CompositeComp = compose(
     connect(mapStateToProps, mapDispatchToProps),
     graphql(gqlQueries.NODE_TYPE_PROPERTIES, {
         options(props) {
-            console.log("D", props, lookUpMappingStringArgumentInfo(props.selectedType, 'node'));
             return {
                 variables: {
                     includeTypes: [props.jcrType]

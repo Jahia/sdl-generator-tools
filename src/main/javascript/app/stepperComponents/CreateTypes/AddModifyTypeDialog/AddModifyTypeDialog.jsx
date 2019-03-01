@@ -16,7 +16,9 @@ import {
     Select,
     Switch,
     ListItemText,
-    withStyles
+    withStyles,
+    FormControl,
+    InputLabel
 } from '@material-ui/core';
 import * as _ from 'lodash';
 import C from '../../../App.constants';
@@ -34,31 +36,38 @@ import {
 import {Close} from '@material-ui/icons';
 
 const NodeTypeSelectCom = ({classes, disabled, value, open, handleClose, handleChange, handleOpen, nodeTypeNames}) => (
-    <Select disabled={disabled}
-            open={open}
-            value={!_.isNil(value) ? value : ''}
-            onClose={handleClose}
-            onOpen={handleOpen}
-            onChange={handleChange}
-    >
-        <MenuItem value="">
-            <em>None</em>
-        </MenuItem>
-        {
-            !_.isNil(nodeTypeNames) ? nodeTypeNames.map(typeName => {
-                return (
-                    <MenuItem key={typeName.name} value={typeName.name} classes={classes}>
-                        <ListItemText primary={typeName.displayName} secondary={typeName.name}/>
-                    </MenuItem>
-                );
-            }) : null
-        }
-    </Select>
+    <FormControl className={classes.formControl} disabled={disabled}>
+        <InputLabel shrink htmlFor="type-name">{"JCR node type"}</InputLabel>
+        <Select disabled={disabled}
+                open={open}
+                value={!_.isNil(value) ? value : ''}
+                onClose={handleClose}
+                onOpen={handleOpen}
+                onChange={handleChange}
+        >
+            <MenuItem value="">
+                <em>None</em>
+            </MenuItem>
+            {
+                !_.isNil(nodeTypeNames) ? nodeTypeNames.map(typeName => {
+                    return (
+                        <MenuItem key={typeName.name} value={typeName.name} classes={classes}>
+                            <ListItemText primary={typeName.displayName} secondary={typeName.name}/>
+                        </MenuItem>
+                    );
+                }) : null
+            }
+        </Select>
+    </FormControl>
 );
 
 const NodeTypeSelect = withStyles({
     root: {
         padding: '15px 12px'
+    },
+    formControl: {
+        margin: '0px 0px',
+        width: '100%'
     }
 })(NodeTypeSelectCom);
 
