@@ -1,4 +1,3 @@
-import React from 'react';
 import {compose} from 'react-apollo';
 import connect from 'react-redux/es/connect/connect';
 import GQLSchemaViewer from './GQLSchemaViewer';

@@ -4,25 +4,24 @@ import {compose, graphql, withApollo} from 'react-apollo';
 import gqlQueries from '../CreateTypes.gql-queries';
 import AddModifyPropertyDialog from './AddModifyPropertyDialog';
 import {lookUpMappingStringArgumentInfo} from '../../StepperComponent.utils';
-import * as _ from "lodash";
+import * as _ from 'lodash';
 
 const AddModifyPropertyDialogContainer = ({data, open, closeDialog, mode, selectedType, selectedProperty, addProperty, removeProperty, isDuplicatedPropertyName}) => {
-
-    console.log("Container refresh");
+    console.log('Container refresh');
     const nodes = !_.isNil(data.jcr) ? data.jcr.nodeTypes.nodes : [];
     const nodeProperties = nodes.length > 0 ? nodes[0].properties : [];
 
     return (
         <AddModifyPropertyDialog open={open}
-                           mode={mode}
-                           selectableProps={nodeProperties}
-                           selectedType={selectedType}
-                           selectedProperty={selectedProperty}
-                           closeDialog={closeDialog}
-                           addProperty={addProperty}
-                           isDuplicatedPropertyName={isDuplicatedPropertyName}
-                           removeProperty={removeProperty}/>
-    )
+                                 mode={mode}
+                                 selectableProps={nodeProperties}
+                                 selectedType={selectedType}
+                                 selectedProperty={selectedProperty}
+                                 closeDialog={closeDialog}
+                                 addProperty={addProperty}
+                                 isDuplicatedPropertyName={isDuplicatedPropertyName}
+                                 removeProperty={removeProperty}/>
+    );
 };
 
 AddModifyPropertyDialogContainer.propTypes = {

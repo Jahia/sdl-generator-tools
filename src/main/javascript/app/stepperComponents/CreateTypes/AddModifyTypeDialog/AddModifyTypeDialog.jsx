@@ -71,7 +71,7 @@ const NodeTypeSelect = withStyles({
     }
 })(NodeTypeSelectCom);
 
-const AddTypeDialog = ({data, t, open, closeDialog, mode, dispatch, dispatchBatch, selectedType, isDuplicatedTypeName, removeType}) => {
+const AddTypeDialog = ({data, t, open, closeDialog, mode, dispatchBatch, selectedType, isDuplicatedTypeName, removeType}) => {
     const customTypeName = !_.isNil(selectedType) ? selectedType.name : '';
     const jcrNodeType = lookUpMappingStringArgumentInfo(selectedType, 'node');
     const ignoreDefaultQueriesDirective = lookUpMappingBooleanArgumentInfo(selectedType, 'ignoreDefaultQueries');
@@ -238,7 +238,7 @@ AddTypeDialog.propTypes = {
 
 const CompositeComp = compose(
     graphql(gqlQueries.NODE_TYPE_NAMES, {
-        options(props) {
+        options() {
             return {
                 variables: {},
                 fetchPolicy: 'network-only'

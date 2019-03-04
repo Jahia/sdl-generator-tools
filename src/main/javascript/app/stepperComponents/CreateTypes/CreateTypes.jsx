@@ -18,10 +18,9 @@ import AddTypeDialog from './AddModifyTypeDialog';
 import AddPropertyDialog from './AddModifyPropertyDialog';
 import {compose} from 'react-apollo';
 import C from '../../App.constants';
-import * as _ from 'lodash';
 import {lookUpMappingStringArgumentInfo} from '../StepperComponent.utils';
 
-const styles = theme => ({
+const styles = () => ({
     paper: {
         width: '100%',
         minHeight: '50%',
@@ -64,7 +63,7 @@ const PropertyItem = ({index, name, type, jcrName, selectProperty, updatePropert
     </ListItem>
 );
 
-const CreateTypes = ({classes, t, nodeTypes, selection, selectedProperty, dispatch, dispatchBatch, addProperty, addArgToDirective, removeType, removeProperty, removeArgFromDirective, selectType, selectProperty}) => {
+const CreateTypes = ({classes, t, nodeTypes, selection, selectedProperty, dispatch, dispatchBatch, addProperty, removeType, removeProperty, selectType, selectProperty}) => {
     const [addTypeDialogShown, showAddTypeDialog] = useState(false);
     const [addPropertyDialogShown, showAddPropertyDialog] = useState(false);
     const [typeDialogMode, updateTypeDialogMode] = useState(C.DIALOG_MODE_ADD);
@@ -136,7 +135,7 @@ const CreateTypes = ({classes, t, nodeTypes, selection, selectedProperty, dispat
                                     .map(type => type.fieldDefinitions
                                         .map((field, i) => {
                                                 return (
-                                                    <PropertyItem key={`${field.name}_${i}`}
+                                                    <PropertyItem key={field.name}
                                                                   index={i}
                                                                   name={field.name}
                                                                   type={field.type}

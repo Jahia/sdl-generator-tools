@@ -58,11 +58,9 @@ const PropertySelect = withStyles({
 })(PropertySelectCom);
 
 const AddModifyPropertyDialog = ({t, open, closeDialog, mode, selectedType, selectedProperty, addProperty, removeProperty, isDuplicatedPropertyName, selectableProps}) => {
-    console.log("Dialog refresh");
     const typeName = !_.isNil(selectedType) ? selectedType.name : '';
     const selectedPropertyName = !_.isNil(selectedProperty) ? selectedProperty.propertyName : '';
     const selectedJcrPropertyName = !_.isNil(selectedProperty) ? selectedProperty.jcrPropertyName : '';
-    const selectedPropertyType = !_.isNil(selectedProperty) ? selectedProperty.propertyType : '';
     const selectedIsPredefinedType = !_.isNil(selectedProperty) ? selectedProperty.isPredefinedType : false;
     const [propertyName, updatePropertyName] = useState(selectedPropertyName);
     const [jcrPropertyName, updateJcrPropertyName] = useState(selectedJcrPropertyName);
@@ -71,8 +69,8 @@ const AddModifyPropertyDialog = ({t, open, closeDialog, mode, selectedType, sele
     let nodeProperties = selectableProps;
 
     if (mapToPredefinedType) {
-        nodeProperties = selectableProps.filter(props => ["WEAKREFERENCE"].indexOf(props.requiredType) !== -1);
-        //TODO add children as well
+        nodeProperties = selectableProps.filter(props => ['WEAKREFERENCE'].indexOf(props.requiredType) !== -1);
+        // TODO add children as well
     }
 
     const cleanUp = () => {
@@ -133,7 +131,7 @@ const AddModifyPropertyDialog = ({t, open, closeDialog, mode, selectedType, sele
                         }/>
                 </FormGroup>
                 {
-                    mapToPredefinedType && "Predefined!!!"
+                    mapToPredefinedType && 'Predefined!!!'
                 }
                 <PropertySelect open={showPropertySelector}
                                 t={t}
@@ -202,7 +200,8 @@ AddModifyPropertyDialog.propTypes = {
 };
 
 AddModifyPropertyDialog.defaultProps = {
-    selectedProperty: {}
+    selectedProperty: {},
+    selectableProps: []
 };
 
 const CompositeComp = compose(

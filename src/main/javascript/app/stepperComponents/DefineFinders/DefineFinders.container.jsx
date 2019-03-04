@@ -1,4 +1,3 @@
-import React from 'react';
 import {connect} from 'react-redux';
 import {compose} from 'react-apollo';
 import {sdlAddFinderToType, sdlModifyFinderOfType, sdlRemoveFinderFromType} from '../../App.redux-actions';
