@@ -15,7 +15,6 @@ import {
 } from '@material-ui/core';
 import {Add, Edit} from '@material-ui/icons';
 import AddTypeDialog from './AddModifyTypeDialog';
-import AddPropertyDialog from './AddModifyPropertyDialog';
 import {compose} from 'react-apollo';
 import C from '../../App.constants';
 import {lookUpMappingStringArgumentInfo} from '../StepperComponent.utils';
@@ -65,15 +64,15 @@ const PropertyItem = ({index, name, type, jcrName, selectProperty, showAddProper
     </ListItem>
 );
 
-const CreateTypes = ({classes, t, nodeTypes, selection, selectedProperty, dispatch, dispatchBatch, addProperty, addArgToDirective, removeType, removeProperty, removeArgFromDirective, selectType, selectProperty, addModifyPropertyDialog}) => {
+const CreateTypes = ({classes, t, nodeTypes, selection, selectedProperty, dispatch, dispatchBatch, removeType, selectType, selectProperty, addModifyPropertyDialog}) => {
     const [addTypeDialogShown, showAddTypeDialog] = useState(false);
     const [typeDialogMode, updateTypeDialogMode] = useState(C.DIALOG_MODE_ADD);
 
     const selectedType = nodeTypes.reduce((acc, type, idx) => type.name === selection ? Object.assign({idx: idx}, type) : acc, null);
 
-    const isDuplicatedPropertyName = propertyName => {
-        return selectedType && selectedType.fieldDefinitions.find(field => field.name === propertyName) !== undefined;
-    };
+    // Const isDuplicatedPropertyName = propertyName => {
+    //     return selectedType && selectedType.fieldDefinitions.find(field => field.name === propertyName) !== undefined;
+    // };
 
     const isDuplicatedTypeName = typeName => {
         return nodeTypes.find(type => type.name === typeName) !== undefined;
@@ -133,7 +132,7 @@ const CreateTypes = ({classes, t, nodeTypes, selection, selectedProperty, dispat
                             </ListItem>
                             {
                                 nodeTypes
-                                    .find(type => type.name === selection)
+                                    .filter(type => type.name === selection)
                                     .map(type => type.fieldDefinitions
                                         .map((field, i) => {
                                                 return (
@@ -169,8 +168,6 @@ CreateTypes.propTypes = {
     nodeTypes: PropTypes.array.isRequired,
     selectType: PropTypes.func.isRequired,
     removeType: PropTypes.func.isRequired,
-    addProperty: PropTypes.func.isRequired,
-    removeProperty: PropTypes.func.isRequired,
     dispatch: PropTypes.func.isRequired,
     dispatchBatch: PropTypes.func.isRequired,
     selection: PropTypes.string

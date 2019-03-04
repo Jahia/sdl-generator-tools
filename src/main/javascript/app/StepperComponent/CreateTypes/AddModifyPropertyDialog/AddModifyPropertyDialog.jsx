@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import Dialog from '@material-ui/core/Dialog/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle/DialogTitle';
@@ -19,10 +19,10 @@ import {compose, graphql, withApollo} from 'react-apollo';
 import {connect} from 'react-redux';
 import {translate} from 'react-i18next';
 import * as _ from 'lodash';
-import {lookUpMappingStringArgumentInfo, upperCaseFirst} from '../../StepperComponent.utils';
+import {upperCaseFirst} from '../../StepperComponent.utils';
 import {Close} from '@material-ui/icons';
 import C from '../../../App.constants';
-import gqlQueries from '../../../gql/gqlQueries';
+import gqlQueries from '../CreateTypes.gql-queries';
 import {sdlAddPropertyToType, sdlRemovePropertyFromType, sdlUpdatePropertyOfType} from '../../../App.redux-actions';
 import {sdlUpdateSelectedProperty, sdlUpdateAddModifyPropertyDialog, sdlSelectProperty} from '../../StepperComponent.redux-actions';
 
@@ -99,7 +99,7 @@ const PredefinedTypeSelect = withStyles({
     }
 })(PredefinedTypeSelector);
 
-const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, definedTypes, selectedType, selectedProperty, addProperty, removeProperty, isDuplicatedPropertyName, updateSelectedProp, unselectProperty, updateProperty}) => {
+const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, definedTypes, selectedType, selectedProperty, addProperty, removeProperty, updateSelectedProp, unselectProperty, updateProperty}) => {
     const nodes = !_.isNil(data.jcr) ? data.jcr.nodeTypes.nodes : [];
     let nodeProperties = nodes.length > 0 ? nodes[0].properties : [];
 
@@ -283,7 +283,7 @@ AddModifyPropertyDialog.propTypes = {
     removeProperty: PropTypes.func.isRequired,
     updateSelectedProp: PropTypes.func.isRequired,
     // IsDuplicatedPropertyName: PropTypes.func.isRequired,
-    selectedProperty: PropTypes.object,
+    selectedProperty: PropTypes.object.isRequired,
     selectedType: PropTypes.string.isRequired
 };
 

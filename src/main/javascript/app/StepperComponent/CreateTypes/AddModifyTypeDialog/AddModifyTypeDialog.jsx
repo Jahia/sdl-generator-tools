@@ -18,7 +18,8 @@ import {
     ListItemText,
     withStyles,
     FormControl,
-    InputLabel
+    InputLabel,
+    Input
 } from '@material-ui/core';
 import * as _ from 'lodash';
 import C from '../../../App.constants';
@@ -165,6 +166,7 @@ const AddTypeDialog = ({data, t, open, closeDialog, mode, dispatchBatch, selecte
             <DialogContent style={{width: 400}}>
                 <NodeTypeSelect open={showNodeTypeSelector}
                                 disabled={mode === C.DIALOG_MODE_EDIT}
+                                t={t}
                                 value={nodeType}
                                 nodeTypeNames={nodeTypeNames}
                                 handleOpen={() => setShowNodeTypeSelector(true)}

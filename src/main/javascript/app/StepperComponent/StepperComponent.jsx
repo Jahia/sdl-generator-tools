@@ -95,7 +95,7 @@ class StepperComponent extends React.Component {
             <React.Fragment>
                 <div className={classes.root}>
                     <Stepper activeStep={activeStep}>
-                        {steps.map((label, index) => {
+                        {steps.map(label => {
                             const props = {};
                             const labelProps = {};
                             return (
