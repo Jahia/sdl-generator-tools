@@ -71,27 +71,11 @@ const CreateTypes = ({classes, t, nodeTypes, selection, selectedProperty, dispat
     const selectedType = nodeTypes.reduce((acc, type, idx) => type.name === selection ? Object.assign({idx: idx}, type) : acc, null);
 
     const isDuplicatedPropertyName = propertyName => {
-        let isDuplicated = false;
-        if (!_.isNil(selectedType)) {
-            for (let field of selectedType.fieldDefinitions) {
-                if (field.name === propertyName) {
-                    isDuplicated = true;
-                    break;
-                }
-            }
-        }
-        return isDuplicated;
+        return selectedType && selectedType.fieldDefinitions.find(field => field.name === propertyName) !== undefined;
     };
 
     const isDuplicatedTypeName = typeName => {
-        let isDuplicated = false;
-        for (let type of nodeTypes) {
-            if (type.name === typeName) {
-                isDuplicated = true;
-                break;
-            }
-        }
-        return isDuplicated;
+        return nodeTypes.find(type => type.name === typeName) !== undefined;
     };
 
     return (
