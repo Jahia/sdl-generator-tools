@@ -6,7 +6,7 @@ import {batchActions} from 'redux-batched-actions';
 import {
     sdlRemoveType,
     sdlAddPropertyToType,
-    sdlRemovePropertyFromType,
+    sdlRemovePropertyFromType
 } from '../../App.redux-actions';
 import {sdlSelectType, sdlSelectProperty, sdlUpdateSelectedProperty, sdlUpdateAddModifyPropertyDialog} from '../StepperComponent.redux-actions';
 
@@ -29,7 +29,7 @@ const mapStateToProps = state => {
     return {
         nodeTypes: state.nodeTypes,
         selection: state.selection
-    }
+    };
 };
 
 const mapDispatchToProps = dispatch => {

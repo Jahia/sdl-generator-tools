@@ -20,7 +20,7 @@ const sdlSelectProperty = (propertyIndex, propertyName, jcrPropertyName, propert
     propertyType: propertyType
 });
 
-const sdlUpdateSelectedProperty = (propertyFields) => ({
+const sdlUpdateSelectedProperty = propertyFields => ({
     type: actionTypes.SDL_UPDATE_SELECTED_PROPERTY,
     propertyFields: propertyFields
 });

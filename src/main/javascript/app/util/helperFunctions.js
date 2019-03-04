@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
-import C from "../App.constants";
+import C from '../App.constants';
 
-const predefinedTypeRegex = new RegExp(`[\\[]{0,1}${Object.getOwnPropertyNames(C.JCR_TO_SDL_TYPE_MAP).join("|")}[\\]]{0,1}`, 'i');
+const predefinedTypeRegex = new RegExp(`[\\[]{0,1}${Object.getOwnPropertyNames(C.JCR_TO_SDL_TYPE_MAP).join('|')}[\\]]{0,1}`, 'i');
 
 const upperCaseFirst = val => {
     return val.substr(0, 1).toUpperCase().concat(val.substr(1));
@@ -42,7 +42,7 @@ const lookUpMappingBooleanArgumentInfo = (selected, argName) => {
     return !_.isNil(info) ? info : false;
 };
 
-const isPredefinedType = (type) => {
+const isPredefinedType = type => {
     if (type === '' || type === null) {
         return false;
     }

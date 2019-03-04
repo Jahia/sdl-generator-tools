@@ -40,7 +40,7 @@ const addProperty = fieldInfo => {
                 ]
             }
         ]
-    })
+    });
 };
 
 const addDirectiveArgument = argumentInfo => (Object.assign({}, {

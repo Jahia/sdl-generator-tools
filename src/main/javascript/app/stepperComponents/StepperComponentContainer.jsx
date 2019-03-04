@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import StepperComponent from './StepperComponent';
 
 const StepperComponentContainer = ({nodeTypes}) => (
-        <StepperComponent nodeTypes={nodeTypes}/>
+    <StepperComponent nodeTypes={nodeTypes}/>
 );
 
 const mapStateToProps = state => {

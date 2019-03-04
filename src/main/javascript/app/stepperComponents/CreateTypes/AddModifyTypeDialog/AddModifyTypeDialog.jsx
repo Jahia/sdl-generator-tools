@@ -37,7 +37,7 @@ import {Close} from '@material-ui/icons';
 
 const NodeTypeSelectCom = ({classes, disabled, value, open, handleClose, handleChange, handleOpen, nodeTypeNames}) => (
     <FormControl className={classes.formControl} disabled={disabled}>
-        <InputLabel shrink htmlFor="type-name">{"JCR node type"}</InputLabel>
+        <InputLabel shrink htmlFor="type-name">JCR node type</InputLabel>
         <Select disabled={disabled}
                 open={open}
                 value={!_.isNil(value) ? value : ''}

@@ -27,10 +27,10 @@ const selectedPropertyReducer = (state = null, action) => {
                 propertyType: action.propertyType,
                 jcrPropertyName: action.jcrPropertyName,
                 isPredefinedType: isPredefinedType(action.propertyType),
-                isListType: action.propertyType.startsWith("[")
+                isListType: action.propertyType.startsWith('[')
             };
         case actionTypes.SDL_UPDATE_SELECTED_PROPERTY:
-            console.log("d", state, action);
+            console.log('d', state, action);
             return {
                 ...state,
                 ...action.propertyFields

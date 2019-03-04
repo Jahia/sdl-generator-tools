@@ -13,8 +13,8 @@ import {Close} from '@material-ui/icons';
 
 const FinderSelect = ({classes, open, handleClose, handleOpen, handleChange, value, values}) => {
     return (
-        <FormControl className={classes.formControl} >
-            <InputLabel shrink htmlFor="type-name">{"Custom finder"}</InputLabel>
+        <FormControl className={classes.formControl}>
+            <InputLabel shrink htmlFor="type-name">Custom finder</InputLabel>
             <Select open={open}
                     value={value}
                     onClose={handleClose}
@@ -101,11 +101,11 @@ const AddModifyFinderDialog = ({t, open, close, mode, addOrModifyFinder, removeF
             </DialogTitle>
             <DialogContent style={{width: 400}}>
                 <FinderSelection open={showFinderSelector}
-                              values={availableFinders}
-                              value={finderSuffix}
-                              handleOpen={() => setFinderSelectorStatus(true)}
-                              handleClose={() => setFinderSelectorStatus(false)}
-                              handleChange={e => updateFinderSuffix(e.target.value)}/>
+                                 values={availableFinders}
+                                 value={finderSuffix}
+                                 handleOpen={() => setFinderSelectorStatus(true)}
+                                 handleClose={() => setFinderSelectorStatus(false)}
+                                 handleChange={e => updateFinderSuffix(e.target.value)}/>
                 <TextField autoFocus
                            fullWidth
                            margin="dense"
