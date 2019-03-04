@@ -28,7 +28,6 @@ const nodeTypesReducer = (state = [], action) => {
                 return type;
             });
         case actionTypes.SDL_UPDATE_PROPERTY_OF_TYPE:
-            console.log("A", action)
             return state.map((type, index) => {
                 if (index === action.typeIndexOrName || type.name === action.typeIndexOrName) {
                     type.fieldDefinitions.splice(action.propertyIndex, 1, getInitialObject(actionTypes.SDL_ADD_PROPERTY_TO_TYPE, action.propertyInfo));

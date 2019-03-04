@@ -25,7 +25,12 @@ const CreateTypesContainer = ({nodeTypes, selection, selectedProperty, dispatch,
                  selectProperty={selectProperty}/>
 );
 
-const mapStateToProps = state => (state);
+const mapStateToProps = state => {
+    return {
+        nodeTypes: state.nodeTypes,
+        selection: state.selection
+    }
+};
 
 const mapDispatchToProps = dispatch => {
     return {

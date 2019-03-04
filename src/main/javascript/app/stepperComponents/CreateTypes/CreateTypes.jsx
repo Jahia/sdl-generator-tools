@@ -33,8 +33,9 @@ const styles = theme => ({
     }
 });
 
-const TypeItem = withStyles(styles)(({classes, name, isSelected, selectType, updateTypeDialogMode, showAddTypeDialog}) => (
-    <ListItem selected={isSelected}
+const TypeItem = withStyles(styles)(({classes, name, isSelected, selectType, updateTypeDialogMode, showAddTypeDialog}) => {
+    console.log("Render", name);
+    return <ListItem selected={isSelected}
               onClick={() => selectType(name)}
     >
         <ListItemText primary={name}/>
@@ -50,7 +51,7 @@ const TypeItem = withStyles(styles)(({classes, name, isSelected, selectType, upd
             </IconButton>
         </ListItemSecondaryAction>
     </ListItem>
-));
+});
 
 const PropertyItem = ({index, name, type, jcrName, selectProperty, showAddPropertyDialog}) => (
     <ListItem button
@@ -143,7 +144,7 @@ const CreateTypes = ({classes, t, nodeTypes, selection, selectedProperty, dispat
                             </ListItem>
                             {
                                 nodeTypes
-                                    .filter(type => type.name === selection)
+                                    .find(type => type.name === selection)
                                     .map(type => type.fieldDefinitions
                                         .map((field, i) => {
                                                 return (
