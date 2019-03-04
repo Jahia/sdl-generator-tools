@@ -2,15 +2,16 @@ import React from 'react';
 import {compose} from 'react-apollo';
 import {translate} from 'react-i18next';
 import {withStyles, AppBar, Toolbar, Grid, Paper, Typography, Button} from '@material-ui/core';
-import StepperComponent from '../stepperComponents';
-import GQLSchemaViewer from '../GQLSchemaViewer/index';
+import StepperComponent from '../StepperComponent';
+import GQLSchemaViewer from '../GQLSchemaViewer';
 
-let styles = () => ({
+let styles = theme => ({
     topBar: {
         background: '#3B3D40',
         color: '#fff'
     },
     topBarText: {
+        fontFamily: theme.toString(),
         fontStyle: 'normal',
         fontWeight: 600,
         fontSize: '16px',

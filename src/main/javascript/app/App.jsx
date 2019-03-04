@@ -26,7 +26,7 @@ const App = ({dxContext}) => (
                 <ApolloProvider client={client({
                     contextPath: dxContext.contextPath,
                     useBatch: true,
-                    httpOptions: {batchMax: 50}
+                    httpOptions: {batchMax: 10}
                 })}
                 >
                     <MainLayout/>
