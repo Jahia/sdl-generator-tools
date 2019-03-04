@@ -18,10 +18,9 @@ import AddTypeDialog from './AddModifyTypeDialog';
 import AddPropertyDialog from './AddModifyPropertyDialog';
 import {compose} from 'react-apollo';
 import C from '../../App.constants';
-import * as _ from 'lodash';
-import {lookUpMappingStringArgumentInfo} from '../../util/helperFunctions';
+import {lookUpMappingStringArgumentInfo} from '../StepperComponent.utils';
 
-const styles = theme => ({
+const styles = () => ({
     paper: {
         width: '100%',
         minHeight: '50%',
@@ -86,7 +85,8 @@ const CreateTypes = ({classes, t, nodeTypes, selection, selectedProperty, dispat
                 <Grid item xs={12} sm={6}>
                     <Paper className={classes.paper}>
                         <List subheader={
-                            <ListSubheader>{t('label.sdlGeneratorTools.createTypes.nodeTypeText')}</ListSubheader>}
+                            <ListSubheader>{t('label.sdlGeneratorTools.createTypes.nodeTypeText')}</ListSubheader>
+                        }
                         >
                             <ListItem>
                                 <Button onClick={() => {
@@ -116,7 +116,8 @@ const CreateTypes = ({classes, t, nodeTypes, selection, selectedProperty, dispat
                 <Grid item xs={12} sm={6}>
                     <Paper className={classes.paper}>
                         <List subheader={
-                            <ListSubheader>{t('label.sdlGeneratorTools.createTypes.propertiesText')}</ListSubheader>}
+                            <ListSubheader>{t('label.sdlGeneratorTools.createTypes.propertiesText')}</ListSubheader>
+                        }
                         >
                             <ListItem>
                                 <Button onClick={() => {
@@ -136,7 +137,7 @@ const CreateTypes = ({classes, t, nodeTypes, selection, selectedProperty, dispat
                                     .map(type => type.fieldDefinitions
                                         .map((field, i) => {
                                                 return (
-                                                    <PropertyItem key={`${field.name}_${i}`}
+                                                    <PropertyItem key={field.name}
                                                                   index={i}
                                                                   name={field.name}
                                                                   type={field.type}

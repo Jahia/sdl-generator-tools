@@ -6,10 +6,9 @@ import DialogContent from '@material-ui/core/DialogContent/DialogContent';
 import TextField from '@material-ui/core/TextField/TextField';
 import DialogActions from '@material-ui/core/DialogActions/DialogActions';
 import {
-    Button,
-    FormControl,
+    Button, FormControl,
     FormControlLabel,
-    FormGroup, InputLabel,
+    FormGroup, Input, InputLabel,
     ListItemText,
     MenuItem,
     Select,
@@ -20,19 +19,20 @@ import {compose, graphql, withApollo} from 'react-apollo';
 import {connect} from 'react-redux';
 import {translate} from 'react-i18next';
 import * as _ from 'lodash';
-import {lookUpMappingStringArgumentInfo, upperCaseFirst} from '../../../util/helperFunctions';
+import {lookUpMappingStringArgumentInfo, upperCaseFirst} from '../../StepperComponent.utils';
 import {Close} from '@material-ui/icons';
 import C from '../../../App.constants';
 import gqlQueries from '../../../gql/gqlQueries';
 import {sdlAddPropertyToType, sdlRemovePropertyFromType, sdlUpdatePropertyOfType} from '../../../App.redux-actions';
 import {sdlUpdateSelectedProperty, sdlUpdateAddModifyPropertyDialog, sdlSelectProperty} from '../../StepperComponent.redux-actions';
 
-const PropertySelectCom = ({classes, disabled, value, open, handleClose, handleChange, handleOpen, nodeProperties}) => (
-    <FormControl className={classes.formControl} disabled={disabled}>
-        <InputLabel shrink htmlFor="type-name">JCR type property/child</InputLabel>
+const PropertySelectCom = ({classes, t, disabled, value, open, handleClose, handleChange, handleOpen, nodeProperties}) => (
+    <FormControl classes={classes} disabled={disabled}>
+        <InputLabel shrink htmlFor="property-name">{t('label.sdlGeneratorTools.createTypes.selectNodeProperty')}</InputLabel>
         <Select disabled={disabled}
                 open={open}
                 value={value}
+                input={<Input id="property-name"/>}
                 onClose={handleClose}
                 onOpen={handleOpen}
                 onChange={handleChange}
@@ -41,13 +41,11 @@ const PropertySelectCom = ({classes, disabled, value, open, handleClose, handleC
                 <em>None</em>
             </MenuItem>
             {
-                !_.isNil(nodeProperties) ? nodeProperties.map(property => {
-                    return (
-                        <MenuItem key={property.name} value={property.name} classes={classes}>
-                            <ListItemText primary={property.name} secondary={upperCaseFirst(property.requiredType.toLowerCase())}/>
-                        </MenuItem>
-                    );
-                }) : null
+                !_.isNil(nodeProperties) ? nodeProperties.map(property => (
+                    <MenuItem key={property.name} value={property.name} classes={{root: classes.menuItem}}>
+                        <ListItemText primary={property.name} secondary={upperCaseFirst(property.requiredType.toLowerCase())}/>
+                    </MenuItem>
+                )) : null
             }
         </Select>
     </FormControl>
@@ -79,6 +77,10 @@ const PredefinedTypeSelector = ({classes, disabled, value, open, handleClose, ha
 
 const PropertySelect = withStyles({
     root: {
+        margin: '0px 0px',
+        width: '100%'
+    },
+    menuItem: {
         padding: '15px 12px'
     },
     formControl: {
@@ -219,6 +221,7 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, definedTypes
                                           handleChange={event => updateSelectedProp({propertyType: event.target.value})}/>
                 }
                 <PropertySelect open={showPropertySelector}
+                                t={t}
                                 disabled={mode === C.DIALOG_MODE_EDIT}
                                 nodeProperties={nodeProperties}
                                 value={selectedJcrPropertyName}
@@ -231,6 +234,9 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, definedTypes
                     disabled={mode === C.DIALOG_MODE_EDIT}
                     margin="dense"
                     id="propertyName"
+                    InputLabelProps={{
+                        shrink: true
+                    }}
                     label={t('label.sdlGeneratorTools.createTypes.customPropertyNameText')}
                     type="text"
                     value={selectedPropertyName}

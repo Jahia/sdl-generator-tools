@@ -1,43 +1,42 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
-import {Button, Select, MenuItem, Dialog, withStyles, InputLabel, FormControl} from '@material-ui/core';
+import {Button, Select, MenuItem, Dialog, withStyles, InputLabel, FormControl, Input} from '@material-ui/core';
 import DialogTitle from '@material-ui/core/DialogTitle/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent/DialogContent';
 import TextField from '@material-ui/core/TextField/TextField';
 import DialogActions from '@material-ui/core/DialogActions/DialogActions';
 import {translate} from 'react-i18next';
-import {upperCaseFirst} from '../../../util/helperFunctions';
+import {upperCaseFirst} from '../../StepperComponent.utils';
 import C from '../../../App.constants';
 import * as _ from 'lodash';
 import {Close} from '@material-ui/icons';
 
-const FinderSelect = ({classes, open, handleClose, handleOpen, handleChange, value, values}) => {
-    return (
-        <FormControl className={classes.formControl}>
-            <InputLabel shrink htmlFor="type-name">Custom finder</InputLabel>
-            <Select open={open}
-                    value={value}
-                    onClose={handleClose}
-                    onOpen={handleOpen}
-                    onChange={handleChange}
-            >
-                {
-                    values.map(finder => <MenuItem key={finder} value={finder}>{finder}</MenuItem>)
-                }
-            </Select>
-        </FormControl>
-    );
-};
+const FinderSelectCom = ({classes, t, open, handleClose, handleOpen, handleChange, value, values}) => (
+    <FormControl classes={classes}>
+        <InputLabel shrink htmlFor="finder-name">{t('label.sdlGeneratorTools.defineFinder.selectAFinder')}</InputLabel>
+        <Select open={open}
+                value={value}
+                input={<Input id="finder-name"/>}
+                onClose={handleClose}
+                onOpen={handleOpen}
+                onChange={handleChange}
+        >
+            {
+                values.map(finder => <MenuItem key={finder} value={finder} classes={{root: classes.menuItem}}>{finder}</MenuItem>)
+            }
+        </Select>
+    </FormControl>
+);
 
-const FinderSelection = withStyles({
+const FinderSelect = withStyles({
     root: {
-        padding: '15px 12px'
-    },
-    formControl: {
         margin: '0px 0px',
         width: '100%'
+    },
+    menuItem: {
+        padding: '15px 12px'
     }
-})(FinderSelect);
+})(FinderSelectCom);
 
 const AddModifyFinderDialog = ({t, open, close, mode, addOrModifyFinder, removeFinder, selectedFinder, selectedType, availableFinders}) => {
     const currentFinder = !_.isNil(selectedType) ? selectedType.queries.filter(query => query.name === selectedFinder)[0] : null;
@@ -96,20 +95,24 @@ const AddModifyFinderDialog = ({t, open, close, mode, addOrModifyFinder, removeF
                     openDialog(mode, currentFinderPrefix, currentFinderSuffix);
                 }}
         >
-            <DialogTitle id="form-dialog-title">{t(mode === C.DIALOG_MODE_ADD ? 'label.sdlGeneratorTools.defineFinder.addAFinderCaption' :
-                'label.sdlGeneratorTools.defineFinder.editAFinderCaption')}
+            <DialogTitle id="form-dialog-title">{t(mode === C.DIALOG_MODE_ADD ? 'label.sdlGeneratorTools.defineFinder.addAFinder' :
+                'label.sdlGeneratorTools.defineFinder.editAFinder')}
             </DialogTitle>
             <DialogContent style={{width: 400}}>
-                <FinderSelection open={showFinderSelector}
-                                 values={availableFinders}
-                                 value={finderSuffix}
-                                 handleOpen={() => setFinderSelectorStatus(true)}
-                                 handleClose={() => setFinderSelectorStatus(false)}
-                                 handleChange={e => updateFinderSuffix(e.target.value)}/>
+                <FinderSelect open={showFinderSelector}
+                              t={t}
+                              values={availableFinders}
+                              value={finderSuffix}
+                              handleOpen={() => setFinderSelectorStatus(true)}
+                              handleClose={() => setFinderSelectorStatus(false)}
+                              handleChange={e => updateFinderSuffix(e.target.value)}/>
                 <TextField autoFocus
                            fullWidth
                            margin="dense"
                            id="propertyName"
+                           InputLabelProps={{
+                               shrink: true
+                           }}
                            label={t('label.sdlGeneratorTools.defineFinder.customFinderPrefixText')}
                            type="text"
                            value={finderPrefix}

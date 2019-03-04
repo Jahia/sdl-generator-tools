@@ -1,15 +1,15 @@
 import React from 'react';
 import {translate} from 'react-i18next';
 import {withStyles, Stepper, Step, StepLabel, Button} from '@material-ui/core';
-import CreateTypes from './CreateTypes/index';
+import CreateTypes from './CreateTypes';
 import ExportResult from './ExportResult';
-import {downloadFile, copyToClipBoard} from '../util/documentUtils';
-import DefineFinder from './defineFinders/index';
+import {downloadFile, copyToClipBoard} from './StepperComponent.document-utils';
+import DefineFinder from './DefineFinders';
 import {compose} from 'react-apollo';
 import SDLParser from '../parsing/sdlParser';
 import AddModifyPropertyDialog from './CreateTypes/AddModifyPropertyDialog';
 
-const styles = theme => ({
+const styles = () => ({
     root: {
         margin: '10px 16px'
     },

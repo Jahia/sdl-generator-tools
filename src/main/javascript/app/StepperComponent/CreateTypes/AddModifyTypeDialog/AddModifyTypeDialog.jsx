@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {translate} from 'react-i18next';
 import {compose, withApollo, graphql} from 'react-apollo';
-import gqlQueries from '../../../gql/gqlQueries';
+import gqlQueries from '../CreateTypes.gql-queries';
 import Dialog from '@material-ui/core/Dialog/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent/DialogContent';
@@ -32,15 +32,16 @@ import {
     lookUpMappingStringArgumentInfo,
     lookUpMappingBooleanArgumentInfo,
     lookUpMappingArgumentIndex
-} from '../../../util/helperFunctions';
+} from '../../StepperComponent.utils';
 import {Close} from '@material-ui/icons';
 
-const NodeTypeSelectCom = ({classes, disabled, value, open, handleClose, handleChange, handleOpen, nodeTypeNames}) => (
-    <FormControl className={classes.formControl} disabled={disabled}>
-        <InputLabel shrink htmlFor="type-name">JCR node type</InputLabel>
+const NodeTypeSelectCom = ({classes, t, disabled, value, open, handleClose, handleChange, handleOpen, nodeTypeNames}) => (
+    <FormControl classes={classes} disabled={disabled}>
+        <InputLabel shrink htmlFor="type-name">{t('label.sdlGeneratorTools.createTypes.selectNodeType')}</InputLabel>
         <Select disabled={disabled}
                 open={open}
                 value={!_.isNil(value) ? value : ''}
+                input={<Input id="type-name"/>}
                 onClose={handleClose}
                 onOpen={handleOpen}
                 onChange={handleChange}
@@ -49,13 +50,11 @@ const NodeTypeSelectCom = ({classes, disabled, value, open, handleClose, handleC
                 <em>None</em>
             </MenuItem>
             {
-                !_.isNil(nodeTypeNames) ? nodeTypeNames.map(typeName => {
-                    return (
-                        <MenuItem key={typeName.name} value={typeName.name} classes={classes}>
-                            <ListItemText primary={typeName.displayName} secondary={typeName.name}/>
-                        </MenuItem>
-                    );
-                }) : null
+                !_.isNil(nodeTypeNames) ? nodeTypeNames.map(typeName => (
+                    <MenuItem key={typeName.name} value={typeName.name} classes={{root: classes.menuItem}}>
+                        <ListItemText primary={typeName.displayName} secondary={typeName.name}/>
+                    </MenuItem>
+                )) : null
             }
         </Select>
     </FormControl>
@@ -63,15 +62,15 @@ const NodeTypeSelectCom = ({classes, disabled, value, open, handleClose, handleC
 
 const NodeTypeSelect = withStyles({
     root: {
-        padding: '15px 12px'
-    },
-    formControl: {
         margin: '0px 0px',
         width: '100%'
+    },
+    menuItem: {
+        padding: '15px 12px'
     }
 })(NodeTypeSelectCom);
 
-const AddTypeDialog = ({data, t, open, closeDialog, mode, dispatch, dispatchBatch, selectedType, isDuplicatedTypeName, removeType}) => {
+const AddTypeDialog = ({data, t, open, closeDialog, mode, dispatchBatch, selectedType, isDuplicatedTypeName, removeType}) => {
     const customTypeName = !_.isNil(selectedType) ? selectedType.name : '';
     const jcrNodeType = lookUpMappingStringArgumentInfo(selectedType, 'node');
     const ignoreDefaultQueriesDirective = lookUpMappingBooleanArgumentInfo(selectedType, 'ignoreDefaultQueries');
@@ -234,7 +233,7 @@ AddTypeDialog.propTypes = {
 
 const CompositeComp = compose(
     graphql(gqlQueries.NODE_TYPE_NAMES, {
-        options(props) {
+        options() {
             return {
                 variables: {},
                 fetchPolicy: 'network-only'

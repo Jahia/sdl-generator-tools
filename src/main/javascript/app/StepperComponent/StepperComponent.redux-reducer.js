@@ -1,5 +1,5 @@
 import {actionTypes} from './StepperComponent.redux-actions';
-import {isPredefinedType} from '../util/helperFunctions';
+import {isPredefinedType} from './StepperComponent.utils';
 import C from '../App.constants';
 
 const selectionReducer = (state = null, action) => {

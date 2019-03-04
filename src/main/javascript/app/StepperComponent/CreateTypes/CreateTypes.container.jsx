@@ -1,4 +1,3 @@
-import React from 'react';
 import CreateTypes from './CreateTypes';
 import {connect} from 'react-redux';
 import {compose} from 'react-apollo';

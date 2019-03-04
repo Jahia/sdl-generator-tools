@@ -19,6 +19,7 @@
 
 <html>
 <head>
+    <title>SDL Generator Tools</title>
 </head>
 
 <script src="${context}/modules/sdl-generator-tools/javascript/apps/sdlGeneratorTools.js" ></script>

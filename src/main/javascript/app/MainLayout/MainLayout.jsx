@@ -2,8 +2,8 @@ import React from 'react';
 import {compose} from 'react-apollo';
 import {translate} from 'react-i18next';
 import {withStyles, AppBar, Toolbar, Grid, Paper, Typography, Button} from '@material-ui/core';
-import Stepper from '../stepperComponents/StepperComponentContainer';
-import GQLSchemaViewer from '../gqlSchemaViewer/index';
+import StepperComponent from '../StepperComponent';
+import GQLSchemaViewer from '../GQLSchemaViewer';
 
 let styles = theme => ({
     topBar: {
@@ -11,6 +11,7 @@ let styles = theme => ({
         color: '#fff'
     },
     topBarText: {
+        fontFamily: theme.toString(),
         fontStyle: 'normal',
         fontWeight: 600,
         fontSize: '16px',
@@ -73,7 +74,7 @@ const MainLayout = ({classes, t}) => {
                     <Typography className={classes.mainText}>
                         {t('label.sdlGeneratorTools.mainCaption')}
                     </Typography>
-                    <Stepper/>
+                    <StepperComponent/>
                 </Paper>
             </Grid>
 
