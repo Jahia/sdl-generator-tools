@@ -76,12 +76,6 @@
             <version>1.0.6-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>io.github.graphql-java</groupId>
-            <artifactId>graphql-java-annotations</artifactId>
-            <version>6.1</version>
-            <scope>provided</scope>
-        </dependency>
     </dependencies>
 
     <repositories>
