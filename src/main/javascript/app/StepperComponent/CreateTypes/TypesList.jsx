@@ -57,38 +57,36 @@ const TypeItem = withStyles(styles)(({classes, name, uuid, isSelected, selectTyp
 
 const TypesList = ({classes, t, nodeTypes, selection, selectType, updateTypeDialogMode}) => {
     return (
-        <Grid item xs={12} sm={6}>
-            <Paper className={classes.paper}>
-                <List subheader={
-                    <ListSubheader>{t('label.sdlGeneratorTools.createTypes.nodeTypeText')}</ListSubheader>
+        <Paper className={classes.paper}>
+            <List subheader={
+                <ListSubheader>{t('label.sdlGeneratorTools.createTypes.nodeTypeText')}</ListSubheader>
+                    }
+            >
+                <ListItem>
+                    <Button onClick={() => {
+                                updateTypeDialogMode({open: true, mode: C.DIALOG_MODE_ADD});
+                            }}
+                    >
+                        {t('label.sdlGeneratorTools.createTypes.addNewTypeButton')}
+                        <Add/>
+                    </Button>
+                </ListItem>
+                {
+                            Object.getOwnPropertyNames(nodeTypes).map(uuid => {
+                                const type = nodeTypes[uuid];
+                                return (
+                                    <TypeItem key={type.name}
+                                              {...type}
+                                              uuid={uuid}
+                                              isSelected={uuid === selection}
+                                              selectType={selectType}
+                                              updateTypeDialogMode={updateTypeDialogMode}
+                                    />
+                                );
+                            })
                         }
-                >
-                    <ListItem>
-                        <Button onClick={() => {
-                                    updateTypeDialogMode({open: true, mode: C.DIALOG_MODE_ADD});
-                                }}
-                        >
-                            {t('label.sdlGeneratorTools.createTypes.addNewTypeButton')}
-                            <Add/>
-                        </Button>
-                    </ListItem>
-                    {
-                                Object.getOwnPropertyNames(nodeTypes).map(uuid => {
-                                    const type = nodeTypes[uuid];
-                                    return (
-                                        <TypeItem key={type.name}
-                                                  {...type}
-                                                  uuid={uuid}
-                                                  isSelected={uuid === selection}
-                                                  selectType={selectType}
-                                                  updateTypeDialogMode={updateTypeDialogMode}
-                                        />
-                                    );
-                                })
-                            }
-                </List>
-            </Paper>
-        </Grid>
+            </List>
+        </Paper>
     );
 };
 

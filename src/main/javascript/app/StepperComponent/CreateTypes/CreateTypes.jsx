@@ -82,7 +82,9 @@ const CreateTypes = ({classes, t, nodeTypes, selection, dispatch, dispatchBatch,
     return (
         <React.Fragment>
             <Grid container>
-                <TypesList/>
+                <Grid item xs={12} sm={6}>
+                    <TypesList/>
+                </Grid>
                 <Grid item xs={12} sm={6}>
                     <Paper className={classes.paper}>
                         <List subheader={
