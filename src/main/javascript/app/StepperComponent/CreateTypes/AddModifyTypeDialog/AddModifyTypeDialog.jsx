@@ -105,13 +105,14 @@ const AddTypeDialog = ({data, t, open, closeDialog, mode, selection, selectedTyp
     const duplicateName = false;// IsDuplicatedTypeName(typeName);
 
     const saveTypeAndClose = () => {
-        const uuid = selection !== null ? selection : generateUUID();
+        let uuid = selection;
 
         if (mode === C.DIALOG_MODE_ADD) {
             // If (_.isNil(typeName) || _.isEmpty(typeName) || _.isNil(nodeType) || _.isEmpty(nodeType)) {
             //     return;
             // }
 
+            uuid = generateUUID();
             addType({typeName: typeName, nodeType: nodeType}, uuid);
             selectType(uuid);
         }

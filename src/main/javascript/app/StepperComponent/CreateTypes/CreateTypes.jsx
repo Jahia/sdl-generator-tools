@@ -122,16 +122,6 @@ const CreateTypes = ({classes, t, nodeTypes, selection, dispatch, dispatchBatch,
                     </Paper>
                 </Grid>
             </Grid>
-            {/* <AddTypeDialog open={addTypeDialogShown} */}
-            {/* mode={typeDialogMode} */}
-            {/* dispatch={dispatch} */}
-            {/* dispatchBatch={dispatchBatch} */}
-            {/* closeDialog={() => showAddTypeDialog(false)} */}
-            {/* selectedType={selectedType} */}
-            {/* isDuplicatedTypeName={() => { */}
-            {/* return false; */}
-            {/* }} */}
-            {/* removeType={removeType}/> */}
         </React.Fragment>
     );
 };
