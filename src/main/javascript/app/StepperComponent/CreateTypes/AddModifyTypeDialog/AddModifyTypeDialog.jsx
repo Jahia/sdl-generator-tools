@@ -26,15 +26,20 @@ import C from '../../../App.constants';
 import {
     sdlAddType,
     sdlAddDirectiveArgToType,
-    sdlRemoveDirectiveArgFromType
+    sdlRemoveDirectiveArgFromType, sdlRemoveType
 } from '../../../App.redux-actions';
-import {sdlSelectType} from '../../StepperComponent.redux-actions';
+import {
+    sdlSelectType,
+    sdlUpdateAddModifyTypeDialog
+} from '../../StepperComponent.redux-actions';
 import {
     lookUpMappingStringArgumentInfo,
     lookUpMappingBooleanArgumentInfo,
     lookUpMappingArgumentIndex
 } from '../../StepperComponent.utils';
 import {Close} from '@material-ui/icons';
+import connect from 'react-redux/es/connect/connect';
+import {generateUUID} from '../../../App.utils';
 
 const NodeTypeSelectCom = ({classes, t, disabled, value, open, handleClose, handleChange, handleOpen, nodeTypeNames}) => (
     <FormControl classes={classes} disabled={disabled}>
@@ -71,7 +76,7 @@ const NodeTypeSelect = withStyles({
     }
 })(NodeTypeSelectCom);
 
-const AddTypeDialog = ({data, t, open, closeDialog, mode, dispatchBatch, selectedType, isDuplicatedTypeName, removeType}) => {
+const AddTypeDialog = ({data, t, open, closeDialog, mode, selection, selectedType, selectType, removeType, addType, addDirective, removeDirective}) => {
     const customTypeName = !_.isNil(selectedType) ? selectedType.name : '';
     const jcrNodeType = lookUpMappingStringArgumentInfo(selectedType, 'node');
     const ignoreDefaultQueriesDirective = lookUpMappingBooleanArgumentInfo(selectedType, 'ignoreDefaultQueries');
@@ -97,36 +102,29 @@ const AddTypeDialog = ({data, t, open, closeDialog, mode, dispatchBatch, selecte
         updateIgnoreDefaultQueries(false);
     };
 
-    const duplicateName = isDuplicatedTypeName(typeName);
+    const duplicateName = false;// IsDuplicatedTypeName(typeName);
 
     const saveTypeAndClose = () => {
-        let actions;
+        const uuid = selection !== null ? selection : generateUUID();
+
         if (mode === C.DIALOG_MODE_ADD) {
-            if (_.isNil(typeName) || _.isEmpty(typeName) || _.isNil(nodeType) || _.isEmpty(nodeType)) {
-                return;
-            }
-            actions = [
-                sdlAddType({typeName: typeName, nodeType: nodeType}),
-                sdlSelectType(typeName)
-            ];
-        } else {
-            if (_.isNil(nodeType) || _.isEmpty(nodeType)) {
-                return;
-            }
-            actions = [
-                sdlSelectType(typeName)
-            ];
+            // If (_.isNil(typeName) || _.isEmpty(typeName) || _.isNil(nodeType) || _.isEmpty(nodeType)) {
+            //     return;
+            // }
+
+            addType({typeName: typeName, nodeType: nodeType}, uuid);
+            selectType(uuid);
         }
 
         if (ignoreDefaultQueries) {
-            actions.push(sdlAddDirectiveArgToType(typeName, 'mapping', {
+            addDirective(uuid, 'mapping', {
                 value: ignoreDefaultQueries,
                 name: 'ignoreDefaultQueries'
-            }));
-        } else if (mode === C.DIALOG_MODE_EDIT && !_.isNil(selectedType)) {
-            actions.push(sdlRemoveDirectiveArgFromType(selectedType.idx, 'mapping', lookUpMappingArgumentIndex(selectedType, 'ignoreDefaultQueries')));
+            });
+        } else if (mode === C.DIALOG_MODE_EDIT) {
+            console.log(uuid, lookUpMappingArgumentIndex(selectedType, 'ignoreDefaultQueries'));
+            removeDirective(uuid, 'mapping', lookUpMappingArgumentIndex(selectedType, 'ignoreDefaultQueries'));
         }
-        dispatchBatch(actions);
         closeDialog();
         cleanUp();
     };
@@ -137,7 +135,7 @@ const AddTypeDialog = ({data, t, open, closeDialog, mode, dispatchBatch, selecte
     };
 
     const removeAndClose = () => {
-        removeType(typeName);
+        removeType(selection);
         closeDialog();
         cleanUp();
     };
@@ -228,17 +226,42 @@ const AddTypeDialog = ({data, t, open, closeDialog, mode, dispatchBatch, selecte
 
 AddTypeDialog.propTypes = {
     open: PropTypes.bool.isRequired,
+    mode: PropTypes.string.isRequired,
     closeDialog: PropTypes.func.isRequired,
-    isDuplicatedTypeName: PropTypes.func.isRequired,
-    removeType: PropTypes.func.isRequired
+    removeType: PropTypes.func.isRequired,
+    selectType: PropTypes.func.isRequired,
+    addType: PropTypes.func.isRequired,
+    removeDirective: PropTypes.func.isRequired,
+    addDirective: PropTypes.func.isRequired
+
+};
+
+const mapStateToProps = state => {
+    return {
+        selectedType: state.nodeTypes[state.selection],
+        selection: state.selection,
+        ...state.addModifyTypeDialog
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        removeType: typeName => dispatch(sdlRemoveType(typeName)),
+        selectType: selection => dispatch(sdlSelectType(selection)),
+        addType: (infos, uuid) => dispatch(sdlAddType(infos, uuid)),
+        removeDirective: (type, directiveName, args) => dispatch(sdlRemoveDirectiveArgFromType(type, directiveName, args)),
+        addDirective: (type, directiveName, args) => dispatch(sdlAddDirectiveArgToType(type, directiveName, args)),
+        closeDialog: () => dispatch(sdlUpdateAddModifyTypeDialog({open: false}))
+    };
 };
 
 const CompositeComp = compose(
+    connect(mapStateToProps, mapDispatchToProps),
     graphql(gqlQueries.NODE_TYPE_NAMES, {
         options() {
             return {
                 variables: {},
-                fetchPolicy: 'network-only'
+                fetchPolicy: 'cache-first'
             };
         }
     }),

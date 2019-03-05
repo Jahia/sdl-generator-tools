@@ -1,6 +1,6 @@
 import {actionTypes} from './App.redux-actions';
 
-const addType = typeInfo => (Object.assign({}, {
+const addType = typeInfo => ({
     name: typeInfo.typeName,
     description: null,
     queries: [],
@@ -16,17 +16,17 @@ const addType = typeInfo => (Object.assign({}, {
             ]
         }
     ]
-}));
+});
 
 const addProperty = fieldInfo => {
     if (fieldInfo.property === '' || fieldInfo.property === null) {
-        return Object.assign({}, {
+        return {
             name: fieldInfo.name,
             type: fieldInfo.type,
             directives: []
-        });
+        };
     }
-    return Object.assign({}, {
+    return {
         name: fieldInfo.name,
         type: fieldInfo.type,
         directives: [
@@ -40,19 +40,19 @@ const addProperty = fieldInfo => {
                 ]
             }
         ]
-    });
+    };
 };
 
-const addDirectiveArgument = argumentInfo => (Object.assign({}, {
+const addDirectiveArgument = argumentInfo => ({
     name: argumentInfo.name,
     value: argumentInfo.value
-}));
+});
 
-const addFinder = finderInfo => (Object.assign({}, {
+const addFinder = finderInfo => ({
     name: finderInfo.name,
     prefix: finderInfo.prefix,
     suffix: finderInfo.suffix
-}));
+});
 
 const getInitialObject = (actionType, vars) => {
     switch (actionType) {

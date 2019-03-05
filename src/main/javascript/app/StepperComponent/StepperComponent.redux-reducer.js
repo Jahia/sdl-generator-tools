@@ -50,9 +50,33 @@ const addModifyPropertyDialog = (state = {open: false, mode: C.DIALOG_MODE_ADD},
     }
 };
 
+const addModifyTypeDialog = (state = {open: false, mode: C.DIALOG_MODE_ADD}, action) => {
+    switch (action.type) {
+        case actionTypes.SDL_UPDATE_ADD_TYPE_DIALOG:
+            return {
+                ...state,
+                ...action.updateObject
+            };
+        default: return state;
+    }
+};
+
+const addModifyFinderDialog = (state = {open: false, mode: C.DIALOG_MODE_ADD}, action) => {
+    switch (action.type) {
+        case actionTypes.SDL_UPDATE_ADD_FINDER_DIALOG:
+            return {
+                ...state,
+                ...action.updateObject
+            };
+        default: return state;
+    }
+};
+
 export {
     selectionReducer,
     selectedFinderReducer,
     selectedPropertyReducer,
-    addModifyPropertyDialog
+    addModifyPropertyDialog,
+    addModifyTypeDialog,
+    addModifyFinderDialog
 };

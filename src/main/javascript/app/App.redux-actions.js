@@ -11,9 +11,10 @@ const actionTypes = {
     SDL_MODIFY_FINDER_OF_TYPE: 'SDL_MODIFY_FINDER_OF_TYPE'
 };
 
-const sdlAddType = typeInfo => ({
+const sdlAddType = (typeInfo, uuid) => ({
     type: actionTypes.SDL_ADD_TYPE,
-    typeInfo: typeInfo
+    typeInfo: typeInfo,
+    uuid: uuid
 });
 
 const sdlRemoveType = typeName => ({

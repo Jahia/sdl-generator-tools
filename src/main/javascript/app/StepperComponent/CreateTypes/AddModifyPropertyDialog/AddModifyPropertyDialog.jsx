@@ -43,7 +43,7 @@ const PropertySelectCom = ({classes, t, disabled, value, open, handleClose, hand
             {
                 !_.isNil(nodeProperties) ? nodeProperties.map(property => (
                     <MenuItem key={property.name} value={property.name} classes={{root: classes.menuItem}}>
-                        <ListItemText primary={property.name} secondary={upperCaseFirst(property.requiredType.toLowerCase())}/>
+                        <ListItemText primary={property.name.replace(/(j:|jcr:)/g, '')} secondary={upperCaseFirst(property.requiredType.toLowerCase())}/>
                     </MenuItem>
                 )) : null
             }
@@ -308,7 +308,6 @@ const getDefinedTypes = (nodeTypes, selection) => {
 };
 
 const mapStateToProps = state => {
-    // TODO we need better management of node type selection it should contain jcr type
     return {
         definedTypes: getDefinedTypes(state.nodeTypes, state.selection),
         jcrType: getJCRType(state.nodeTypes, state.selection),

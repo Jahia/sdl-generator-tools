@@ -8,6 +8,7 @@ import DefineFinder from './DefineFinders';
 import {compose} from 'react-apollo';
 import SDLParser from '../parsing/sdlParser';
 import AddModifyPropertyDialog from './CreateTypes/AddModifyPropertyDialog';
+import AddModifyTypeDialog from './CreateTypes/AddModifyTypeDialog';
 
 const styles = () => ({
     root: {
@@ -139,6 +140,7 @@ class StepperComponent extends React.Component {
                     </div>
                 </div>
                 <AddModifyPropertyDialog/>
+                <AddModifyTypeDialog/>
             </React.Fragment>
         );
     }

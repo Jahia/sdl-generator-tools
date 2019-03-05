@@ -18,6 +18,7 @@ import AddTypeDialog from './AddModifyTypeDialog';
 import {compose} from 'react-apollo';
 import C from '../../App.constants';
 import {lookUpMappingStringArgumentInfo} from '../StepperComponent.utils';
+import TypesList from './TypesList';
 
 const styles = () => ({
     paper: {
@@ -64,54 +65,24 @@ const PropertyItem = ({index, name, type, jcrName, selectProperty, showAddProper
     </ListItem>
 );
 
-const CreateTypes = ({classes, t, nodeTypes, selection, selectedProperty, dispatch, dispatchBatch, removeType, selectType, selectProperty, addModifyPropertyDialog}) => {
+const CreateTypes = ({classes, t, nodeTypes, selection, dispatch, dispatchBatch, removeType, selectType, selectProperty, addModifyPropertyDialog}) => {
     const [addTypeDialogShown, showAddTypeDialog] = useState(false);
     const [typeDialogMode, updateTypeDialogMode] = useState(C.DIALOG_MODE_ADD);
 
-    const selectedType = nodeTypes.reduce((acc, type, idx) => type.name === selection ? Object.assign({idx: idx}, type) : acc, null);
+    const selectedType = nodeTypes[selection] ? nodeTypes[selection] : null;
 
     // Const isDuplicatedPropertyName = propertyName => {
     //     return selectedType && selectedType.fieldDefinitions.find(field => field.name === propertyName) !== undefined;
     // };
 
-    const isDuplicatedTypeName = typeName => {
-        return nodeTypes.find(type => type.name === typeName) !== undefined;
-    };
+    // const isDuplicatedTypeName = typeName => {
+    //     return nodeTypes.find(type => type.name === typeName) !== undefined;
+    // };
 
     return (
         <React.Fragment>
             <Grid container>
-                <Grid item xs={12} sm={6}>
-                    <Paper className={classes.paper}>
-                        <List subheader={
-                            <ListSubheader>{t('label.sdlGeneratorTools.createTypes.nodeTypeText')}</ListSubheader>
-                        }
-                        >
-                            <ListItem>
-                                <Button onClick={() => {
-                                    updateTypeDialogMode(C.DIALOG_MODE_ADD);
-                                    showAddTypeDialog(true);
-                                }}
-                                >
-                                    {t('label.sdlGeneratorTools.createTypes.addNewTypeButton')}
-                                    <Add/>
-                                </Button>
-                            </ListItem>
-                            {
-                                nodeTypes.map(type => (
-                                    <TypeItem key={type.name}
-                                              {...type}
-                                              isSelected={type.name === selection}
-                                              selectType={selectType}
-                                              updateTypeDialogMode={updateTypeDialogMode}
-                                              showAddTypeDialog={showAddTypeDialog}
-                                              removeType={removeType}
-                                    />
-                                ))
-                            }
-                        </List>
-                    </Paper>
-                </Grid>
+                <TypesList/>
                 <Grid item xs={12} sm={6}>
                     <Paper className={classes.paper}>
                         <List subheader={
@@ -120,9 +91,6 @@ const CreateTypes = ({classes, t, nodeTypes, selection, selectedProperty, dispat
                         >
                             <ListItem>
                                 <Button onClick={() => {
-                                    if (selectedProperty === null) {
-                                        selectProperty(selectType, '', '', '');
-                                    }
                                     addModifyPropertyDialog({open: true, mode: C.DIALOG_MODE_ADD});
                                 }}
                                 >
@@ -130,36 +98,38 @@ const CreateTypes = ({classes, t, nodeTypes, selection, selectedProperty, dispat
                                     <Add/>
                                 </Button>
                             </ListItem>
-                            {
-                                nodeTypes
-                                    .filter(type => type.name === selection)
-                                    .map(type => type.fieldDefinitions
-                                        .map((field, i) => {
-                                                return (
-                                                    <PropertyItem key={field.name}
-                                                                  index={i}
-                                                                  name={field.name}
-                                                                  type={field.type}
-                                                                  jcrName={lookUpMappingStringArgumentInfo(field, 'property')}
-                                                                  selectProperty={selectProperty}
-                                                                  showAddPropertyDialog={() => addModifyPropertyDialog({open: true, mode: C.DIALOG_MODE_EDIT})}
-                                                    />
-                                                );
-                                            }
-                                        ))
-                            }
+                            {/* { */}
+                            {/* nodeTypes */}
+                            {/* .filter(type => type.name === selection) */}
+                            {/* .map(type => type.fieldDefinitions */}
+                            {/* .map((field, i) => { */}
+                            {/* return ( */}
+                            {/* <PropertyItem key={field.name} */}
+                            {/* index={i} */}
+                            {/* name={field.name} */}
+                            {/* type={field.type} */}
+                            {/* jcrName={lookUpMappingStringArgumentInfo(field, 'property')} */}
+                            {/* selectProperty={selectProperty} */}
+                            {/* showAddPropertyDialog={() => addModifyPropertyDialog({open: true, mode: C.DIALOG_MODE_EDIT})} */}
+                            {/* /> */}
+                            {/* ); */}
+                            {/* } */}
+                            {/* )) */}
+                            {/* } */}
                         </List>
                     </Paper>
                 </Grid>
             </Grid>
-            <AddTypeDialog open={addTypeDialogShown}
-                           mode={typeDialogMode}
-                           dispatch={dispatch}
-                           dispatchBatch={dispatchBatch}
-                           closeDialog={() => showAddTypeDialog(false)}
-                           selectedType={selectedType}
-                           isDuplicatedTypeName={isDuplicatedTypeName}
-                           removeType={removeType}/>
+            {/* <AddTypeDialog open={addTypeDialogShown} */}
+            {/* mode={typeDialogMode} */}
+            {/* dispatch={dispatch} */}
+            {/* dispatchBatch={dispatchBatch} */}
+            {/* closeDialog={() => showAddTypeDialog(false)} */}
+            {/* selectedType={selectedType} */}
+            {/* isDuplicatedTypeName={() => { */}
+            {/* return false; */}
+            {/* }} */}
+            {/* removeType={removeType}/> */}
         </React.Fragment>
     );
 };
