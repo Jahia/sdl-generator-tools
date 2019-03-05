@@ -146,13 +146,8 @@ const TypeItem = ({name, isSelected, selectType}) => (
 );
 
 const FinderItem = withStyles(styles)(({classes, name, handleEditFinder}) => (
-    <ListItem button>
+    <ListItem button onClick={() => handleEditFinder(name)}>
         <ListItemText primary={name}/>
-        <ListItemSecondaryAction classes={classes}>
-            <IconButton onClick={() => handleEditFinder(name)}>
-                <Edit/>
-            </IconButton>
-        </ListItemSecondaryAction>
     </ListItem>
 ));
 

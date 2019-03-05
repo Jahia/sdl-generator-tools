@@ -146,6 +146,8 @@ const AddTypeDialog = ({data, t, open, closeDialog, mode, selection, selectedTyp
             updateTypeName(typeName);
             updateNodeType(nodeType);
             updateIgnoreDefaultQueries(ignoreDefaultQueries);
+        } else {
+            cleanUp();
         }
     };
 
