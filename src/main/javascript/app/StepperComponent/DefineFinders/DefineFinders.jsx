@@ -36,7 +36,7 @@ const DefineFinders = ({classes, t, addFinder, modifyFinder, removeFinder, nodeT
         if (dialogState.mode === C.DIALOG_MODE_ADD) {
             addFinder(selection, finderInfo);
         } else {
-            let finderIndex = selectedType.queries.reduce((acc, curr, idx) => curr.name === selectedFinder ? idx : acc, null);
+            let finderIndex = selectedType.queries.findIndex(finder => finder.name === selectedFinder);
             modifyFinder(selection, finderIndex, finderInfo);
         }
     }
@@ -130,9 +130,9 @@ const DefineFinders = ({classes, t, addFinder, modifyFinder, removeFinder, nodeT
 
     function getSelectedFinder() {
         if (dialogState.mode === C.DIALOG_MODE_EDIT) {
-            return selectedType.queries.reduce((acc, curr) => curr.name === selectedFinder ? curr : acc, null);
+            return selectedType.queries.find(finder => finder.name === selectedFinder);
         }
-        return null;
+        return undefined;
     }
 };
 
