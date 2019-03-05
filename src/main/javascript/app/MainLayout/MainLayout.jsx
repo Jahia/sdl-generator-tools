@@ -27,9 +27,14 @@ let styles = theme => ({
         textAlign: 'right',
         color: '#fff'
     },
+    main: {
+        margin: '0px',
+        width: '100%',
+        height: '87%'
+    },
     mainPanel: {
         width: '100%',
-        height: '91%',
+        height: '100%',
         boxShadow: '0px 3px 2px rgba(54, 63, 69, 0.2), 0px 1px 8px rgba(54, 63, 69, 0.08)',
         borderRadius: '3px',
         overflow: 'auto'
@@ -43,7 +48,7 @@ let styles = theme => ({
     },
     viewerPanel: {
         width: '100%',
-        height: '91%',
+        height: '100%',
         boxShadow: '0px 3px 2px rgba(54, 63, 69, 0.2), 0px 1px 8px rgba(54, 63, 69, 0.08)',
         borderRadius: '3px',
         backgroundColor: '#272822'
@@ -52,8 +57,7 @@ let styles = theme => ({
 
 const MainLayout = ({classes, t}) => {
     return (
-        <Grid container spacing={24}>
-
+        <React.Fragment>
             <AppBar position="static">
                 <Toolbar className={classes.topBar}>
                     <Typography className={classes.topBarText}>
@@ -69,19 +73,22 @@ const MainLayout = ({classes, t}) => {
                 </Toolbar>
             </AppBar>
 
-            <Grid item xs={12} sm={7}>
-                <Paper className={classes.mainPanel}>
-                    <Typography className={classes.mainText}>
-                        {t('label.sdlGeneratorTools.mainCaption')}
-                    </Typography>
-                    <StepperComponent/>
-                </Paper>
+            <Grid container spacing={24} className={classes.main}>
+                <Grid item xs={12} sm={7}>
+                    <Paper className={classes.mainPanel}>
+                        <Typography className={classes.mainText}>
+                            {t('label.sdlGeneratorTools.mainCaption')}
+                        </Typography>
+                        <StepperComponent/>
+                    </Paper>
+                </Grid>
+
+                <Grid item xs={12} sm={5}>
+                    <Paper className={classes.viewerPanel}><GQLSchemaViewer/></Paper>
+                </Grid>
             </Grid>
 
-            <Grid item xs={12} sm={5}>
-                <Paper className={classes.viewerPanel}><GQLSchemaViewer/></Paper>
-            </Grid>
-        </Grid>
+        </React.Fragment>
     );
 };
 

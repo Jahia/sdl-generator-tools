@@ -22,6 +22,7 @@
     <title>SDL Generator Tools</title>
 </head>
 
+<link rel='stylesheet' href='${context}/modules/sdl-generator-tools/css/main.css' type='text/css' media='all' />
 <script src="${context}/modules/sdl-generator-tools/javascript/apps/sdlGeneratorTools.js" ></script>
 <script src="${context}/modules/sdl-generator-tools/javascript/apps/vendors.js" ></script>
 

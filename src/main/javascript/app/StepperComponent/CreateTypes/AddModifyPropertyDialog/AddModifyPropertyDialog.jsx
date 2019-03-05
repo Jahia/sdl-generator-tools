@@ -106,7 +106,7 @@ const AddModifyPropertyDialog = ({t, open, closeDialog, mode, selectedType, sele
             updatePropertyName(selectedPropertyName);
             updateJcrPropertyName(selectedJcrPropertyName);
         } else {
-          cleanUp();
+            cleanUp();
         }
     };
 

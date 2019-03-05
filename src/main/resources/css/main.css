@@ -1,13 +1,13 @@
-* {
-    margin:0px;
-    padding:0px;
-    overflow-x: hidden;
-    font-family: "Nunito Sans";
-}
-
 BODY{
+    margin: 0px;
+    padding: 0px;
     color:#000;
     background: #F6FAFC;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+}
+
+.tools-container{
+    margin: 0px;
+    padding: 0px;
 }
