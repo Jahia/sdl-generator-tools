@@ -147,6 +147,8 @@ const AddTypeDialog = ({data, t, open, closeDialog, mode, dispatchBatch, selecte
             updateTypeName(typeName);
             updateNodeType(nodeType);
             updateIgnoreDefaultQueries(ignoreDefaultQueries);
+        } else {
+            cleanUp();
         }
     };
 
