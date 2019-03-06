@@ -27,6 +27,10 @@ const styles = () => ({
         minHeight: '60%',
         maxHeight: '60%',
         padding: '6px 0px'
+    },
+    root: {
+        position: 'absolute',
+        textAlign: 'right'
     }
 });
 
