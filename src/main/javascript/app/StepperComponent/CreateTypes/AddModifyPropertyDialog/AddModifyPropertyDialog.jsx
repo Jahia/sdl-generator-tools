@@ -312,7 +312,9 @@ AddModifyPropertyDialog.propTypes = {
 const getJCRType = (nodeTypes, selection) => {
     if (nodeTypes && selection) {
         const node = nodeTypes[selection];
-        return node.directives[0].arguments.find(arg => arg.name === 'node').value;
+        if (node) {
+            return node.directives[0].arguments.find(arg => arg.name === 'node').value;
+        }
     }
     return '';
 };
