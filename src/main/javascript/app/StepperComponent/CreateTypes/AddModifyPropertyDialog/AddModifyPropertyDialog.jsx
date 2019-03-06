@@ -99,11 +99,11 @@ const PredefinedTypeSelect = withStyles({
     }
 })(PredefinedTypeSelector);
 
-const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, definedTypes, selectedType, selectedProperty, addProperty, removeProperty, updateSelectedProp, unselectProperty, updateProperty}) => {
+const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, definedTypes, selection, selectedProperty, addProperty, removeProperty, updateSelectedProp, unselectProperty, updateProperty}) => {
     const nodes = !_.isNil(data.jcr) ? data.jcr.nodeTypes.nodes : [];
     let nodeProperties = nodes.length > 0 ? nodes[0].properties : [];
 
-    const typeName = !_.isNil(selectedType) ? selectedType : '';
+    const selectionId = !_.isNil(selection) ? selection : '';
     const selectedPropertyName = !_.isNil(selectedProperty) ? selectedProperty.propertyName : '';
     const selectedJcrPropertyName = !_.isNil(selectedProperty) ? selectedProperty.jcrPropertyName : '';
     const selectedPropertyType = !_.isNil(selectedProperty) ? selectedProperty.propertyType : '';
@@ -156,13 +156,13 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, definedTypes
 
         if (mode === C.DIALOG_MODE_EDIT) {
             console.log('Edit', selectedIsListType);
-            updateProperty({name: selectedPropertyName, property: jcrPropName, type: propType}, typeName, selectedProperty.propertyIndex);
+            updateProperty({name: selectedPropertyName, property: jcrPropName, type: propType}, selectionId, selectedProperty.propertyIndex);
         } else {
-            addProperty({name: selectedPropertyName, property: jcrPropName, type: propType}, typeName);
+            addProperty({name: selectedPropertyName, property: jcrPropName, type: propType}, selectionId);
         }
 
-        console.log('Saved prop', propType, typeName);
-        console.log(selectedPropertyName, jcrPropName, propType, typeName);
+        console.log('Saved prop', propType, selectionId);
+        console.log(selectedPropertyName, jcrPropName, propType, selectionId);
 
         closeDialog();
         cleanUp();
@@ -174,7 +174,7 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, definedTypes
     };
 
     const removeAndClose = () => {
-        removeProperty(selectedProperty.propertyIndex, typeName);
+        removeProperty(selectedProperty.propertyIndex, selectionId);
         closeDialog();
         cleanUp();
     };
@@ -278,9 +278,8 @@ AddModifyPropertyDialog.propTypes = {
     addProperty: PropTypes.func.isRequired,
     removeProperty: PropTypes.func.isRequired,
     updateSelectedProp: PropTypes.func.isRequired,
-    // IsDuplicatedPropertyName: PropTypes.func.isRequired,
     selectedProperty: PropTypes.object.isRequired,
-    selectedType: PropTypes.string.isRequired
+    selection: PropTypes.string.isRequired
 };
 
 const getJCRType = (nodeTypes, selection) => {
@@ -289,13 +288,6 @@ const getJCRType = (nodeTypes, selection) => {
         return node.directives[0].arguments.find(arg => arg.name === 'node').value;
     }
     return '';
-};
-
-const getSelectedTypeName = (nodeTypes, selection) => {
-    if (nodeTypes && selection) {
-        return nodeTypes[selection].name;
-    }
-    return null;
 };
 
 const getDefinedTypes = (nodeTypes, selection) => {
@@ -319,7 +311,7 @@ const mapStateToProps = state => {
     return {
         definedTypes: getDefinedTypes(state.nodeTypes, state.selection),
         jcrType: getJCRType(state.nodeTypes, state.selection),
-        selectedType: getSelectedTypeName(state.nodeTypes, state.selection),
+        selection: state.selection,
         selectedProperty: state.selectedProperty,
         ...state.addModifyPropertyDialog
     };
