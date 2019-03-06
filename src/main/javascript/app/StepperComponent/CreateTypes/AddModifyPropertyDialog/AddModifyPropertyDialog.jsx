@@ -26,6 +26,8 @@ import gqlQueries from '../CreateTypes.gql-queries';
 import {sdlAddPropertyToType, sdlRemovePropertyFromType, sdlUpdatePropertyOfType} from '../../../App.redux-actions';
 import {sdlUpdateSelectedProperty, sdlUpdateAddModifyPropertyDialog, sdlSelectProperty} from '../../StepperComponent.redux-actions';
 
+const MULTIPLE_CHILDREN_INDICATOR = '*';
+
 const PropertySelectCom = ({classes, t, disabled, value, open, handleClose, handleChange, handleOpen, nodeProperties}) => (
     <FormControl classes={classes} disabled={disabled}>
         <InputLabel shrink htmlFor="property-name">{t('label.sdlGeneratorTools.createTypes.selectNodeProperty')}</InputLabel>
@@ -41,9 +43,9 @@ const PropertySelectCom = ({classes, t, disabled, value, open, handleClose, hand
                 <em>None</em>
             </MenuItem>
             {
-                !_.isNil(nodeProperties) ? nodeProperties.map(property => (
-                    <MenuItem key={property.name} value={property.name} classes={{root: classes.menuItem}}>
-                        <ListItemText primary={property.name.replace(/(j:|jcr:)/g, '')} secondary={upperCaseFirst(property.requiredType.toLowerCase())}/>
+                !_.isNil(nodeProperties) ? nodeProperties.map((property, index) => (
+                    <MenuItem key={`${property.name}_${index}`} value={property.name} classes={{root: classes.menuItem}}>
+                        <ListItemText primary={property.name.replace(/(j:|jcr:)/, '')} secondary={upperCaseFirst(property.requiredType.toLowerCase())}/>
                     </MenuItem>
                 )) : null
             }
@@ -99,16 +101,12 @@ const PredefinedTypeSelect = withStyles({
     }
 })(PredefinedTypeSelector);
 
-const resolveSelectedProp = (object, key, optionalReturnValue) => {
+const resolveSelectedProp = (object, key, optionalReturnValue = '') => {
     if (!_.isEmpty(object) && object[key]) {
         return object[key];
     }
 
-    if (optionalReturnValue) {
-        return optionalReturnValue;
-    }
-
-    return '';
+    return optionalReturnValue;
 };
 
 const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, definedTypes, selection, selectedProperty, addProperty, removeProperty, updateSelectedProp, unselectProperty, updateProperty}) => {
@@ -162,7 +160,7 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, definedTypes
             propType = propType.replace(/(\[|])/g, '');
         }
 
-        if (jcrPropName === '*') {
+        if (jcrPropName === MULTIPLE_CHILDREN_INDICATOR) {
             jcrPropName = '';
         }
 
@@ -191,6 +189,23 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, definedTypes
         cleanUp();
     };
 
+    const selectJCRProperty = event => {
+        const value = event.target.value;
+        let isList = false;
+
+        if (value === MULTIPLE_CHILDREN_INDICATOR) {
+            isList = true;
+        } else {
+            const prop = nodeProperties.find(p => p.name === value);
+            isList = prop.multiple !== undefined ? prop.multiple : false;
+        }
+
+        updateSelectedProp({
+            jcrPropertyName: value,
+            isListType: isList
+        });
+    };
+
     return (
         <Dialog
             open={open}
@@ -199,26 +214,6 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, definedTypes
         >
             <DialogTitle id="form-dialog-title">{mode === C.DIALOG_MODE_EDIT ? t('label.sdlGeneratorTools.createTypes.viewProperty') : t('label.sdlGeneratorTools.createTypes.addNewPropertyButton')}</DialogTitle>
             <DialogContent style={{width: 400}}>
-                <FormGroup row>
-                    <FormControlLabel
-                        label={t('label.sdlGeneratorTools.createTypes.mapToCustomType')}
-                        control={
-                            <Switch
-                                color="primary"
-                                checked={selectedIsPredefinedType}
-                                onChange={e => updateSelectedProp({isPredefinedType: e.target.checked})}
-                            />
-                        }/>
-                    <FormControlLabel
-                        label="As list"
-                        control={
-                            <Switch
-                                color="primary"
-                                checked={selectedIsListType}
-                                onChange={() => updateSelectedProp({isListType: !selectedIsListType})}
-                            />
-                        }/>
-                </FormGroup>
                 {
                     selectedIsPredefinedType &&
                     <PredefinedTypeSelect open={showPredefinedTypeSelector}
@@ -235,7 +230,7 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, definedTypes
                                 value={selectedJcrPropertyName}
                                 handleOpen={() => setShowPropertySelector(true)}
                                 handleClose={() => setShowPropertySelector(false)}
-                                handleChange={event => updateSelectedProp({jcrPropertyName: event.target.value})}/>
+                                handleChange={selectJCRProperty}/>
                 <TextField
                     autoFocus
                     fullWidth
@@ -259,6 +254,26 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, definedTypes
                     }}
                     onChange={e => updateSelectedProp({propertyName: e.target.value})}
                 />
+                <FormGroup row>
+                    <FormControlLabel
+                        label={t('label.sdlGeneratorTools.createTypes.mapToCustomType')}
+                        control={
+                            <Switch
+                                color="primary"
+                                checked={selectedIsPredefinedType}
+                                onChange={e => updateSelectedProp({isPredefinedType: e.target.checked})}
+                            />
+                        }/>
+                    <FormControlLabel
+                        label="As list"
+                        control={
+                            <Switch
+                                color="primary"
+                                checked={selectedIsListType}
+                                onChange={() => updateSelectedProp({isListType: !selectedIsListType})}
+                            />
+                        }/>
+                </FormGroup>
                 {
                     mode === C.DIALOG_MODE_EDIT &&
                     <Button color="primary" onClick={removeAndClose}>
