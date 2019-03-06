@@ -1,3 +1,3 @@
-import CreateTypesContainer from './CreateTypes.container';
+import CreateTypes from './CreateTypes';
 
-export default CreateTypesContainer;
+export default CreateTypes;

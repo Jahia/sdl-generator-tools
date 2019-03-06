@@ -3,7 +3,6 @@ import {translate} from 'react-i18next';
 import PropTypes from 'prop-types';
 import {
     withStyles,
-    Grid,
     Paper,
     List,
     ListItem,
@@ -15,11 +14,11 @@ import {
 } from '@material-ui/core';
 import {Add, Edit} from '@material-ui/icons';
 import {compose} from 'react-apollo';
-import C from '../../App.constants';
+import C from '../../../App.constants';
 import {
     sdlSelectType,
     sdlUpdateAddModifyTypeDialog
-} from '../StepperComponent.redux-actions';
+} from '../../StepperComponent.redux-actions';
 import connect from 'react-redux/es/connect/connect';
 
 const styles = () => ({

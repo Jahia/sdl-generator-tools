@@ -131,13 +131,9 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, definedTypes
         unselectProperty();
     };
 
-    const duplicateName = false;// IsDuplicatedPropertyName(selectedPropertyName);
+    const duplicateName = false;
 
     const addPropertyAndClose = () => {
-        // If (_.isNil(selectedPropertyName) || _.isEmpty(selectedPropertyName) || _.isNil(selectedJcrPropertyName) || _.isEmpty(selectedJcrPropertyName)) {
-        //     return;
-        // }
-
         let propType;
         let jcrPropName = selectedJcrPropertyName;
 
@@ -288,30 +284,42 @@ AddModifyPropertyDialog.propTypes = {
 };
 
 const getJCRType = (nodeTypes, selection) => {
-    if (nodeTypes && nodeTypes[0] && selection) {
-        const node = nodeTypes.find(node => node.name === selection);
+    if (nodeTypes && selection) {
+        const node = nodeTypes[selection];
         return node.directives[0].arguments.find(arg => arg.name === 'node').value;
     }
     return '';
 };
 
-const getDefinedTypes = (nodeTypes, selection) => {
-    if (nodeTypes && nodeTypes[0] && selection) {
-        return nodeTypes.reduce((acc, node) => {
-            if (node.name !== selection) {
-                acc.push(node.name);
-            }
-            return acc;
-        }, []);
+const getSelectedTypeName = (nodeTypes, selection) => {
+    if (nodeTypes && selection) {
+        return nodeTypes[selection].name;
     }
-    return [];
+    return null;
+};
+
+const getDefinedTypes = (nodeTypes, selection) => {
+    const availableTypes = [];
+    if (nodeTypes && selection) {
+        for (let key in nodeTypes) {
+            if (!nodeTypes.hasOwnProperty(key)) {
+                continue;
+            }
+
+            const node = nodeTypes[key];
+            if (selection !== key) {
+                availableTypes.push(node.name);
+            }
+        }
+    }
+    return availableTypes;
 };
 
 const mapStateToProps = state => {
     return {
         definedTypes: getDefinedTypes(state.nodeTypes, state.selection),
         jcrType: getJCRType(state.nodeTypes, state.selection),
-        selectedType: state.selection,
+        selectedType: getSelectedTypeName(state.nodeTypes, state.selection),
         selectedProperty: state.selectedProperty,
         ...state.addModifyPropertyDialog
     };
