@@ -99,16 +99,28 @@ const PredefinedTypeSelect = withStyles({
     }
 })(PredefinedTypeSelector);
 
+const resolveSelectedProp = (object, key, optionalReturnValue) => {
+    if (!_.isEmpty(object) && object[key]) {
+        return object[key];
+    }
+
+    if (optionalReturnValue) {
+        return optionalReturnValue;
+    }
+
+    return '';
+};
+
 const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, definedTypes, selection, selectedProperty, addProperty, removeProperty, updateSelectedProp, unselectProperty, updateProperty}) => {
     const nodes = !_.isNil(data.jcr) ? data.jcr.nodeTypes.nodes : [];
     let nodeProperties = nodes.length > 0 ? nodes[0].properties : [];
 
     const selectionId = !_.isNil(selection) ? selection : '';
-    const selectedPropertyName = !_.isNil(selectedProperty) ? selectedProperty.propertyName : '';
-    const selectedJcrPropertyName = !_.isNil(selectedProperty) ? selectedProperty.jcrPropertyName : '';
-    const selectedPropertyType = !_.isNil(selectedProperty) ? selectedProperty.propertyType : '';
-    const selectedIsPredefinedType = !_.isNil(selectedProperty) ? selectedProperty.isPredefinedType : false;
-    const selectedIsListType = !_.isNil(selectedProperty) ? selectedProperty.isListType : false;
+    const selectedPropertyName = resolveSelectedProp(selectedProperty, 'propertyName');
+    const selectedJcrPropertyName = resolveSelectedProp(selectedProperty, 'jcrPropertyName');
+    const selectedPropertyType = resolveSelectedProp(selectedProperty, 'propertyType');
+    const selectedIsPredefinedType = resolveSelectedProp(selectedProperty, 'isPredefinedType', false);
+    const selectedIsListType = resolveSelectedProp(selectedProperty, 'isListType', false);
 
     const [showPropertySelector, setShowPropertySelector] = useState(false);
     const [showPredefinedTypeSelector, setPredefinedTypeSelector] = useState(false);
@@ -278,8 +290,8 @@ AddModifyPropertyDialog.propTypes = {
     addProperty: PropTypes.func.isRequired,
     removeProperty: PropTypes.func.isRequired,
     updateSelectedProp: PropTypes.func.isRequired,
-    selectedProperty: PropTypes.object.isRequired,
-    selection: PropTypes.string.isRequired
+    selectedProperty: PropTypes.object,
+    selection: PropTypes.string
 };
 
 const getJCRType = (nodeTypes, selection) => {
