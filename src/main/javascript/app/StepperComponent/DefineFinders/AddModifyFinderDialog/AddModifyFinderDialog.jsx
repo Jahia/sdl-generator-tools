@@ -18,6 +18,7 @@ import {
 import {sdlUpdateAddModifyFinderDialog} from '../../StepperComponent.redux-actions';
 import {compose} from 'react-apollo';
 import connect from 'react-redux/es/connect/connect';
+import {filterAvailableFinders} from '../DefineFinders.utils';
 
 const FinderSelectCom = ({classes, t, open, handleClose, handleOpen, handleChange, value, values}) => (
     <FormControl classes={classes}>
@@ -46,14 +47,14 @@ const FinderSelect = withStyles({
     }
 })(FinderSelectCom);
 
-const AddModifyFinderDialog = ({t, open, close, mode, addFinder, modifyFinder, removeFinder, selectedType, selectedFinder, selection, availableFinders}) => {
+const AddModifyFinderDialog = ({t, open, close, mode, addFinder, modifyFinder, removeFinder, selectedType, selectedFinder, selection}) => {
     const currentFinder = selectedType ? selectedType.queries.find(query => query.name === selectedFinder) : undefined;
     const currentFinderPrefix = !_.isNil(currentFinder) ? currentFinder.prefix : '';
     const currentFinderSuffix = !_.isNil(currentFinder) ? currentFinder.suffix : '';
     const [finderPrefix, updateFinderPrefix] = useState(currentFinderPrefix);
     const [finderSuffix, updateFinderSuffix] = useState(currentFinderSuffix);
     const [showFinderSelector, setFinderSelectorStatus] = useState(false);
-
+    const availableFinders = filterAvailableFinders(mode, selectedFinder, selectedType);
     const cleanUp = () => {
         updateFinderPrefix(null);
         updateFinderSuffix(null);
@@ -165,8 +166,7 @@ const AddModifyFinderDialog = ({t, open, close, mode, addFinder, modifyFinder, r
 AddModifyFinderDialog.propTypes = {
     open: PropTypes.bool.isRequired,
     close: PropTypes.func.isRequired,
-    selectedType: PropTypes.object.isRequired,
-    availableFinders: PropTypes.array.isRequired
+    selectedType: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => {

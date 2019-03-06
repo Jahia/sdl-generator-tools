@@ -9,6 +9,7 @@ import {
 import {compose} from 'react-apollo';
 import connect from 'react-redux/es/connect/connect';
 import {translate} from 'react-i18next';
+import {filterAvailableFinders} from '../DefineFinders.utils';
 
 const styles = () => ({
     paper: {
@@ -26,7 +27,8 @@ const FinderItem = ({name, handleEditFinder}) => (
     </ListItem>
 );
 
-const FindersList = ({t, classes, selectedType, availableFinders, selectFinder, updateFinderDialogState}) => {
+const FindersList = ({t, classes, selectedType, selectedFinder, mode, selectFinder, updateFinderDialogState}) => {
+    const availableFinders = filterAvailableFinders(mode, selectedFinder, selectedType);
     const handleEditFinder = finderName => {
         updateFinderDialogState({open: true, mode: C.DIALOG_MODE_EDIT});
         selectFinder(finderName);
@@ -59,7 +61,9 @@ const FindersList = ({t, classes, selectedType, availableFinders, selectFinder, 
 
 const mapStateToProps = state => {
     return {
-        selectedType: state.nodeTypes[state.selection]
+        selectedType: state.nodeTypes[state.selection],
+        selectedFinder: state.selectedFinder,
+        ...state.addModifyFinderDialog
     };
 };
 

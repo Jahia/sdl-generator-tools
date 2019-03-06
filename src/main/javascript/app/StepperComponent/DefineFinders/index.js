@@ -1,3 +1,3 @@
-import DefineFindersContainer from './DefineFinders.container';
+import DefineFinders from './DefineFinders';
 
-export default DefineFindersContainer;
+export default DefineFinders;
