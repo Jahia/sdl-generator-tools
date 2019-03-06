@@ -19,11 +19,16 @@ import {compose, graphql, withApollo} from 'react-apollo';
 import {connect} from 'react-redux';
 import {translate} from 'react-i18next';
 import * as _ from 'lodash';
-import {upperCaseFirst} from '../../StepperComponent.utils';
+import {generateFinderSuffix, upperCaseFirst} from '../../StepperComponent.utils';
 import {Close} from '@material-ui/icons';
 import C from '../../../App.constants';
 import gqlQueries from '../CreateTypes.gql-queries';
-import {sdlAddPropertyToType, sdlRemovePropertyFromType, sdlUpdatePropertyOfType} from '../../../App.redux-actions';
+import {
+    sdlAddPropertyToType,
+    sdlRemoveFinderFromType,
+    sdlRemovePropertyFromType,
+    sdlUpdatePropertyOfType
+} from '../../../App.redux-actions';
 import {sdlUpdateSelectedProperty, sdlUpdateAddModifyPropertyDialog, sdlSelectProperty} from '../../StepperComponent.redux-actions';
 
 const MULTIPLE_CHILDREN_INDICATOR = '*';
@@ -109,7 +114,7 @@ const resolveSelectedProp = (object, key, optionalReturnValue = '') => {
     return optionalReturnValue;
 };
 
-const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, definedTypes, selection, selectedProperty, addProperty, removeProperty, updateSelectedProp, unselectProperty, updateProperty}) => {
+const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, definedTypes, selection, selectedType, selectedProperty, addProperty, removeProperty, removeFinder, updateSelectedProp, unselectProperty, updateProperty}) => {
     const nodes = !_.isNil(data.jcr) ? data.jcr.nodeTypes.nodes : [];
     let nodeProperties = nodes.length > 0 ? nodes[0].properties : [];
 
@@ -181,8 +186,15 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, definedTypes
 
     const removeAndClose = () => {
         removeProperty(selectedProperty.propertyIndex, selectionId);
+        removeFinders();
         closeDialog();
         cleanUp();
+    };
+
+    const removeFinders = () => {
+        let suffix = generateFinderSuffix(selectedProperty.propertyName);
+        let finders = selectedType.queries.filter(f => f.suffix === suffix.standard || f.suffix === suffix.connection);
+        return finders.map(finder => removeFinder(selection, finder.name));
     };
 
     const selectJCRProperty = event => {
@@ -337,6 +349,7 @@ const mapStateToProps = state => {
         definedTypes: getDefinedTypes(state.nodeTypes, state.selection),
         jcrType: getJCRType(state.nodeTypes, state.selection),
         selection: state.selection,
+        selectedType: state.nodeTypes[state.selection],
         selectedProperty: state.selectedProperty,
         ...state.addModifyPropertyDialog
     };
@@ -349,6 +362,7 @@ const mapDispatchToProps = dispatch => {
         unselectProperty: () => dispatch(sdlSelectProperty('', '', '', '')),
         updateSelectedProp: propertyFields => dispatch(sdlUpdateSelectedProperty(propertyFields)),
         removeProperty: (propertyIndex, typeIndexOrName) => dispatch(sdlRemovePropertyFromType(propertyIndex, typeIndexOrName)),
+        removeFinder: (uuid, finderIndex) => dispatch(sdlRemoveFinderFromType(uuid, finderIndex)),
         closeDialog: () => dispatch(sdlUpdateAddModifyPropertyDialog({open: false}))
     };
 };
