@@ -24,12 +24,9 @@ import connect from 'react-redux/es/connect/connect';
 const styles = () => ({
     paper: {
         width: '100%',
-        minHeight: '50%',
+        minHeight: '60%',
+        maxHeight: '60%',
         padding: '6px 0px'
-    },
-    root: {
-        position: 'absolute',
-        textAlign: 'right'
     }
 });
 
