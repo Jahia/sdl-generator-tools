@@ -1,9 +1,7 @@
 import React from 'react';
-import {translate} from 'react-i18next';
 import {
     Grid
 } from '@material-ui/core';
-import {compose} from 'react-apollo';
 import TypesList from './TypesList/TypesList';
 import PropertiesList from './PropertiesList/PropertiesList';
 import AddModifyPropertyDialog from './AddModifyPropertyDialog';
@@ -26,6 +24,4 @@ const CreateTypes = () => {
     );
 };
 
-export default compose(
-    translate()
-)(CreateTypes);
+export default CreateTypes;
