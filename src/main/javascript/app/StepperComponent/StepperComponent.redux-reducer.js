@@ -30,7 +30,6 @@ const selectedPropertyReducer = (state = null, action) => {
                 isListType: action.propertyType.startsWith('[')
             };
         case actionTypes.SDL_UPDATE_SELECTED_PROPERTY:
-            console.log('d', state, action);
             return {
                 ...state,
                 ...action.propertyFields
