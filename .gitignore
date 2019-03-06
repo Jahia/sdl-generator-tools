@@ -11,4 +11,4 @@ target
 .settings
 .project
 .classpath
-./src/main/resources/javascript/apps
+/src/main/resources/javascript/apps/*
