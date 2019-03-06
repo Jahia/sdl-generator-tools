@@ -35,12 +35,9 @@ const styles = () => ({
     }
 });
 
-const TypeItem = withStyles(styles)(({classes, name, uuid, isSelected, selectType, updateTypeDialogMode}) => {
-    return (
-        <ListItem selected={isSelected}
-                  onClick={() => selectType(uuid)}
-        >
-            <ListItemText primary={name}/>
+const TypeItem = withStyles(styles)(({classes, name, uuid, mode, isSelected, selectType, updateTypeDialogMode}) => {
+    const renderEditButton = () => {
+        return mode === C.TYPE_LIST_MODE_CREATE ?
             <ListItemSecondaryAction classes={classes}>
                 <IconButton aria-label="Edit"
                             onClick={() => {
@@ -50,27 +47,40 @@ const TypeItem = withStyles(styles)(({classes, name, uuid, isSelected, selectTyp
                 >
                     <Edit/>
                 </IconButton>
-            </ListItemSecondaryAction>
+            </ListItemSecondaryAction> : null;
+    };
+
+    return (
+        <ListItem selected={isSelected}
+                  onClick={() => selectType(uuid)}
+        >
+            <ListItemText primary={name}/>
+            {renderEditButton()}
         </ListItem>
     );
 });
 
-const TypesList = ({classes, t, nodeTypes, selection, selectType, updateTypeDialogMode}) => {
+const TypesList = ({classes, t, nodeTypes, selection, selectType, updateTypeDialogMode, mode}) => {
+    const renderCreateListButton = () => {
+        return mode === C.TYPE_LIST_MODE_CREATE ?
+            <ListItem>
+                <Button onClick={() => {
+                    updateTypeDialogMode({open: true, mode: C.DIALOG_MODE_ADD});
+                }}
+                >
+                    {t('label.sdlGeneratorTools.createTypes.addNewTypeButton')}
+                    <Add/>
+                </Button>
+            </ListItem> : null;
+    };
+
     return (
         <Paper className={classes.paper}>
             <List subheader={
                 <ListSubheader>{t('label.sdlGeneratorTools.createTypes.nodeTypeText')}</ListSubheader>
                     }
             >
-                <ListItem>
-                    <Button onClick={() => {
-                                updateTypeDialogMode({open: true, mode: C.DIALOG_MODE_ADD});
-                            }}
-                    >
-                        {t('label.sdlGeneratorTools.createTypes.addNewTypeButton')}
-                        <Add/>
-                    </Button>
-                </ListItem>
+                {renderCreateListButton()}
                 {
                             Object.getOwnPropertyNames(nodeTypes).map(uuid => {
                                 const type = nodeTypes[uuid];
@@ -81,6 +91,7 @@ const TypesList = ({classes, t, nodeTypes, selection, selectType, updateTypeDial
                                               isSelected={uuid === selection}
                                               selectType={selectType}
                                               updateTypeDialogMode={updateTypeDialogMode}
+                                              mode={mode}
                                     />
                                 );
                             })
@@ -93,11 +104,13 @@ const TypesList = ({classes, t, nodeTypes, selection, selectType, updateTypeDial
 TypesList.propTypes = {
     nodeTypes: PropTypes.object.isRequired,
     selectType: PropTypes.func.isRequired,
+    mode: PropTypes.string,
     selection: PropTypes.string
 };
 
 TypesList.defaultProps = {
-    selection: ''
+    selection: '',
+    mode: C.TYPE_LIST_MODE_CREATE
 };
 
 const mapStateToProps = state => {
