@@ -1,6 +1,6 @@
 import {actionTypes} from './App.redux-actions';
 
-const addType = typeInfo => (Object.assign({}, {
+const addType = typeInfo => ({
     name: typeInfo.typeName,
     description: null,
     queries: [],
@@ -16,34 +16,43 @@ const addType = typeInfo => (Object.assign({}, {
             ]
         }
     ]
-}));
+});
 
-const addProperty = fieldInfo => (Object.assign({}, {
-    name: fieldInfo.name,
-    type: fieldInfo.type,
-    directives: [
-        {
-            name: 'mapping',
-            arguments: [
-                {
-                    name: 'property',
-                    value: fieldInfo.property
-                }
-            ]
-        }
-    ]
-}));
+const addProperty = fieldInfo => {
+    if (fieldInfo.property === '' || fieldInfo.property === null) {
+        return {
+            name: fieldInfo.name,
+            type: fieldInfo.type,
+            directives: []
+        };
+    }
+    return {
+        name: fieldInfo.name,
+        type: fieldInfo.type,
+        directives: [
+            {
+                name: 'mapping',
+                arguments: [
+                    {
+                        name: 'property',
+                        value: fieldInfo.property
+                    }
+                ]
+            }
+        ]
+    };
+};
 
-const addDirectiveArgument = argumentInfo => (Object.assign({}, {
+const addDirectiveArgument = argumentInfo => ({
     name: argumentInfo.name,
     value: argumentInfo.value
-}));
+});
 
-const addFinder = finderInfo => (Object.assign({}, {
+const addFinder = finderInfo => ({
     name: finderInfo.name,
     prefix: finderInfo.prefix,
     suffix: finderInfo.suffix
-}));
+});
 
 const getInitialObject = (actionType, vars) => {
     switch (actionType) {
@@ -56,7 +65,8 @@ const getInitialObject = (actionType, vars) => {
         case actionTypes.SDL_ADD_FINDER_TO_TYPE:
         case actionTypes.SDL_MODIFY_FINDER_OF_TYPE:
             return addFinder(vars);
-        default: return {};
+        default:
+            return {};
     }
 };
 

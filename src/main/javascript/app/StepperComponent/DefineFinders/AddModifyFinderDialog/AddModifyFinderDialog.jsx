@@ -10,6 +10,15 @@ import {upperCaseFirst} from '../../StepperComponent.utils';
 import C from '../../../App.constants';
 import * as _ from 'lodash';
 import {Close} from '@material-ui/icons';
+import {
+    sdlAddFinderToType,
+    sdlModifyFinderOfType,
+    sdlRemoveFinderFromType
+} from '../../../App.redux-actions';
+import {sdlUpdateAddModifyFinderDialog} from '../../StepperComponent.redux-actions';
+import {compose} from 'react-apollo';
+import connect from 'react-redux/es/connect/connect';
+import {filterAvailableFinders} from '../DefineFinders.utils';
 
 const FinderSelectCom = ({classes, t, open, handleClose, handleOpen, handleChange, value, values}) => (
     <FormControl classes={classes}>
@@ -38,14 +47,14 @@ const FinderSelect = withStyles({
     }
 })(FinderSelectCom);
 
-const AddModifyFinderDialog = ({t, open, close, mode, addOrModifyFinder, removeFinder, selectedFinder, selectedType, availableFinders}) => {
-    const currentFinder = !_.isNil(selectedType) ? selectedType.queries.filter(query => query.name === selectedFinder)[0] : null;
+const AddModifyFinderDialog = ({t, open, close, mode, addFinder, modifyFinder, removeFinder, selectedType, selectedFinder, selection}) => {
+    const currentFinder = selectedType ? selectedType.queries.find(query => query.name === selectedFinder) : undefined;
     const currentFinderPrefix = !_.isNil(currentFinder) ? currentFinder.prefix : '';
     const currentFinderSuffix = !_.isNil(currentFinder) ? currentFinder.suffix : '';
     const [finderPrefix, updateFinderPrefix] = useState(currentFinderPrefix);
     const [finderSuffix, updateFinderSuffix] = useState(currentFinderSuffix);
     const [showFinderSelector, setFinderSelectorStatus] = useState(false);
-
+    const availableFinders = filterAvailableFinders(mode, selectedFinder, selectedType);
     const cleanUp = () => {
         updateFinderPrefix(null);
         updateFinderSuffix(null);
@@ -53,11 +62,13 @@ const AddModifyFinderDialog = ({t, open, close, mode, addOrModifyFinder, removeF
 
     const addFinderAndClose = () => {
         if (_.isNil(finderPrefix) || _.isEmpty(finderPrefix) || _.isNil(finderSuffix) || _.isEmpty(finderSuffix)) {
+            close();
             return;
         }
         addOrModifyFinder({name: formatName(), prefix: finderPrefix, suffix: finderSuffix});
         close();
         cleanUp();
+
         function formatName() {
             switch (finderSuffix) {
                 case 'all':
@@ -68,10 +79,19 @@ const AddModifyFinderDialog = ({t, open, close, mode, addOrModifyFinder, removeF
                     return finderPrefix + upperCaseFirst(finderSuffix);
             }
         }
+
+        function addOrModifyFinder(finderInfo) {
+            if (mode === C.DIALOG_MODE_ADD) {
+                addFinder(selection, finderInfo);
+            } else {
+                let finderIndex = selectedType.queries.findIndex(finder => finder.name === selectedFinder);
+                modifyFinder(selection, finderIndex, finderInfo);
+            }
+        }
     };
 
     const removeAndClose = () => {
-        removeFinder(selectedType.name, currentFinder.name);
+        removeFinder(selection, currentFinder.name);
         close();
         cleanUp();
     };
@@ -81,19 +101,17 @@ const AddModifyFinderDialog = ({t, open, close, mode, addOrModifyFinder, removeF
         cleanUp();
     };
 
-    const openDialog = (mode, finderPrefix, finderSuffix) => {
+    const openDialog = () => {
         if (mode === C.DIALOG_MODE_EDIT) {
-            updateFinderPrefix(finderPrefix);
-            updateFinderSuffix(finderSuffix);
+            updateFinderPrefix(currentFinderPrefix);
+            updateFinderSuffix(currentFinderSuffix);
         }
     };
 
     return (
         <Dialog open={open}
                 aria-labelledby="form-dialog-title"
-                onEnter={() => {
-                    openDialog(mode, currentFinderPrefix, currentFinderSuffix);
-                }}
+                onEnter={openDialog}
         >
             <DialogTitle id="form-dialog-title">{t(mode === C.DIALOG_MODE_ADD ? 'label.sdlGeneratorTools.defineFinder.addAFinder' :
                 'label.sdlGeneratorTools.defineFinder.editAFinder')}
@@ -148,8 +166,28 @@ const AddModifyFinderDialog = ({t, open, close, mode, addOrModifyFinder, removeF
 AddModifyFinderDialog.propTypes = {
     open: PropTypes.bool.isRequired,
     close: PropTypes.func.isRequired,
-    selectedType: PropTypes.object.isRequired,
-    availableFinders: PropTypes.array.isRequired
+    selectedType: PropTypes.object.isRequired
 };
 
-export default translate()(AddModifyFinderDialog);
+const mapStateToProps = state => {
+    return {
+        selectedType: state.nodeTypes[state.selection],
+        selection: state.selection,
+        selectedFinder: state.selectedFinder,
+        ...state.addModifyFinderDialog
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        addFinder: (uuid, finderInfo) => dispatch(sdlAddFinderToType(uuid, finderInfo)),
+        modifyFinder: (uuid, finderIndex, finderInfo) => dispatch(sdlModifyFinderOfType(uuid, finderIndex, finderInfo)),
+        removeFinder: (uuid, finderIndex) => dispatch(sdlRemoveFinderFromType(uuid, finderIndex)),
+        close: () => dispatch(sdlUpdateAddModifyFinderDialog({open: false}))
+    };
+};
+
+export default compose(
+    connect(mapStateToProps, mapDispatchToProps),
+    translate()
+)(AddModifyFinderDialog);

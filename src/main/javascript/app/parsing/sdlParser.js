@@ -6,7 +6,8 @@ export default class SDLParser {
 
 const parseTypes = types => {
     let parsedQueries = [];
-    let parsedTypes = types.map(type => {
+    let parsedTypes = Object.getOwnPropertyNames(types).map(key => {
+        let type = types[key];
         let description = formatDescription(type.description);
         parsedQueries = parsedQueries.concat(parseQueries(type.queries, type.name));
         return `${description !== null ? `${description}\n` : ''}type ${type.name} ${parseDirectives(type.directives)} {\n\t${parseFields(type.fieldDefinitions).join('\n\t')}\n}`;

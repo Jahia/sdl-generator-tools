@@ -91,51 +91,53 @@ class StepperComponent extends React.Component {
         const lastStep = steps.length - 1;
 
         return (
-            <div className={classes.root}>
-                <Stepper activeStep={activeStep}>
-                    {steps.map(label => {
-                        const props = {};
-                        const labelProps = {};
-                        return (
-                            <Step key={label} {...props}>
-                                <StepLabel {...labelProps}>{label}</StepLabel>
-                            </Step>
-                        );
-                    })}
-                </Stepper>
-                <div>
-                    {this.getStepContent(activeStep)}
-                    <div className={classes.bottomBar}>
-                        {activeStep !== 0 ? (
-                            <Button color="primary" className={classes.button} onClick={this.handleBack}>
-                                {t('label.sdlGeneratorTools.backButton')}
-                            </Button>
-                        ) : (
-                            null
-                        )}
-                        {activeStep === lastStep ? (
+            <React.Fragment>
+                <div className={classes.root}>
+                    <Stepper activeStep={activeStep}>
+                        {steps.map(label => {
+                            const props = {};
+                            const labelProps = {};
+                            return (
+                                <Step key={label} {...props}>
+                                    <StepLabel {...labelProps}>{label}</StepLabel>
+                                </Step>
+                            );
+                        })}
+                    </Stepper>
+                    <div>
+                        {this.getStepContent(activeStep)}
+                        <div className={classes.bottomBar}>
+                            {activeStep !== 0 ? (
+                                <Button color="primary" className={classes.button} onClick={this.handleBack}>
+                                    {t('label.sdlGeneratorTools.backButton')}
+                                </Button>
+                            ) : (
+                                null
+                            )}
+                            {activeStep === lastStep ? (
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    className={classes.button}
+                                    onClick={this.handleCopy}
+                                >
+                                    {t('label.sdlGeneratorTools.copyToClipboardButton')}
+                                </Button>
+                            ) : (
+                                null
+                            )}
                             <Button
                                 variant="contained"
                                 color="primary"
                                 className={classes.button}
-                                onClick={this.handleCopy}
+                                onClick={activeStep === lastStep ? this.handleDownload : this.handleNext}
                             >
-                                {t('label.sdlGeneratorTools.copyToClipboardButton')}
+                                {activeStep === lastStep ? t('label.sdlGeneratorTools.downloadFileButton') : t('label.sdlGeneratorTools.nextButton')}
                             </Button>
-                        ) : (
-                            null
-                        )}
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            className={classes.button}
-                            onClick={activeStep === lastStep ? this.handleDownload : this.handleNext}
-                        >
-                            {activeStep === lastStep ? t('label.sdlGeneratorTools.downloadFileButton') : t('label.sdlGeneratorTools.nextButton')}
-                        </Button>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </React.Fragment>
         );
     }
 }
