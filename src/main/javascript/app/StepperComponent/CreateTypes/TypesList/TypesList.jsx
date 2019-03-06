@@ -26,7 +26,8 @@ const styles = () => ({
         width: '100%',
         minHeight: '60%',
         maxHeight: '60%',
-        padding: '6px 0px'
+        padding: '6px 0px',
+        overflowY: 'auto'
     },
     root: {
         position: 'absolute',
@@ -35,7 +36,6 @@ const styles = () => ({
 });
 
 const TypeItem = withStyles(styles)(({classes, name, uuid, isSelected, selectType, updateTypeDialogMode}) => {
-    console.log('Render', name);
     return (
         <ListItem selected={isSelected}
                   onClick={() => selectType(uuid)}

@@ -22,7 +22,8 @@ const styles = () => ({
         width: '100%',
         minHeight: '60%',
         maxHeight: '60%',
-        padding: '6px 0px'
+        padding: '6px 0px',
+        overflowY: 'auto'
     }
 });
 
