@@ -165,14 +165,10 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, definedTypes
         }
 
         if (mode === C.DIALOG_MODE_EDIT) {
-            console.log('Edit', selectedIsListType);
             updateProperty({name: selectedPropertyName, property: jcrPropName, type: propType}, selectionId, selectedProperty.propertyIndex);
         } else {
             addProperty({name: selectedPropertyName, property: jcrPropName, type: propType}, selectionId);
         }
-
-        console.log('Saved prop', propType, selectionId);
-        console.log(selectedPropertyName, jcrPropName, propType, selectionId);
 
         closeDialog();
         cleanUp();
