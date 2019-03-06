@@ -90,7 +90,7 @@ const TypesList = ({classes, t, nodeTypes, selection, selectType, updateTypeDial
 };
 
 TypesList.propTypes = {
-    nodeTypes: PropTypes.array.isRequired,
+    nodeTypes: PropTypes.object.isRequired,
     selectType: PropTypes.func.isRequired,
     selection: PropTypes.string
 };
