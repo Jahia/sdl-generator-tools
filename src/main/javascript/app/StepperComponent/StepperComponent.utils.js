@@ -56,6 +56,23 @@ const generateFinderSuffix = name => {
     return {standard: standard, connection: connection};
 };
 
+const getAvailableTypeNames = (nodeTypes, selection) => {
+    const availableTypes = [];
+    if (nodeTypes) {
+        for (let key in nodeTypes) {
+            if (!nodeTypes.hasOwnProperty(key)) {
+                continue;
+            }
+
+            const node = nodeTypes[key];
+            if (selection !== key) {
+                availableTypes.push(node.name);
+            }
+        }
+    }
+    return availableTypes;
+};
+
 export {
     upperCaseFirst,
     getMappingDirectiveArguments,
@@ -64,5 +81,6 @@ export {
     lookUpMappingStringArgumentInfo,
     lookUpMappingBooleanArgumentInfo,
     isPredefinedType,
-    generateFinderSuffix
+    generateFinderSuffix,
+    getAvailableTypeNames
 };

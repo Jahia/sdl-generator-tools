@@ -19,7 +19,7 @@ import {compose, graphql, withApollo} from 'react-apollo';
 import {connect} from 'react-redux';
 import {translate} from 'react-i18next';
 import * as _ from 'lodash';
-import {generateFinderSuffix, upperCaseFirst} from '../../StepperComponent.utils';
+import {generateFinderSuffix, upperCaseFirst, getAvailableTypeNames} from '../../StepperComponent.utils';
 import {Close} from '@material-ui/icons';
 import C from '../../../App.constants';
 import gqlQueries from '../CreateTypes.gql-queries';
@@ -327,26 +327,9 @@ const getJCRType = (nodeTypes, selection) => {
     return '';
 };
 
-const getDefinedTypes = (nodeTypes, selection) => {
-    const availableTypes = [];
-    if (nodeTypes && selection) {
-        for (let key in nodeTypes) {
-            if (!nodeTypes.hasOwnProperty(key)) {
-                continue;
-            }
-
-            const node = nodeTypes[key];
-            if (selection !== key) {
-                availableTypes.push(node.name);
-            }
-        }
-    }
-    return availableTypes;
-};
-
 const mapStateToProps = state => {
     return {
-        definedTypes: getDefinedTypes(state.nodeTypes, state.selection),
+        definedTypes: getAvailableTypeNames(state.nodeTypes, state.selection),
         jcrType: getJCRType(state.nodeTypes, state.selection),
         selection: state.selection,
         selectedType: state.nodeTypes[state.selection],

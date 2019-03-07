@@ -35,13 +35,14 @@ import {
 import {
     lookUpMappingStringArgumentInfo,
     lookUpMappingBooleanArgumentInfo,
-    lookUpMappingArgumentIndex
+    lookUpMappingArgumentIndex,
+    getAvailableTypeNames
 } from '../../StepperComponent.utils';
 import {Close} from '@material-ui/icons';
 import connect from 'react-redux/es/connect/connect';
 import {generateUUID} from '../../../App.utils';
 
-const NodeTypeSelectCom = ({classes, t, disabled, value, open, handleClose, handleChange, handleOpen, nodeTypeNames}) => (
+const NodeTypeSelectCom = ({classes, t, disabled, value, open, handleClose, handleChange, handleOpen, jcrNodeTypes}) => (
     <FormControl classes={classes} disabled={disabled}>
         <InputLabel shrink htmlFor="type-name">{t('label.sdlGeneratorTools.createTypes.selectNodeType')}</InputLabel>
         <Select disabled={disabled}
@@ -56,7 +57,7 @@ const NodeTypeSelectCom = ({classes, t, disabled, value, open, handleClose, hand
                 <em>None</em>
             </MenuItem>
             {
-                !_.isNil(nodeTypeNames) ? nodeTypeNames.map(typeName => (
+                !_.isNil(jcrNodeTypes) ? jcrNodeTypes.map(typeName => (
                     <MenuItem key={typeName.name} value={typeName.name} classes={{root: classes.menuItem}}>
                         <ListItemText primary={typeName.displayName} secondary={typeName.name}/>
                     </MenuItem>
@@ -76,7 +77,7 @@ const NodeTypeSelect = withStyles({
     }
 })(NodeTypeSelectCom);
 
-const AddTypeDialog = ({data, t, open, closeDialog, mode, selection, selectedType, selectType, removeType, addType, addDirective, removeDirective}) => {
+const AddTypeDialog = ({data, t, open, closeDialog, mode, selection, selectedType, selectType, removeType, addType, addDirective, removeDirective, availableTypeNames}) => {
     const customTypeName = !_.isNil(selectedType) ? selectedType.name : '';
     const jcrNodeType = lookUpMappingStringArgumentInfo(selectedType, 'node');
     const ignoreDefaultQueriesDirective = lookUpMappingBooleanArgumentInfo(selectedType, 'ignoreDefaultQueries');
@@ -84,7 +85,7 @@ const AddTypeDialog = ({data, t, open, closeDialog, mode, selection, selectedTyp
     const [nodeType, updateNodeType] = useState(jcrNodeType);
     const [showNodeTypeSelector, setShowNodeTypeSelector] = useState(false);
     const [ignoreDefaultQueries, updateIgnoreDefaultQueries] = useState(ignoreDefaultQueriesDirective);
-    const nodeTypeNames = !_.isNil(data.jcr) ? data.jcr.nodeTypes.nodes.sort((a, b) => {
+    const jcrNodeTypes = !_.isNil(data.jcr) ? data.jcr.nodeTypes.nodes.sort((a, b) => {
         a = a.displayName.toLowerCase();
         b = b.displayName.toLowerCase();
         if (a < b) {
@@ -102,16 +103,12 @@ const AddTypeDialog = ({data, t, open, closeDialog, mode, selection, selectedTyp
         updateIgnoreDefaultQueries(false);
     };
 
-    const duplicateName = false;// IsDuplicatedTypeName(typeName);
+    const duplicateName = availableTypeNames.indexOf(typeName) !== -1;
 
     const saveTypeAndClose = () => {
         let uuid = selection;
 
         if (mode === C.DIALOG_MODE_ADD) {
-            // If (_.isNil(typeName) || _.isEmpty(typeName) || _.isNil(nodeType) || _.isEmpty(nodeType)) {
-            //     return;
-            // }
-
             uuid = generateUUID();
             addType({typeName: typeName, nodeType: nodeType}, uuid);
             selectType(uuid);
@@ -169,7 +166,7 @@ const AddTypeDialog = ({data, t, open, closeDialog, mode, selection, selectedTyp
                                 disabled={mode === C.DIALOG_MODE_EDIT}
                                 t={t}
                                 value={nodeType}
-                                nodeTypeNames={nodeTypeNames}
+                                jcrNodeTypes={jcrNodeTypes}
                                 handleOpen={() => setShowNodeTypeSelector(true)}
                                 handleClose={() => setShowNodeTypeSelector(false)}
                                 handleChange={event => updateNodeType(event.target.value)}/>
@@ -234,6 +231,7 @@ AddTypeDialog.propTypes = {
     removeType: PropTypes.func.isRequired,
     selectType: PropTypes.func.isRequired,
     addType: PropTypes.func.isRequired,
+    availableTypeNames: PropTypes.array.isRequired,
     removeDirective: PropTypes.func.isRequired,
     addDirective: PropTypes.func.isRequired
 
@@ -241,6 +239,7 @@ AddTypeDialog.propTypes = {
 
 const mapStateToProps = state => {
     return {
+        availableTypeNames: getAvailableTypeNames(state.nodeTypes, null),
         selectedType: state.nodeTypes[state.selection],
         selection: state.selection,
         ...state.addModifyTypeDialog
