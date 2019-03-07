@@ -19,7 +19,7 @@ import {compose, graphql, withApollo} from 'react-apollo';
 import {connect} from 'react-redux';
 import {translate} from 'react-i18next';
 import * as _ from 'lodash';
-import {upperCaseFirst} from '../../StepperComponent.utils';
+import {lookUpMappingStringArgumentInfo, upperCaseFirst} from '../../StepperComponent.utils';
 import {Close} from '@material-ui/icons';
 import C from '../../../App.constants';
 import gqlQueries from '../CreateTypes.gql-queries';
@@ -308,9 +308,7 @@ AddModifyPropertyDialog.propTypes = {
 const getJCRType = (nodeTypes, selection) => {
     if (nodeTypes && selection) {
         const node = nodeTypes[selection];
-        if (node) {
-            return node.directives[0].arguments.find(arg => arg.name === 'node').value;
-        }
+        return lookUpMappingStringArgumentInfo(node, 'node');
     }
     return '';
 };

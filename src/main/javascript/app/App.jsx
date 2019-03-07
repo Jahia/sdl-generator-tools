@@ -19,7 +19,7 @@ const App = ({dxContext}) => (
                 ns: [defaultNamespace],
                 defaultNS: defaultNamespace,
                 namespaceResolvers: {
-                    defaultNamespace: lang => require('../locales/' + lang + '.json')
+                    defaultNamespace: lang => require('../../resources/javascript/locales/' + lang + '.json')
                 }
             })}
             >
