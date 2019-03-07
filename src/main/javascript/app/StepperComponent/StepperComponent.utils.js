@@ -50,6 +50,29 @@ const isPredefinedType = type => {
     return !predefinedTypeRegex.exec(type);
 };
 
+const generateFinderSuffix = name => {
+    let standard = `by${upperCaseFirst(name)}`;
+    let connection = `${standard}Connection`;
+    return {standard: standard, connection: connection};
+};
+
+const getAvailableTypeNames = (nodeTypes, selection) => {
+    const availableTypes = [];
+    if (nodeTypes) {
+        for (let key in nodeTypes) {
+            if (!nodeTypes.hasOwnProperty(key)) {
+                continue;
+            }
+
+            const node = nodeTypes[key];
+            if (selection !== key) {
+                availableTypes.push(node.name);
+            }
+        }
+    }
+    return availableTypes;
+};
+
 export {
     upperCaseFirst,
     getMappingDirectiveArguments,
@@ -57,5 +80,7 @@ export {
     lookUpMappingArgumentInfo,
     lookUpMappingStringArgumentInfo,
     lookUpMappingBooleanArgumentInfo,
-    isPredefinedType
+    isPredefinedType,
+    generateFinderSuffix,
+    getAvailableTypeNames
 };

@@ -38,7 +38,7 @@ const FindersList = ({t, classes, selectedType, selectedFinder, mode, selectFind
             <List subheader={<ListSubheader>{t('label.sdlGeneratorTools.defineFinder.finders')}</ListSubheader>}>
                 <ListItem>
                     <Button disabled={selectedType === undefined || availableFinders.length === 0}
-                            onClick={() => updateFinderDialogState(Object.assign({}, {open: true, mode: C.DIALOG_MODE_ADD}))}
+                            onClick={() => updateFinderDialogState({open: true, mode: C.DIALOG_MODE_ADD})}
                     >
                         {t('label.sdlGeneratorTools.defineFinder.addAFinder')}
                         <Add/>

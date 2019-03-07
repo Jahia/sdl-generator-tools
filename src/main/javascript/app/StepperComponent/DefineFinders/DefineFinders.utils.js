@@ -1,5 +1,8 @@
 import * as _ from 'lodash';
-import {upperCaseFirst} from '../StepperComponent.utils';
+import {
+    generateFinderSuffix,
+    isPredefinedType
+} from '../StepperComponent.utils';
 import C from '../../App.constants';
 
 const filterAvailableFinders = (mode, selectedFinder, selectedType) => {
@@ -11,19 +14,22 @@ const filterAvailableFinders = (mode, selectedFinder, selectedType) => {
     finders = _.without(finders, ...selectedType.queries.filter(finder => finders.indexOf(finder.suffix) !== -1).map(finder => finder.suffix));
     // Add finders based on type properties, omit those that have already been created.
     finders = selectedType.fieldDefinitions.reduce((acc, curr) => {
-        let finder = `by${upperCaseFirst(curr.name)}`;
-        let connectionVariant = `${finder}Connection`;
+        // Skip finders for properties mapping to predefined types
+        if (isPredefinedType(curr.type)) {
+            return acc;
+        }
+        let suffix = generateFinderSuffix(curr.name);
         let connectionVariantExists = false;
         if (selectedType.queries.reduce((found, query) => {
-            if (connectionVariant === query.suffix) {
+            if (suffix.connection === query.suffix) {
                 connectionVariantExists = true;
             }
-            return query.suffix === finder ? false : found;
+            return query.suffix === suffix.standard ? false : found;
         }, true)) {
-            acc.push(finder);
+            acc.push(suffix.standard);
         }
         if (!connectionVariantExists) {
-            acc.push(connectionVariant);
+            acc.push(suffix.connection);
         }
         return acc;
     }, finders);
