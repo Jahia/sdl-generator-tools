@@ -11,6 +11,12 @@ import {client} from '@jahia/apollo-dx';
 
 const defaultNamespace = 'sdl-generator-tools';
 
+// TODO remove / integrate in the theme
+delete theme.overrides.MuiInput.underline['&:hover'];
+theme.overrides.MuiInput.underline['&:hover:not($disabled):after'] = {borderBottom: '1px solid #007cb0'};
+theme.overrides.MuiInput.underline['&:hover:not($disabled):before'] = {borderBottom: '1px solid #007cb0'};
+theme.overrides.MuiInput.disabled['& input'].color = theme.palette.font.gamma;
+
 const App = ({dxContext}) => (
     <MuiThemeProvider theme={theme}>
         <Provider store={store}>
