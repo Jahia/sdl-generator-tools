@@ -50,7 +50,7 @@ const PropertySelectCom = ({classes, t, disabled, value, open, handleClose, hand
             {
                 !_.isNil(nodeProperties) ? nodeProperties.map((property, index) => (
                     <MenuItem key={`${property.name}_${index}`} value={property.name} classes={{root: classes.menuItem}}>
-                        <ListItemText primary={property.name.replace(/(j:|jcr:)/, '')} secondary={upperCaseFirst(property.requiredType.toLowerCase())}/>
+                        <ListItemText primary={property.displayName} secondary={property.displayType}/>
                     </MenuItem>
                 )) : null
             }
@@ -214,6 +214,17 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, definedTypes
         });
     };
 
+    const sortProperties = nodeProperties => {
+        return _.sortBy(nodeProperties.map(property => {
+            return {
+                name: property.name,
+                displayName: property.name.replace(/(j:|jcr:)/, ''),
+                requiredType: property.requiredType,
+                displayType: upperCaseFirst(property.requiredType.toLowerCase())
+            };
+        }), 'displayName');
+    };
+
     return (
         <Dialog
             open={open}
@@ -234,7 +245,7 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, definedTypes
                 <PropertySelect open={showPropertySelector}
                                 t={t}
                                 disabled={mode === C.DIALOG_MODE_EDIT}
-                                nodeProperties={nodeProperties}
+                                nodeProperties={sortProperties(nodeProperties)}
                                 value={selectedJcrPropertyName}
                                 handleOpen={() => setShowPropertySelector(true)}
                                 handleClose={() => setShowPropertySelector(false)}

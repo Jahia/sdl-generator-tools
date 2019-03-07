@@ -85,17 +85,7 @@ const AddTypeDialog = ({data, t, open, closeDialog, mode, selection, selectedTyp
     const [nodeType, updateNodeType] = useState(jcrNodeType);
     const [showNodeTypeSelector, setShowNodeTypeSelector] = useState(false);
     const [ignoreDefaultQueries, updateIgnoreDefaultQueries] = useState(ignoreDefaultQueriesDirective);
-    const jcrNodeTypes = !_.isNil(data.jcr) ? data.jcr.nodeTypes.nodes.sort((a, b) => {
-        a = a.displayName.toLowerCase();
-        b = b.displayName.toLowerCase();
-        if (a < b) {
-            return -1;
-        }
-        if (a > b) {
-            return 1;
-        }
-        return 0;
-    }) : null;
+    const jcrNodeTypes = !_.isNil(data.jcr) ? _.sortBy(data.jcr.nodeTypes.nodes, 'displayName') : null;
 
     const cleanUp = () => {
         updateTypeName(null);
@@ -214,7 +204,7 @@ const AddTypeDialog = ({data, t, open, closeDialog, mode, selection, selectedTyp
                     {t('label.sdlGeneratorTools.cancelButton')}
                 </Button>
                 <Button color="primary"
-                        disabled={duplicateName}
+                        disabled={mode === C.DIALOG_MODE_ADD ? duplicateName : false}
                         onClick={saveTypeAndClose}
                 >
                     {t('label.sdlGeneratorTools.saveButton')}

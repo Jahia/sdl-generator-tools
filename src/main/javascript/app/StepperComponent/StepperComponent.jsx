@@ -7,6 +7,7 @@ import {downloadFile, copyToClipBoard} from './StepperComponent.document-utils';
 import DefineFinder from './DefineFinders';
 import {compose} from 'react-apollo';
 import SDLParser from '../parsing/sdlParser';
+import {connect} from 'react-redux';
 
 const styles = () => ({
     root: {
@@ -142,7 +143,14 @@ class StepperComponent extends React.Component {
     }
 }
 
+const mapStateToProps = state => {
+    return {
+        nodeTypes: state.nodeTypes
+    };
+};
+
 export default compose(
+    connect(mapStateToProps, null),
     withStyles(styles),
     translate()
 )(StepperComponent);
