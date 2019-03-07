@@ -110,7 +110,6 @@ const AddTypeDialog = ({data, t, open, closeDialog, mode, selection, selectedTyp
                 name: 'ignoreDefaultQueries'
             });
         } else if (mode === C.DIALOG_MODE_EDIT) {
-            console.log(uuid, lookUpMappingArgumentIndex(selectedType, 'ignoreDefaultQueries'));
             removeDirective(uuid, 'mapping', lookUpMappingArgumentIndex(selectedType, 'ignoreDefaultQueries'));
         }
         closeDialog();
