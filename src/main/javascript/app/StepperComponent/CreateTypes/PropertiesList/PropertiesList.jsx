@@ -10,6 +10,7 @@ import {
     ListSubheader,
     Button
 } from '@material-ui/core';
+import {Typography} from '@jahia/ds-mui-theme';
 import {Add} from '@material-ui/icons';
 import {compose} from 'react-apollo';
 import C from '../../../App.constants';
@@ -41,7 +42,11 @@ const PropertiesList = ({classes, t, selectedType, selectProperty, addModifyProp
     return (
         <Paper className={classes.paper}>
             <List subheader={
-                <ListSubheader>{t('label.sdlGeneratorTools.createTypes.propertiesText')}</ListSubheader>
+                <ListSubheader>
+                    <Typography color="alpha" variant="omega">
+                        {t('label.sdlGeneratorTools.createTypes.propertiesText')}
+                    </Typography>
+                </ListSubheader>
             }
             >
                 <ListItem>
@@ -49,7 +54,9 @@ const PropertiesList = ({classes, t, selectedType, selectProperty, addModifyProp
                         addModifyPropertyDialog({open: true, mode: C.DIALOG_MODE_ADD});
                     }}
                     >
-                        {t('label.sdlGeneratorTools.createTypes.addNewPropertyButton')}
+                        <Typography color="alpha" variant="zeta">
+                            {t('label.sdlGeneratorTools.createTypes.addNewPropertyButton')}
+                        </Typography>
                         <Add/>
                     </Button>
                 </ListItem>

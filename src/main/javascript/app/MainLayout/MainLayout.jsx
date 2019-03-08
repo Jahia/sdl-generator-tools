@@ -1,7 +1,8 @@
 import React from 'react';
 import {compose} from 'react-apollo';
 import {translate} from 'react-i18next';
-import {withStyles, AppBar, Toolbar, Grid, Paper, Typography, Button} from '@material-ui/core';
+import {withStyles, AppBar, Toolbar, Grid, Paper, Button} from '@material-ui/core';
+import {Typography} from '@jahia/ds-mui-theme';
 import StepperComponent from '../StepperComponent';
 import GQLSchemaViewer from '../GQLSchemaViewer';
 
@@ -11,10 +12,9 @@ let styles = theme => ({
         color: '#fff'
     },
     topBarText: {
-        fontStyle: 'normal',
+        fontFamily: theme.toString(),
         fontWeight: 600,
-        fontSize: '16px',
-        color: '#FFFFFF'
+        fontSize: '16px'
     },
     topBarButton: {
         position: 'absolute',
@@ -42,11 +42,9 @@ let styles = theme => ({
         overflow: 'auto'
     },
     mainText: {
-        fontStyle: 'normal',
         fontWeight: 600,
         margin: '10px 16px',
-        fontSize: '16px',
-        color: '#373C42'
+        fontSize: '16px'
     },
     viewerPanel: {
         width: '100%',
@@ -62,7 +60,7 @@ const MainLayout = ({classes, t}) => {
         <React.Fragment>
             <AppBar position="static">
                 <Toolbar className={classes.topBar}>
-                    <Typography className={classes.topBarText}>
+                    <Typography color="invert" variant="epsilon" className={classes.topBarText}>
                         {t('label.sdlGeneratorTools.top.caption')}
                     </Typography>
                     <Button className={classes.topBarButton}
@@ -70,7 +68,9 @@ const MainLayout = ({classes, t}) => {
                                 window.location = '/tools';
                             }}
                     >
-                        {t('label.sdlGeneratorTools.top.backToToolsButton')}
+                        <Typography color="invert" variant="zeta">
+                            {t('label.sdlGeneratorTools.top.backToToolsButton')}
+                        </Typography>
                     </Button>
                 </Toolbar>
             </AppBar>
@@ -78,7 +78,7 @@ const MainLayout = ({classes, t}) => {
             <Grid container spacing={24} className={classes.root}>
                 <Grid item xs={12} sm={7} className={classes.item}>
                     <Paper className={classes.mainPanel}>
-                        <Typography className={classes.mainText}>
+                        <Typography color="alpha" variant="epsilon" className={classes.mainText}>
                             {t('label.sdlGeneratorTools.mainCaption')}
                         </Typography>
                         <StepperComponent/>

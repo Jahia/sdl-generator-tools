@@ -22,7 +22,9 @@
                 "customTypeNameText": "Custom type name",
                 "customPropertyNameText": "Custom property name",
                 "ignoreDefaultQueries": "Ignore Default Queries",
-                "mapToCustomType": "Map to pre-defined type"
+                "mapToCustomType": "Map to pre-defined type",
+                "predefinedType": "Predefined type",
+                "propertyAsList": "As list"
             },
             "defineFinder": {
                 "finders": "Finders",
@@ -38,7 +40,7 @@
             "type": "type",
             "Type": "Type",
             "types": "types",
-            "mainCaption": "Build your GraphQL",
+            "mainCaption": "Build your GraphQL Schema Definition",
             "viewerCaption": "GraphQL Schema",
             "backButton": "Back",
             "nextButton": "Next",

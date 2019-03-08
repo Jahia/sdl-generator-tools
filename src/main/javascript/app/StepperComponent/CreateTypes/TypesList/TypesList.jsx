@@ -12,6 +12,7 @@ import {
     IconButton,
     Button
 } from '@material-ui/core';
+import {Typography} from '@jahia/ds-mui-theme';
 import {Add, Edit} from '@material-ui/icons';
 import {compose} from 'react-apollo';
 import C from '../../../App.constants';
@@ -67,7 +68,9 @@ const TypesList = ({classes, t, nodeTypes, selection, selectType, updateTypeDial
                     updateTypeDialogMode({open: true, mode: C.DIALOG_MODE_ADD});
                 }}
                 >
-                    {t('label.sdlGeneratorTools.createTypes.addNewTypeButton')}
+                    <Typography color="alpha" variant="zeta">
+                        {t('label.sdlGeneratorTools.createTypes.addNewTypeButton')}
+                    </Typography>
                     <Add/>
                 </Button>
             </ListItem> : null;
@@ -76,7 +79,11 @@ const TypesList = ({classes, t, nodeTypes, selection, selectType, updateTypeDial
     return (
         <Paper className={classes.paper}>
             <List subheader={
-                <ListSubheader>{t('label.sdlGeneratorTools.createTypes.nodeTypeText')}</ListSubheader>
+                <ListSubheader>
+                    <Typography color="alpha" variant="omega">
+                        {t('label.sdlGeneratorTools.createTypes.nodeTypeText')}
+                    </Typography>
+                </ListSubheader>
                     }
             >
                 {renderCreateListButton()}

@@ -1,6 +1,7 @@
 import React from 'react';
 import {translate} from 'react-i18next';
 import {withStyles, Stepper, Step, StepLabel, Button} from '@material-ui/core';
+import {Typography} from '@jahia/ds-mui-theme';
 import CreateTypes from './CreateTypes';
 import ExportResult from './ExportResult';
 import {downloadFile, copyToClipBoard} from './StepperComponent.document-utils';
@@ -101,7 +102,9 @@ class StepperComponent extends React.Component {
                             const labelProps = {};
                             return (
                                 <Step key={label} {...props}>
-                                    <StepLabel {...labelProps}>{label}</StepLabel>
+                                    <StepLabel {...labelProps}>
+                                        <Typography color="alpha" variant="zeta">{label}</Typography>
+                                    </StepLabel>
                                 </Step>
                             );
                         })}
@@ -110,7 +113,7 @@ class StepperComponent extends React.Component {
                     <div className={classes.bottomBar}>
                         {activeStep !== 0 ? (
                             <Button color="primary" className={classes.button} onClick={this.handleBack}>
-                                {t('label.sdlGeneratorTools.backButton')}
+                                <Typography variant="zeta">{t('label.sdlGeneratorTools.backButton')}</Typography>
                             </Button>
                         ) : (
                             null
@@ -122,7 +125,9 @@ class StepperComponent extends React.Component {
                                 className={classes.button}
                                 onClick={this.handleCopy}
                             >
-                                {t('label.sdlGeneratorTools.copyToClipboardButton')}
+                                <Typography color="invert" variant="zeta">
+                                    {t('label.sdlGeneratorTools.copyToClipboardButton')}
+                                </Typography>
                             </Button>
                         ) : (
                             null
@@ -133,7 +138,9 @@ class StepperComponent extends React.Component {
                             className={classes.button}
                             onClick={activeStep === lastStep ? this.handleDownload : this.handleNext}
                         >
-                            {activeStep === lastStep ? t('label.sdlGeneratorTools.downloadFileButton') : t('label.sdlGeneratorTools.nextButton')}
+                            <Typography color="invert" variant="zeta">
+                                {activeStep === lastStep ? t('label.sdlGeneratorTools.downloadFileButton') : t('label.sdlGeneratorTools.nextButton')}
+                            </Typography>
                         </Button>
                     </div>
                 </div>

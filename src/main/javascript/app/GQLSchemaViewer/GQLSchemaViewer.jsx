@@ -1,7 +1,8 @@
 import React from 'react';
 import {compose} from 'react-apollo';
 import {translate} from 'react-i18next';
-import {withStyles, Typography, Grid} from '@material-ui/core';
+import {withStyles, Grid} from '@material-ui/core';
+import {Typography} from '@jahia/ds-mui-theme';
 import AceEditor from 'react-ace';
 import 'brace/mode/graphqlschema';
 import 'brace/theme/monokai';
@@ -10,11 +11,9 @@ import SDLParser from '../parsing/sdlParser';
 let styles = () => ({
     viewerText: {
         padding: '12px 24px',
-        fontStyle: 'normal',
         fontWeight: 600,
         lineHeight: '18px',
-        fontSize: '14px',
-        color: '#fff'
+        fontSize: '14px'
     },
     editor: {
         borderRadius: '0 0 3px 3px'
@@ -25,7 +24,7 @@ const GQLSchemaViewer = ({classes, t, nodeTypes}) => {
     return (
         <React.Fragment>
             <Grid item>
-                <Typography className={classes.viewerText}>
+                <Typography color="invert" variant="zeta" className={classes.viewerText}>
                     {t('label.sdlGeneratorTools.viewerCaption')}
                 </Typography>
             </Grid>

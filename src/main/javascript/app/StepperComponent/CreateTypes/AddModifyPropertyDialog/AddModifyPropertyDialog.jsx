@@ -15,6 +15,7 @@ import {
     Switch,
     withStyles
 } from '@material-ui/core';
+import {Typography} from '@jahia/ds-mui-theme';
 import {compose, graphql, withApollo} from 'react-apollo';
 import {connect} from 'react-redux';
 import {translate} from 'react-i18next';
@@ -35,7 +36,11 @@ const MULTIPLE_CHILDREN_INDICATOR = '*';
 
 const PropertySelectCom = ({classes, t, disabled, value, open, handleClose, handleChange, handleOpen, nodeProperties}) => (
     <FormControl classes={classes} disabled={disabled}>
-        <InputLabel shrink htmlFor="property-name">{t('label.sdlGeneratorTools.createTypes.selectNodeProperty')}</InputLabel>
+        <InputLabel shrink htmlFor="property-name">
+            <Typography color="alpha" variant="zeta">
+                {t('label.sdlGeneratorTools.createTypes.selectNodeProperty')}
+            </Typography>
+        </InputLabel>
         <Select disabled={disabled}
                 open={open}
                 value={value}
@@ -58,9 +63,13 @@ const PropertySelectCom = ({classes, t, disabled, value, open, handleClose, hand
     </FormControl>
 );
 
-const PredefinedTypeSelector = ({classes, disabled, value, open, handleClose, handleChange, handleOpen, types}) => (
+const PredefinedTypeSelector = ({t, classes, disabled, value, open, handleClose, handleChange, handleOpen, types}) => (
     <FormControl className={classes.formControl} disabled={disabled}>
-        <InputLabel shrink htmlFor="type-name">Predefined type</InputLabel>
+        <InputLabel shrink htmlFor="type-name">
+            <Typography color="alpha" variant="zeta">
+                {t('label.sdlGeneratorTools.createTypes.predefinedType')}
+            </Typography>
+        </InputLabel>
         <Select disabled={disabled}
                 open={open}
                 value={value}
@@ -235,7 +244,8 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, definedTypes
             <DialogContent style={{width: 400}}>
                 {
                     selectedIsPredefinedType &&
-                    <PredefinedTypeSelect open={showPredefinedTypeSelector}
+                    <PredefinedTypeSelect t={t}
+                                          open={showPredefinedTypeSelector}
                                           types={C.PREDEFINED_SDL_TYPES.concat(definedTypes)}
                                           value={selectedPropertyType.replace(/(\[|])/g, '')}
                                           handleOpen={() => setPredefinedTypeSelector(true)}
@@ -259,7 +269,11 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, definedTypes
                     InputLabelProps={{
                         shrink: true
                     }}
-                    label={t('label.sdlGeneratorTools.createTypes.customPropertyNameText')}
+                    label={
+                        <Typography color="alpha" variant="zeta">
+                            {t('label.sdlGeneratorTools.createTypes.customPropertyNameText')}
+                        </Typography>
+                    }
                     type="text"
                     value={selectedPropertyName}
                     error={mode === C.DIALOG_MODE_ADD ? duplicateName : false}
@@ -275,7 +289,11 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, definedTypes
                 />
                 <FormGroup row>
                     <FormControlLabel
-                        label={t('label.sdlGeneratorTools.createTypes.mapToCustomType')}
+                        label={
+                            <Typography color="alpha" variant="zeta">
+                                {t('label.sdlGeneratorTools.createTypes.mapToCustomType')}
+                            </Typography>
+                        }
                         control={
                             <Switch
                                 color="primary"
@@ -284,7 +302,11 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, definedTypes
                             />
                         }/>
                     <FormControlLabel
-                        label="As list"
+                        label={
+                            <Typography color="alpha" variant="zeta">
+                                {t('label.sdlGeneratorTools.createTypes.propertyAsList')}
+                            </Typography>
+                        }
                         control={
                             <Switch
                                 color="primary"
@@ -296,21 +318,27 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, definedTypes
                 {
                     mode === C.DIALOG_MODE_EDIT &&
                     <Button color="primary" onClick={removeAndClose}>
-                        {t('label.sdlGeneratorTools.deleteButton')}
+                        <Typography color="inherit" variant="zeta">
+                            {t('label.sdlGeneratorTools.deleteButton')}
+                        </Typography>
                         <Close/>
                     </Button>
                 }
             </DialogContent>
             <DialogActions>
                 <Button color="primary" onClick={cancelAndClose}>
-                    {t('label.sdlGeneratorTools.cancelButton')}
+                    <Typography color="inherit" variant="zeta">
+                        {t('label.sdlGeneratorTools.cancelButton')}
+                    </Typography>
                 </Button>
                 <Button
                         // Disabled={duplicateName}
                         color="primary"
                         onClick={addPropertyAndClose}
                 >
-                    {t('label.sdlGeneratorTools.saveButton')}
+                    <Typography color="inherit" variant="zeta">
+                        {t('label.sdlGeneratorTools.saveButton')}
+                    </Typography>
                 </Button>
             </DialogActions>
         </Dialog>
