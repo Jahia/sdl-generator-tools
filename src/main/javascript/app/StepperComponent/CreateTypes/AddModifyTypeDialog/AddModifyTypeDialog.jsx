@@ -21,6 +21,7 @@ import {
     InputLabel,
     Input
 } from '@material-ui/core';
+import {Typography} from '@jahia/ds-mui-theme';
 import * as _ from 'lodash';
 import C from '../../../App.constants';
 import {
@@ -44,7 +45,11 @@ import {generateUUID} from '../../../App.utils';
 
 const NodeTypeSelectCom = ({classes, t, disabled, value, open, handleClose, handleChange, handleOpen, jcrNodeTypes}) => (
     <FormControl classes={classes} disabled={disabled}>
-        <InputLabel shrink htmlFor="type-name">{t('label.sdlGeneratorTools.createTypes.selectNodeType')}</InputLabel>
+        <InputLabel shrink htmlFor="type-name">
+            <Typography color="alpha" variant="zeta">
+                {t('label.sdlGeneratorTools.createTypes.selectNodeType')}
+            </Typography>
+        </InputLabel>
         <Select disabled={disabled}
                 open={open}
                 value={!_.isNil(value) ? value : ''}
@@ -165,7 +170,11 @@ const AddTypeDialog = ({data, t, open, closeDialog, mode, selection, selectedTyp
                     disabled={mode === C.DIALOG_MODE_EDIT}
                     margin="dense"
                     id="typeName"
-                    label={t('label.sdlGeneratorTools.createTypes.customTypeNameText')}
+                    label={
+                        <Typography color="alpha" variant="zeta">
+                            {t('label.sdlGeneratorTools.createTypes.customTypeNameText')}
+                        </Typography>
+                    }
                     type="text"
                     value={!_.isNil(typeName) ? typeName : ''}
                     error={mode === C.DIALOG_MODE_ADD ? duplicateName : false}
@@ -181,7 +190,11 @@ const AddTypeDialog = ({data, t, open, closeDialog, mode, selection, selectedTyp
                 />
                 <FormGroup row>
                     <FormControlLabel
-                        label={t('label.sdlGeneratorTools.createTypes.ignoreDefaultQueries')}
+                        label={
+                            <Typography color="alpha" variant="zeta">
+                                {t('label.sdlGeneratorTools.createTypes.ignoreDefaultQueries')}
+                            </Typography>
+                        }
                         control={
                             <Switch
                                 color="primary"
@@ -193,20 +206,26 @@ const AddTypeDialog = ({data, t, open, closeDialog, mode, selection, selectedTyp
                 {
                     mode === C.DIALOG_MODE_EDIT &&
                     <Button color="primary" onClick={removeAndClose}>
-                        {t('label.sdlGeneratorTools.deleteButton')}
+                        <Typography color="inherit" variant="zeta">
+                            {t('label.sdlGeneratorTools.deleteButton')}
+                        </Typography>
                         <Close/>
                     </Button>
                 }
             </DialogContent>
             <DialogActions>
                 <Button color="primary" onClick={cancelAndClose}>
-                    {t('label.sdlGeneratorTools.cancelButton')}
+                    <Typography color="inherit" variant="zeta">
+                        {t('label.sdlGeneratorTools.cancelButton')}
+                    </Typography>
                 </Button>
                 <Button color="primary"
                         disabled={mode === C.DIALOG_MODE_ADD ? duplicateName : false}
                         onClick={saveTypeAndClose}
                 >
-                    {t('label.sdlGeneratorTools.saveButton')}
+                    <Typography color="inherit" variant="zeta">
+                        {t('label.sdlGeneratorTools.saveButton')}
+                    </Typography>
                 </Button>
             </DialogActions>
         </Dialog>
