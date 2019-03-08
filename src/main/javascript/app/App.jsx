@@ -23,6 +23,7 @@ const App = ({dxContext}) => (
             <I18nextProvider i18n={getI18n({
                 lng: 'en',
                 ns: [defaultNamespace],
+                contextPath: dxContext.contextPath,
                 defaultNS: defaultNamespace,
                 namespaceResolvers: {
                     defaultNamespace: lang => require('../../resources/javascript/locales/' + lang + '.json')
