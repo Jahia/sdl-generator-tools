@@ -15,6 +15,7 @@ import {
     sdlModifyFinderOfType,
     sdlRemoveFinderFromType
 } from '../../../App.redux-actions';
+import {Typography} from '@jahia/ds-mui-theme';
 import {sdlUpdateAddModifyFinderDialog} from '../../StepperComponent.redux-actions';
 import {compose} from 'react-apollo';
 import connect from 'react-redux/es/connect/connect';
@@ -22,7 +23,12 @@ import {filterAvailableFinders} from '../DefineFinders.utils';
 
 const FinderSelectCom = ({classes, t, open, handleClose, handleOpen, handleChange, value, values}) => (
     <FormControl classes={classes}>
-        <InputLabel shrink htmlFor="finder-name">{t('label.sdlGeneratorTools.defineFinder.selectAFinder')}</InputLabel>
+        <InputLabel shrink htmlFor="finder-name">{
+            <Typography color="alpha" variant="zeta">
+                {t('label.sdlGeneratorTools.defineFinder.selectAFinder')}
+            </Typography>
+        }
+        </InputLabel>
         <Select open={open}
                 value={value}
                 input={<Input id="finder-name"/>}
@@ -131,7 +137,11 @@ const AddModifyFinderDialog = ({t, open, close, mode, addFinder, modifyFinder, r
                            InputLabelProps={{
                                shrink: true
                            }}
-                           label={t('label.sdlGeneratorTools.defineFinder.customFinderPrefixText')}
+                           label={
+                               <Typography color="alpha" variant="zeta">
+                                   {t('label.sdlGeneratorTools.defineFinder.customFinderPrefixText')}
+                               </Typography>
+                           }
                            type="text"
                            value={finderPrefix}
                            onKeyPress={e => {
@@ -144,19 +154,28 @@ const AddModifyFinderDialog = ({t, open, close, mode, addFinder, modifyFinder, r
                            }}
                            onChange={e => updateFinderPrefix(e.target.value)}
                 />
-                <Button disabled={mode === C.DIALOG_MODE_ADD} color="primary" onClick={removeAndClose}>
-                    {t('label.sdlGeneratorTools.deleteButton')}
-                    <Close/>
-                </Button>
+                {
+                    mode === C.DIALOG_MODE_EDIT &&
+                    <Button color="primary" onClick={removeAndClose}>
+                        <Typography color="inherit" variant="zeta">
+                            {t('label.sdlGeneratorTools.deleteButton')}
+                        </Typography>
+                        <Close/>
+                    </Button>
+                }
             </DialogContent>
             <DialogActions>
                 <Button color="primary" onClick={cancelAndClose}>
-                    {t('label.sdlGeneratorTools.cancelButton')}
+                    <Typography color="inherit" variant="zeta">
+                        {t('label.sdlGeneratorTools.cancelButton')}
+                    </Typography>
                 </Button>
                 <Button color="primary"
                         onClick={addFinderAndClose}
                 >
-                    {t('label.sdlGeneratorTools.saveButton')}
+                    <Typography color="inherit" variant="zeta">
+                        {t('label.sdlGeneratorTools.saveButton')}
+                    </Typography>
                 </Button>
             </DialogActions>
         </Dialog>
