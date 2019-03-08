@@ -26,10 +26,13 @@ let styles = theme => ({
         textAlign: 'right',
         color: '#fff'
     },
-    main: {
+    root: {
         margin: '0px',
         width: '100%',
         height: '87%'
+    },
+    item: {
+        height: '100%'
     },
     mainPanel: {
         width: '100%',
@@ -72,8 +75,8 @@ const MainLayout = ({classes, t}) => {
                 </Toolbar>
             </AppBar>
 
-            <Grid container spacing={24} className={classes.main}>
-                <Grid item xs={12} sm={7}>
+            <Grid container spacing={24} className={classes.root}>
+                <Grid item xs={12} sm={7} className={classes.item}>
                     <Paper className={classes.mainPanel}>
                         <Typography className={classes.mainText}>
                             {t('label.sdlGeneratorTools.mainCaption')}
@@ -82,7 +85,7 @@ const MainLayout = ({classes, t}) => {
                     </Paper>
                 </Grid>
 
-                <Grid item xs={12} sm={5}>
+                <Grid item xs={12} sm={5} className={classes.item}>
                     <Paper className={classes.viewerPanel}><GQLSchemaViewer/></Paper>
                 </Grid>
             </Grid>

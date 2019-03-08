@@ -11,10 +11,11 @@ import {connect} from 'react-redux';
 
 const styles = () => ({
     root: {
-        margin: '10px 16px'
+        margin: '10px 16px',
+        height: '90%'
     },
     bottomBar: {
-        margin: '21px 6px',
+        margin: '16px 6px',
         textAlign: 'right',
         '& button': {
             marginLeft: '5px'
@@ -105,37 +106,35 @@ class StepperComponent extends React.Component {
                             );
                         })}
                     </Stepper>
-                    <div>
-                        {this.getStepContent(activeStep)}
-                        <div className={classes.bottomBar}>
-                            {activeStep !== 0 ? (
-                                <Button color="primary" className={classes.button} onClick={this.handleBack}>
-                                    {t('label.sdlGeneratorTools.backButton')}
-                                </Button>
-                            ) : (
-                                null
-                            )}
-                            {activeStep === lastStep ? (
-                                <Button
-                                    variant="contained"
-                                    color="primary"
-                                    className={classes.button}
-                                    onClick={this.handleCopy}
-                                >
-                                    {t('label.sdlGeneratorTools.copyToClipboardButton')}
-                                </Button>
-                            ) : (
-                                null
-                            )}
+                    {this.getStepContent(activeStep)}
+                    <div className={classes.bottomBar}>
+                        {activeStep !== 0 ? (
+                            <Button color="primary" className={classes.button} onClick={this.handleBack}>
+                                {t('label.sdlGeneratorTools.backButton')}
+                            </Button>
+                        ) : (
+                            null
+                        )}
+                        {activeStep === lastStep ? (
                             <Button
                                 variant="contained"
                                 color="primary"
                                 className={classes.button}
-                                onClick={activeStep === lastStep ? this.handleDownload : this.handleNext}
+                                onClick={this.handleCopy}
                             >
-                                {activeStep === lastStep ? t('label.sdlGeneratorTools.downloadFileButton') : t('label.sdlGeneratorTools.nextButton')}
+                                {t('label.sdlGeneratorTools.copyToClipboardButton')}
                             </Button>
-                        </div>
+                        ) : (
+                            null
+                        )}
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            className={classes.button}
+                            onClick={activeStep === lastStep ? this.handleDownload : this.handleNext}
+                        >
+                            {activeStep === lastStep ? t('label.sdlGeneratorTools.downloadFileButton') : t('label.sdlGeneratorTools.nextButton')}
+                        </Button>
                     </div>
                 </div>
             </React.Fragment>

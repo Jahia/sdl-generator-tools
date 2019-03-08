@@ -24,8 +24,7 @@ import connect from 'react-redux/es/connect/connect';
 const styles = () => ({
     paper: {
         width: '100%',
-        minHeight: '60%',
-        maxHeight: '60%',
+        height: '100%',
         padding: '6px 0px',
         overflowY: 'auto'
     },
