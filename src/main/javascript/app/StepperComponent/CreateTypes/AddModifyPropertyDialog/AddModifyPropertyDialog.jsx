@@ -123,7 +123,7 @@ const resolveSelectedProp = (object, key, optionalReturnValue = '') => {
     return optionalReturnValue;
 };
 
-const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, availableNoteTypes, selection, selectedType, selectedProperty, addProperty, removeProperty, removeFinder, updateSelectedProp, unselectProperty, updateProperty}) => {
+const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, availableNodeTypes, selection, selectedType, selectedProperty, addProperty, removeProperty, removeFinder, updateSelectedProp, unselectProperty, updateProperty}) => {
     const nodes = !_.isNil(data.jcr) ? data.jcr.nodeTypes.nodes : [];
     let nodeProperties = nodes.length > 0 ? nodes[0].properties : [];
 
@@ -246,7 +246,7 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, availableNot
                     selectedIsPredefinedType &&
                     <PredefinedTypeSelect t={t}
                                           open={showPredefinedTypeSelector}
-                                          types={C.PREDEFINED_SDL_TYPES.concat(definedTypes)}
+                                          types={C.PREDEFINED_SDL_TYPES.concat(availableNodeTypes)}
                                           value={selectedPropertyType.replace(/(\[|])/g, '')}
                                           handleOpen={() => setPredefinedTypeSelector(true)}
                                           handleClose={() => setPredefinedTypeSelector(false)}
@@ -298,6 +298,7 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, availableNot
                             <Switch
                                 color="primary"
                                 checked={selectedIsPredefinedType}
+                                disabled={mode === C.DIALOG_MODE_EDIT}
                                 onChange={e => updateSelectedProp({isPredefinedType: e.target.checked})}
                             />
                         }/>
@@ -366,7 +367,7 @@ const getJCRType = (nodeTypes, selection) => {
 
 const mapStateToProps = state => {
     return {
-        availableNoteTypes: getAvailableTypeNames(state.nodeTypes, state.selection),
+        availableNodeTypes: getAvailableTypeNames(state.nodeTypes, state.selection),
         jcrType: getJCRType(state.nodeTypes, state.selection),
         selection: state.selection,
         selectedType: state.nodeTypes[state.selection],
