@@ -123,7 +123,7 @@ const resolveSelectedProp = (object, key, optionalReturnValue = '') => {
     return optionalReturnValue;
 };
 
-const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, definedTypes, selection, selectedType, selectedProperty, addProperty, removeProperty, removeFinder, updateSelectedProp, unselectProperty, updateProperty}) => {
+const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, availableNoteTypes, selection, selectedType, selectedProperty, addProperty, removeProperty, removeFinder, updateSelectedProp, unselectProperty, updateProperty}) => {
     const nodes = !_.isNil(data.jcr) ? data.jcr.nodeTypes.nodes : [];
     let nodeProperties = nodes.length > 0 ? nodes[0].properties : [];
 
@@ -366,7 +366,7 @@ const getJCRType = (nodeTypes, selection) => {
 
 const mapStateToProps = state => {
     return {
-        definedTypes: getAvailableTypeNames(state.nodeTypes, state.selection),
+        availableNoteTypes: getAvailableTypeNames(state.nodeTypes, state.selection),
         jcrType: getJCRType(state.nodeTypes, state.selection),
         selection: state.selection,
         selectedType: state.nodeTypes[state.selection],
