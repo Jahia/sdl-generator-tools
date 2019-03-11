@@ -12,7 +12,6 @@ let styles = theme => ({
         color: '#fff'
     },
     topBarText: {
-        fontFamily: theme.toString(),
         fontWeight: 600,
         fontSize: '16px'
     },

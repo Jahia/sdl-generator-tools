@@ -14,7 +14,7 @@
                 "nodeTypeText": "Node type",
                 "propertiesText": "Properties",
                 "addNewTypeButton": "Add new type",
-                "selectNodeType": "Select a node type",
+                "selectSearchNodeType": "Select or search a node type",
                 "editTypeButton": "Edit type",
                 "addNewPropertyButton": "Add a new property",
                 "viewProperty": "View property",

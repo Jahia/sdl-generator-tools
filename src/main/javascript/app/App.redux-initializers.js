@@ -2,6 +2,7 @@ import {actionTypes} from './App.redux-actions';
 
 const addType = typeInfo => ({
     name: typeInfo.typeName,
+    displayName: typeInfo.displayName,
     description: null,
     queries: [],
     fieldDefinitions: [],

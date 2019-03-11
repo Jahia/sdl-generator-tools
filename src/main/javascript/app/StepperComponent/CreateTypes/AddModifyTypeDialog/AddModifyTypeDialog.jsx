@@ -42,55 +42,19 @@ import {
 import {Close} from '@material-ui/icons';
 import connect from 'react-redux/es/connect/connect';
 import {generateUUID} from '../../../App.utils';
-
-const NodeTypeSelectCom = ({classes, t, disabled, value, open, handleClose, handleChange, handleOpen, jcrNodeTypes}) => (
-    <FormControl classes={classes} disabled={disabled}>
-        <InputLabel shrink htmlFor="type-name">
-            <Typography color="alpha" variant="zeta">
-                {t('label.sdlGeneratorTools.createTypes.selectNodeType')}
-            </Typography>
-        </InputLabel>
-        <Select disabled={disabled}
-                open={open}
-                value={!_.isNil(value) ? value : ''}
-                input={<Input id="type-name"/>}
-                onClose={handleClose}
-                onOpen={handleOpen}
-                onChange={handleChange}
-        >
-            <MenuItem value="">
-                <em>None</em>
-            </MenuItem>
-            {
-                !_.isNil(jcrNodeTypes) ? jcrNodeTypes.map(typeName => (
-                    <MenuItem key={typeName.name} value={typeName.name} classes={{root: classes.menuItem}}>
-                        <ListItemText primary={typeName.displayName} secondary={typeName.name}/>
-                    </MenuItem>
-                )) : null
-            }
-        </Select>
-    </FormControl>
-);
-
-const NodeTypeSelect = withStyles({
-    root: {
-        margin: '0px 0px',
-        width: '100%'
-    },
-    menuItem: {
-        padding: '15px 12px'
-    }
-})(NodeTypeSelectCom);
+import TypeSelect from "./TypeSelect";
 
 const AddTypeDialog = ({data, t, open, closeDialog, mode, selection, selectedType, selectType, removeType, addType, addDirective, removeDirective, availableTypeNames}) => {
     const customTypeName = !_.isNil(selectedType) ? selectedType.name : '';
+    const customDisplayName = !_.isNil(selectedType) ? selectedType.displayName : '';
     const jcrNodeType = lookUpMappingStringArgumentInfo(selectedType, 'node');
     const ignoreDefaultQueriesDirective = lookUpMappingBooleanArgumentInfo(selectedType, 'ignoreDefaultQueries');
     const [typeName, updateTypeName] = useState(customTypeName);
+    const [displayName, updateDisplayName] = useState(customDisplayName);
     const [nodeType, updateNodeType] = useState(jcrNodeType);
     const [showNodeTypeSelector, setShowNodeTypeSelector] = useState(false);
     const [ignoreDefaultQueries, updateIgnoreDefaultQueries] = useState(ignoreDefaultQueriesDirective);
-    const jcrNodeTypes = !_.isNil(data.jcr) ? _.sortBy(data.jcr.nodeTypes.nodes, 'displayName') : null;
+    const jcrNodeTypes = !_.isNil(data.jcr) ? data.jcr.nodeTypes.nodes : null;
 
     const cleanUp = () => {
         updateTypeName(null);
@@ -105,7 +69,7 @@ const AddTypeDialog = ({data, t, open, closeDialog, mode, selection, selectedTyp
 
         if (mode === C.DIALOG_MODE_ADD) {
             uuid = generateUUID();
-            addType({typeName: typeName, nodeType: nodeType}, uuid);
+            addType({typeName: typeName, displayName: displayName, nodeType: nodeType}, uuid);
             selectType(uuid);
         }
 
@@ -156,14 +120,18 @@ const AddTypeDialog = ({data, t, open, closeDialog, mode, selection, selectedTyp
             >{mode === C.DIALOG_MODE_EDIT ? t('label.sdlGeneratorTools.createTypes.editTypeButton') : t('label.sdlGeneratorTools.createTypes.addNewTypeButton')}
             </DialogTitle>
             <DialogContent style={{width: 400}}>
-                <NodeTypeSelect open={showNodeTypeSelector}
-                                disabled={mode === C.DIALOG_MODE_EDIT}
-                                t={t}
-                                value={nodeType}
-                                jcrNodeTypes={jcrNodeTypes}
-                                handleOpen={() => setShowNodeTypeSelector(true)}
-                                handleClose={() => setShowNodeTypeSelector(false)}
-                                handleChange={event => updateNodeType(event.target.value)}/>
+                <TypeSelect open={showNodeTypeSelector}
+                            disabled={mode === C.DIALOG_MODE_EDIT}
+                            t={t}
+                            value={mode === C.DIALOG_MODE_EDIT ? {label: customDisplayName, value: jcrNodeType} : null}
+                            jcrNodeTypes={jcrNodeTypes}
+                            handleOpen={() => setShowNodeTypeSelector(true)}
+                            handleClose={() => setShowNodeTypeSelector(false)}
+                            handleChange={event => {
+                                updateNodeType(event.value);
+                                updateDisplayName(event.label);
+                            }}
+                />
                 <TextField
                     autoFocus
                     fullWidth
