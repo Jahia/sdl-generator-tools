@@ -1,4 +1,4 @@
-import * as _ from "lodash";
+import * as _ from 'lodash';
 
 const convertTypesToSelectOptions = nodeTypes => {
     if (_.isNil(nodeTypes)) {
@@ -11,8 +11,8 @@ const convertTypesToSelectOptions = nodeTypes => {
         }
     ));
     return _.sortBy(options, 'label');
-}
+};
 
 export {
     convertTypesToSelectOptions
-}
+};

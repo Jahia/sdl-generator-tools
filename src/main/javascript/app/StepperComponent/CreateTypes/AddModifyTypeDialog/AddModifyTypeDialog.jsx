@@ -12,14 +12,7 @@ import {
     Button,
     FormControlLabel,
     FormGroup,
-    MenuItem,
-    Select,
-    Switch,
-    ListItemText,
-    withStyles,
-    FormControl,
-    InputLabel,
-    Input
+    Switch
 } from '@material-ui/core';
 import {Typography} from '@jahia/ds-mui-theme';
 import * as _ from 'lodash';
@@ -42,7 +35,7 @@ import {
 import {Close} from '@material-ui/icons';
 import connect from 'react-redux/es/connect/connect';
 import {generateUUID} from '../../../App.utils';
-import TypeSelect from "./TypeSelect";
+import TypeSelect from './TypeSelect';
 
 const AddTypeDialog = ({data, t, open, closeDialog, mode, selection, selectedType, selectType, removeType, addType, addDirective, removeDirective, availableTypeNames}) => {
     const customTypeName = !_.isNil(selectedType) ? selectedType.name : '';
