@@ -12,6 +12,25 @@ const gqlQueries = {
             }
         }
     }`,
+    NODE_TYPE_NAMES_BY_SEARCH: gql`query searchNodeTypeNames($keyword: String!) {
+        jcr {
+            nodeTypes(filter: {
+              includeMixins: true
+            },fieldFilter: {
+              filters: {
+                  evaluation: CONTAINS_IGNORE_CASE,
+                  fieldName: "name",
+                  value: $keyword
+                }
+              }){
+              nodes{
+                name
+                displayName (language: "en")
+                icon
+              }
+            }
+          }
+    }`,
     NODE_TYPE_PROPERTIES: gql`query getNodeTypeProperties($includeTypes: [String!]) {
         jcr {
             nodeTypes(filter: {includeTypes: $includeTypes}){
