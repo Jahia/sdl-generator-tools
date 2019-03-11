@@ -12,12 +12,17 @@ import connect from 'react-redux/es/connect/connect';
 import {translate} from 'react-i18next';
 import {filterAvailableFinders} from '../DefineFinders.utils';
 
-const styles = () => ({
+const styles = theme => ({
     paper: {
         width: '100%',
         height: '100%',
         padding: '6px 0px',
         overflowY: 'auto'
+    },
+    listButton: {
+        '& > * *': {
+            color: theme.palette.brand.alpha
+        }
     }
 });
 
@@ -43,6 +48,7 @@ const FindersList = ({t, classes, selectedType, selectedFinder, mode, selectFind
             >
                 <ListItem>
                     <Button disabled={selectedType === undefined || availableFinders.length === 0}
+                            className={classes.listButton}
                             onClick={() => updateFinderDialogState({open: true, mode: C.DIALOG_MODE_ADD})}
                     >   <Typography color={selectedType !== undefined ? 'alpha' : ''} variant="zeta">
                         {t('label.sdlGeneratorTools.defineFinder.addAFinder')}

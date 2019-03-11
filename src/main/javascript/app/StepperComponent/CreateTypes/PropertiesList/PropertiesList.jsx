@@ -18,12 +18,17 @@ import {lookUpMappingStringArgumentInfo} from '../../StepperComponent.utils';
 import {sdlUpdateAddModifyPropertyDialog, sdlSelectProperty} from '../../StepperComponent.redux-actions';
 import connect from 'react-redux/es/connect/connect';
 
-const styles = () => ({
+const styles = theme => ({
     paper: {
         width: '100%',
         height: '100%',
         padding: '6px 0px',
         overflowY: 'auto'
+    },
+    listButton: {
+        '& > * *': {
+            color: theme.palette.brand.alpha
+        }
     }
 });
 
@@ -50,7 +55,8 @@ const PropertiesList = ({classes, t, selectedType, selectProperty, addModifyProp
             }
             >
                 <ListItem>
-                    <Button onClick={() => {
+                    <Button className={classes.listButton}
+                            onClick={() => {
                         addModifyPropertyDialog({open: true, mode: C.DIALOG_MODE_ADD});
                     }}
                     >

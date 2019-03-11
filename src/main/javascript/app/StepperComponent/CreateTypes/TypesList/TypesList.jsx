@@ -22,7 +22,7 @@ import {
 } from '../../StepperComponent.redux-actions';
 import connect from 'react-redux/es/connect/connect';
 
-const styles = () => ({
+const styles = theme => ({
     paper: {
         width: '100%',
         height: '100%',
@@ -32,6 +32,11 @@ const styles = () => ({
     root: {
         position: 'absolute',
         textAlign: 'right'
+    },
+    listButton: {
+        '& > * *': {
+            color: theme.palette.brand.alpha
+        }
     }
 });
 
@@ -64,7 +69,8 @@ const TypesList = ({classes, t, nodeTypes, selection, selectType, updateTypeDial
     const renderCreateListButton = () => {
         return mode === C.TYPE_LIST_MODE_CREATE ?
             <ListItem>
-                <Button onClick={() => {
+                <Button className={classes.listButton}
+                        onClick={() => {
                     updateTypeDialogMode({open: true, mode: C.DIALOG_MODE_ADD});
                 }}
                 >
