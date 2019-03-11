@@ -1,11 +1,13 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
 import Select from 'react-select';
 import { withStyles } from '@material-ui/core/styles';
-import {MenuItem, ListItemText, TextField, Paper, Typography} from '@material-ui/core';
+import {MenuItem, ListItemText, TextField, Paper} from '@material-ui/core';
 import { emphasize } from '@material-ui/core/styles/colorManipulator';
 import * as _ from "lodash";
+import gqlQueries from "../../CreateTypes.gql-queries";
+import withApollo from "react-apollo/withApollo";
+import {convertTypesToSelectOptions} from "../../CreateTypes.utils";
 
 const styles = theme => ({
     root: {
@@ -52,11 +54,11 @@ const styles = theme => ({
     }
 });
 
-function inputComponent({ inputRef, ...props }) {
+const inputComponent = ({ inputRef, ...props }) => {
     return <div ref={inputRef} {...props} />;
 }
 
-function Control(props) {
+const Control = props => {
     return (
         <TextField
             fullWidth
@@ -91,7 +93,7 @@ const Option = props => {
     );
 }
 
-function Menu(props) {
+const Menu = props => {
     return (
         <Paper
             square
@@ -114,19 +116,54 @@ const components = {
     SingleValue
 };
 
-const TypeSelect = ({classes, theme, t, disabled, value, open, handleClose, handleChange, handleOpen, jcrNodeTypes}) => {
+const fetchDefaultOptionItem = (optionItems, updateOptionItems, defaultValue) => {
+    let defaultItem = !_.isNil(optionItems) ? optionItems.find(e => e.value === defaultValue.value) : null;
 
-    const optionItems = !_.isNil(jcrNodeTypes) ? jcrNodeTypes.map(type => (
-        {
-            label: type.displayName,
-            value: type.name
+    if(!_.isNil(defaultItem)){
+        return defaultItem;
+    } else {
+        updateOptionItems([
+            ... optionItems,
+            {
+                label: defaultValue.label,
+                value: defaultValue.value
+            }
+        ]);
+        return optionItems[optionItems.length - 1];
+    }
+
+}
+
+const TypeSelect = ({client, classes, theme, t, disabled, value, open, handleClose, handleChange, handleOpen, jcrNodeTypes}) => {
+    const [optionItems, updateOptionItems] = useState(convertTypesToSelectOptions(jcrNodeTypes));
+    const [isLoading, updateLoading] = useState(false);
+
+    const defaultItem = !_.isNil(value) ? fetchDefaultOptionItem(optionItems, updateOptionItems, value) : null;
+
+    const handleSearch = keyword => {
+        if(_.isNil(keyword) || keyword.replace(/^\s+|\s+$/gm,'') === '') {
+            updateOptionItems(convertTypesToSelectOptions(jcrNodeTypes));
+            return;
         }
-    )) : null;
 
-    const defaultItem = !_.isNil(optionItems) ? optionItems.find(e => e.value === value) : null;
+        updateLoading(true);
+
+        client.query({
+            query    : gqlQueries.NODE_TYPE_NAMES_BY_SEARCH,
+            variables: {
+                keyword: keyword
+            }
+        }).then((resp) => {
+            updateLoading(false);
+            if(!_.isNil(resp.data.jcr)) {
+                updateOptionItems(convertTypesToSelectOptions(resp.data.jcr.nodeTypes.nodes));
+            }
+        });
+    }
 
     return (
         <Select isDisabled={disabled}
+                isLoading={isLoading}
                 classes={classes}
                 defaultValue={defaultItem}
                 options={optionItems}
@@ -136,13 +173,16 @@ const TypeSelect = ({classes, theme, t, disabled, value, open, handleClose, hand
                 onClose={handleClose}
                 onOpen={handleOpen}
                 onChange={handleChange}
+                onInputChange={keyword => handleSearch(keyword)}
         />
     );
 }
 
 TypeSelect.propTypes = {
+    client: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired,
-    theme: PropTypes.object.isRequired
+    theme: PropTypes.object.isRequired,
+    t: PropTypes.func.isRequired
 };
 
-export default withStyles(styles, { withTheme: true })(TypeSelect);
+export default withStyles(styles, { withTheme: true })(withApollo(TypeSelect));
