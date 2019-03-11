@@ -3,7 +3,10 @@ import PropTypes from 'prop-types';
 import Select from 'react-select';
 import {withStyles} from '@material-ui/core/styles';
 import {MenuItem, ListItemText, TextField, Paper} from '@material-ui/core';
+<<<<<<< HEAD
 import {emphasize} from '@material-ui/core/styles/colorManipulator';
+=======
+>>>>>>> searchable-selects
 import * as _ from 'lodash';
 import gqlQueries from '../../CreateTypes.gql-queries';
 import withApollo from 'react-apollo/withApollo';
@@ -23,6 +26,7 @@ const styles = theme => ({
         flex: 1,
         alignItems: 'center',
         overflow: 'auto'
+<<<<<<< HEAD
     },
     chip: {
         margin: `${theme.spacing.unit / 2}px ${theme.spacing.unit / 4}px`
@@ -32,6 +36,8 @@ const styles = theme => ({
             theme.palette.type === 'light' ? theme.palette.grey[300] : theme.palette.grey[700],
             0.08,
         )
+=======
+>>>>>>> searchable-selects
     },
     noOptionsMessage: {
         padding: `${theme.spacing.unit}px ${theme.spacing.unit * 2}px`
@@ -122,6 +128,10 @@ const fetchDefaultOptionItem = (optionItems, updateOptionItems, defaultValue) =>
     if (!_.isNil(defaultItem)) {
         return defaultItem;
     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> searchable-selects
     updateOptionItems([
         ...optionItems,
         {
@@ -132,7 +142,7 @@ const fetchDefaultOptionItem = (optionItems, updateOptionItems, defaultValue) =>
     return optionItems[optionItems.length - 1];
 };
 
-const TypeSelect = ({client, classes, theme, t, disabled, value, open, handleClose, handleChange, handleOpen, jcrNodeTypes}) => {
+const TypeSelect = ({client, classes, theme, t, disabled, value, handleClose, handleChange, handleOpen, jcrNodeTypes}) => {
     const [optionItems, updateOptionItems] = useState(convertTypesToSelectOptions(jcrNodeTypes));
     const [isLoading, updateLoading] = useState(false);
 
