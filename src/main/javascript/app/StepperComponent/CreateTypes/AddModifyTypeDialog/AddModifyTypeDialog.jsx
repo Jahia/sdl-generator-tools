@@ -12,14 +12,7 @@ import {
     Button,
     FormControlLabel,
     FormGroup,
-    MenuItem,
-    Select,
-    Switch,
-    ListItemText,
-    withStyles,
-    FormControl,
-    InputLabel,
-    Input
+    Switch
 } from '@material-ui/core';
 import {Typography} from '@jahia/ds-mui-theme';
 import * as _ from 'lodash';
@@ -42,7 +35,7 @@ import {
 import {Close} from '@material-ui/icons';
 import connect from 'react-redux/es/connect/connect';
 import {generateUUID} from '../../../App.utils';
-import TypeSelect from "./TypeSelect";
+import TypeSelect from './TypeSelect';
 
 const AddTypeDialog = ({data, t, open, closeDialog, mode, selection, selectedType, selectType, removeType, addType, addDirective, removeDirective, availableTypeNames}) => {
     const customTypeName = !_.isNil(selectedType) ? selectedType.name : '';
@@ -52,7 +45,6 @@ const AddTypeDialog = ({data, t, open, closeDialog, mode, selection, selectedTyp
     const [typeName, updateTypeName] = useState(customTypeName);
     const [displayName, updateDisplayName] = useState(customDisplayName);
     const [nodeType, updateNodeType] = useState(jcrNodeType);
-    const [showNodeTypeSelector, setShowNodeTypeSelector] = useState(false);
     const [ignoreDefaultQueries, updateIgnoreDefaultQueries] = useState(ignoreDefaultQueriesDirective);
     const jcrNodeTypes = !_.isNil(data.jcr) ? data.jcr.nodeTypes.nodes : null;
 
@@ -120,13 +112,10 @@ const AddTypeDialog = ({data, t, open, closeDialog, mode, selection, selectedTyp
             >{mode === C.DIALOG_MODE_EDIT ? t('label.sdlGeneratorTools.createTypes.editTypeButton') : t('label.sdlGeneratorTools.createTypes.addNewTypeButton')}
             </DialogTitle>
             <DialogContent style={{width: 400}}>
-                <TypeSelect open={showNodeTypeSelector}
-                            disabled={mode === C.DIALOG_MODE_EDIT}
+                <TypeSelect disabled={mode === C.DIALOG_MODE_EDIT}
                             t={t}
                             value={mode === C.DIALOG_MODE_EDIT ? {label: customDisplayName, value: jcrNodeType} : null}
                             jcrNodeTypes={jcrNodeTypes}
-                            handleOpen={() => setShowNodeTypeSelector(true)}
-                            handleClose={() => setShowNodeTypeSelector(false)}
                             handleChange={event => {
                                 updateNodeType(event.value);
                                 updateDisplayName(event.label);
