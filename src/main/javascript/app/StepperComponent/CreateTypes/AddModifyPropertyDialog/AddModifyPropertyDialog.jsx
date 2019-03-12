@@ -312,7 +312,7 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, availableNod
                                 color="primary"
                                 checked={selectedIsPredefinedType}
                                 disabled={mode === C.DIALOG_MODE_EDIT}
-                                onChange={e => updateSelectedProp({isPredefinedType: e.target.checked})}
+                                onChange={e => updateSelectedProp({isPredefinedType: e.target.checked, jcrPropertyName: ''})}
                             />
                         }/>
                     <FormControlLabel
