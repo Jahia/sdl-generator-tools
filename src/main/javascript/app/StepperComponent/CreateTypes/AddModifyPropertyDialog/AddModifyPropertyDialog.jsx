@@ -180,7 +180,7 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, availableNod
             propType = propType.replace(/(\[|])/g, '');
         }
 
-        if (jcrPropName === MULTIPLE_CHILDREN_INDICATOR) {
+        if (jcrPropName.startsWith(MULTIPLE_CHILDREN_INDICATOR)) {
             jcrPropName = '';
         }
 
@@ -216,7 +216,7 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, availableNod
         const value = event.target.value;
         let isList = false;
 
-        if (value === MULTIPLE_CHILDREN_INDICATOR) {
+        if (value.startsWith(MULTIPLE_CHILDREN_INDICATOR)) {
             isList = true;
         } else {
             const prop = nodeProperties.find(p => p.name === value);
@@ -232,7 +232,7 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, availableNod
     const sortProperties = nodeProperties => {
         const propertyItems = nodeProperties.map(property => {
             return {
-                name: property.name,
+                name: (property.name === MULTIPLE_CHILDREN_INDICATOR) ? property.name + property.requiredType : property.name,
                 displayName: property.name.replace(/(j:|jcr:)/, ''),
                 requiredType: property.requiredType,
                 displayType: upperCaseFirst(property.requiredType.toLowerCase())
