@@ -20,7 +20,13 @@ import {compose, graphql, withApollo} from 'react-apollo';
 import {connect} from 'react-redux';
 import {translate} from 'react-i18next';
 import * as _ from 'lodash';
-import {lookUpMappingStringArgumentInfo, generateFinderSuffix, upperCaseFirst, getAvailableTypeNames} from '../../StepperComponent.utils';
+import {
+    lookUpMappingStringArgumentInfo,
+    generateFinderSuffix,
+    upperCaseFirst,
+    getAvailableTypeNames,
+    getAvailablePropertyNames
+} from '../../StepperComponent.utils';
 import {Close} from '@material-ui/icons';
 import C from '../../../App.constants';
 import gqlQueries from '../CreateTypes.gql-queries';
@@ -123,7 +129,7 @@ const resolveSelectedProp = (object, key, optionalReturnValue = '') => {
     return optionalReturnValue;
 };
 
-const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, availableNodeTypes, selection, selectedType, selectedProperty, addProperty, removeProperty, removeFinder, updateSelectedProp, unselectProperty, updateProperty}) => {
+const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, availableNodeTypes, selection, selectedType, availableProperties, selectedProperty, addProperty, removeProperty, removeFinder, updateSelectedProp, unselectProperty, updateProperty}) => {
     const nodes = !_.isNil(data.jcr) ? data.jcr.nodeTypes.nodes : [];
     let nodeProperties = nodes.length > 0 ? nodes[0].properties : [];
 
@@ -155,7 +161,7 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, availableNod
         unselectProperty();
     };
 
-    const duplicateName = false;
+    const duplicateName = availableProperties.indexOf(selectedPropertyName) >= 0;
 
     const addPropertyAndClose = () => {
         let propType;
@@ -241,6 +247,7 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, availableNod
             open={open}
             aria-labelledby="form-dialog-title"
             onClose={closeDialog}
+            onEnter={() => ((mode === C.DIALOG_MODE_ADD) ? cleanUp() : null)}
         >
             <DialogTitle id="form-dialog-title">{mode === C.DIALOG_MODE_EDIT ? t('label.sdlGeneratorTools.createTypes.viewProperty') : t('label.sdlGeneratorTools.createTypes.addNewPropertyButton')}</DialogTitle>
             <DialogContent style={{width: 400}}>
@@ -281,6 +288,10 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, availableNod
                     error={mode === C.DIALOG_MODE_ADD ? duplicateName : false}
                     onKeyPress={e => {
                         if (e.key === 'Enter') {
+                            if (duplicateName) {
+                                e.preventDefault();
+                                return false;
+                            }
                             addPropertyAndClose();
                         } else if (e.which === 32) {
                             e.preventDefault();
@@ -334,8 +345,7 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, availableNod
                         {t('label.sdlGeneratorTools.cancelButton')}
                     </Typography>
                 </Button>
-                <Button
-                        // Disabled={duplicateName}
+                <Button disabled={mode === C.DIALOG_MODE_ADD ? duplicateName : false}
                         color="primary"
                         onClick={addPropertyAndClose}
                 >
@@ -370,6 +380,7 @@ const getJCRType = (nodeTypes, selection) => {
 const mapStateToProps = state => {
     return {
         availableNodeTypes: getAvailableTypeNames(state.nodeTypes, state.selection),
+        availableProperties: getAvailablePropertyNames(state.nodeTypes[state.selection]),
         jcrType: getJCRType(state.nodeTypes, state.selection),
         selection: state.selection,
         selectedType: state.nodeTypes[state.selection],

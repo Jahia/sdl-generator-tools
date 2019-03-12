@@ -73,6 +73,13 @@ const getAvailableTypeNames = (nodeTypes, selection) => {
     return availableTypes;
 };
 
+const getAvailablePropertyNames = selectedType => {
+    if (!_.isNil(selectedType)) {
+        return selectedType.fieldDefinitions.map(field => field.name);
+    }
+    return [];
+};
+
 export {
     upperCaseFirst,
     getMappingDirectiveArguments,
@@ -82,5 +89,6 @@ export {
     lookUpMappingBooleanArgumentInfo,
     isPredefinedType,
     generateFinderSuffix,
-    getAvailableTypeNames
+    getAvailableTypeNames,
+    getAvailablePropertyNames
 };
