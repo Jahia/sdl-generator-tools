@@ -224,14 +224,16 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, availableNod
     };
 
     const sortProperties = nodeProperties => {
-        return _.sortBy(nodeProperties.map(property => {
+        const propertyItems = nodeProperties.map(property => {
             return {
                 name: property.name,
                 displayName: property.name.replace(/(j:|jcr:)/, ''),
                 requiredType: property.requiredType,
                 displayType: upperCaseFirst(property.requiredType.toLowerCase())
             };
-        }), 'displayName');
+        });
+
+        return _.sortBy(propertyItems, [item => item.displayName.toLowerCase()]);
     };
 
     return (

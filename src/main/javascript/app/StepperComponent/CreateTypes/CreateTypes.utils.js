@@ -10,7 +10,7 @@ const convertTypesToSelectOptions = nodeTypes => {
             value: type.name
         }
     ));
-    return _.sortBy(options, 'label');
+    return _.sortBy(options, [option => option.label.toUpperCase()]);
 };
 
 export {
