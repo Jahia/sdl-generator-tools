@@ -12,7 +12,8 @@ import {
     Button,
     FormControlLabel,
     FormGroup,
-    Switch
+    Switch,
+    withStyles
 } from '@material-ui/core';
 import {Typography} from '@jahia/ds-mui-theme';
 import * as _ from 'lodash';
@@ -37,7 +38,13 @@ import connect from 'react-redux/es/connect/connect';
 import {generateUUID} from '../../../App.utils';
 import TypeSelect from './TypeSelect';
 
-const AddTypeDialog = ({data, t, open, closeDialog, mode, selection, selectedType, selectType, removeType, addType, addDirective, removeDirective, availableTypeNames}) => {
+const styles = () => ({
+    paper: {
+        overflow: 'visible'
+    }
+});
+
+const AddTypeDialog = ({classes, data, t, open, closeDialog, mode, selection, selectedType, selectType, removeType, addType, addDirective, removeDirective, availableTypeNames}) => {
     const customTypeName = !_.isNil(selectedType) ? selectedType.name : '';
     const customDisplayName = !_.isNil(selectedType) ? selectedType.displayName : '';
     const jcrNodeType = lookUpMappingStringArgumentInfo(selectedType, 'node');
@@ -99,19 +106,19 @@ const AddTypeDialog = ({data, t, open, closeDialog, mode, selection, selectedTyp
     };
 
     return (
-        <Dialog
-            open={open}
-            aria-labelledby="form-dialog-title"
-            onClose={closeDialog}
-            onEnter={() => {
-                openDialog(mode, customTypeName, jcrNodeType, ignoreDefaultQueriesDirective);
-            }}
+        <Dialog open={open}
+                classes={classes}
+                aria-labelledby="form-dialog-title"
+                onClose={closeDialog}
+                onEnter={() => {
+                    openDialog(mode, customTypeName, jcrNodeType, ignoreDefaultQueriesDirective);
+                }}
         >
             <DialogTitle
                 id="form-dialog-title"
             >{mode === C.DIALOG_MODE_EDIT ? t('label.sdlGeneratorTools.createTypes.editTypeButton') : t('label.sdlGeneratorTools.createTypes.addNewTypeButton')}
             </DialogTitle>
-            <DialogContent style={{width: 400}}>
+            <DialogContent style={{width: 400, overflow: 'visible'}}>
                 <TypeSelect disabled={mode === C.DIALOG_MODE_EDIT}
                             t={t}
                             value={mode === C.DIALOG_MODE_EDIT ? {label: customDisplayName, value: jcrNodeType} : null}
@@ -232,6 +239,7 @@ const CompositeComp = compose(
             };
         }
     }),
+    withStyles(styles),
     translate()
 )(AddTypeDialog);
 

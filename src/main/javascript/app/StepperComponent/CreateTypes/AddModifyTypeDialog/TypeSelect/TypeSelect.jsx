@@ -35,6 +35,8 @@ const styles = theme => ({
         fontSize: 16
     },
     paper: {
+        position: 'absolute',
+        zIndex: 99,
         marginTop: 0,
         left: 0,
         right: 0
