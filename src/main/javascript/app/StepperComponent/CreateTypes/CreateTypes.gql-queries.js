@@ -18,11 +18,11 @@ const gqlQueries = {
               includeMixins: true
             },fieldFilter: {
               filters: {
-                  evaluation: CONTAINS_IGNORE_CASE,
-                  fieldName: "name",
+                  evaluation: CONTAINS_IGNORE_CASE
+                  fieldName: "displayName"
                   value: $keyword
                 }
-              }){
+              }, limit: 40){
               nodes{
                 name
                 displayName (language: "en")
@@ -36,7 +36,12 @@ const gqlQueries = {
             nodeTypes(filter: {includeTypes: $includeTypes}){
                 nodes{
                     name
-                    properties{
+                    properties(fieldFilter: {
+                        filters: [
+                            {evaluation: DIFFERENT, fieldName: "name", value: "jcr:uuid"}
+                            {evaluation: DIFFERENT, fieldName: "name", value: "j:locktoken"}
+                        ]
+                      }){
                         name
                         requiredType
                         multiple

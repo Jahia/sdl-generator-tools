@@ -7,8 +7,9 @@ import * as _ from 'lodash';
 import gqlQueries from '../../CreateTypes.gql-queries';
 import withApollo from 'react-apollo/withApollo';
 import {convertTypesToSelectOptions} from '../../CreateTypes.utils';
+import TypographyWithHighlight from './TypographyWithHighlight';
 
-const styles = theme => ({
+const styles = () => ({
     root: {
         flexGrow: 1
     },
@@ -24,7 +25,8 @@ const styles = theme => ({
         overflow: 'auto'
     },
     noOptionsMessage: {
-        padding: `${theme.spacing.unit}px ${theme.spacing.unit * 2}px`
+        color: '#606060',
+        fontWeight: 700
     },
     singleValue: {
         fontSize: 16
@@ -40,9 +42,6 @@ const styles = theme => ({
         marginTop: 0,
         left: 0,
         right: 0
-    },
-    divider: {
-        height: theme.spacing.unit * 2
     }
 });
 
@@ -70,17 +69,15 @@ const Control = props => {
 
 const Option = props => {
     return (
-        <MenuItem
-            buttonRef={props.innerRef}
-            selected={props.isFocused}
-            component="div"
-            style={{
-                fontWeight: props.isSelected ? 500 : 400,
-                padding: '15px 12px'
-            }}
-            {...props.innerProps}
+        <MenuItem selected={props.isSelected}
+                  component="div"
+                  style={{
+                    padding: '15px 12px'
+                  }}
+                  {...props.innerProps}
         >
-            <ListItemText primary={props.label} secondary={props.value}/>
+            <ListItemText primary={<TypographyWithHighlight content={props.label} part={props.selectProps.inputValue}/>}
+                          secondary={props.value}/>
         </MenuItem>
     );
 };
@@ -173,10 +170,7 @@ TypeSelect.propTypes = {
     client: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired,
     t: PropTypes.func.isRequired,
-    disabled: PropTypes.bool.isRequired,
-    handleClose: PropTypes.func.isRequired,
-    handleChange: PropTypes.func.isRequired,
-    handleOpen: PropTypes.func.isRequired
+    disabled: PropTypes.bool.isRequired
 };
 
 export default withStyles(styles, {withTheme: true})(withApollo(TypeSelect));
