@@ -8,7 +8,7 @@ import {
     sdlUpdateAddModifyFinderDialog
 } from '../../StepperComponent.redux-actions';
 import {compose} from 'react-apollo';
-import connect from 'react-redux/es/connect/connect';
+import {connect} from 'react-redux';
 import {translate} from 'react-i18next';
 import {filterAvailableFinders} from '../DefineFinders.utils';
 

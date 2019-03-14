@@ -16,7 +16,7 @@ import {compose} from 'react-apollo';
 import C from '../../../App.constants';
 import {lookUpMappingStringArgumentInfo} from '../../StepperComponent.utils';
 import {sdlUpdateAddModifyPropertyDialog, sdlSelectProperty} from '../../StepperComponent.redux-actions';
-import connect from 'react-redux/es/connect/connect';
+import {connect} from 'react-redux';
 
 const styles = theme => ({
     paper: {

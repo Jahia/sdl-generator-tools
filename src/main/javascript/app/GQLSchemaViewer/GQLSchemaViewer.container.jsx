@@ -1,5 +1,5 @@
 import {compose} from 'react-apollo';
-import connect from 'react-redux/es/connect/connect';
+import {connect} from 'react-redux';
 import GQLSchemaViewer from './GQLSchemaViewer';
 
 const mapStateToProps = state => {
