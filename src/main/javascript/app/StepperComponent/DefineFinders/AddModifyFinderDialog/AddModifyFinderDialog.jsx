@@ -18,7 +18,7 @@ import {
 import {Typography} from '@jahia/ds-mui-theme';
 import {sdlUpdateAddModifyFinderDialog} from '../../StepperComponent.redux-actions';
 import {compose} from 'react-apollo';
-import connect from 'react-redux/es/connect/connect';
+import {connect} from 'react-redux';
 import {filterAvailableFinders} from '../DefineFinders.utils';
 
 const FinderSelectCom = ({classes, t, open, handleClose, handleOpen, handleChange, value, values}) => (

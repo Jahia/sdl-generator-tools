@@ -34,7 +34,7 @@ import {
     getAvailableTypeNames
 } from '../../StepperComponent.utils';
 import {Close} from '@material-ui/icons';
-import connect from 'react-redux/es/connect/connect';
+import {connect} from 'react-redux';
 import {generateUUID} from '../../../App.utils';
 import TypeSelect from './TypeSelect';
 

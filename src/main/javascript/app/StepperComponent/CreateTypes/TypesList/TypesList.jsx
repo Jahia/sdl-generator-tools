@@ -20,7 +20,7 @@ import {
     sdlSelectType,
     sdlUpdateAddModifyTypeDialog
 } from '../../StepperComponent.redux-actions';
-import connect from 'react-redux/es/connect/connect';
+import {connect} from 'react-redux';
 
 const styles = theme => ({
     paper: {
@@ -35,7 +35,7 @@ const styles = theme => ({
     },
     listButton: {
         '& > * *': {
-            color: theme.palette.brand.alpha
+            color: theme.palette.primary.main
         }
     }
 });
