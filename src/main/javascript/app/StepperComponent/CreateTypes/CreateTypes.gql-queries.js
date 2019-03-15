@@ -39,7 +39,22 @@ const gqlQueries = {
                     properties(fieldFilter: {
                         filters: [
                             {evaluation: DIFFERENT, fieldName: "name", value: "jcr:uuid"}
+                            {evaluation: DIFFERENT, fieldName: "name", value: "jcr:primaryType"}
+                            {evaluation: DIFFERENT, fieldName: "name", value: "jcr:created"}
+                            {evaluation: DIFFERENT, fieldName: "name", value: "jcr:createdBy"}
+                            {evaluation: DIFFERENT, fieldName: "name", value: "jcr:baseVersion"}
+                            {evaluation: DIFFERENT, fieldName: "name", value: "jcr:isCheckedOut"}
+                            {evaluation: DIFFERENT, fieldName: "name", value: "jcr:versionHistory"}
+                            {evaluation: DIFFERENT, fieldName: "name", value: "jcr:predecessors"}
+                            {evaluation: DIFFERENT, fieldName: "name", value: "jcr:predecessors"}
+                            {evaluation: DIFFERENT, fieldName: "name", value: "jcr:activity"}
+                            {evaluation: DIFFERENT, fieldName: "name", value: "j:checkinDate"}
                             {evaluation: DIFFERENT, fieldName: "name", value: "j:locktoken"}
+                            {evaluation: DIFFERENT, fieldName: "name", value: "j:lockTypes"}
+                            {evaluation: DIFFERENT, fieldName: "name", value: "jcr:lockOwner"}
+                            {evaluation: DIFFERENT, fieldName: "name", value: "j:deletedChildren"}
+                            {evaluation: DIFFERENT, fieldName: "name", value: "j:processId"}
+                            {evaluation: DIFFERENT, fieldName: "name", value: "lastReplay"}
                         ]
                       }){
                         name
