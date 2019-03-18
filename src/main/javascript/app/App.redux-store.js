@@ -1,6 +1,5 @@
 import {applyMiddleware, combineReducers, compose, createStore} from 'redux';
 import {batchDispatchMiddleware} from 'redux-batched-actions';
-import thunk from 'redux-thunk';
 import {nodeTypesReducer} from './App.redux-reducer';
 import {selectedPropertyReducer, selectedFinderReducer, selectionReducer, addModifyPropertyDialog, addModifyTypeDialog, addModifyFinderDialog} from './StepperComponent/StepperComponent.redux-reducer';
 
@@ -20,8 +19,7 @@ const store = createStore(
     rootReducer,
     composeEnhancers(
         applyMiddleware(
-            batchDispatchMiddleware,
-            thunk
+            batchDispatchMiddleware
         ),
     ),
 );
