@@ -1,7 +1,18 @@
 import gql from 'graphql-tag';
 
 const gqlQueries = {
-    NODE_TYPE_NAMES: gql`query getNodeTypeNames {
+    ALL_NODE_TYPE_NAMES: gql`query getAllNodeTypeNames{
+      jcr {
+          nodeTypes(filter:{includeMixins:true}) {
+            nodes {
+              name
+              displayName(language:"en")
+              icon
+            }
+          }
+      }
+    }`,
+    DEFAULT_NODE_TYPE_NAMES: gql`query getDefaultNodeTypeNames {
         jcr {
             nodeTypes(filter:{includeTypes:"jmix:editorialContent", includeMixins:false}) {
               nodes {

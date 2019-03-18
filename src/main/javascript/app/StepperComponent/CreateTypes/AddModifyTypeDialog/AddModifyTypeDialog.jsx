@@ -44,7 +44,7 @@ const styles = () => ({
     }
 });
 
-const AddTypeDialog = ({classes, data, t, open, closeDialog, mode, selection, selectedType, selectType, removeType, addType, addDirective, removeDirective, availableTypeNames}) => {
+const AddTypeDialog = ({classes, defaultNodeTypeNames, allNodeTypeNames, t, open, closeDialog, mode, selection, selectedType, selectType, removeType, addType, addDirective, removeDirective, availableTypeNames}) => {
     const customTypeName = !_.isNil(selectedType) ? selectedType.name : '';
     const customDisplayName = !_.isNil(selectedType) ? selectedType.displayName : '';
     const jcrNodeType = lookUpMappingStringArgumentInfo(selectedType, 'node');
@@ -53,7 +53,6 @@ const AddTypeDialog = ({classes, data, t, open, closeDialog, mode, selection, se
     const [displayName, updateDisplayName] = useState(customDisplayName);
     const [nodeType, updateNodeType] = useState(jcrNodeType);
     const [ignoreDefaultQueries, updateIgnoreDefaultQueries] = useState(ignoreDefaultQueriesDirective);
-    const jcrNodeTypes = !_.isNil(data.jcr) ? data.jcr.nodeTypes.nodes : null;
 
     const cleanUp = () => {
         updateTypeName(null);
@@ -122,7 +121,8 @@ const AddTypeDialog = ({classes, data, t, open, closeDialog, mode, selection, se
                 <TypeSelect disabled={mode === C.DIALOG_MODE_EDIT}
                             t={t}
                             value={mode === C.DIALOG_MODE_EDIT ? {label: customDisplayName, value: jcrNodeType} : null}
-                            jcrNodeTypes={jcrNodeTypes}
+                            defaultNodes={!_.isNil(defaultNodeTypeNames) ? defaultNodeTypeNames.nodeTypes.nodes : null}
+                            allNodes={!_.isNil(allNodeTypeNames) ? allNodeTypeNames.nodeTypes.nodes : null}
                             handleChange={event => {
                                 updateNodeType(event.value);
                                 updateDisplayName(event.label);
@@ -231,13 +231,27 @@ const mapDispatchToProps = dispatch => {
 
 const CompositeComp = compose(
     connect(mapStateToProps, mapDispatchToProps),
-    graphql(gqlQueries.NODE_TYPE_NAMES, {
+    graphql(gqlQueries.DEFAULT_NODE_TYPE_NAMES, {
         options() {
             return {
                 variables: {},
                 fetchPolicy: 'cache-first'
             };
-        }
+        },
+        props: ({data: {jcr}}) => ({
+            defaultNodeTypeNames: jcr
+        })
+    }),
+    graphql(gqlQueries.ALL_NODE_TYPE_NAMES, {
+        options() {
+            return {
+                variables: {},
+                fetchPolicy: 'cache-first'
+            };
+        },
+        props: ({data: {jcr}}) => ({
+            allNodeTypeNames: jcr
+        })
     }),
     withStyles(styles),
     translate()

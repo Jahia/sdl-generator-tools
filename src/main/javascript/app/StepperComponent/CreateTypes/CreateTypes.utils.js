@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 
-const convertTypesToSelectOptions = nodeTypes => {
+const convertTypesToSelectOptions = (nodeTypes, doSort) => {
     if (_.isNil(nodeTypes)) {
         return null;
     }
@@ -10,7 +10,7 @@ const convertTypesToSelectOptions = nodeTypes => {
             value: type.name
         }
     ));
-    return _.sortBy(options, [option => option.label.toUpperCase()]);
+    return doSort ? _.sortBy(options, [option => option.label.toUpperCase()]) : options;
 };
 
 export {

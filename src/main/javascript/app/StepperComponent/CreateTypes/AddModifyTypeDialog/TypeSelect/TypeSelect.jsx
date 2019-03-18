@@ -4,10 +4,10 @@ import Select from 'react-select';
 import {withStyles} from '@material-ui/core/styles';
 import {MenuItem, ListItemText, TextField, Paper} from '@material-ui/core';
 import * as _ from 'lodash';
-import gqlQueries from '../../CreateTypes.gql-queries';
 import withApollo from 'react-apollo/withApollo';
 import {convertTypesToSelectOptions} from '../../CreateTypes.utils';
 import TypographyWithHighlight from './TypographyWithHighlight';
+import Fuse from 'fuse.js';
 
 const styles = () => ({
     root: {
@@ -122,31 +122,31 @@ const fetchDefaultOptionItem = (optionItems, updateOptionItems, defaultValue) =>
     return optionItems[optionItems.length - 1];
 };
 
-const TypeSelect = ({client, classes, t, disabled, value, handleClose, handleChange, handleOpen, jcrNodeTypes}) => {
-    const [optionItems, updateOptionItems] = useState(convertTypesToSelectOptions(jcrNodeTypes));
-    const [isLoading, updateLoading] = useState(false);
-
+const TypeSelect = ({classes, t, disabled, value, handleClose, handleChange, handleOpen, defaultNodes, allNodes, isLoading}) => {
+    const [optionItems, updateOptionItems] = useState(convertTypesToSelectOptions(defaultNodes, true));
     const defaultItem = !_.isNil(value) ? fetchDefaultOptionItem(optionItems, updateOptionItems, value) : null;
 
     const handleSearch = keyword => {
         if (_.isNil(keyword) || keyword.replace(/^\s+|\s+$/gm, '') === '') {
-            updateOptionItems(convertTypesToSelectOptions(jcrNodeTypes));
+            // Reset the select options to default list
+            updateOptionItems(convertTypesToSelectOptions(defaultNodes, true));
             return;
         }
 
-        updateLoading(true);
-
-        client.query({
-            query: gqlQueries.NODE_TYPE_NAMES_BY_SEARCH,
-            variables: {
-                keyword: keyword
-            }
-        }).then(resp => {
-            updateLoading(false);
-            if (!_.isNil(resp.data.jcr)) {
-                updateOptionItems(convertTypesToSelectOptions(resp.data.jcr.nodeTypes.nodes));
-            }
-        });
+        if (!_.isNil(allNodes)) {
+            const fuse = new Fuse(allNodes,
+                {
+                    shouldSort: true,
+                    threshold: 0.6,
+                    location: 0,
+                    distance: 8,
+                    maxPatternLength: 32,
+                    minMatchCharLength: 1,
+                    keys: ['displayName']
+                });
+            const fuzzySortedNodeTypeNames = fuse.search(keyword);
+            updateOptionItems(convertTypesToSelectOptions(fuzzySortedNodeTypeNames.slice(0, 39), false));
+        }
     };
 
     return (
@@ -167,7 +167,6 @@ const TypeSelect = ({client, classes, t, disabled, value, handleClose, handleCha
 };
 
 TypeSelect.propTypes = {
-    client: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired,
     t: PropTypes.func.isRequired,
     disabled: PropTypes.bool.isRequired
