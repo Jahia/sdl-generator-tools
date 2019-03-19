@@ -12,6 +12,7 @@ import {connect} from 'react-redux';
 import C from '../App.constants';
 import {getFromLocalStore, storeLocally} from '../App.utils';
 import {sdlInitNodeTypes} from '../App.redux-actions';
+import * as _ from 'lodash';
 
 const styles = () => ({
     root: {
@@ -30,20 +31,35 @@ const styles = () => ({
     }
 });
 
+const stepsTitles = t => ([
+    t('label.sdlGeneratorTools.steps.createTypes'),
+    t('label.sdlGeneratorTools.steps.defineFinder'),
+    t('label.sdlGeneratorTools.steps.exportResult')
+]);
+
+const getStepsComponents = currentStep => {
+    switch (currentStep) {
+        case 1:
+            return <DefineFinder/>;
+        case 2:
+            return <ExportResult/>;
+        case 0:
+        default:
+            return <CreateTypes/>;
+    }
+};
+
 class StepperComponent extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
             activeStep: 0,
+            hasNext: false,
             skipped: new Set(),
-            steps: [
-                props.t('label.sdlGeneratorTools.steps.createTypes'),
-                props.t('label.sdlGeneratorTools.steps.defineFinder'),
-                props.t('label.sdlGeneratorTools.steps.exportResult')
-            ]
+            steps: stepsTitles(props.t)
         };
-        this.getStepContent = this.getStepContent.bind(this);
+        this.hasNext = this.hasNext.bind(this);
         this.handleNext = this.handleNext.bind(this);
         this.handleBack = this.handleBack.bind(this);
         this.handleCopy = this.handleCopy.bind(this);
@@ -59,15 +75,22 @@ class StepperComponent extends React.Component {
         }
     }
 
-    getStepContent(step) {
-        switch (step) {
+    hasNext() {
+        const currentStep = this.state.activeStep;
+        const nodeTypes = this.props.nodeTypes;
+
+        if (_.isNil(nodeTypes) || _.isEmpty(nodeTypes)) {
+            return false;
+        }
+
+        switch (currentStep) {
             case 1:
-                return <DefineFinder/>;
+                return Object.values(nodeTypes).reduce((arr, type) => (arr && !_.isEmpty(type.queries)), true);
             case 2:
-                return <ExportResult/>;
+                return Object.values(nodeTypes).reduce((arr, type) => (arr && !_.isEmpty(type.fieldDefinitions) && !_.isEmpty(type.queries)), true);
             case 0:
             default:
-                return <CreateTypes/>;
+                return Object.values(nodeTypes).reduce((arr, type) => (arr && !_.isEmpty(type.fieldDefinitions)), true);
         }
     }
 
@@ -123,7 +146,7 @@ class StepperComponent extends React.Component {
                             );
                         })}
                     </Stepper>
-                    {this.getStepContent(activeStep)}
+                    {getStepsComponents(activeStep)}
                     <div className={classes.bottomBar}>
                         {
                             activeStep === 0 &&
@@ -160,6 +183,7 @@ class StepperComponent extends React.Component {
                             </Button>
                         }
                         <Button
+                            disabled={!this.hasNext()}
                             variant="contained"
                             color="primary"
                             className={classes.button}

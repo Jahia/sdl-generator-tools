@@ -17,7 +17,10 @@ const downloadFile = (content, fileName) => {
 
     element.href = URL.createObjectURL(file);
     element.download = fileName;
+    element.target = '_self';
+    document.body.appendChild(element);
     element.click();
+    document.body.removeChild(element);
 };
 
 export {
