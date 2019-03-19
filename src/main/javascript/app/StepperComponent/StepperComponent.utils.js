@@ -4,7 +4,7 @@ import C from '../App.constants';
 const predefinedTypeRegex = new RegExp(`[\\[]{0,1}${Object.getOwnPropertyNames(C.JCR_TO_SDL_TYPE_MAP).join('|')}[\\]]{0,1}`, 'i');
 
 const upperCaseFirst = val => {
-    return val.substr(0, 1).toUpperCase().concat(val.substr(1));
+    return val ? val.substr(0, 1).toUpperCase().concat(val.substr(1)) : val;
 };
 
 const getMappingDirectiveArguments = selected => {

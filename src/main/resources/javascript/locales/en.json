@@ -31,7 +31,7 @@
                 "addAFinder": "Add a finder",
                 "editAFinder": "Edit a finder",
                 "selectAFinder": "Select a finder",
-                "customFinderPrefixText": "Custom finder prefix"
+                "customFinderPrefixText": "Custom name"
             },
             "exportResult": {
                 "wellDoneText": "Well done!",

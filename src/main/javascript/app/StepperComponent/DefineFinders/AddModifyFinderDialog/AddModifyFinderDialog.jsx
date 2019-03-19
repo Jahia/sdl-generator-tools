@@ -21,27 +21,40 @@ import {compose} from 'react-apollo';
 import {connect} from 'react-redux';
 import {filterAvailableFinders} from '../DefineFinders.utils';
 
-const FinderSelectCom = ({classes, t, open, handleClose, handleOpen, handleChange, value, values}) => (
-    <FormControl classes={classes}>
-        <InputLabel shrink htmlFor="finder-name">{
-            <Typography color="alpha" variant="zeta">
-                {t('label.sdlGeneratorTools.defineFinder.selectAFinder')}
-            </Typography>
+const FinderSelectCom = ({classes, t, open, handleClose, handleOpen, handleChange, value, values}) => {
+    const renderFinder = val => {
+        return val === 'all' || val === 'allConnection' ? `${val.substr(0, 3)}...${val.substr(3)}` : `...${val}`;
+    };
+
+    return (
+        <FormControl classes={classes}>
+            <InputLabel shrink htmlFor="finder-name">{
+                <Typography color="alpha" variant="zeta">
+                    {t('label.sdlGeneratorTools.defineFinder.selectAFinder')}
+                </Typography>
         }
-        </InputLabel>
-        <Select open={open}
-                value={value}
-                input={<Input id="finder-name"/>}
-                onClose={handleClose}
-                onOpen={handleOpen}
-                onChange={handleChange}
-        >
-            {
-                values.map(finder => <MenuItem key={finder} value={finder} classes={{root: classes.menuItem}}>{finder}</MenuItem>)
+            </InputLabel>
+            <Select open={open}
+                    value={value}
+                    input={<Input id="finder-name"/>}
+                    onClose={handleClose}
+                    onOpen={handleOpen}
+                    onChange={handleChange}
+                    renderValue={renderFinder}
+            >
+                {
+                values.map(finder => (
+                    <MenuItem key={finder}
+                              value={finder}
+                              classes={{root: classes.menuItem}}
+                    >{renderFinder(finder)}
+                    </MenuItem>
+                ))
             }
-        </Select>
-    </FormControl>
-);
+            </Select>
+        </FormControl>
+    );
+};
 
 const FinderSelect = withStyles({
     root: {
@@ -52,6 +65,38 @@ const FinderSelect = withStyles({
         padding: '15px 12px'
     }
 })(FinderSelectCom);
+
+const FinderPreviewComp = ({classes, finderPrefix = '', finderSuffix = ''}) => {
+    const format = () => {
+        if (finderSuffix === 'all' || finderSuffix === 'allConnection') {
+            return (
+                <React.Fragment>
+                    <span>{finderSuffix.substr(0, 3)}</span>
+                    <em className={classes.prefix}>{upperCaseFirst(finderPrefix)}</em>
+                    <span>{finderSuffix.substr(3)}</span>
+                </React.Fragment>
+            );
+        }
+        return (
+            <React.Fragment>
+                <em className={classes.prefix}>{finderPrefix}</em>
+                <span>{upperCaseFirst(finderSuffix)}</span>
+            </React.Fragment>
+        );
+    };
+    return (
+        <p className={classes.finderPreview}>{format()}</p>
+    );
+};
+
+const FinderPreview = withStyles(theme => ({
+    finderPreview: {
+        float: 'right'
+    },
+    prefix: {
+        color: theme.palette.brand.alpha
+    }
+}))(FinderPreviewComp);
 
 const AddModifyFinderDialog = ({t, open, close, mode, addFinder, modifyFinder, removeFinder, selectedType, selectedFinder, selection}) => {
     const currentFinder = selectedType ? selectedType.queries.find(query => query.name === selectedFinder) : undefined;
@@ -154,6 +199,7 @@ const AddModifyFinderDialog = ({t, open, close, mode, addFinder, modifyFinder, r
                            }}
                            onChange={e => updateFinderPrefix(e.target.value)}
                 />
+                <FinderPreview finderPrefix={finderPrefix} finderSuffix={finderSuffix}/>
                 {
                     mode === C.DIALOG_MODE_EDIT &&
                     <Button color="primary" onClick={removeAndClose}>
