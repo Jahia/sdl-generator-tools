@@ -21,7 +21,10 @@ const constants = {
         'jcr:lastModified',
         'jcr:lastModifiedBy'
     ],
-    LOCAL_STORAGE: 'sdlLocalStore'
+    LOCAL_STORAGE: 'sdlLocalStore',
+    CHANNEL_PROPERTY: 'PROPERTY',
+    CHANNEL_MAP_TO_TYPE: 'MAP_TO_TYPE',
+    MULTIPLE_CHILDREN_INDICATOR: '*'
 };
 
 export default constants;
