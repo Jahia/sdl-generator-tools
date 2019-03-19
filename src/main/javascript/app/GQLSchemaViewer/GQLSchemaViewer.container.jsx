@@ -3,7 +3,9 @@ import {connect} from 'react-redux';
 import GQLSchemaViewer from './GQLSchemaViewer';
 
 const mapStateToProps = state => {
-    return state;
+    return {
+        nodeTypes: state.nodeTypes
+    };
 };
 
 export default compose(

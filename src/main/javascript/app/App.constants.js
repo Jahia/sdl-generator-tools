@@ -20,7 +20,8 @@ const constants = {
         'jcr:createdBy',
         'jcr:lastModified',
         'jcr:lastModifiedBy'
-    ]
+    ],
+    LOCAL_STORAGE: 'sdlLocalStore'
 };
 
 export default constants;

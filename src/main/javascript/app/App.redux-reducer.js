@@ -7,6 +7,8 @@ const nodeTypesReducer = (state = {}, action) => {
         ...state
     };
     switch (action.type) {
+        case actionTypes.SDL_INIT_NODE_TYPES:
+            return action.nodeTypes;
         case actionTypes.SDL_ADD_TYPE:
             const uuid = action.uuid ? action.uuid : generateUUID();
             newState[uuid] = getInitialObject(actionTypes.SDL_ADD_TYPE, action.typeInfo);
