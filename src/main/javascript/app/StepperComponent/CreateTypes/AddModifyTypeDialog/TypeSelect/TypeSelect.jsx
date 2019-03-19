@@ -145,7 +145,7 @@ const TypeSelect = ({classes, t, disabled, value, handleClose, handleChange, han
                     keys: ['displayName']
                 });
             const fuzzySortedNodeTypeNames = fuse.search(keyword);
-            updateOptionItems(convertTypesToSelectOptions(fuzzySortedNodeTypeNames.slice(0, 39), false));
+            updateOptionItems(convertTypesToSelectOptions(fuzzySortedNodeTypeNames.slice(0, 49), false));
         }
     };
 
@@ -156,6 +156,7 @@ const TypeSelect = ({classes, t, disabled, value, handleClose, handleChange, han
                 defaultValue={defaultItem}
                 options={optionItems}
                 components={components}
+                filterOption={(option, rawInput) => ({option})} // Bypass default filter for select option item
                 isClearable={false}
                 placeholder={t('label.sdlGeneratorTools.createTypes.selectSearchNodeType')}
                 onClose={handleClose}
