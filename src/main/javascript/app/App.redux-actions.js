@@ -1,4 +1,5 @@
 const actionTypes = {
+    SDL_INIT_NODE_TYPES: 'SDL_INIT_NODE_TYPES',
     SDL_ADD_TYPE: 'SDL_ADD_TYPE',
     SDL_REMOVE_TYPE: 'SDL_REMOVE_TYPE',
     SDL_ADD_PROPERTY_TO_TYPE: 'SDL_ADD_PROPERTY_TO_TYPE',
@@ -10,6 +11,11 @@ const actionTypes = {
     SDL_REMOVE_FINDER_FROM_TYPE: 'SDL_REMOVE_FINDER_FROM_TYPE',
     SDL_MODIFY_FINDER_OF_TYPE: 'SDL_MODIFY_FINDER_OF_TYPE'
 };
+
+const sdlInitNodeTypes = nodeTypes => ({
+    type: actionTypes.SDL_INIT_NODE_TYPES,
+    nodeTypes: nodeTypes
+});
 
 const sdlAddType = (typeInfo, uuid) => ({
     type: actionTypes.SDL_ADD_TYPE,
@@ -76,6 +82,7 @@ const sdlRemoveFinderFromType = (typeIndexOrName, finderIndexOrName) => ({
 
 export {
     actionTypes,
+    sdlInitNodeTypes,
     sdlAddType,
     sdlRemoveType,
     sdlAddPropertyToType,

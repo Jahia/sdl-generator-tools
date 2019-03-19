@@ -9,6 +9,9 @@ import DefineFinder from './DefineFinders';
 import {compose} from 'react-apollo';
 import SDLParser from '../parsing/sdlParser';
 import {connect} from 'react-redux';
+import C from '../App.constants';
+import {getFromLocalStore, storeLocally} from '../App.utils';
+import {sdlInitNodeTypes} from '../App.redux-actions';
 
 const styles = () => ({
     root: {
@@ -21,6 +24,9 @@ const styles = () => ({
         '& button': {
             marginLeft: '5px'
         }
+    },
+    clearButton: {
+        float: 'left'
     }
 });
 
@@ -43,6 +49,14 @@ class StepperComponent extends React.Component {
         this.handleCopy = this.handleCopy.bind(this);
         this.handleDownload = this.handleDownload.bind(this);
         this.handleReset = this.handleReset.bind(this);
+    }
+
+    componentDidMount() {
+        // Load from local storage if there is one
+        const savedStore = getFromLocalStore(C.LOCAL_STORAGE);
+        if (savedStore !== null) {
+            this.props.setStore(savedStore);
+        }
     }
 
     getStepContent(step) {
@@ -111,14 +125,29 @@ class StepperComponent extends React.Component {
                     </Stepper>
                     {this.getStepContent(activeStep)}
                     <div className={classes.bottomBar}>
-                        {activeStep !== 0 ? (
+                        {
+                            activeStep === 0 &&
+                            <Button
+                                color="primary"
+                                className={classes.button}
+                                onClick={() => {
+                                    storeLocally(C.LOCAL_STORAGE, {});
+                                    this.props.setStore({});
+                                }}
+                            >
+                                <Typography variant="zeta">
+                                    {t('label.sdlGeneratorTools.clearButton')}
+                                </Typography>
+                            </Button>
+                        }
+                        {
+                            activeStep !== 0 &&
                             <Button color="primary" className={classes.button} onClick={this.handleBack}>
                                 <Typography variant="zeta">{t('label.sdlGeneratorTools.backButton')}</Typography>
                             </Button>
-                        ) : (
-                            null
-                        )}
-                        {activeStep === lastStep ? (
+                        }
+                        {
+                            activeStep === lastStep &&
                             <Button
                                 variant="contained"
                                 color="primary"
@@ -129,9 +158,7 @@ class StepperComponent extends React.Component {
                                     {t('label.sdlGeneratorTools.copyToClipboardButton')}
                                 </Typography>
                             </Button>
-                        ) : (
-                            null
-                        )}
+                        }
                         <Button
                             variant="contained"
                             color="primary"
@@ -155,8 +182,16 @@ const mapStateToProps = state => {
     };
 };
 
+const mapDispatchToProps = dispatch => {
+    return {
+        setStore: store => {
+            dispatch(sdlInitNodeTypes(store));
+        }
+    };
+};
+
 export default compose(
-    connect(mapStateToProps, null),
+    connect(mapStateToProps, mapDispatchToProps),
     withStyles(styles),
     translate()
 )(StepperComponent);

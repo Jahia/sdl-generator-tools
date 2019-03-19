@@ -43,6 +43,7 @@
             "mainCaption": "Build your GraphQL Schema Definition",
             "viewerCaption": "GraphQL Schema",
             "backButton": "Back",
+            "clearButton": "Clear",
             "nextButton": "Next",
             "addButton": "Add",
             "saveButton": "Save",

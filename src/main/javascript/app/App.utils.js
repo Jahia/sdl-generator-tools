@@ -10,6 +10,16 @@ const generateUUID = () => {
     });
 };
 
+const storeLocally = (key, jsonValue) => {
+    window.localStorage.setItem(key, JSON.stringify(jsonValue));
+};
+
+const getFromLocalStore = key => {
+    return JSON.parse(window.localStorage.getItem(key));
+};
+
 export {
-    generateUUID
+    generateUUID,
+    storeLocally,
+    getFromLocalStore
 };

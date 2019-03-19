@@ -7,6 +7,9 @@ import AceEditor from 'react-ace';
 import 'brace/mode/graphqlschema';
 import 'brace/theme/monokai';
 import SDLParser from '../parsing/sdlParser';
+import C from '../App.constants';
+import {storeLocally} from '../App.utils';
+import * as _ from 'lodash';
 
 let styles = () => ({
     viewerText: {
@@ -21,6 +24,10 @@ let styles = () => ({
 });
 
 const GQLSchemaViewer = ({classes, t, nodeTypes}) => {
+    // Store generated result on window
+    if (!_.isEmpty(nodeTypes)) {
+        storeLocally(C.LOCAL_STORAGE, nodeTypes);
+    }
     return (
         <React.Fragment>
             <Grid item>
