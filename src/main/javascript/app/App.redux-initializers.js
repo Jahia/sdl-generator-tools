@@ -5,7 +5,13 @@ const addType = typeInfo => ({
     displayName: typeInfo.displayName,
     description: null,
     queries: [],
-    fieldDefinitions: [],
+    fieldDefinitions: [
+        {
+            name: 'metadata',
+            type: 'Metadata',
+            directives: []
+        }
+    ],
     directives: [
         {
             name: 'mapping',

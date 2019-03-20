@@ -12,6 +12,7 @@ import {connect} from 'react-redux';
 import C from '../App.constants';
 import {getFromLocalStore, storeLocally} from '../App.utils';
 import {sdlInitNodeTypes} from '../App.redux-actions';
+import {sdlSelectType} from './StepperComponent.redux-actions'
 import * as _ from 'lodash';
 
 const styles = () => ({
@@ -211,6 +212,7 @@ const mapDispatchToProps = dispatch => {
     return {
         setStore: store => {
             dispatch(sdlInitNodeTypes(store));
+            dispatch(sdlSelectType(Object.keys(store)[0]))
         }
     };
 };

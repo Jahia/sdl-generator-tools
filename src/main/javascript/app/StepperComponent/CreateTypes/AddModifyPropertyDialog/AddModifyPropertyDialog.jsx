@@ -474,7 +474,7 @@ const mapDispatchToProps = dispatch => {
         removeProperty: (propertyIndex, typeIndexOrName) => dispatch(sdlRemovePropertyFromType(propertyIndex, typeIndexOrName)),
         removeFinder: (uuid, finderIndex) => dispatch(sdlRemoveFinderFromType(uuid, finderIndex)),
         closeDialog: () => {
-            dispatch(sdlUpdateAddModifyPropertyDialog({open: false, channel: undefined, mode: C.DIALOG_MODE_ADD}));
+            dispatch(sdlUpdateAddModifyPropertyDialog({open: false, mode: C.DIALOG_MODE_ADD}));
             dispatch(sdlSelectProperty('', '', '', ''));
         },
         selectChannel: (channel) => dispatch(sdlUpdateAddModifyPropertyDialog({channel: channel}))

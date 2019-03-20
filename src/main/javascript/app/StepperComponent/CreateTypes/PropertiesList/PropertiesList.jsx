@@ -57,7 +57,7 @@ const PropertiesList = ({classes, t, selectedType, selectProperty, addModifyProp
                 <ListItem>
                     <Button className={classes.listButton}
                             onClick={() => {
-                        addModifyPropertyDialog({open: true, mode: C.DIALOG_MODE_ADD});
+                        addModifyPropertyDialog({open: true, channel: undefined, mode: C.DIALOG_MODE_ADD});
                     }}
                     >
                         <Typography color="alpha" variant="zeta">
