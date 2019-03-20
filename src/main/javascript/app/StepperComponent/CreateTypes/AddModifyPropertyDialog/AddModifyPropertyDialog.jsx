@@ -67,19 +67,9 @@ const sortProperties = nodeProperties => {
 
 const ContentSwitch = ({mode, t, channel, updateSelectedProp, addPropertyAndClose, availableNodeTypes, selectedProperty, selectJCRProperty, nodeProperties, duplicateName, cancelAndClose, selectChannel, removeAndClose}) => {
 
-    if (channel === "PROPERTY") {
+    if (channel === C.CHANNEL_PROPERTY) {
         return <PropertyChannel t={t}
-                                updateSelectedProp={updateSelectedProp}
-                                addPropertyAndClose={addPropertyAndClose}
-                                selectedProperty={selectedProperty}
-                                selectJCRProperty={selectJCRProperty}
-                                nodeProperties={nodeProperties}
-                                duplicateName={duplicateName}
-                                cancelAndClose={cancelAndClose}/>
-    }
-    else if (channel === "MAP_TO_TYPE") {
-        return <TypeMappingChannel t={t}
-                                availableNodeTypes={availableNodeTypes}
+                                mode={mode}
                                 updateSelectedProp={updateSelectedProp}
                                 addPropertyAndClose={addPropertyAndClose}
                                 selectedProperty={selectedProperty}
@@ -89,6 +79,19 @@ const ContentSwitch = ({mode, t, channel, updateSelectedProp, addPropertyAndClos
                                 cancelAndClose={cancelAndClose}
                                 removeAndClose={removeAndClose}/>
     }
+    else if (channel === C.CHANNEL_MAP_TO_TYPE) {
+        return <TypeMappingChannel t={t}
+                                   mode={mode}
+                                   availableNodeTypes={availableNodeTypes}
+                                   updateSelectedProp={updateSelectedProp}
+                                   addPropertyAndClose={addPropertyAndClose}
+                                   selectedProperty={selectedProperty}
+                                   selectJCRProperty={selectJCRProperty}
+                                   nodeProperties={nodeProperties}
+                                   duplicateName={duplicateName}
+                                   cancelAndClose={cancelAndClose}
+                                   removeAndClose={removeAndClose}/>
+    }
     else {
         return <ChannelSelect t={t}
                               selectChannel={selectChannel}
@@ -96,7 +99,7 @@ const ContentSwitch = ({mode, t, channel, updateSelectedProp, addPropertyAndClos
     }
 };
 
-const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, channel, availableNodeTypes, selection, selectedType, availableProperties, selectedProperty, addProperty, removeProperty, removeFinder, updateSelectedProp, unselectProperty, updateProperty, selectChannel}) => {
+const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, channel, availableNodeTypes, selection, selectedType, availableProperties, selectedProperty, addProperty, removeProperty, removeFinder, updateSelectedProp, updateProperty, selectChannel}) => {
     const nodes = !_.isNil(data.jcr) ? data.jcr.nodeTypes.nodes : [];
     let nodeProperties = nodes.length > 0 ? nodes[0].properties : [];
 
@@ -106,7 +109,6 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, channel, ava
     const selectedPropertyType = resolveSelectedProp(selectedProperty, 'propertyType');
     const selectedIsPredefinedType = resolveSelectedProp(selectedProperty, 'isPredefinedType', false);
 
-    console.log(selectedIsPredefinedType);
     if (selectedIsPredefinedType) {
 
         if (channel !== C.CHANNEL_MAP_TO_TYPE) {
@@ -129,10 +131,6 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, channel, ava
         nodeProperties = nodeProperties
             .filter(props => ['WEAKREFERENCE', 'REFERENCE'].indexOf(props.requiredType) === -1 && C.RESERVED_JCR_TYPES.indexOf(props.name) === -1);
     }
-
-    const cleanUp = () => {
-        unselectProperty();
-    };
 
     const duplicateName = availableProperties.indexOf(selectedPropertyName) >= 0;
 
@@ -168,19 +166,12 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, channel, ava
         }
 
         closeDialog();
-        cleanUp();
-    };
-
-    const cancelAndClose = () => {
-        closeDialog();
-        cleanUp();
     };
 
     const removeAndClose = () => {
         removeProperty(selectedProperty.propertyIndex, selectionId);
         removeFinders();
         closeDialog();
-        cleanUp();
     };
 
     const removeFinders = () => {
@@ -211,7 +202,6 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, channel, ava
             open={open}
             aria-labelledby="form-dialog-title"
             onClose={closeDialog}
-            onEnter={() => ((mode === C.DIALOG_MODE_ADD) ? cleanUp() : null)}
         >
             <ContentSwitch
                 mode={mode}
@@ -224,7 +214,7 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, channel, ava
                 selectJCRProperty={selectJCRProperty}
                 nodeProperties={nodeProperties}
                 duplicateName={duplicateName}
-                cancelAndClose={cancelAndClose}
+                cancelAndClose={closeDialog}
                 selectChannel={selectChannel}
                 removeAndClose={removeAndClose}
             />
@@ -232,7 +222,7 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, channel, ava
     );
 };
 
-const PropertyChannel = ({t, updateSelectedProp, addPropertyAndClose, selectedProperty, cancelAndClose, selectJCRProperty, nodeProperties, duplicateName}) => {
+const PropertyChannel = ({t, mode, updateSelectedProp, addPropertyAndClose, selectedProperty, cancelAndClose, selectJCRProperty, nodeProperties, duplicateName, removeAndClose}) => {
 
     const selectedPropertyName = resolveSelectedProp(selectedProperty, 'propertyName');
     const selectedJcrPropertyName = resolveSelectedProp(selectedProperty, 'jcrPropertyName');
@@ -242,7 +232,7 @@ const PropertyChannel = ({t, updateSelectedProp, addPropertyAndClose, selectedPr
     return (
         <React.Fragment>
             <DialogTitle
-                id="form-dialog-title">{t('label.sdlGeneratorTools.createTypes.addNewPropertyButton')}</DialogTitle>
+                id="form-dialog-title">{mode === C.DIALOG_MODE_EDIT ? t('label.sdlGeneratorTools.createTypes.viewProperty') : t('label.sdlGeneratorTools.createTypes.addNewPropertyButton')}</DialogTitle>
             <DialogContent style={{width: 400}}>
                 <PropertySelector open={showPropertySelector}
                                   t={t}
@@ -266,7 +256,7 @@ const PropertyChannel = ({t, updateSelectedProp, addPropertyAndClose, selectedPr
                     }
                     type="text"
                     value={selectedPropertyName}
-                    error={duplicateName}
+                    error={mode === C.DIALOG_MODE_ADD ? duplicateName : false}
                     onKeyPress={e => {
                         if (e.key === 'Enter') {
                             if (duplicateName) {
@@ -281,6 +271,16 @@ const PropertyChannel = ({t, updateSelectedProp, addPropertyAndClose, selectedPr
                     }}
                     onChange={e => updateSelectedProp({propertyName: e.target.value})}
                 />
+                {
+                    mode === C.DIALOG_MODE_EDIT &&
+                    <Button color="primary"
+                            onClick={removeAndClose}>
+                        <Typography color="inherit" variant="zeta">
+                            {t('label.sdlGeneratorTools.deleteButton')}
+                        </Typography>
+                        <Close/>
+                    </Button>
+                }
             </DialogContent>
             <DialogActions>
                 <Button color="primary" variant="contained" onClick={cancelAndClose}>
@@ -288,7 +288,7 @@ const PropertyChannel = ({t, updateSelectedProp, addPropertyAndClose, selectedPr
                         {t('label.sdlGeneratorTools.cancelButton')}
                     </Typography>
                 </Button>
-                <Button disabled={duplicateName}
+                <Button disabled={mode === C.DIALOG_MODE_ADD ? duplicateName : false}
                         color="primary"
                         variant="contained"
                         onClick={addPropertyAndClose}
@@ -302,7 +302,7 @@ const PropertyChannel = ({t, updateSelectedProp, addPropertyAndClose, selectedPr
     )
 };
 
-const TypeMappingChannel = ({t, updateSelectedProp, addPropertyAndClose, availableNodeTypes, selectedProperty, cancelAndClose, removeAndClose, selectJCRProperty, nodeProperties, duplicateName}) => {
+const TypeMappingChannel = ({t, mode, updateSelectedProp, addPropertyAndClose, availableNodeTypes, selectedProperty, cancelAndClose, removeAndClose, selectJCRProperty, nodeProperties, duplicateName}) => {
 
     const selectedPropertyName = resolveSelectedProp(selectedProperty, 'propertyName');
     const selectedJcrPropertyName = resolveSelectedProp(selectedProperty, 'jcrPropertyName');
@@ -315,7 +315,7 @@ const TypeMappingChannel = ({t, updateSelectedProp, addPropertyAndClose, availab
     return (
         <React.Fragment>
             <DialogTitle
-                id="form-dialog-title">{t('label.sdlGeneratorTools.createTypes.viewProperty')}</DialogTitle>
+                id="form-dialog-title">{mode === C.DIALOG_MODE_EDIT ? t('label.sdlGeneratorTools.createTypes.viewProperty') : t('label.sdlGeneratorTools.createTypes.addNewPropertyButton')}</DialogTitle>
             <DialogContent style={{width: 400}}>
                 <PredefinedTypeSelector t={t}
                                         open={showPredefinedTypeSelector}
@@ -346,7 +346,7 @@ const TypeMappingChannel = ({t, updateSelectedProp, addPropertyAndClose, availab
                     }
                     type="text"
                     value={selectedPropertyName}
-                    error={duplicateName}
+                    error={mode === C.DIALOG_MODE_ADD ? duplicateName : false}
                     onKeyPress={e => {
                         if (e.key === 'Enter') {
                             if (duplicateName) {
@@ -376,14 +376,16 @@ const TypeMappingChannel = ({t, updateSelectedProp, addPropertyAndClose, availab
                             />
                         }/>
                 </FormGroup>
-                <Button color="primary"
-                        variant="contained"
-                        onClick={removeAndClose}>
-                    <Typography color="inherit" variant="zeta">
-                        {t('label.sdlGeneratorTools.deleteButton')}
-                    </Typography>
-                    <Close/>
-                </Button>
+                {
+                    mode === C.DIALOG_MODE_EDIT &&
+                    <Button color="primary"
+                            onClick={removeAndClose}>
+                        <Typography color="inherit" variant="zeta">
+                            {t('label.sdlGeneratorTools.deleteButton')}
+                        </Typography>
+                        <Close/>
+                    </Button>
+                }
             </DialogContent>
             <DialogActions>
                 <Button color="primary"
@@ -393,7 +395,7 @@ const TypeMappingChannel = ({t, updateSelectedProp, addPropertyAndClose, availab
                         {t('label.sdlGeneratorTools.cancelButton')}
                     </Typography>
                 </Button>
-                <Button disabled={duplicateName}
+                <Button disabled={mode === C.DIALOG_MODE_ADD ? duplicateName : false}
                         color="primary"
                         variant="contained"
                         onClick={addPropertyAndClose}
@@ -414,18 +416,18 @@ const ChannelSelect = ({t, selectChannel, updateSelectedProp}) => (
                 <Button color="primary"
                         variant="contained"
                         onClick={() => {
-                    updateSelectedProp({isPredefinedType: true, jcrPropertyName: ''});
-                    selectChannel("MAP_TO_TYPE");
-                }}>
+                            updateSelectedProp({isPredefinedType: true, jcrPropertyName: ''});
+                            selectChannel("MAP_TO_TYPE");
+                        }}>
                     <Typography color="inherit" variant="zeta">
-                        Select and map property to type
+                        {t('label.sdlGeneratorTools.createProperty.mapToType')}
                     </Typography>
                 </Button>
                 <Button color="primary"
                         variant="contained"
                         onClick={() => selectChannel("PROPERTY")}>
                     <Typography color="inherit" variant="zeta">
-                        Select property
+                        {t('label.sdlGeneratorTools.createProperty.selectProp')}
                     </Typography>
                 </Button>
             </FormGroup>
@@ -468,11 +470,13 @@ const mapDispatchToProps = dispatch => {
     return {
         addProperty: (propertyInfo, typeIndex) => dispatch(sdlAddPropertyToType(propertyInfo, typeIndex)),
         updateProperty: (propertyInfo, typeIndex, propIndex) => dispatch(sdlUpdatePropertyOfType(propertyInfo, typeIndex, propIndex)),
-        unselectProperty: () => dispatch(sdlSelectProperty('', '', '', '')),
         updateSelectedProp: propertyFields => dispatch(sdlUpdateSelectedProperty(propertyFields)),
         removeProperty: (propertyIndex, typeIndexOrName) => dispatch(sdlRemovePropertyFromType(propertyIndex, typeIndexOrName)),
         removeFinder: (uuid, finderIndex) => dispatch(sdlRemoveFinderFromType(uuid, finderIndex)),
-        closeDialog: () => dispatch(sdlUpdateAddModifyPropertyDialog({open: false, channel: undefined})),
+        closeDialog: () => {
+            dispatch(sdlUpdateAddModifyPropertyDialog({open: false, channel: undefined, mode: C.DIALOG_MODE_ADD}));
+            dispatch(sdlSelectProperty('', '', '', ''));
+        },
         selectChannel: (channel) => dispatch(sdlUpdateAddModifyPropertyDialog({channel: channel}))
     };
 };
