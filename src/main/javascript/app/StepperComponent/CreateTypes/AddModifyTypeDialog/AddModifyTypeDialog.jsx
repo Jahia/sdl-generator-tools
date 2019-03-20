@@ -162,7 +162,7 @@ const AddTypeDialog = ({classes, defaultNodeTypeNames, allNodeTypeNames, t, open
                     <FormControlLabel
                         label={
                             <Typography color="alpha" variant="zeta">
-                                {t('label.sdlGeneratorTools.createTypes.ignoreDefaultQueries', {type: typeName ? typeName.toLowerCase() : ''})}
+                                {t('label.sdlGeneratorTools.createTypes.ignoreDefaultQueries', {type: typeName ? _.lowerFirst(typeName) : ''})}
                             </Typography>
                         }
                         control={
