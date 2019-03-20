@@ -48,7 +48,9 @@
     "webpack": "^4.26.0",
     "webpack-bundle-analyzer": "^3.0.3",
     "webpack-cli": "^3.1.2",
-    "webpack-node-externals": "^1.7.2"
+    "webpack-node-externals": "^1.7.2",
+    "cryptiles": ">=4.1.2",
+    "hoek": ">=4.2.1"
   },
   "dependencies": {
     "@jahia/apollo-dx": "^1.0.0-beta.20190226170343",
@@ -78,6 +80,8 @@
     "react-select": "^2.4.1",
     "redux": "^4.0.0",
     "redux-batched-actions": "^0.4.0",
-    "rxjs": "^6.3.3"
+    "rxjs": "^6.3.3",
+    "cryptiles": ">=4.1.2",
+    "hoek": ">=4.2.1"
   }
 }
