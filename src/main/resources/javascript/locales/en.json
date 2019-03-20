@@ -10,14 +10,18 @@
                 "defineFinder": "Define finder",
                 "exportResult": "Export result"
             },
+            "createProperty" : {
+                "mapToType": "Select and map property to type",
+                "selectProp": "Select property"
+            },
             "createTypes": {
                 "nodeTypeText": "Node type",
                 "propertiesText": "Properties",
                 "addNewTypeButton": "Add new type",
                 "selectSearchNodeType": "Select or search a node type",
                 "editTypeButton": "Edit type",
-                "addNewPropertyButton": "Add a new property",
-                "viewProperty": "View property",
+                "addNewPropertyButton": "Add new property",
+                "viewProperty": "Edit property",
                 "selectNodeProperty": "Select a property",
                 "customTypeNameText": "Custom type name",
                 "customPropertyNameText": "Custom property name",
@@ -31,7 +35,7 @@
                 "addAFinder": "Add a finder",
                 "editAFinder": "Edit a finder",
                 "selectAFinder": "Select a finder",
-                "customFinderPrefixText": "Custom finder prefix"
+                "customFinderPrefixText": "Custom name"
             },
             "exportResult": {
                 "wellDoneText": "Well done!",

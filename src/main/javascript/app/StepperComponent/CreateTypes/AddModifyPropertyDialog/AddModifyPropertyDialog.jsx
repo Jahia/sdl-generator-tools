@@ -36,90 +36,13 @@ import {
     sdlRemovePropertyFromType,
     sdlUpdatePropertyOfType
 } from '../../../App.redux-actions';
-import {sdlUpdateSelectedProperty, sdlUpdateAddModifyPropertyDialog, sdlSelectProperty} from '../../StepperComponent.redux-actions';
-
-const MULTIPLE_CHILDREN_INDICATOR = '*';
-
-const PropertySelectCom = ({classes, t, disabled, value, open, handleClose, handleChange, handleOpen, nodeProperties}) => (
-    <FormControl classes={classes} disabled={disabled}>
-        <InputLabel shrink htmlFor="property-name">
-            <Typography color="alpha" variant="zeta">
-                {t('label.sdlGeneratorTools.createTypes.selectNodeProperty')}
-            </Typography>
-        </InputLabel>
-        <Select disabled={disabled}
-                open={open}
-                value={value}
-                input={<Input id="property-name"/>}
-                onClose={handleClose}
-                onOpen={handleOpen}
-                onChange={handleChange}
-        >
-            <MenuItem value="">
-                <em>None</em>
-            </MenuItem>
-            {
-                !_.isNil(nodeProperties) ? nodeProperties.map((property, index) => (
-                    <MenuItem key={`${property.name}_${index}`} value={property.name} classes={{root: classes.menuItem}}>
-                        <ListItemText primary={property.displayName} secondary={property.displayType}/>
-                    </MenuItem>
-                )) : null
-            }
-        </Select>
-    </FormControl>
-);
-
-const PredefinedTypeSelector = ({t, classes, disabled, value, open, handleClose, handleChange, handleOpen, types}) => (
-    <FormControl className={classes.formControl} disabled={disabled}>
-        <InputLabel shrink htmlFor="type-name">
-            <Typography color="alpha" variant="zeta">
-                {t('label.sdlGeneratorTools.createTypes.predefinedType')}
-            </Typography>
-        </InputLabel>
-        <Select disabled={disabled}
-                open={open}
-                value={value}
-                onClose={handleClose}
-                onOpen={handleOpen}
-                onChange={handleChange}
-        >
-            <MenuItem value="">
-                <em>None</em>
-            </MenuItem>
-            {
-                types.map(type => (
-                    <MenuItem key={type} value={type} classes={classes}>
-                        <ListItemText primary={type}/>
-                    </MenuItem>
-                ))
-            }
-        </Select>
-    </FormControl>
-);
-
-const PropertySelect = withStyles({
-    root: {
-        margin: '0px 0px',
-        width: '100%'
-    },
-    menuItem: {
-        padding: '15px 12px'
-    },
-    formControl: {
-        margin: '0px 0px',
-        width: '100%'
-    }
-})(PropertySelectCom);
-
-const PredefinedTypeSelect = withStyles({
-    root: {
-        padding: '15px 12px'
-    },
-    formControl: {
-        margin: '0px 0px',
-        width: '100%'
-    }
-})(PredefinedTypeSelector);
+import {
+    sdlUpdateSelectedProperty,
+    sdlUpdateAddModifyPropertyDialog,
+    sdlSelectProperty
+} from '../../StepperComponent.redux-actions';
+import PredefinedTypeSelector from './PredefinedTypeSelector';
+import PropertySelector from './PropertySelector';
 
 const resolveSelectedProp = (object, key, optionalReturnValue = '') => {
     if (!_.isEmpty(object) && object[key]) {
@@ -129,7 +52,54 @@ const resolveSelectedProp = (object, key, optionalReturnValue = '') => {
     return optionalReturnValue;
 };
 
-const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, availableNodeTypes, selection, selectedType, availableProperties, selectedProperty, addProperty, removeProperty, removeFinder, updateSelectedProp, unselectProperty, updateProperty}) => {
+const sortProperties = nodeProperties => {
+    const propertyItems = nodeProperties.map(property => {
+        return {
+            name: (property.name === C.MULTIPLE_CHILDREN_INDICATOR) ? property.name + property.requiredType : property.name,
+            displayName: property.name.replace(/(j:|jcr:)/, ''),
+            requiredType: property.requiredType,
+            displayType: upperCaseFirst(property.requiredType.toLowerCase())
+        };
+    });
+
+    return _.sortBy(propertyItems, [item => item.displayName.toLowerCase()]);
+};
+
+const ContentSwitch = ({mode, t, channel, updateSelectedProp, addPropertyAndClose, availableNodeTypes, selectedProperty, selectJCRProperty, nodeProperties, duplicateName, cancelAndClose, selectChannel, removeAndClose}) => {
+
+    if (channel === C.CHANNEL_PROPERTY) {
+        return <PropertyChannel t={t}
+                                mode={mode}
+                                updateSelectedProp={updateSelectedProp}
+                                addPropertyAndClose={addPropertyAndClose}
+                                selectedProperty={selectedProperty}
+                                selectJCRProperty={selectJCRProperty}
+                                nodeProperties={nodeProperties}
+                                duplicateName={duplicateName}
+                                cancelAndClose={cancelAndClose}
+                                removeAndClose={removeAndClose}/>
+    }
+    else if (channel === C.CHANNEL_MAP_TO_TYPE) {
+        return <TypeMappingChannel t={t}
+                                   mode={mode}
+                                   availableNodeTypes={availableNodeTypes}
+                                   updateSelectedProp={updateSelectedProp}
+                                   addPropertyAndClose={addPropertyAndClose}
+                                   selectedProperty={selectedProperty}
+                                   selectJCRProperty={selectJCRProperty}
+                                   nodeProperties={nodeProperties}
+                                   duplicateName={duplicateName}
+                                   cancelAndClose={cancelAndClose}
+                                   removeAndClose={removeAndClose}/>
+    }
+    else {
+        return <ChannelSelect t={t}
+                              selectChannel={selectChannel}
+                              updateSelectedProp={updateSelectedProp}/>
+    }
+};
+
+const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, channel, availableNodeTypes, selection, selectedType, availableProperties, selectedProperty, addProperty, removeProperty, removeFinder, updateSelectedProp, updateProperty, selectChannel}) => {
     const nodes = !_.isNil(data.jcr) ? data.jcr.nodeTypes.nodes : [];
     let nodeProperties = nodes.length > 0 ? nodes[0].properties : [];
 
@@ -138,12 +108,13 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, availableNod
     const selectedJcrPropertyName = resolveSelectedProp(selectedProperty, 'jcrPropertyName');
     const selectedPropertyType = resolveSelectedProp(selectedProperty, 'propertyType');
     const selectedIsPredefinedType = resolveSelectedProp(selectedProperty, 'isPredefinedType', false);
-    const selectedIsListType = resolveSelectedProp(selectedProperty, 'isListType', false);
-
-    const [showPropertySelector, setShowPropertySelector] = useState(false);
-    const [showPredefinedTypeSelector, setPredefinedTypeSelector] = useState(false);
 
     if (selectedIsPredefinedType) {
+
+        if (channel !== C.CHANNEL_MAP_TO_TYPE) {
+            selectChannel(C.CHANNEL_MAP_TO_TYPE)
+        }
+
         nodeProperties = nodeProperties.filter(props => ['WEAKREFERENCE'].indexOf(props.requiredType) !== -1);
 
         if (nodes.length > 0) {
@@ -153,13 +124,13 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, availableNod
             })));
         }
     } else {
+        if (mode === C.DIALOG_MODE_EDIT && channel !== C.CHANNEL_PROPERTY) {
+            selectChannel(C.CHANNEL_PROPERTY)
+        }
+
         nodeProperties = nodeProperties
             .filter(props => ['WEAKREFERENCE', 'REFERENCE'].indexOf(props.requiredType) === -1 && C.RESERVED_JCR_TYPES.indexOf(props.name) === -1);
     }
-
-    const cleanUp = () => {
-        unselectProperty();
-    };
 
     const duplicateName = availableProperties.indexOf(selectedPropertyName) >= 0;
 
@@ -180,30 +151,27 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, availableNod
             propType = propType.replace(/(\[|])/g, '');
         }
 
-        if (jcrPropName.startsWith(MULTIPLE_CHILDREN_INDICATOR)) {
+        if (jcrPropName.startsWith(C.MULTIPLE_CHILDREN_INDICATOR)) {
             jcrPropName = '';
         }
 
         if (mode === C.DIALOG_MODE_EDIT) {
-            updateProperty({name: selectedPropertyName, property: jcrPropName, type: propType}, selectionId, selectedProperty.propertyIndex);
+            updateProperty({
+                name: selectedPropertyName,
+                property: jcrPropName,
+                type: propType
+            }, selectionId, selectedProperty.propertyIndex);
         } else {
             addProperty({name: selectedPropertyName, property: jcrPropName, type: propType}, selectionId);
         }
 
         closeDialog();
-        cleanUp();
-    };
-
-    const cancelAndClose = () => {
-        closeDialog();
-        cleanUp();
     };
 
     const removeAndClose = () => {
         removeProperty(selectedProperty.propertyIndex, selectionId);
         removeFinders();
         closeDialog();
-        cleanUp();
     };
 
     const removeFinders = () => {
@@ -216,7 +184,7 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, availableNod
         const value = event.target.value;
         let isList = false;
 
-        if (value.startsWith(MULTIPLE_CHILDREN_INDICATOR)) {
+        if (value.startsWith(C.MULTIPLE_CHILDREN_INDICATOR)) {
             isList = true;
         } else {
             const prop = nodeProperties.find(p => p.name === value);
@@ -229,50 +197,143 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, availableNod
         });
     };
 
-    const sortProperties = nodeProperties => {
-        const propertyItems = nodeProperties.map(property => {
-            return {
-                name: (property.name === MULTIPLE_CHILDREN_INDICATOR) ? property.name + property.requiredType : property.name,
-                displayName: property.name.replace(/(j:|jcr:)/, ''),
-                requiredType: property.requiredType,
-                displayType: upperCaseFirst(property.requiredType.toLowerCase())
-            };
-        });
-
-        return _.sortBy(propertyItems, [item => item.displayName.toLowerCase()]);
-    };
-
     return (
         <Dialog
             open={open}
             aria-labelledby="form-dialog-title"
             onClose={closeDialog}
-            onEnter={() => ((mode === C.DIALOG_MODE_ADD) ? cleanUp() : null)}
         >
-            <DialogTitle id="form-dialog-title">{mode === C.DIALOG_MODE_EDIT ? t('label.sdlGeneratorTools.createTypes.viewProperty') : t('label.sdlGeneratorTools.createTypes.addNewPropertyButton')}</DialogTitle>
+            <ContentSwitch
+                mode={mode}
+                t={t}
+                channel={channel}
+                availableNodeTypes={availableNodeTypes}
+                updateSelectedProp={updateSelectedProp}
+                addPropertyAndClose={addPropertyAndClose}
+                selectedProperty={selectedProperty}
+                selectJCRProperty={selectJCRProperty}
+                nodeProperties={nodeProperties}
+                duplicateName={duplicateName}
+                cancelAndClose={closeDialog}
+                selectChannel={selectChannel}
+                removeAndClose={removeAndClose}
+            />
+        </Dialog>
+    );
+};
+
+const PropertyChannel = ({t, mode, updateSelectedProp, addPropertyAndClose, selectedProperty, cancelAndClose, selectJCRProperty, nodeProperties, duplicateName, removeAndClose}) => {
+
+    const selectedPropertyName = resolveSelectedProp(selectedProperty, 'propertyName');
+    const selectedJcrPropertyName = resolveSelectedProp(selectedProperty, 'jcrPropertyName');
+
+    const [showPropertySelector, setShowPropertySelector] = useState(false);
+
+    return (
+        <React.Fragment>
+            <DialogTitle
+                id="form-dialog-title">{mode === C.DIALOG_MODE_EDIT ? t('label.sdlGeneratorTools.createTypes.viewProperty') : t('label.sdlGeneratorTools.createTypes.addNewPropertyButton')}</DialogTitle>
             <DialogContent style={{width: 400}}>
-                {
-                    selectedIsPredefinedType &&
-                    <PredefinedTypeSelect t={t}
-                                          open={showPredefinedTypeSelector}
-                                          types={C.PREDEFINED_SDL_TYPES.concat(availableNodeTypes)}
-                                          value={selectedPropertyType.replace(/(\[|])/g, '')}
-                                          handleOpen={() => setPredefinedTypeSelector(true)}
-                                          handleClose={() => setPredefinedTypeSelector(false)}
-                                          handleChange={event => updateSelectedProp({propertyType: event.target.value})}/>
-                }
-                <PropertySelect open={showPropertySelector}
-                                t={t}
-                                disabled={mode === C.DIALOG_MODE_EDIT}
-                                nodeProperties={sortProperties(nodeProperties)}
-                                value={selectedJcrPropertyName}
-                                handleOpen={() => setShowPropertySelector(true)}
-                                handleClose={() => setShowPropertySelector(false)}
-                                handleChange={selectJCRProperty}/>
+                <PropertySelector open={showPropertySelector}
+                                  t={t}
+                                  nodeProperties={sortProperties(nodeProperties)}
+                                  value={selectedJcrPropertyName}
+                                  handleOpen={() => setShowPropertySelector(true)}
+                                  handleClose={() => setShowPropertySelector(false)}
+                                  handleChange={selectJCRProperty}/>
                 <TextField
                     autoFocus
                     fullWidth
-                    disabled={mode === C.DIALOG_MODE_EDIT}
+                    margin="dense"
+                    id="propertyName"
+                    InputLabelProps={{
+                        shrink: true
+                    }}
+                    label={
+                        <Typography color="alpha" variant="zeta">
+                            {t('label.sdlGeneratorTools.createTypes.customPropertyNameText')}
+                        </Typography>
+                    }
+                    type="text"
+                    value={selectedPropertyName}
+                    error={mode === C.DIALOG_MODE_ADD ? duplicateName : false}
+                    onKeyPress={e => {
+                        if (e.key === 'Enter') {
+                            if (duplicateName) {
+                                e.preventDefault();
+                                return false;
+                            }
+                            addPropertyAndClose();
+                        } else if (e.which === 32) {
+                            e.preventDefault();
+                            return false;
+                        }
+                    }}
+                    onChange={e => updateSelectedProp({propertyName: e.target.value})}
+                />
+                {
+                    mode === C.DIALOG_MODE_EDIT &&
+                    <Button color="primary"
+                            onClick={removeAndClose}>
+                        <Typography color="inherit" variant="zeta">
+                            {t('label.sdlGeneratorTools.deleteButton')}
+                        </Typography>
+                        <Close/>
+                    </Button>
+                }
+            </DialogContent>
+            <DialogActions>
+                <Button color="primary" variant="contained" onClick={cancelAndClose}>
+                    <Typography color="inherit" variant="zeta">
+                        {t('label.sdlGeneratorTools.cancelButton')}
+                    </Typography>
+                </Button>
+                <Button disabled={mode === C.DIALOG_MODE_ADD ? duplicateName : false}
+                        color="primary"
+                        variant="contained"
+                        onClick={addPropertyAndClose}
+                >
+                    <Typography color="inherit" variant="zeta">
+                        {t('label.sdlGeneratorTools.saveButton')}
+                    </Typography>
+                </Button>
+            </DialogActions>
+        </React.Fragment>
+    )
+};
+
+const TypeMappingChannel = ({t, mode, updateSelectedProp, addPropertyAndClose, availableNodeTypes, selectedProperty, cancelAndClose, removeAndClose, selectJCRProperty, nodeProperties, duplicateName}) => {
+
+    const selectedPropertyName = resolveSelectedProp(selectedProperty, 'propertyName');
+    const selectedJcrPropertyName = resolveSelectedProp(selectedProperty, 'jcrPropertyName');
+    const selectedPropertyType = resolveSelectedProp(selectedProperty, 'propertyType');
+    const selectedIsListType = resolveSelectedProp(selectedProperty, 'isListType', false);
+
+    const [showPropertySelector, setShowPropertySelector] = useState(false);
+    const [showPredefinedTypeSelector, setPredefinedTypeSelector] = useState(false);
+
+    return (
+        <React.Fragment>
+            <DialogTitle
+                id="form-dialog-title">{mode === C.DIALOG_MODE_EDIT ? t('label.sdlGeneratorTools.createTypes.viewProperty') : t('label.sdlGeneratorTools.createTypes.addNewPropertyButton')}</DialogTitle>
+            <DialogContent style={{width: 400}}>
+                <PredefinedTypeSelector t={t}
+                                        open={showPredefinedTypeSelector}
+                                        types={C.PREDEFINED_SDL_TYPES.concat(availableNodeTypes)}
+                                        value={selectedPropertyType.replace(/(\[|])/g, '')}
+                                        handleOpen={() => setPredefinedTypeSelector(true)}
+                                        handleClose={() => setPredefinedTypeSelector(false)}
+                                        handleChange={event => updateSelectedProp({propertyType: event.target.value})}/>
+                <PropertySelector open={showPropertySelector}
+                                  t={t}
+                                  nodeProperties={sortProperties(nodeProperties)}
+                                  value={selectedJcrPropertyName}
+                                  handleOpen={() => setShowPropertySelector(true)}
+                                  handleClose={() => setShowPropertySelector(false)}
+                                  handleChange={selectJCRProperty}/>
+                <TextField
+                    autoFocus
+                    fullWidth
                     margin="dense"
                     id="propertyName"
                     InputLabelProps={{
@@ -304,20 +365,6 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, availableNod
                     <FormControlLabel
                         label={
                             <Typography color="alpha" variant="zeta">
-                                {t('label.sdlGeneratorTools.createTypes.mapToCustomType')}
-                            </Typography>
-                        }
-                        control={
-                            <Switch
-                                color="primary"
-                                checked={selectedIsPredefinedType}
-                                disabled={mode === C.DIALOG_MODE_EDIT}
-                                onChange={e => updateSelectedProp({isPredefinedType: e.target.checked, jcrPropertyName: ''})}
-                            />
-                        }/>
-                    <FormControlLabel
-                        label={
-                            <Typography color="alpha" variant="zeta">
                                 {t('label.sdlGeneratorTools.createTypes.propertyAsList')}
                             </Typography>
                         }
@@ -331,7 +378,8 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, availableNod
                 </FormGroup>
                 {
                     mode === C.DIALOG_MODE_EDIT &&
-                    <Button color="primary" onClick={removeAndClose}>
+                    <Button color="primary"
+                            onClick={removeAndClose}>
                         <Typography color="inherit" variant="zeta">
                             {t('label.sdlGeneratorTools.deleteButton')}
                         </Typography>
@@ -340,13 +388,16 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, availableNod
                 }
             </DialogContent>
             <DialogActions>
-                <Button color="primary" onClick={cancelAndClose}>
+                <Button color="primary"
+                        variant="contained"
+                        onClick={cancelAndClose}>
                     <Typography color="inherit" variant="zeta">
                         {t('label.sdlGeneratorTools.cancelButton')}
                     </Typography>
                 </Button>
                 <Button disabled={mode === C.DIALOG_MODE_ADD ? duplicateName : false}
                         color="primary"
+                        variant="contained"
                         onClick={addPropertyAndClose}
                 >
                     <Typography color="inherit" variant="zeta">
@@ -354,9 +405,35 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, availableNod
                     </Typography>
                 </Button>
             </DialogActions>
-        </Dialog>
-    );
+        </React.Fragment>
+    )
 };
+
+const ChannelSelect = ({t, selectChannel, updateSelectedProp}) => (
+    <React.Fragment>
+        <DialogContent style={{width: 400}}>
+            <FormGroup>
+                <Button color="primary"
+                        variant="contained"
+                        onClick={() => {
+                            updateSelectedProp({isPredefinedType: true, jcrPropertyName: ''});
+                            selectChannel("MAP_TO_TYPE");
+                        }}>
+                    <Typography color="inherit" variant="zeta">
+                        {t('label.sdlGeneratorTools.createProperty.mapToType')}
+                    </Typography>
+                </Button>
+                <Button color="primary"
+                        variant="contained"
+                        onClick={() => selectChannel("PROPERTY")}>
+                    <Typography color="inherit" variant="zeta">
+                        {t('label.sdlGeneratorTools.createProperty.selectProp')}
+                    </Typography>
+                </Button>
+            </FormGroup>
+        </DialogContent>
+    </React.Fragment>
+);
 
 AddModifyPropertyDialog.propTypes = {
     open: PropTypes.bool.isRequired,
@@ -393,11 +470,14 @@ const mapDispatchToProps = dispatch => {
     return {
         addProperty: (propertyInfo, typeIndex) => dispatch(sdlAddPropertyToType(propertyInfo, typeIndex)),
         updateProperty: (propertyInfo, typeIndex, propIndex) => dispatch(sdlUpdatePropertyOfType(propertyInfo, typeIndex, propIndex)),
-        unselectProperty: () => dispatch(sdlSelectProperty('', '', '', '')),
         updateSelectedProp: propertyFields => dispatch(sdlUpdateSelectedProperty(propertyFields)),
         removeProperty: (propertyIndex, typeIndexOrName) => dispatch(sdlRemovePropertyFromType(propertyIndex, typeIndexOrName)),
         removeFinder: (uuid, finderIndex) => dispatch(sdlRemoveFinderFromType(uuid, finderIndex)),
-        closeDialog: () => dispatch(sdlUpdateAddModifyPropertyDialog({open: false}))
+        closeDialog: () => {
+            dispatch(sdlUpdateAddModifyPropertyDialog({open: false, channel: undefined, mode: C.DIALOG_MODE_ADD}));
+            dispatch(sdlSelectProperty('', '', '', ''));
+        },
+        selectChannel: (channel) => dispatch(sdlUpdateAddModifyPropertyDialog({channel: channel}))
     };
 };
 
