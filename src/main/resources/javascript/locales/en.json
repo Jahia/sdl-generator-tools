@@ -25,7 +25,7 @@
                 "selectNodeProperty": "Select a property",
                 "customTypeNameText": "Custom type name",
                 "customPropertyNameText": "Custom property name",
-                "ignoreDefaultQueries": "Ignore Default Queries",
+                "ignoreDefaultQueries": "Remove {{type}}ByPath and {{type}}ById entry points",
                 "mapToCustomType": "Map to pre-defined type",
                 "predefinedType": "Predefined type",
                 "propertyAsList": "As list"
