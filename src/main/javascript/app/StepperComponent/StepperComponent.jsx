@@ -85,12 +85,12 @@ class StepperComponent extends React.Component {
 
         switch (currentStep) {
             case 1:
-                return Object.values(nodeTypes).reduce((arr, type) => (arr && !_.isEmpty(type.queries)), true);
+                return _.isNil(Object.values(nodeTypes).find(type => _.isEmpty(type.queries)));
             case 2:
-                return Object.values(nodeTypes).reduce((arr, type) => (arr && !_.isEmpty(type.fieldDefinitions) && !_.isEmpty(type.queries)), true);
+                return _.isNil(Object.values(nodeTypes).find(type => _.isEmpty(type.fieldDefinitions) || _.isEmpty(type.queries)));
             case 0:
             default:
-                return Object.values(nodeTypes).reduce((arr, type) => (arr && !_.isEmpty(type.fieldDefinitions)), true);
+                return _.isNil(Object.values(nodeTypes).find(type => _.isEmpty(type.fieldDefinitions)));
         }
     }
 
@@ -172,6 +172,7 @@ class StepperComponent extends React.Component {
                         {
                             activeStep === lastStep &&
                             <Button
+                                disabled={!this.hasNext()}
                                 variant="contained"
                                 color="primary"
                                 className={classes.button}
