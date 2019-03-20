@@ -31,7 +31,8 @@ import {
     lookUpMappingStringArgumentInfo,
     lookUpMappingBooleanArgumentInfo,
     lookUpMappingArgumentIndex,
-    getAvailableTypeNames
+    getAvailableTypeNames,
+    upperCaseFirst
 } from '../../StepperComponent.utils';
 import {Close} from '@material-ui/icons';
 import {connect} from 'react-redux';
@@ -58,6 +59,10 @@ const AddTypeDialog = ({classes, defaultNodeTypeNames, allNodeTypeNames, t, open
         updateTypeName(null);
         updateNodeType(null);
         updateIgnoreDefaultQueries(false);
+    };
+
+    const generateCustomTypeName = value => {
+        updateTypeName(upperCaseFirst(_.camelCase(value)));
     };
 
     const duplicateName = availableTypeNames.indexOf(typeName) !== -1;
@@ -126,6 +131,7 @@ const AddTypeDialog = ({classes, defaultNodeTypeNames, allNodeTypeNames, t, open
                             handleChange={event => {
                                 updateNodeType(event.value);
                                 updateDisplayName(event.label);
+                                generateCustomTypeName(event.label);
                             }}
                 />
                 <TextField
