@@ -212,7 +212,8 @@ const mapDispatchToProps = dispatch => {
     return {
         setStore: store => {
             dispatch(sdlInitNodeTypes(store));
-            dispatch(sdlSelectType(Object.keys(store)[0]))
+            const keys = Object.keys(store);
+            dispatch(sdlSelectType(keys.length > 0 ? keys[0] : ""));
         }
     };
 };
