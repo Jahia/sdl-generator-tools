@@ -52,11 +52,13 @@ const resolveSelectedProp = (object, key, optionalReturnValue = '') => {
     return optionalReturnValue;
 };
 
+const removeNodeTypePrefix = type => (type.replace(/(j:|jcr:)/, ''));
+
 const sortProperties = nodeProperties => {
     const propertyItems = nodeProperties.map(property => {
         return {
             name: (property.name === C.MULTIPLE_CHILDREN_INDICATOR) ? property.name + property.requiredType : property.name,
-            displayName: property.name.replace(/(j:|jcr:)/, ''),
+            displayName: removeNodeTypePrefix(property.name),
             requiredType: property.requiredType,
             displayType: upperCaseFirst(property.requiredType.toLowerCase())
         };
@@ -187,17 +189,21 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, channel, ava
         const value = event.target.value;
         let isList = false;
 
+        const prop = nodeProperties.find(p => p.name === value);
         if (value.startsWith(C.MULTIPLE_CHILDREN_INDICATOR)) {
             isList = true;
         } else {
-            const prop = nodeProperties.find(p => p.name === value);
             isList = prop.multiple !== undefined ? prop.multiple : false;
         }
-
-        updateSelectedProp({
+        let selectedProp = {
             jcrPropertyName: value,
             isListType: isList
-        });
+        };
+        // Only preset custom property name if this dialog is property (not map to type)
+        if (channel === 'PROPERTY') {
+            selectedProp.propertyName = _.camelCase(removeNodeTypePrefix(prop.name));
+        }
+        updateSelectedProp(selectedProp);
     };
 
     return (
@@ -332,7 +338,7 @@ const TypeMappingChannel = ({t, mode, updateSelectedProp, addPropertyAndClose, a
                                         value={selectedPropertyType.replace(/(\[|])/g, '')}
                                         handleOpen={() => setPredefinedTypeSelector(true)}
                                         handleClose={() => setPredefinedTypeSelector(false)}
-                                        handleChange={event => updateSelectedProp({propertyType: event.target.value})}/>
+                                        handleChange={event => updateSelectedProp({propertyType: event.target.value, propertyName: _.camelCase(event.target.value)})}/>
                 <PropertySelector open={showPropertySelector}
                                   t={t}
                                   nodeProperties={sortProperties(filterProperties(nodeProperties))}
