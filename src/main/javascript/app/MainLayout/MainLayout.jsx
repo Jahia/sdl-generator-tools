@@ -54,7 +54,7 @@ let styles = theme => ({
     }
 });
 
-const MainLayout = ({classes, t}) => {
+const MainLayout = ({classes, t, ctx}) => {
     return (
         <React.Fragment>
             <AppBar position="static">
@@ -64,7 +64,7 @@ const MainLayout = ({classes, t}) => {
                     </Typography>
                     <Button className={classes.topBarButton}
                             onClick={() => {
-                                window.location = '/tools';
+                                window.location.href = `${ctx}/tools`;
                             }}
                     >
                         <Typography color="invert" variant="zeta">
