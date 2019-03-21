@@ -59,12 +59,21 @@ const gqlQueries = {
                             {evaluation: DIFFERENT, fieldName: "name", value: "jcr:predecessors"}
                             {evaluation: DIFFERENT, fieldName: "name", value: "jcr:predecessors"}
                             {evaluation: DIFFERENT, fieldName: "name", value: "jcr:activity"}
+                            {evaluation: DIFFERENT, fieldName: "name", value: "jcr:mixinTypes"}
+                            {evaluation: DIFFERENT, fieldName: "name", value: "jcr:lockOwner"}
+                            {evaluation: DIFFERENT, fieldName: "name", value: "jcr:lockIsDeep"}
                             {evaluation: DIFFERENT, fieldName: "name", value: "j:checkinDate"}
                             {evaluation: DIFFERENT, fieldName: "name", value: "j:locktoken"}
                             {evaluation: DIFFERENT, fieldName: "name", value: "j:lockTypes"}
-                            {evaluation: DIFFERENT, fieldName: "name", value: "jcr:lockOwner"}
                             {evaluation: DIFFERENT, fieldName: "name", value: "j:deletedChildren"}
                             {evaluation: DIFFERENT, fieldName: "name", value: "j:processId"}
+                            {evaluation: DIFFERENT, fieldName: "name", value: "j:published"}
+                            {evaluation: DIFFERENT, fieldName: "name", value: "j:workInProgress"}
+                            {evaluation: DIFFERENT, fieldName: "name", value: "j:workInProgressStatus"}
+                            {evaluation: DIFFERENT, fieldName: "name", value: "j:workInProgressLanguages"}
+                            {evaluation: DIFFERENT, fieldName: "name", value: "j:invalidLanguages"}
+                            {evaluation: DIFFERENT, fieldName: "name", value: "j:legacyRuleSettings"}
+                            {evaluation: DIFFERENT, fieldName: "name", value: "j:originWS"}
                             {evaluation: DIFFERENT, fieldName: "name", value: "lastReplay"}
                         ]
                       }){
