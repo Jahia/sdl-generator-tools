@@ -1,6 +1,7 @@
 import {actionTypes} from './App.redux-actions';
 import {getInitialObject} from './App.redux-initializers';
 import {generateUUID} from './App.utils';
+import {lookUpMappingStringArgumentInfo} from './StepperComponent/StepperComponent.utils';
 
 const nodeTypesReducer = (state = {}, action) => {
     const newState = {
@@ -12,6 +13,17 @@ const nodeTypesReducer = (state = {}, action) => {
         case actionTypes.SDL_ADD_TYPE:
             const uuid = action.uuid ? action.uuid : generateUUID();
             newState[uuid] = getInitialObject(actionTypes.SDL_ADD_TYPE, action.typeInfo);
+            return newState;
+        case actionTypes.SDL_UPDATE_TYPE:
+            const nodeType = lookUpMappingStringArgumentInfo(newState[action.uuid], 'node');
+            if (nodeType === action.typeInfo.nodeType) { // If just update type name, keep all other properties
+                newState[action.uuid] = {
+                    ...newState[action.uuid],
+                    name: action.typeInfo.typeName
+                };
+            } else {
+                newState[action.uuid] = getInitialObject(actionTypes.SDL_ADD_TYPE, action.typeInfo);
+            }
             return newState;
         case actionTypes.SDL_REMOVE_TYPE:
             delete newState[action.typeName];

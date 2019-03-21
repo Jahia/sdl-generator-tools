@@ -1,6 +1,7 @@
 const actionTypes = {
     SDL_INIT_NODE_TYPES: 'SDL_INIT_NODE_TYPES',
     SDL_ADD_TYPE: 'SDL_ADD_TYPE',
+    SDL_UPDATE_TYPE: 'SDL_UPDATE_TYPE',
     SDL_REMOVE_TYPE: 'SDL_REMOVE_TYPE',
     SDL_ADD_PROPERTY_TO_TYPE: 'SDL_ADD_PROPERTY_TO_TYPE',
     SDL_UPDATE_PROPERTY_OF_TYPE: 'SDL_UPDATE_PROPERTY_OF_TYPE',
@@ -19,6 +20,12 @@ const sdlInitNodeTypes = nodeTypes => ({
 
 const sdlAddType = (typeInfo, uuid) => ({
     type: actionTypes.SDL_ADD_TYPE,
+    typeInfo: typeInfo,
+    uuid: uuid
+});
+
+const sdlUpdateType = (typeInfo, uuid) => ({
+    type: actionTypes.SDL_UPDATE_TYPE,
     typeInfo: typeInfo,
     uuid: uuid
 });
@@ -84,6 +91,7 @@ export {
     actionTypes,
     sdlInitNodeTypes,
     sdlAddType,
+    sdlUpdateType,
     sdlRemoveType,
     sdlAddPropertyToType,
     sdlUpdatePropertyOfType,

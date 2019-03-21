@@ -12,7 +12,7 @@ import {connect} from 'react-redux';
 import C from '../App.constants';
 import {getFromLocalStore, storeLocally} from '../App.utils';
 import {sdlInitNodeTypes} from '../App.redux-actions';
-import {sdlSelectType} from './StepperComponent.redux-actions'
+import {sdlSelectType} from './StepperComponent.redux-actions';
 import * as _ from 'lodash';
 
 const styles = () => ({
@@ -77,22 +77,13 @@ class StepperComponent extends React.Component {
     }
 
     hasNext() {
-        const currentStep = this.state.activeStep;
         const nodeTypes = this.props.nodeTypes;
 
         if (_.isNil(nodeTypes) || _.isEmpty(nodeTypes)) {
             return false;
         }
 
-        switch (currentStep) {
-            case 1:
-                return _.isNil(Object.values(nodeTypes).find(type => _.isEmpty(type.queries)));
-            case 2:
-                return _.isNil(Object.values(nodeTypes).find(type => _.isEmpty(type.fieldDefinitions) || _.isEmpty(type.queries)));
-            case 0:
-            default:
-                return _.isNil(Object.values(nodeTypes).find(type => _.isEmpty(type.fieldDefinitions)));
-        }
+        return _.isNil(Object.values(nodeTypes).find(type => _.isEmpty(type.fieldDefinitions)));
     }
 
     handleNext() {
@@ -212,7 +203,7 @@ const mapDispatchToProps = dispatch => {
     return {
         setStore: store => {
             dispatch(sdlInitNodeTypes(store));
-            dispatch(sdlSelectType(Object.keys(store)[0]))
+            dispatch(sdlSelectType(Object.keys(store)[0]));
         }
     };
 };

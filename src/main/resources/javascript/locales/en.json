@@ -50,6 +50,7 @@
             "clearButton": "Clear",
             "nextButton": "Next",
             "addButton": "Add",
+            "updateButton": "Update",
             "saveButton": "Save",
             "deleteButton": "Delete",
             "applyButton": "Apply",

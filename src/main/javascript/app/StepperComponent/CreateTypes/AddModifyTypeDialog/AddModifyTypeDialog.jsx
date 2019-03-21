@@ -19,7 +19,7 @@ import {Typography} from '@jahia/ds-mui-theme';
 import * as _ from 'lodash';
 import C from '../../../App.constants';
 import {
-    sdlAddType,
+    sdlAddType, sdlUpdateType,
     sdlAddDirectiveArgToType,
     sdlRemoveDirectiveArgFromType, sdlRemoveType
 } from '../../../App.redux-actions';
@@ -44,7 +44,7 @@ const styles = () => ({
     }
 });
 
-const AddTypeDialog = ({classes, defaultNodeTypeNames, allNodeTypeNames, t, open, closeDialog, mode, selection, selectedType, selectType, removeType, addType, addDirective, removeDirective, availableTypeNames}) => {
+const AddTypeDialog = ({classes, defaultNodeTypeNames, allNodeTypeNames, t, open, closeDialog, mode, selection, selectedType, selectType, removeType, addType, updateType, addDirective, removeDirective, availableTypeNames}) => {
     const customTypeName = !_.isNil(selectedType) ? selectedType.name : '';
     const customDisplayName = !_.isNil(selectedType) ? selectedType.displayName : '';
     const jcrNodeType = lookUpMappingStringArgumentInfo(selectedType, 'node');
@@ -60,7 +60,7 @@ const AddTypeDialog = ({classes, defaultNodeTypeNames, allNodeTypeNames, t, open
         updateIgnoreDefaultQueries(false);
     };
 
-    const duplicateName = availableTypeNames.indexOf(typeName) !== -1;
+    const duplicateName = (mode === C.DIALOG_MODE_EDIT && typeName === customTypeName) ? false : availableTypeNames.indexOf(typeName) !== -1;
 
     const saveTypeAndClose = () => {
         let uuid = selection;
@@ -69,6 +69,8 @@ const AddTypeDialog = ({classes, defaultNodeTypeNames, allNodeTypeNames, t, open
             uuid = generateUUID();
             addType({typeName: typeName, displayName: displayName, nodeType: nodeType}, uuid);
             selectType(uuid);
+        } else {
+            updateType({typeName: typeName, displayName: displayName, nodeType: nodeType}, uuid);
         }
 
         if (ignoreDefaultQueries) {
@@ -118,8 +120,7 @@ const AddTypeDialog = ({classes, defaultNodeTypeNames, allNodeTypeNames, t, open
             >{mode === C.DIALOG_MODE_EDIT ? t('label.sdlGeneratorTools.createTypes.editTypeButton') : t('label.sdlGeneratorTools.createTypes.addNewTypeButton')}
             </DialogTitle>
             <DialogContent style={{width: 400, overflow: 'visible'}}>
-                <TypeSelect disabled={mode === C.DIALOG_MODE_EDIT}
-                            t={t}
+                <TypeSelect t={t}
                             value={mode === C.DIALOG_MODE_EDIT ? {label: customDisplayName, value: jcrNodeType} : null}
                             defaultNodes={!_.isNil(defaultNodeTypeNames) ? defaultNodeTypeNames.nodeTypes.nodes : null}
                             allNodes={!_.isNil(allNodeTypeNames) ? allNodeTypeNames.nodeTypes.nodes : null}
@@ -131,7 +132,6 @@ const AddTypeDialog = ({classes, defaultNodeTypeNames, allNodeTypeNames, t, open
                 <TextField
                     autoFocus
                     fullWidth
-                    disabled={mode === C.DIALOG_MODE_EDIT}
                     margin="dense"
                     id="typeName"
                     label={
@@ -141,9 +141,9 @@ const AddTypeDialog = ({classes, defaultNodeTypeNames, allNodeTypeNames, t, open
                     }
                     type="text"
                     value={!_.isNil(typeName) ? typeName : ''}
-                    error={mode === C.DIALOG_MODE_ADD ? duplicateName : false}
+                    error={duplicateName}
                     onKeyPress={e => {
-                        if (e.key === 'Enter') {
+                        if (e.key === 'Enter' && !duplicateName) {
                             saveTypeAndClose();
                         } else if (e.which === 32) {
                             e.preventDefault();
@@ -184,11 +184,11 @@ const AddTypeDialog = ({classes, defaultNodeTypeNames, allNodeTypeNames, t, open
                     </Typography>
                 </Button>
                 <Button color="primary"
-                        disabled={mode === C.DIALOG_MODE_ADD ? duplicateName : false}
+                        disabled={duplicateName}
                         onClick={saveTypeAndClose}
                 >
                     <Typography color="inherit" variant="zeta">
-                        {t('label.sdlGeneratorTools.saveButton')}
+                        {mode === C.DIALOG_MODE_ADD ? t('label.sdlGeneratorTools.addButton') : t('label.sdlGeneratorTools.updateButton')}
                     </Typography>
                 </Button>
             </DialogActions>
@@ -223,6 +223,7 @@ const mapDispatchToProps = dispatch => {
         removeType: typeName => dispatch(sdlRemoveType(typeName)),
         selectType: selection => dispatch(sdlSelectType(selection)),
         addType: (infos, uuid) => dispatch(sdlAddType(infos, uuid)),
+        updateType: (infos, uuid) => dispatch(sdlUpdateType(infos, uuid)),
         removeDirective: (type, directiveName, args) => dispatch(sdlRemoveDirectiveArgFromType(type, directiveName, args)),
         addDirective: (type, directiveName, args) => dispatch(sdlAddDirectiveArgToType(type, directiveName, args)),
         closeDialog: () => dispatch(sdlUpdateAddModifyTypeDialog({open: false}))

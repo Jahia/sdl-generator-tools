@@ -137,9 +137,9 @@ const TypeSelect = ({classes, t, disabled, value, handleClose, handleChange, han
             const fuse = new Fuse(allNodes,
                 {
                     shouldSort: true,
-                    threshold: 0.6,
+                    threshold: 0.8,
                     location: 0,
-                    distance: 8,
+                    distance: 100,
                     maxPatternLength: 32,
                     minMatchCharLength: 1,
                     keys: ['displayName']
