@@ -139,7 +139,7 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, channel, ava
             .filter(props => ['WEAKREFERENCE', 'REFERENCE'].indexOf(props.requiredType) === -1 && C.RESERVED_JCR_TYPES.indexOf(props.name) === -1);
     }
 
-    const duplicateName = (mode === C.DIALOG_MODE_EDIT && oldPropertyName === selectedPropertyName) ? false : availableProperties.indexOf(selectedPropertyName) >= 0;
+    const duplicateName = (mode === C.DIALOG_MODE_EDIT && oldPropertyName.toLowerCase() === selectedPropertyName.toLowerCase()) ? false : (availableProperties.find(prop => prop.toLowerCase() === selectedPropertyName.toLowerCase()) !== undefined);
 
     const addPropertyAndClose = () => {
         let propType;
