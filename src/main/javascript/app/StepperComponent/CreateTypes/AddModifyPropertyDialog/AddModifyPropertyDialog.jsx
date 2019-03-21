@@ -25,7 +25,7 @@ import {
     generateFinderSuffix,
     upperCaseFirst,
     getAvailableTypeNames,
-    getAvailablePropertyNames
+    getAvailablePropertyNames, formatFinderName
 } from '../../StepperComponent.utils';
 import {Close} from '@material-ui/icons';
 import C from '../../../App.constants';
@@ -34,7 +34,8 @@ import {
     sdlAddPropertyToType,
     sdlRemoveFinderFromType,
     sdlRemovePropertyFromType,
-    sdlUpdatePropertyOfType
+    sdlUpdatePropertyOfType,
+    sdlModifyFinderOfType
 } from '../../../App.redux-actions';
 import {
     sdlUpdateSelectedProperty,
@@ -109,6 +110,7 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, channel, ava
 
     const selectionId = !_.isNil(selection) ? selection : '';
     const selectedPropertyName = resolveSelectedProp(selectedProperty, 'propertyName');
+    const oldPropertyName = resolveSelectedProp(selectedProperty, 'oldPropertyName');
     const selectedJcrPropertyName = resolveSelectedProp(selectedProperty, 'jcrPropertyName');
     const selectedPropertyType = resolveSelectedProp(selectedProperty, 'propertyType');
     const selectedIsPredefinedType = resolveSelectedProp(selectedProperty, 'isPredefinedType', false);
@@ -135,7 +137,7 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, channel, ava
             .filter(props => ['WEAKREFERENCE', 'REFERENCE'].indexOf(props.requiredType) === -1 && C.RESERVED_JCR_TYPES.indexOf(props.name) === -1);
     }
 
-    const duplicateName = availableProperties.indexOf(selectedPropertyName) >= 0;
+    const duplicateName = (mode === C.DIALOG_MODE_EDIT && oldPropertyName === selectedPropertyName) ? false : availableProperties.indexOf(selectedPropertyName) >= 0;
 
     const addPropertyAndClose = () => {
         let propType;
@@ -163,7 +165,7 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, channel, ava
                 name: selectedPropertyName,
                 property: jcrPropName,
                 type: propType
-            }, selectionId, selectedProperty.propertyIndex);
+            }, selectionId, selectedProperty.propertyIndex, oldPropertyName, selection, selectedType);
         } else {
             addProperty({name: selectedPropertyName, property: jcrPropName, type: propType}, selectionId);
         }
@@ -259,13 +261,9 @@ const PropertyChannel = ({t, mode, updateSelectedProp, addPropertyAndClose, sele
                     }
                     type="text"
                     value={selectedPropertyName}
-                    error={mode === C.DIALOG_MODE_ADD ? duplicateName : false}
+                    error={duplicateName}
                     onKeyPress={e => {
-                        if (e.key === 'Enter') {
-                            if (duplicateName) {
-                                e.preventDefault();
-                                return false;
-                            }
+                        if (e.key === 'Enter' && !duplicateName) {
                             addPropertyAndClose();
                         } else if (e.which === 32) {
                             e.preventDefault();
@@ -292,13 +290,13 @@ const PropertyChannel = ({t, mode, updateSelectedProp, addPropertyAndClose, sele
                         {t('label.sdlGeneratorTools.cancelButton')}
                     </Typography>
                 </Button>
-                <Button disabled={mode === C.DIALOG_MODE_ADD ? duplicateName : false}
+                <Button disabled={duplicateName}
                         color="primary"
                         variant="contained"
                         onClick={addPropertyAndClose}
                 >
                     <Typography color="inherit" variant="zeta">
-                        {t('label.sdlGeneratorTools.saveButton')}
+                        {mode === C.DIALOG_MODE_ADD ? t('label.sdlGeneratorTools.addButton') : t('label.sdlGeneratorTools.updateButton')}
                     </Typography>
                 </Button>
             </DialogActions>
@@ -355,13 +353,9 @@ const TypeMappingChannel = ({t, mode, updateSelectedProp, addPropertyAndClose, a
                     }
                     type="text"
                     value={selectedPropertyName}
-                    error={mode === C.DIALOG_MODE_ADD ? duplicateName : false}
+                    error={duplicateName}
                     onKeyPress={e => {
-                        if (e.key === 'Enter') {
-                            if (duplicateName) {
-                                e.preventDefault();
-                                return false;
-                            }
+                        if (e.key === 'Enter' && !duplicateName) {
                             addPropertyAndClose();
                         } else if (e.which === 32) {
                             e.preventDefault();
@@ -482,7 +476,19 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         addProperty: (propertyInfo, typeIndex) => dispatch(sdlAddPropertyToType(propertyInfo, typeIndex)),
-        updateProperty: (propertyInfo, typeIndex, propIndex) => dispatch(sdlUpdatePropertyOfType(propertyInfo, typeIndex, propIndex)),
+        updateProperty: (propertyInfo, typeIndex, propIndex, oldPropertyName, selection, selectedType) => {
+            dispatch(sdlUpdatePropertyOfType(propertyInfo, typeIndex, propIndex));
+            ['', 'Connection'].forEach(finder => {
+                const suffix = 'by' + upperCaseFirst(oldPropertyName) + finder;
+                const index = _.isNil(selectedType.queries) ? -1 : selectedType.queries.findIndex(query => query.suffix === suffix);
+                if (index !== -1) {
+                    const finderInfo = selectedType.queries[index];
+                    const finderPrefix = finderInfo.prefix;
+                    const finderSuffix = 'by' + upperCaseFirst(propertyInfo.name) + finder;
+                    dispatch(sdlModifyFinderOfType(selection, index, {name: formatFinderName(finderPrefix, finderSuffix), prefix: finderPrefix, suffix: finderSuffix}));
+                }
+            });
+        },
         updateSelectedProp: propertyFields => dispatch(sdlUpdateSelectedProperty(propertyFields)),
         removeProperty: (propertyIndex, typeIndexOrName) => dispatch(sdlRemovePropertyFromType(propertyIndex, typeIndexOrName)),
         removeFinder: (uuid, finderIndex) => dispatch(sdlRemoveFinderFromType(uuid, finderIndex)),

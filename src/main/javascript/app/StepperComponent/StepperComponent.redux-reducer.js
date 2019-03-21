@@ -24,6 +24,7 @@ const selectedPropertyReducer = (state = null, action) => {
             return {
                 propertyIndex: action.propertyIndex,
                 propertyName: action.propertyName,
+                oldPropertyName: action.propertyName,
                 propertyType: action.propertyType,
                 jcrPropertyName: action.jcrPropertyName,
                 isPredefinedType: isPredefinedType(action.propertyType),

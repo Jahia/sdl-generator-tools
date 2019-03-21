@@ -80,6 +80,17 @@ const getAvailablePropertyNames = selectedType => {
     return [];
 };
 
+const formatFinderName = (finderPrefix, finderSuffix) => {
+    switch (finderSuffix) {
+        case 'all':
+            return finderSuffix + upperCaseFirst(finderPrefix);
+        case 'allConnection':
+            return 'all' + upperCaseFirst(finderPrefix) + 'Connection';
+        default:
+            return finderPrefix + upperCaseFirst(finderSuffix);
+    }
+};
+
 export {
     upperCaseFirst,
     getMappingDirectiveArguments,
@@ -90,5 +101,6 @@ export {
     isPredefinedType,
     generateFinderSuffix,
     getAvailableTypeNames,
-    getAvailablePropertyNames
+    getAvailablePropertyNames,
+    formatFinderName
 };

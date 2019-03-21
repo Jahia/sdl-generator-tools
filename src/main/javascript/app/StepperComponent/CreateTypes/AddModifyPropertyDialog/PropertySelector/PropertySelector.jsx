@@ -1,7 +1,7 @@
-import {FormControl, Input, InputLabel, ListItemText, MenuItem, Select, withStyles} from "@material-ui/core";
-import {Typography} from "@jahia/ds-mui-theme";
-import * as _ from "lodash";
-import React from "react";
+import {FormControl, Input, InputLabel, ListItemText, MenuItem, Select, withStyles} from '@material-ui/core';
+import {Typography} from '@jahia/ds-mui-theme';
+import * as _ from 'lodash';
+import React from 'react';
 
 const PropertySelectCom = ({classes, t, disabled, value, open, handleClose, handleChange, handleOpen, nodeProperties}) => (
     <FormControl classes={classes} disabled={disabled}>

@@ -1,6 +1,6 @@
-import {FormControl, InputLabel, ListItemText, MenuItem, Select, withStyles} from "@material-ui/core";
-import {Typography} from "@jahia/ds-mui-theme";
-import React from "react";
+import {FormControl, InputLabel, ListItemText, MenuItem, Select, withStyles} from '@material-ui/core';
+import {Typography} from '@jahia/ds-mui-theme';
+import React from 'react';
 
 const PredefinedTypeSelector = ({t, classes, disabled, value, open, handleClose, handleChange, handleOpen, types}) => (
     <FormControl className={classes.formControl} disabled={disabled}>

@@ -6,7 +6,7 @@ import DialogContent from '@material-ui/core/DialogContent/DialogContent';
 import TextField from '@material-ui/core/TextField/TextField';
 import DialogActions from '@material-ui/core/DialogActions/DialogActions';
 import {translate} from 'react-i18next';
-import {upperCaseFirst} from '../../StepperComponent.utils';
+import {formatFinderName, upperCaseFirst} from '../../StepperComponent.utils';
 import C from '../../../App.constants';
 import * as _ from 'lodash';
 import {Close} from '@material-ui/icons';
@@ -116,20 +116,9 @@ const AddModifyFinderDialog = ({t, open, close, mode, addFinder, modifyFinder, r
             close();
             return;
         }
-        addOrModifyFinder({name: formatName(), prefix: finderPrefix, suffix: finderSuffix});
+        addOrModifyFinder({name: formatFinderName(finderPrefix, finderSuffix), prefix: finderPrefix, suffix: finderSuffix});
         close();
         cleanUp();
-
-        function formatName() {
-            switch (finderSuffix) {
-                case 'all':
-                    return finderSuffix + upperCaseFirst(finderPrefix);
-                case 'allConnection':
-                    return 'all' + upperCaseFirst(finderPrefix) + 'Connection';
-                default:
-                    return finderPrefix + upperCaseFirst(finderSuffix);
-            }
-        }
 
         function addOrModifyFinder(finderInfo) {
             if (mode === C.DIALOG_MODE_ADD) {
