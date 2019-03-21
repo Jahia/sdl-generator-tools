@@ -31,7 +31,8 @@ import {
     lookUpMappingStringArgumentInfo,
     lookUpMappingBooleanArgumentInfo,
     lookUpMappingArgumentIndex,
-    getAvailableTypeNames
+    getAvailableTypeNames,
+    upperCaseFirst
 } from '../../StepperComponent.utils';
 import {Close} from '@material-ui/icons';
 import {connect} from 'react-redux';
@@ -58,6 +59,10 @@ const AddTypeDialog = ({classes, defaultNodeTypeNames, allNodeTypeNames, t, open
         updateTypeName(null);
         updateNodeType(null);
         updateIgnoreDefaultQueries(false);
+    };
+
+    const generateCustomTypeName = value => {
+        updateTypeName(upperCaseFirst(_.camelCase(value)));
     };
 
     const duplicateName = (mode === C.DIALOG_MODE_EDIT && typeName === customTypeName) ? false : availableTypeNames.indexOf(typeName) !== -1;
@@ -127,6 +132,7 @@ const AddTypeDialog = ({classes, defaultNodeTypeNames, allNodeTypeNames, t, open
                             handleChange={event => {
                                 updateNodeType(event.value);
                                 updateDisplayName(event.label);
+                                generateCustomTypeName(event.label);
                             }}
                 />
                 <TextField
@@ -156,7 +162,7 @@ const AddTypeDialog = ({classes, defaultNodeTypeNames, allNodeTypeNames, t, open
                     <FormControlLabel
                         label={
                             <Typography color="alpha" variant="zeta">
-                                {t('label.sdlGeneratorTools.createTypes.ignoreDefaultQueries', {type: typeName ? typeName.toLowerCase() : ''})}
+                                {t('label.sdlGeneratorTools.createTypes.ignoreDefaultQueries', {type: typeName ? _.lowerFirst(typeName) : ''})}
                             </Typography>
                         }
                         control={
