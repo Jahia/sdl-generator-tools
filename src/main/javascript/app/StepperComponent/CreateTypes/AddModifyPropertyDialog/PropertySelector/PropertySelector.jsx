@@ -3,11 +3,11 @@ import {Typography} from '@jahia/ds-mui-theme';
 import * as _ from 'lodash';
 import React from 'react';
 
-const PropertySelector = ({classes, t, disabled, value, open, handleClose, handleChange, handleOpen, nodeProperties}) => (
+const PropertySelector = ({classes, t, disabled, value, open, handleClose, handleChange, handleOpen, nodeProperties, required}) => (
     <FormControl classes={classes} disabled={disabled}>
         <InputLabel shrink htmlFor="property-name">
             <Typography color="alpha" variant="zeta">
-                {t('label.sdlGeneratorTools.createTypes.selectNodeProperty')}
+                {t(`label.sdlGeneratorTools.createTypes.selectNodeProperty.${required ? 'required' : 'default'}`)}
             </Typography>
         </InputLabel>
         <Select disabled={disabled}

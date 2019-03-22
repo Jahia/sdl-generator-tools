@@ -6,14 +6,10 @@ import DialogContent from '@material-ui/core/DialogContent/DialogContent';
 import TextField from '@material-ui/core/TextField/TextField';
 import DialogActions from '@material-ui/core/DialogActions/DialogActions';
 import {
-    Button, FormControl,
+    Button,
     FormControlLabel,
-    FormGroup, Input, InputLabel,
-    ListItemText,
-    MenuItem,
-    Select,
-    Switch,
-    withStyles
+    FormGroup,
+    Switch
 } from '@material-ui/core';
 import {Typography} from '@jahia/ds-mui-theme';
 import {compose, graphql, withApollo} from 'react-apollo';
@@ -254,6 +250,7 @@ const PropertyChannel = ({t, mode, updateSelectedProp, addPropertyAndClose, sele
             </DialogTitle>
             <DialogContent style={{width: 400}}>
                 <PropertySelector open={showPropertySelector}
+                                  required
                                   t={t}
                                   nodeProperties={sortProperties(nodeProperties)}
                                   value={selectedJcrPropertyName}
@@ -277,7 +274,7 @@ const PropertyChannel = ({t, mode, updateSelectedProp, addPropertyAndClose, sele
                     value={selectedPropertyName}
                     error={duplicateName}
                     onKeyPress={e => {
-                        if (e.key === 'Enter' && !duplicateName) {
+                        if (e.key === 'Enter' && !duplicateName && !selectedPropertyName && !selectedJcrPropertyName) {
                             addPropertyAndClose();
                         } else if (e.which === 32) {
                             e.preventDefault();
@@ -304,7 +301,7 @@ const PropertyChannel = ({t, mode, updateSelectedProp, addPropertyAndClose, sele
                         {t('label.sdlGeneratorTools.cancelButton')}
                     </Typography>
                 </Button>
-                <Button disabled={duplicateName}
+                <Button disabled={duplicateName || !selectedPropertyName || !selectedJcrPropertyName}
                         color="primary"
                         variant="contained"
                         onClick={addPropertyAndClose}
@@ -356,6 +353,7 @@ const TypeMappingChannel = ({t, mode, updateSelectedProp, addPropertyAndClose, a
                                         handleClose={() => setPredefinedTypeSelector(false)}
                                         handleChange={handlePredefinedTypeChange}/>
                 <PropertySelector open={showPropertySelector}
+                                  required={false}
                                   t={t}
                                   nodeProperties={sortProperties(filterProperties(nodeProperties))}
                                   value={selectedJcrPropertyName}
@@ -379,7 +377,7 @@ const TypeMappingChannel = ({t, mode, updateSelectedProp, addPropertyAndClose, a
                     value={selectedPropertyName}
                     error={duplicateName}
                     onKeyPress={e => {
-                        if (e.key === 'Enter' && !duplicateName) {
+                        if (e.key === 'Enter' && !duplicateName && !selectedPropertyName && !selectedPropertyType) {
                             addPropertyAndClose();
                         } else if (e.which === 32) {
                             e.preventDefault();
@@ -424,7 +422,7 @@ const TypeMappingChannel = ({t, mode, updateSelectedProp, addPropertyAndClose, a
                         {t('label.sdlGeneratorTools.cancelButton')}
                     </Typography>
                 </Button>
-                <Button disabled={mode === C.DIALOG_MODE_ADD ? duplicateName : false}
+                <Button disabled={duplicateName || !selectedPropertyName || !selectedPropertyType}
                         color="primary"
                         variant="contained"
                         onClick={addPropertyAndClose}

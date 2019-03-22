@@ -22,12 +22,15 @@
                 "editTypeButton": "Edit type",
                 "addNewPropertyButton": "Add new property",
                 "viewProperty": "Edit property",
-                "selectNodeProperty": "Select a property",
+                "selectNodeProperty": {
+                    "default": "Select a property",
+                    "required": "Select a property*"
+                },
                 "customTypeNameText": "Custom type name",
-                "customPropertyNameText": "Custom property name",
+                "customPropertyNameText": "Custom property name*",
                 "ignoreDefaultQueries": "Remove {{type}}ByPath and {{type}}ById entry points",
                 "mapToCustomType": "Map to pre-defined type",
-                "predefinedType": "Predefined type",
+                "predefinedType": "Predefined type*",
                 "propertyAsList": "As list"
             },
             "defineFinder": {
