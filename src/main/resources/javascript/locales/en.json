@@ -18,7 +18,7 @@
                 "nodeTypeText": "Node type",
                 "propertiesText": "Properties",
                 "addNewTypeButton": "Add new type",
-                "selectSearchNodeType": "Select or search a node type",
+                "selectSearchNodeType": "Select or search a node type*",
                 "editTypeButton": "Edit type",
                 "addNewPropertyButton": "Add new property",
                 "viewProperty": "Edit property",
@@ -26,7 +26,7 @@
                     "default": "Select a property",
                     "required": "Select a property*"
                 },
-                "customTypeNameText": "Custom type name",
+                "customTypeNameText": "Custom type name*",
                 "customPropertyNameText": "Custom property name*",
                 "ignoreDefaultQueries": "Remove {{type}}ByPath and {{type}}ById entry points",
                 "mapToCustomType": "Map to pre-defined type",

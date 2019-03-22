@@ -145,7 +145,7 @@ const AddTypeDialog = ({classes, defaultNodeTypeNames, allNodeTypeNames, t, open
                     value={!_.isNil(typeName) ? typeName : ''}
                     error={duplicateName}
                     onKeyPress={e => {
-                        if (e.key === 'Enter' && !duplicateName) {
+                        if (e.key === 'Enter' && !duplicateName && !nodeType && !typeName) {
                             saveTypeAndClose();
                         } else if (e.which === 32) {
                             e.preventDefault();
@@ -186,7 +186,7 @@ const AddTypeDialog = ({classes, defaultNodeTypeNames, allNodeTypeNames, t, open
                     </Typography>
                 </Button>
                 <Button color="primary"
-                        disabled={duplicateName}
+                        disabled={duplicateName || !nodeType || !typeName}
                         onClick={saveTypeAndClose}
                 >
                     <Typography color="inherit" variant="zeta">
