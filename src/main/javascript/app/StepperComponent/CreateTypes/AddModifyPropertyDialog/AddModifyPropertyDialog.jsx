@@ -189,9 +189,13 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, channel, ava
 
     const selectJCRProperty = event => {
         const value = event.target.value;
+        // If selected prop is 'NONE', unset the property
+        if (!value) {
+            updateSelectedProp({jcrPropertyName: ''});
+            return;
+        }
         let isList = false;
-
-        const prop = nodeProperties.find(p => p.name === value);
+        const prop = nodeProperties.find(p => p.name === value || p.name + p.requiredType === value);
         if (value.startsWith(C.MULTIPLE_CHILDREN_INDICATOR)) {
             isList = true;
         } else {
@@ -201,8 +205,12 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, channel, ava
             jcrPropertyName: value,
             isListType: isList
         };
-        // Only preset custom property name if this dialog is property (not map to type)
-        if (channel === 'PROPERTY') {
+
+        // Preset custom property name
+        if (mode === C.DIALOG_MODE_ADD && channel === 'PROPERTY') {
+            selectedProp.propertyName = _.camelCase(removeNodeTypePrefix(prop.name));
+        } else if (mode === C.DIALOG_MODE_ADD && channel === 'MAP_TO_TYPE' && value.indexOf('*') === -1) {
+            // Preset only if the property is not a list of children nodes.
             selectedProp.propertyName = _.camelCase(removeNodeTypePrefix(prop.name));
         }
         updateSelectedProp(selectedProp);
@@ -322,7 +330,17 @@ const TypeMappingChannel = ({t, mode, updateSelectedProp, addPropertyAndClose, a
     const filterProperties = props => {
         return props.filter(prop => ['jnt:translation', 'jnt:conditionalVisibility'].indexOf(prop.requiredType) === -1);
     };
-
+    const handlePredefinedTypeChange = event => {
+        const prop = {
+            propertyType: event.target.value
+        };
+        // Preset propertyName using predefinted type name IF:
+        // A property is not already selected, or IF the selected property is a list of children(denoted by *)
+        if (mode === C.DIALOG_MODE_ADD && (!selectedJcrPropertyName || selectedJcrPropertyName.startsWith('*'))) {
+            prop.propertyName = _.camelCase(event.target.value);
+        }
+        updateSelectedProp(prop);
+    };
     return (
         <React.Fragment>
             <DialogTitle
@@ -336,7 +354,7 @@ const TypeMappingChannel = ({t, mode, updateSelectedProp, addPropertyAndClose, a
                                         value={selectedPropertyType.replace(/(\[|])/g, '')}
                                         handleOpen={() => setPredefinedTypeSelector(true)}
                                         handleClose={() => setPredefinedTypeSelector(false)}
-                                        handleChange={event => updateSelectedProp({propertyType: event.target.value, propertyName: _.camelCase(event.target.value)})}/>
+                                        handleChange={handlePredefinedTypeChange}/>
                 <PropertySelector open={showPropertySelector}
                                   t={t}
                                   nodeProperties={sortProperties(filterProperties(nodeProperties))}
