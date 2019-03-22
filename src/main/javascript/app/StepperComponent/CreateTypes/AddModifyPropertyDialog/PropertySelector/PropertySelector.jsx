@@ -3,7 +3,7 @@ import {Typography} from '@jahia/ds-mui-theme';
 import * as _ from 'lodash';
 import React from 'react';
 
-const PropertySelectCom = ({classes, t, disabled, value, open, handleClose, handleChange, handleOpen, nodeProperties}) => (
+const PropertySelector = ({classes, t, disabled, value, open, handleClose, handleChange, handleOpen, nodeProperties}) => (
     <FormControl classes={classes} disabled={disabled}>
         <InputLabel shrink htmlFor="property-name">
             <Typography color="alpha" variant="zeta">
@@ -44,4 +44,4 @@ export default withStyles({
         margin: '0px 0px',
         width: '100%'
     }
-})(PropertySelectCom);
+})(PropertySelector);

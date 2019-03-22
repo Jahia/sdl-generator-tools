@@ -61,10 +61,6 @@ const AddTypeDialog = ({classes, defaultNodeTypeNames, allNodeTypeNames, t, open
         updateIgnoreDefaultQueries(false);
     };
 
-    const generateCustomTypeName = value => {
-        updateTypeName(upperCaseFirst(_.camelCase(value)));
-    };
-
     const duplicateName = (mode === C.DIALOG_MODE_EDIT && typeName === customTypeName) ? false : availableTypeNames.indexOf(typeName) !== -1;
 
     const saveTypeAndClose = () => {
@@ -132,7 +128,7 @@ const AddTypeDialog = ({classes, defaultNodeTypeNames, allNodeTypeNames, t, open
                             handleChange={event => {
                                 updateNodeType(event.value);
                                 updateDisplayName(event.label);
-                                generateCustomTypeName(event.label);
+                                updateTypeName(upperCaseFirst(_.camelCase(event.label)));
                             }}
                 />
                 <TextField
