@@ -107,8 +107,8 @@ const AddModifyFinderDialog = ({t, open, close, mode, addFinder, modifyFinder, r
     const [showFinderSelector, setFinderSelectorStatus] = useState(false);
     const availableFinders = filterAvailableFinders(mode, selectedFinder, selectedType);
     const cleanUp = () => {
-        updateFinderPrefix(null);
-        updateFinderSuffix(null);
+        updateFinderPrefix('');
+        updateFinderSuffix('');
     };
 
     const addFinderAndClose = () => {
@@ -118,7 +118,6 @@ const AddModifyFinderDialog = ({t, open, close, mode, addFinder, modifyFinder, r
         }
         addOrModifyFinder({name: formatFinderName(finderPrefix, finderSuffix), prefix: finderPrefix, suffix: finderSuffix});
         close();
-        cleanUp();
 
         function addOrModifyFinder(finderInfo) {
             if (mode === C.DIALOG_MODE_ADD) {

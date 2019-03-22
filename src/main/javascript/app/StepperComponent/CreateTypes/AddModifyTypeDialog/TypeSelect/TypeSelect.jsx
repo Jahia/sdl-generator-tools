@@ -122,7 +122,7 @@ const fetchDefaultOptionItem = (optionItems, updateOptionItems, defaultValue) =>
     return optionItems[optionItems.length - 1];
 };
 
-const TypeSelect = ({classes, t, disabled, value, handleClose, handleChange, handleOpen, defaultNodes, allNodes, isLoading}) => {
+const TypeSelect = ({classes, t, value, handleClose, handleChange, handleOpen, defaultNodes, allNodes, isLoading}) => {
     const [optionItems, updateOptionItems] = useState(convertTypesToSelectOptions(defaultNodes, true));
     const defaultItem = !_.isNil(value) ? fetchDefaultOptionItem(optionItems, updateOptionItems, value) : null;
 
@@ -150,8 +150,7 @@ const TypeSelect = ({classes, t, disabled, value, handleClose, handleChange, han
     };
 
     return (
-        <Select isDisabled={disabled}
-                isLoading={isLoading}
+        <Select isLoading={isLoading}
                 classes={classes}
                 defaultValue={defaultItem}
                 options={optionItems}
@@ -169,8 +168,7 @@ const TypeSelect = ({classes, t, disabled, value, handleClose, handleChange, han
 
 TypeSelect.propTypes = {
     classes: PropTypes.object.isRequired,
-    t: PropTypes.func.isRequired,
-    disabled: PropTypes.bool.isRequired
+    t: PropTypes.func.isRequired
 };
 
 export default withStyles(styles, {withTheme: true})(withApollo(TypeSelect));
