@@ -3,7 +3,7 @@ const constants = {
     DIALOG_MODE_EDIT: 'DIALOG_MODE_EDIT',
     TYPE_LIST_MODE_DISPLAY: 'TYPE_LIST_MODE_DISPLAY',
     TYPE_LIST_MODE_CREATE: 'TYPE_LIST_MODE_CREATE',
-    PREDEFINED_SDL_TYPES: ['Asset', 'ImageAsset', 'Metadata'],
+    PREDEFINED_SDL_TYPES: ['Asset', 'Category', 'ImageAsset', 'Metadata'],
     JCR_TO_SDL_TYPE_MAP: {
         NAME: 'String',
         STRING: 'String',
