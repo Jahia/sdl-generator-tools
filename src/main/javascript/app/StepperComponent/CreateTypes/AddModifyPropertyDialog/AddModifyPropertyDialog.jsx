@@ -64,7 +64,7 @@ const sortProperties = nodeProperties => {
     return _.sortBy(propertyItems, [item => item.displayName.toLowerCase()]);
 };
 
-const ContentSwitch = ({mode, t, channel, updateSelectedProp, addPropertyAndClose, availableNodeTypes, selectedProperty, selectJCRProperty, nodeProperties, duplicateName, cancelAndClose, selectChannel, removeAndClose}) => {
+const ContentSwitch = ({mode, t, channel, updateSelectedProp, addPropertyAndClose, availableNodeTypes, selectedProperty, selectJCRProperty, nodeProperties, duplicateName, cancelAndClose, selectChannel, removeAndClose, userInputDetected, updateUserInputDetected}) => {
     if (channel === C.CHANNEL_PROPERTY) {
         return (
             <PropertyChannel t={t}
@@ -76,7 +76,8 @@ const ContentSwitch = ({mode, t, channel, updateSelectedProp, addPropertyAndClos
                              nodeProperties={nodeProperties}
                              duplicateName={duplicateName}
                              cancelAndClose={cancelAndClose}
-                             removeAndClose={removeAndClose}/>
+                             removeAndClose={removeAndClose}
+                             updateUserInputDetected={updateUserInputDetected}/>
         );
     }
     if (channel === C.CHANNEL_MAP_TO_TYPE) {
@@ -91,7 +92,9 @@ const ContentSwitch = ({mode, t, channel, updateSelectedProp, addPropertyAndClos
                                 nodeProperties={nodeProperties}
                                 duplicateName={duplicateName}
                                 cancelAndClose={cancelAndClose}
-                                removeAndClose={removeAndClose}/>
+                                removeAndClose={removeAndClose}
+                                userInputDetected={userInputDetected}
+                                updateUserInputDetected={updateUserInputDetected}/>
         );
     }
 
@@ -112,6 +115,8 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, channel, ava
     const selectedJcrPropertyName = resolveSelectedProp(selectedProperty, 'jcrPropertyName');
     const selectedPropertyType = resolveSelectedProp(selectedProperty, 'propertyType');
     const selectedIsPredefinedType = resolveSelectedProp(selectedProperty, 'isPredefinedType', false);
+
+    const [userInputDetected, updateUserInputDetected] = useState(false);
 
     if (selectedIsPredefinedType) {
         if (channel !== C.CHANNEL_MAP_TO_TYPE) {
@@ -167,13 +172,19 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, channel, ava
         } else {
             addProperty({name: selectedPropertyName, property: jcrPropName, type: propType}, selectionId);
         }
-
+        updateUserInputDetected(false);
         closeDialog();
     };
 
     const removeAndClose = () => {
         removeProperty(selectedProperty.propertyIndex, selectionId);
         removeFinders();
+        updateUserInputDetected(false);
+        closeDialog();
+    };
+
+    const cancelAndClose = () => {
+        updateUserInputDetected(false);
         closeDialog();
     };
 
@@ -203,9 +214,9 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, channel, ava
         };
 
         // Preset custom property name
-        if (mode === C.DIALOG_MODE_ADD && channel === 'PROPERTY') {
+        if (mode === C.DIALOG_MODE_ADD && !userInputDetected && channel === 'PROPERTY') {
             selectedProp.propertyName = _.camelCase(removeNodeTypePrefix(prop.name));
-        } else if (mode === C.DIALOG_MODE_ADD && channel === 'MAP_TO_TYPE' && value.indexOf('*') === -1) {
+        } else if (mode === C.DIALOG_MODE_ADD && !userInputDetected && channel === 'MAP_TO_TYPE' && value.indexOf('*') === -1) {
             // Preset only if the property is not a list of children nodes.
             selectedProp.propertyName = _.camelCase(removeNodeTypePrefix(prop.name));
         }
@@ -229,15 +240,17 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, channel, ava
                 selectJCRProperty={selectJCRProperty}
                 nodeProperties={nodeProperties}
                 duplicateName={duplicateName}
-                cancelAndClose={closeDialog}
+                cancelAndClose={cancelAndClose}
                 selectChannel={selectChannel}
                 removeAndClose={removeAndClose}
+                userInputDetected={userInputDetected}
+                updateUserInputDetected={updateUserInputDetected}
             />
         </Dialog>
     );
 };
 
-const PropertyChannel = ({t, mode, updateSelectedProp, addPropertyAndClose, selectedProperty, cancelAndClose, selectJCRProperty, nodeProperties, duplicateName, removeAndClose}) => {
+const PropertyChannel = ({t, mode, updateSelectedProp, addPropertyAndClose, selectedProperty, cancelAndClose, selectJCRProperty, nodeProperties, duplicateName, removeAndClose, updateUserInputDetected}) => {
     const selectedPropertyName = resolveSelectedProp(selectedProperty, 'propertyName');
     const selectedJcrPropertyName = resolveSelectedProp(selectedProperty, 'jcrPropertyName');
 
@@ -273,7 +286,16 @@ const PropertyChannel = ({t, mode, updateSelectedProp, addPropertyAndClose, sele
                     type="text"
                     value={selectedPropertyName}
                     error={duplicateName}
+                    onKeyDown={e => {
+                        // Delete key
+                        if (e.which === 8 && selectedPropertyName.length > 0) {
+                            updateUserInputDetected(true);
+                        }
+                    }}
                     onKeyPress={e => {
+                        if (e.which !== 13) {
+                            updateUserInputDetected(true);
+                        }
                         if (e.key === 'Enter' && !duplicateName && !selectedPropertyName && !selectedJcrPropertyName) {
                             addPropertyAndClose();
                         } else if (e.which === 32) {
@@ -315,7 +337,7 @@ const PropertyChannel = ({t, mode, updateSelectedProp, addPropertyAndClose, sele
     );
 };
 
-const TypeMappingChannel = ({t, mode, updateSelectedProp, addPropertyAndClose, availableNodeTypes, selectedProperty, cancelAndClose, removeAndClose, selectJCRProperty, nodeProperties, duplicateName}) => {
+const TypeMappingChannel = ({t, mode, updateSelectedProp, addPropertyAndClose, availableNodeTypes, selectedProperty, cancelAndClose, removeAndClose, selectJCRProperty, nodeProperties, duplicateName, userInputDetected, updateUserInputDetected}) => {
     const selectedPropertyName = resolveSelectedProp(selectedProperty, 'propertyName');
     const selectedJcrPropertyName = resolveSelectedProp(selectedProperty, 'jcrPropertyName');
     const selectedPropertyType = resolveSelectedProp(selectedProperty, 'propertyType');
@@ -333,11 +355,12 @@ const TypeMappingChannel = ({t, mode, updateSelectedProp, addPropertyAndClose, a
         };
         // Preset propertyName using predefinted type name IF:
         // A property is not already selected, or IF the selected property is a list of children(denoted by *)
-        if (mode === C.DIALOG_MODE_ADD && (!selectedJcrPropertyName || selectedJcrPropertyName.startsWith('*'))) {
+        if (mode === C.DIALOG_MODE_ADD && !userInputDetected && (!selectedJcrPropertyName || selectedJcrPropertyName.startsWith('*'))) {
             prop.propertyName = _.camelCase(event.target.value);
         }
         updateSelectedProp(prop);
     };
+
     return (
         <React.Fragment>
             <DialogTitle
@@ -376,7 +399,16 @@ const TypeMappingChannel = ({t, mode, updateSelectedProp, addPropertyAndClose, a
                     type="text"
                     value={selectedPropertyName}
                     error={duplicateName}
+                    onKeyDown={e => {
+                        // Delete key
+                        if (e.which === 8 && selectedPropertyName.length > 0) {
+                            updateUserInputDetected(true);
+                        }
+                    }}
                     onKeyPress={e => {
+                        if (e.which !== 13) {
+                            updateUserInputDetected(true);
+                        }
                         if (e.key === 'Enter' && !duplicateName && !selectedPropertyName && !selectedPropertyType) {
                             addPropertyAndClose();
                         } else if (e.which === 32) {
@@ -428,7 +460,7 @@ const TypeMappingChannel = ({t, mode, updateSelectedProp, addPropertyAndClose, a
                         onClick={addPropertyAndClose}
                 >
                     <Typography color="inherit" variant="zeta">
-                        {t('label.sdlGeneratorTools.saveButton')}
+                        {mode === C.DIALOG_MODE_ADD ? t('label.sdlGeneratorTools.addButton') : t('label.sdlGeneratorTools.updateButton')}
                     </Typography>
                 </Button>
             </DialogActions>

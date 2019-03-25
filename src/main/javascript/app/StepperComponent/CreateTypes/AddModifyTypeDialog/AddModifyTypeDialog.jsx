@@ -54,11 +54,13 @@ const AddTypeDialog = ({classes, defaultNodeTypeNames, allNodeTypeNames, t, open
     const [displayName, updateDisplayName] = useState(customDisplayName);
     const [nodeType, updateNodeType] = useState(jcrNodeType);
     const [ignoreDefaultQueries, updateIgnoreDefaultQueries] = useState(ignoreDefaultQueriesDirective);
+    const [userInputDetected, updateUserInputDetected] = useState(false);
 
     const cleanUp = () => {
         updateTypeName(null);
         updateNodeType(null);
         updateIgnoreDefaultQueries(false);
+        updateUserInputDetected(false);
     };
 
     const duplicateName = (mode === C.DIALOG_MODE_EDIT && typeName === customTypeName) ? false : availableTypeNames.indexOf(typeName) !== -1;
@@ -107,6 +109,19 @@ const AddTypeDialog = ({classes, defaultNodeTypeNames, allNodeTypeNames, t, open
         }
     };
 
+    const handleCustomTypeKeyPress = event => {
+        // Enter
+        if (event.which !== 13) {
+            updateUserInputDetected(true);
+        }
+        if (event.key === 'Enter' && !duplicateName && !nodeType && !typeName) {
+            saveTypeAndClose();
+        } else if (event.which === 32) {
+            event.preventDefault();
+            return false;
+        }
+    };
+
     return (
         <Dialog open={open}
                 classes={classes}
@@ -128,7 +143,9 @@ const AddTypeDialog = ({classes, defaultNodeTypeNames, allNodeTypeNames, t, open
                             handleChange={event => {
                                 updateNodeType(event.value);
                                 updateDisplayName(event.label);
-                                updateTypeName(upperCaseFirst(_.camelCase(event.label)));
+                                if (mode === C.DIALOG_MODE_ADD && !userInputDetected) {
+                                    updateTypeName(upperCaseFirst(_.camelCase(event.label)));
+                                }
                             }}
                 />
                 <TextField
@@ -144,14 +161,13 @@ const AddTypeDialog = ({classes, defaultNodeTypeNames, allNodeTypeNames, t, open
                     type="text"
                     value={!_.isNil(typeName) ? typeName : ''}
                     error={duplicateName}
-                    onKeyPress={e => {
-                        if (e.key === 'Enter' && !duplicateName && !nodeType && !typeName) {
-                            saveTypeAndClose();
-                        } else if (e.which === 32) {
-                            e.preventDefault();
-                            return false;
+                    onKeyDown={e => {
+                        // Delete key
+                        if (e.which === 8 && typeName && typeName.length > 0) {
+                            updateUserInputDetected(true);
                         }
                     }}
+                    onKeyPress={handleCustomTypeKeyPress}
                     onChange={e => updateTypeName(e.target.value)}
                 />
                 <FormGroup row>
@@ -180,12 +196,16 @@ const AddTypeDialog = ({classes, defaultNodeTypeNames, allNodeTypeNames, t, open
                 }
             </DialogContent>
             <DialogActions>
-                <Button color="primary" onClick={cancelAndClose}>
+                <Button color="primary"
+                        variant="contained"
+                        onClick={cancelAndClose}
+                >
                     <Typography color="inherit" variant="zeta">
                         {t('label.sdlGeneratorTools.cancelButton')}
                     </Typography>
                 </Button>
                 <Button color="primary"
+                        variant="contained"
                         disabled={duplicateName || !nodeType || !typeName}
                         onClick={saveTypeAndClose}
                 >
