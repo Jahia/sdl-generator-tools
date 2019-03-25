@@ -137,10 +137,10 @@ const TypeSelect = ({classes, t, value, handleClose, handleChange, handleOpen, d
             const fuse = new Fuse(allNodes,
                 {
                     shouldSort: true,
-                    threshold: 0.8,
+                    threshold: 0.35,
                     location: 0,
-                    distance: 100,
-                    maxPatternLength: 32,
+                    distance: 32,
+                    maxPatternLength: 16,
                     minMatchCharLength: 1,
                     keys: ['displayName']
                 });
