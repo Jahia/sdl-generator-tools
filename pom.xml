@@ -67,6 +67,7 @@
 
     <properties>
         <jahia-depends>default,serverSettings,graphql-dxm-provider</jahia-depends>
+        <yarn.arguments>build:production</yarn.arguments>
     </properties>
 
     <dependencies>
@@ -170,19 +171,20 @@
                         <goals>
                             <goal>yarn</goal>
                         </goals>
-                    </execution>
-                    <execution>
-                        <id>webpack</id>
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>webpack</goal>
-                        </goals>
                         <configuration>
-                            <arguments>${webpack.arguments}</arguments>
+                            <arguments>${yarn.arguments}</arguments>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
         </plugins>
     </build>
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <yarn.arguments>build</yarn.arguments>
+            </properties>
+        </profile>
+    </profiles>
 </project>
