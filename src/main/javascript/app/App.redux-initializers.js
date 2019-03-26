@@ -36,6 +36,7 @@ const addProperty = fieldInfo => {
     return {
         name: fieldInfo.name,
         type: fieldInfo.type,
+        isWeakreference: fieldInfo.isWeakreference,
         directives: [
             {
                 name: 'mapping',

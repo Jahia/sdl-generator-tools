@@ -163,14 +163,21 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, channel, ava
             jcrPropName = '';
         }
 
+        const isWeakreference = nodeProperties.find(p => p.name === jcrPropName && p.requiredType === "WEAKREFERENCE") !== undefined;
         if (mode === C.DIALOG_MODE_EDIT) {
             updateProperty({
                 name: selectedPropertyName,
                 property: jcrPropName,
+                isWeakreference: isWeakreference,
                 type: propType
             }, selectionId, selectedProperty.propertyIndex, oldPropertyName, selection, selectedType);
         } else {
-            addProperty({name: selectedPropertyName, property: jcrPropName, type: propType}, selectionId);
+            addProperty({
+                isWeakreference: isWeakreference,
+                name: selectedPropertyName,
+                property: jcrPropName,
+                type: propType},
+                selectionId);
         }
         updateUserInputDetected(false);
         closeDialog();
@@ -349,7 +356,11 @@ const TypeMappingChannel = ({t, mode, updateSelectedProp, addPropertyAndClose, a
     const filterProperties = props => {
         return props.filter(prop => ['jnt:translation', 'jnt:conditionalVisibility'].indexOf(prop.requiredType) === -1);
     };
+
+    const properties = sortProperties(filterProperties(nodeProperties));
+
     const handlePredefinedTypeChange = event => {
+        const type = event.target.value;
         const prop = {
             propertyType: event.target.value
         };
@@ -378,7 +389,7 @@ const TypeMappingChannel = ({t, mode, updateSelectedProp, addPropertyAndClose, a
                 <PropertySelector open={showPropertySelector}
                                   required={false}
                                   t={t}
-                                  nodeProperties={sortProperties(filterProperties(nodeProperties))}
+                                  nodeProperties={properties}
                                   value={selectedJcrPropertyName}
                                   handleOpen={() => setShowPropertySelector(true)}
                                   handleClose={() => setShowPropertySelector(false)}

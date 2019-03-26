@@ -9,13 +9,14 @@ const filterAvailableFinders = (mode, selectedFinder, selectedType) => {
     if (!selectedType) {
         return [];
     }
+
     let finders = ['all', 'allConnection'];
     // Check and filter out all/allConnection if it already is mapped to an existing finder
     finders = _.without(finders, ...selectedType.queries.filter(finder => finders.indexOf(finder.suffix) !== -1).map(finder => finder.suffix));
     // Add finders based on type properties, omit those that have already been created.
     finders = selectedType.fieldDefinitions.reduce((acc, curr) => {
         // Skip finders for properties mapping to predefined types
-        if (isPredefinedType(curr.type)) {
+        if (isPredefinedType(curr.type) && !curr.isWeakreference) {
             return acc;
         }
         let suffix = generateFinderSuffix(curr.name);
