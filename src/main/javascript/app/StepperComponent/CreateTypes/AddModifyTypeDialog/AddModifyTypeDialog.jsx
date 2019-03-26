@@ -114,7 +114,7 @@ const AddTypeDialog = ({classes, defaultNodeTypeNames, allNodeTypeNames, t, open
         if (event.which !== 13) {
             updateUserInputDetected(true);
         }
-        if (event.key === 'Enter' && !duplicateName && !nodeType && !typeName) {
+        if (event.key === 'Enter' && !duplicateName && nodeType && typeName) {
             saveTypeAndClose();
         } else if (event.which === 32) {
             event.preventDefault();

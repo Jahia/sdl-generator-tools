@@ -296,7 +296,7 @@ const PropertyChannel = ({t, mode, updateSelectedProp, addPropertyAndClose, sele
                         if (e.which !== 13) {
                             updateUserInputDetected(true);
                         }
-                        if (e.key === 'Enter' && !duplicateName && !selectedPropertyName && !selectedJcrPropertyName) {
+                        if (e.key === 'Enter' && !duplicateName && selectedPropertyName && selectedJcrPropertyName) {
                             addPropertyAndClose();
                         } else if (e.which === 32) {
                             e.preventDefault();
