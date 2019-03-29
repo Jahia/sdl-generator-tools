@@ -3,8 +3,8 @@ import {compose} from 'react-apollo';
 import {translate} from 'react-i18next';
 import {withStyles, AppBar, Toolbar, Grid, Paper, Button} from '@material-ui/core';
 import {Typography} from '@jahia/ds-mui-theme';
-import StepperComponent from '../StepperComponent';
-import GQLSchemaViewer from '../GQLSchemaViewer';
+import StepperComponent from '../StepperComponent/index';
+import GQLSchemaViewer from '../GQLSchemaViewer/index';
 
 let styles = theme => ({
     topBar: {

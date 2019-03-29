@@ -38,8 +38,8 @@ import {
     sdlUpdateAddModifyPropertyDialog,
     sdlSelectProperty
 } from '../../StepperComponent.redux-actions';
-import PredefinedTypeSelector from './PredefinedTypeSelector';
-import PropertySelector from './PropertySelector';
+import PredefinedTypeSelector from './PredefinedTypeSelector/index';
+import PropertySelector from './PropertySelector/index';
 
 const resolveSelectedProp = (object, key, optionalReturnValue = '') => {
     if (!_.isEmpty(object) && object[key]) {

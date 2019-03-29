@@ -1,6 +1,6 @@
 import React from 'react';
-import {shallow, shallowWithTheme} from '../../../../enzyme/Enzyme';
-import TypeList from './';
+import {shallowWithTheme} from '@jahia/test-framework';
+import TypeList from './index';
 import {Typography} from '@jahia/ds-mui-theme';
 import configureStore from 'redux-mock-store'
 import C from "../../../App.constants";
@@ -34,18 +34,6 @@ describe('TypeList tests', () => {
         )).toBe(true);
         expect(wrapper.find('[uuid="46e237d9-c125-48c0-a9f8-3c380da7d03b"]')).toBeDefined();
     })
-
-    // test('Test empty mode create', () => {
-    //     const store = mockStore(initialState);
-    //     // const wrapper = shallow(<li><p className={"myClass"}>My item</p></li>);
-    //     const wrapper = shallowWithTheme(<TypeList store={store} mode={C.TYPE_LIST_MODE_CREATE}/>);
-    //     // console.log(wrapper.dive().dive().dive().text());
-    //     console.log(wrapper.dive().dive().dive().debug());
-    //     console.log(wrapper.dive().dive().dive().find('DsTypography[color="alpha"]').text());
-    //     // console.log(wrapper.find('.myClass').get(0));
-    //     // expect(wrapper.find('.myClass').get(0)).toBeDefined();
-    //     expect(wrapper.dive().dive().dive().find('DsTypography[color="alpha"]')).toBeDefined();
-    // })
 });
 
 const initialState = {

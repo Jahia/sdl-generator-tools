@@ -4,8 +4,8 @@ import {
 } from '@material-ui/core';
 import TypesList from './TypesList/TypesList';
 import PropertiesList from './PropertiesList/PropertiesList';
-import AddModifyPropertyDialog from './AddModifyPropertyDialog';
-import AddModifyTypeDialog from './AddModifyTypeDialog';
+import AddModifyPropertyDialog from './AddModifyPropertyDialog/index';
+import AddModifyTypeDialog from './AddModifyTypeDialog/index';
 
 const CreateTypesCom = ({classes}) => {
     return (

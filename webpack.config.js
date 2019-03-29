@@ -5,7 +5,7 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 module.exports = (env, argv) => {
     const config = {
         entry: {
-            'sdlGeneratorTools': [path.resolve(__dirname, 'src/main/javascript/app', 'index.js')]
+            'sdlGeneratorTools': [path.resolve(__dirname, 'src/javascript/app', 'index.js')]
         },
 
         output: {

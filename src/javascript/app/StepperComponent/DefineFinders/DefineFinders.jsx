@@ -1,9 +1,9 @@
 import React from 'react';
 import {Grid, withStyles} from '@material-ui/core';
-import AddModifyFinderDialog from './AddModifyFinderDialog';
+import AddModifyFinderDialog from './AddModifyFinderDialog/index';
 import C from '../../App.constants';
-import TypesList from '../CreateTypes/TypesList';
-import FindersList from './FindersList';
+import TypesList from '../CreateTypes/TypesList/index';
+import FindersList from './FindersList/index';
 
 const DefineFindersCom = ({classes}) => {
     return (
