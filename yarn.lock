@@ -702,8 +702,8 @@
     i18next-xhr-backend "^1.5.1"
 
 "@jahia/test-framework@^1.0.0-beta.20190329150204":
-  version "1.0.0-beta.20190329170857"
-  resolved "http://npm.int.jahia.com:4873/@jahia%2ftest-framework/-/test-framework-1.0.0-beta.20190329170857.tgz#9d0e495617daf754e0ea090e6ad079fdf25408d4"
+  version "1.0.0-beta.20190329173153"
+  resolved "http://npm.int.jahia.com:4873/@jahia%2ftest-framework/-/test-framework-1.0.0-beta.20190329173153.tgz#1accfe821b0493609558855f725018ca74912bb2"
   dependencies:
     babel-jest "^24.5.0"
     enzyme "^3.9.0"
