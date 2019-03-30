@@ -188,19 +188,9 @@ const AddModifyFinderDialog = ({t, open, close, mode, addFinder, modifyFinder, r
                            onChange={e => updateFinderPrefix(e.target.value)}
                 />
                 <FinderPreview finderPrefix={finderPrefix} finderSuffix={finderSuffix}/>
-                {
-                    mode === C.DIALOG_MODE_EDIT &&
-                    <Button color="primary" onClick={removeAndClose}>
-                        <Typography color="inherit" variant="zeta">
-                            {t('label.sdlGeneratorTools.deleteButton')}
-                        </Typography>
-                        <Close/>
-                    </Button>
-                }
             </DialogContent>
             <DialogActions>
-                <Button color="primary"
-                        variant="contained"
+                <Button variant="ghost"
                         onClick={cancelAndClose}
                 >
                     <Typography color="inherit" variant="zeta">
@@ -215,6 +205,17 @@ const AddModifyFinderDialog = ({t, open, close, mode, addFinder, modifyFinder, r
                         {mode === C.DIALOG_MODE_ADD ? t('label.sdlGeneratorTools.addButton') : t('label.sdlGeneratorTools.updateButton')}
                     </Typography>
                 </Button>
+                {
+                    mode === C.DIALOG_MODE_EDIT &&
+                    <Button color="secondary"
+                            variant="contained"
+                            onClick={removeAndClose}
+                    >
+                        <Typography color="inherit" variant="zeta">
+                            {t('label.sdlGeneratorTools.deleteButton')}
+                        </Typography>
+                    </Button>
+                }
             </DialogActions>
         </Dialog>
     );
