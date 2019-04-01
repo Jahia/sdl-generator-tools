@@ -23,7 +23,6 @@ import {
     getAvailableTypeNames,
     getAvailablePropertyNames, formatFinderName
 } from '../../StepperComponent.utils';
-import {Close} from '@material-ui/icons';
 import C from '../../../App.constants';
 import gqlQueries from '../CreateTypes.gql-queries';
 import {
@@ -173,11 +172,12 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, channel, ava
             }, selectionId, selectedProperty.propertyIndex, oldPropertyName, selection, selectedType);
         } else {
             addProperty({
-                isWeakreference: isWeakreference,
-                name: selectedPropertyName,
-                property: jcrPropName,
-                type: propType},
-            selectionId);
+                    isWeakreference: isWeakreference,
+                    name: selectedPropertyName,
+                    property: jcrPropName,
+                    type: propType
+                },
+                selectionId);
         }
         updateUserInputDetected(false);
         closeDialog();
@@ -548,7 +548,11 @@ const mapDispatchToProps = dispatch => {
                     const finderInfo = selectedType.queries[index];
                     const finderPrefix = finderInfo.prefix;
                     const finderSuffix = 'by' + upperCaseFirst(propertyInfo.name) + finder;
-                    dispatch(sdlModifyFinderOfType(selection, index, {name: formatFinderName(finderPrefix, finderSuffix), prefix: finderPrefix, suffix: finderSuffix}));
+                    dispatch(sdlModifyFinderOfType(selection, index, {
+                        name: formatFinderName(finderPrefix, finderSuffix),
+                        prefix: finderPrefix,
+                        suffix: finderSuffix
+                    }));
                 }
             });
         },

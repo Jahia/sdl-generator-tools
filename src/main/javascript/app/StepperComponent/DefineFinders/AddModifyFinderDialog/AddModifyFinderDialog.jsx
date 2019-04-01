@@ -9,7 +9,6 @@ import {translate} from 'react-i18next';
 import {formatFinderName, upperCaseFirst} from '../../StepperComponent.utils';
 import C from '../../../App.constants';
 import * as _ from 'lodash';
-import {Close} from '@material-ui/icons';
 import {
     sdlAddFinderToType,
     sdlModifyFinderOfType,
@@ -32,7 +31,7 @@ const FinderSelectCom = ({classes, t, open, handleClose, handleOpen, handleChang
                 <Typography color="alpha" variant="zeta">
                     {t('label.sdlGeneratorTools.defineFinder.selectAFinder')}
                 </Typography>
-        }
+            }
             </InputLabel>
             <Select open={open}
                     value={value}
@@ -43,14 +42,14 @@ const FinderSelectCom = ({classes, t, open, handleClose, handleOpen, handleChang
                     renderValue={renderFinder}
             >
                 {
-                values.map(finder => (
-                    <MenuItem key={finder}
-                              value={finder}
-                              classes={{root: classes.menuItem}}
-                    >{renderFinder(finder)}
-                    </MenuItem>
-                ))
-            }
+                    values.map(finder => (
+                        <MenuItem key={finder}
+                                  value={finder}
+                                  classes={{root: classes.menuItem}}
+                        >{renderFinder(finder)}
+                        </MenuItem>
+                    ))
+                }
             </Select>
         </FormControl>
     );
@@ -116,7 +115,11 @@ const AddModifyFinderDialog = ({t, open, close, mode, addFinder, modifyFinder, r
             close();
             return;
         }
-        addOrModifyFinder({name: formatFinderName(finderPrefix, finderSuffix), prefix: finderPrefix, suffix: finderSuffix});
+        addOrModifyFinder({
+            name: formatFinderName(finderPrefix, finderSuffix),
+            prefix: finderPrefix,
+            suffix: finderSuffix
+        });
         close();
 
         function addOrModifyFinder(finderInfo) {
@@ -152,7 +155,8 @@ const AddModifyFinderDialog = ({t, open, close, mode, addFinder, modifyFinder, r
                 aria-labelledby="form-dialog-title"
                 onEnter={openDialog}
         >
-            <DialogTitle id="form-dialog-title">{t(mode === C.DIALOG_MODE_ADD ? 'label.sdlGeneratorTools.defineFinder.addAFinder' :
+            <DialogTitle
+                id="form-dialog-title">{t(mode === C.DIALOG_MODE_ADD ? 'label.sdlGeneratorTools.defineFinder.addAFinder' :
                 'label.sdlGeneratorTools.defineFinder.editAFinder')}
             </DialogTitle>
             <DialogContent style={{width: 400}}>
