@@ -156,7 +156,8 @@ const AddModifyFinderDialog = ({t, open, close, mode, addFinder, modifyFinder, r
                 onEnter={openDialog}
         >
             <DialogTitle
-                id="form-dialog-title">{t(mode === C.DIALOG_MODE_ADD ? 'label.sdlGeneratorTools.defineFinder.addAFinder' :
+                id="form-dialog-title"
+            >{t(mode === C.DIALOG_MODE_ADD ? 'label.sdlGeneratorTools.defineFinder.addAFinder' :
                 'label.sdlGeneratorTools.defineFinder.editAFinder')}
             </DialogTitle>
             <DialogContent style={{width: 400}}>

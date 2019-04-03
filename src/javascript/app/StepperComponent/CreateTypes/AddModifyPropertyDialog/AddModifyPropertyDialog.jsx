@@ -172,12 +172,12 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, channel, ava
             }, selectionId, selectedProperty.propertyIndex, oldPropertyName, selection, selectedType);
         } else {
             addProperty({
-                    isWeakreference: isWeakreference,
-                    name: selectedPropertyName,
-                    property: jcrPropName,
-                    type: propType
-                },
-                selectionId);
+                isWeakreference: isWeakreference,
+                name: selectedPropertyName,
+                property: jcrPropName,
+                type: propType
+            },
+            selectionId);
         }
         updateUserInputDetected(false);
         closeDialog();

@@ -2,11 +2,10 @@ import React from 'react';
 import {shallowWithTheme} from '@jahia/test-framework';
 import TypeList from './index';
 import {Typography} from '@jahia/ds-mui-theme';
-import configureStore from 'redux-mock-store'
-import C from "../../../App.constants";
+import configureStore from 'redux-mock-store';
+import C from '../../../App.constants';
 
 describe('TypeList tests', () => {
-
     let mockStore = configureStore();
 
     test('Test empty list in mode create', () => {
@@ -33,7 +32,7 @@ describe('TypeList tests', () => {
             <Typography color="alpha" variant="zeta">label.sdlGeneratorTools.createTypes.addNewTypeButton</Typography>
         )).toBe(true);
         expect(wrapper.find('[uuid="46e237d9-c125-48c0-a9f8-3c380da7d03b"]')).toBeDefined();
-    })
+    });
 });
 
 const initialState = {
