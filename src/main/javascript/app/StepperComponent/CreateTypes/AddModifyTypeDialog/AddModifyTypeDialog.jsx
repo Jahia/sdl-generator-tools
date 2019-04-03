@@ -9,13 +9,12 @@ import DialogContent from '@material-ui/core/DialogContent/DialogContent';
 import TextField from '@material-ui/core/TextField/TextField';
 import DialogActions from '@material-ui/core/DialogActions/DialogActions';
 import {
-    Button,
     FormControlLabel,
     FormGroup,
     Switch,
     withStyles
 } from '@material-ui/core';
-import {Typography} from '@jahia/ds-mui-theme';
+import {Typography, Button} from '@jahia/ds-mui-theme';
 import * as _ from 'lodash';
 import C from '../../../App.constants';
 import {
@@ -187,27 +186,22 @@ const AddTypeDialog = ({classes, defaultNodeTypeNames, allNodeTypeNames, t, open
             </DialogContent>
             <DialogActions>
                 <Button variant="ghost"
+                        size="normal"
                         onClick={cancelAndClose}
                 >
-                    <Typography color="inherit" variant="zeta">
                         {t('label.sdlGeneratorTools.cancelButton')}
-                    </Typography>
                 </Button>
-                <Button color="primary"
-                        variant="contained"
+                <Button variant="primary"
+                        size="normal"
                         disabled={duplicateName || !nodeType || !typeName}
                         onClick={saveTypeAndClose}
                 >
-                    <Typography color="inherit" variant="zeta">
                         {mode === C.DIALOG_MODE_ADD ? t('label.sdlGeneratorTools.addButton') : t('label.sdlGeneratorTools.updateButton')}
-                    </Typography>
                 </Button>
                 {
                     mode === C.DIALOG_MODE_EDIT &&
-                    <Button color="secondary" variant="contained" onClick={removeAndClose}>
-                        <Typography color="inherit" variant="zeta">
+                    <Button variant="secondary" size="normal" onClick={removeAndClose}>
                             {t('label.sdlGeneratorTools.deleteButton')}
-                        </Typography>
                     </Button>
                 }
             </DialogActions>

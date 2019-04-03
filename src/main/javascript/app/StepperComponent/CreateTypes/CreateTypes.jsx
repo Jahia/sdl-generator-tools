@@ -26,7 +26,6 @@ const CreateTypesCom = ({classes}) => {
 
 const CreateTypes = withStyles({
     container: {
-        height: '73%'
     },
     item: {
         maxHeight: '100%'

@@ -21,8 +21,8 @@ import {connect} from 'react-redux';
 const styles = theme => ({
     paper: {
         width: '100%',
-        height: '100%',
-        padding: '6px 0px',
+        minHeight: '35vh',
+        padding:  theme.spacing.unit * 2 + 'px 0',
         overflowY: 'auto'
     },
     listButton: {
@@ -48,7 +48,7 @@ const PropertiesList = ({classes, t, selectedType, selectProperty, addModifyProp
         <Paper className={classes.paper}>
             <List subheader={
                 <ListSubheader>
-                    <Typography color="alpha" variant="omega">
+                    <Typography color="alpha" variant="zeta">
                         {t('label.sdlGeneratorTools.createTypes.propertiesText')}
                     </Typography>
                 </ListSubheader>

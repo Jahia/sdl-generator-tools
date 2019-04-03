@@ -6,12 +6,11 @@ import DialogContent from '@material-ui/core/DialogContent/DialogContent';
 import TextField from '@material-ui/core/TextField/TextField';
 import DialogActions from '@material-ui/core/DialogActions/DialogActions';
 import {
-    Button,
     FormControlLabel,
     FormGroup,
     Switch
 } from '@material-ui/core';
-import {Typography} from '@jahia/ds-mui-theme';
+import {Typography, Button} from '@jahia/ds-mui-theme';
 import {compose, graphql, withApollo} from 'react-apollo';
 import {connect} from 'react-redux';
 import {translate} from 'react-i18next';
@@ -320,8 +319,8 @@ const PropertyChannel = ({t, mode, updateSelectedProp, addPropertyAndClose, sele
                     </Typography>
                 </Button>
                 <Button disabled={duplicateName || !selectedPropertyName || !selectedJcrPropertyName}
-                        color="primary"
-                        variant="contained"
+                        variant="primary"
+                        size="normal"
                         onClick={addPropertyAndClose}
                 >
                     <Typography color="inherit" variant="zeta">
@@ -330,8 +329,8 @@ const PropertyChannel = ({t, mode, updateSelectedProp, addPropertyAndClose, sele
                 </Button>
                 {
                     mode === C.DIALOG_MODE_EDIT &&
-                    <Button color="secondary"
-                            variant="contained"
+                    <Button variant="secondary"
+                            size="normal"
                             onClick={removeAndClose}
                     >
                         <Typography color="inherit" variant="zeta">
