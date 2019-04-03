@@ -780,9 +780,9 @@
   integrity sha512-rLu3wcBWH4P5q1CGoSSH/i9hrXs7SlbRLkoq9IGuoPYNGQvDJ3pt/wmOM+XgYjIDRMVIdkUWt0RsfzF50JfnCw==
 
 "@jahia/apollo-dx@^1.0.0-beta.20190226170343":
-  version "1.0.0-beta.20190401120852"
-  resolved "http://npm.int.jahia.com:4873/@jahia%2fapollo-dx/-/apollo-dx-1.0.0-beta.20190401120852.tgz#def30d4d2b7b191289f6644a4601d831e8c9da6f"
-  integrity sha512-1hTGwPxJqqBS3JIE+jZFa5jRhI+nFr5FZVIt7taghbUSNZPocc75RNDgvA1HPgMDhfXiwiA8/oExzSAfpUQYuQ==
+  version "1.0.0-beta.20190403192100"
+  resolved "http://npm.int.jahia.com:4873/@jahia%2fapollo-dx/-/apollo-dx-1.0.0-beta.20190403192100.tgz#c8a3ae7ed64e6fd69977d10f3a7b888d74996222"
+  integrity sha512-o01cT16VKifhzzRMmutZo9iOla2BhRMepBIOoM/Wn0GfYNO7EBih8A838HzCIl8FF4GD3GWoFvotnZ0/aBakAA==
   dependencies:
     apollo-cache-inmemory "^1.2.2"
     apollo-client "^2.3.2"
@@ -796,9 +796,9 @@
     zen-observable "^0.8.8"
 
 "@jahia/ds-mui-theme@^1.0.0-beta.20190205085737", "@jahia/ds-mui-theme@^1.0.0-beta.20190313104751":
-  version "1.0.0-beta.20190401120855"
-  resolved "http://npm.int.jahia.com:4873/@jahia%2fds-mui-theme/-/ds-mui-theme-1.0.0-beta.20190401120855.tgz#d4c2b196786a54a30347ab4b186d11bcd7b39a10"
-  integrity sha512-SqVICDAWqbwdOi3uIhMJBVIUvGPS9im6zgCURDCVBIXtPP49kRmkmWyjGXSmjZDXM0ZjPN1+kgJJx4xhJmid6Q==
+  version "1.0.0-beta.20190403192103"
+  resolved "http://npm.int.jahia.com:4873/@jahia%2fds-mui-theme/-/ds-mui-theme-1.0.0-beta.20190403192103.tgz#c54a8632a5827ffaea843ef9e5226edfef948294"
+  integrity sha512-9cFqKqLbLzDoNdaLxXjOa2iivyE0/p3LgRfFtYmaj6y7f8qbb5F9Xaa9HMExre9lxWTaq5xkB+8aNZ2Mr1UaDg==
   dependencies:
     "@babel/core" "^7.4.0"
     "@babel/preset-env" "^7.4.2"
@@ -811,18 +811,18 @@
     prop-types "^15.6.2"
 
 "@jahia/i18next@^1.0.0-beta.20180628145923":
-  version "1.0.0-beta.20190401120852"
-  resolved "http://npm.int.jahia.com:4873/@jahia%2fi18next/-/i18next-1.0.0-beta.20190401120852.tgz#de555fb3dfe5738e1f73e62e42f3bb29de1abd8f"
-  integrity sha512-V1Db4DuPiV04IZXQ8aSCF1yClUsTNIs9hqGpqXfQIQSR7awVV1PiC6SUkW3J969XWBWc+WpieE6R5ldS0QNfrg==
+  version "1.0.0-beta.20190403192100"
+  resolved "http://npm.int.jahia.com:4873/@jahia%2fi18next/-/i18next-1.0.0-beta.20190403192100.tgz#69f33f78fc2d97b83d496c0b527438b9d227ca31"
+  integrity sha512-NRByNSPFdAzGRRZS7Qj4HluNLaZ+yDbAT6dRaRDb+5c6Nfa1nbESsXMUulqiW0sH9RsKFnM+cbCgodQyXcm/2g==
   dependencies:
     i18next "^11.3.2"
     i18next-chained-backend "^0.1.2"
     i18next-xhr-backend "^1.5.1"
 
 "@jahia/icons@^1.0.0-beta.20181011112119":
-  version "1.0.0-beta.20190401120852"
-  resolved "http://npm.int.jahia.com:4873/@jahia%2ficons/-/icons-1.0.0-beta.20190401120852.tgz#7d364d6462dc198dc54c1f773e2e75eb73fcbdf6"
-  integrity sha512-OrpU1W1FlZ3Q4G3UBl5TMbS820tspLAbLukI5CYuaezp6knDyJrkESnkhalRfgTC77kU8rvac/XFSB8zgMVeSg==
+  version "1.0.0-beta.20190403192100"
+  resolved "http://npm.int.jahia.com:4873/@jahia%2ficons/-/icons-1.0.0-beta.20190403192100.tgz#f3b25f0b5a6d2a2b7590ac61512026d0085af285"
+  integrity sha512-G/jVmO5BJHgRS6vALS5xd7PYPvee/pDGgEMiH5eLLtGHMrnPU4Z9KY9tNOUD/aEPepPOV4EquorL8a5oqCjPMA==
   dependencies:
     "@material-ui/core" "^3.6.2"
     "@material-ui/icons" "^3.0.1"
@@ -830,9 +830,9 @@
     recompose "^0.27.1"
 
 "@jahia/layouts@^1.0.0-beta.20190401120852":
-  version "1.0.0-beta.20190401120852"
-  resolved "http://npm.int.jahia.com:4873/@jahia%2flayouts/-/layouts-1.0.0-beta.20190401120852.tgz#4568dd08903941f0b5df3ca5bf46c153306ed437"
-  integrity sha512-ze8e3EIgBrpinlRnRQJWKImo6eA9dZB2seyv3HCgmdxxV+4cskrRtYLT/tyx5BPncFu17TcR64OMvYsLJLCBYA==
+  version "1.0.0-beta.20190403192100"
+  resolved "http://npm.int.jahia.com:4873/@jahia%2flayouts/-/layouts-1.0.0-beta.20190403192100.tgz#8d398addb60a1d8655920728fe5c137342e3b2f3"
+  integrity sha512-8arYLgrgqRDzkQeBtB0pN1rQXPpX9fpv2j0Jwqeu9c4G7rTeOytAAUcvufzEzfD0F0XihuHzvRSQGAvSHIITWQ==
   dependencies:
     "@material-ui/core" "^3.6.2"
     classnames "^2.2.6"
@@ -842,9 +842,9 @@
     recompose "^0.30.0"
 
 "@jahia/react-material@^1.0.0-beta.20190401120857":
-  version "1.0.0-beta.20190401120857"
-  resolved "http://npm.int.jahia.com:4873/@jahia%2freact-material/-/react-material-1.0.0-beta.20190401120857.tgz#f36aa5d8246291b13d558754b5fad5c8f537a960"
-  integrity sha512-NcauBEk9YML1lcbFOkzfaj7Xz+hLrK8CaQNQVYHNCdadvIylannOlyr+2QIyJwE6kBAKR/Qb+fQbitf1TT73IA==
+  version "1.0.0-beta.20190403192105"
+  resolved "http://npm.int.jahia.com:4873/@jahia%2freact-material/-/react-material-1.0.0-beta.20190403192105.tgz#62bd5909f051b21c39a1a70212c406dc4fb9140d"
+  integrity sha512-9ormkY0OASyowS2T9HeJVYmpo8Bg1AB2YO+q08GB+fCOOn3IwKr90UbqguUR7kPfDWLzw1wUu8J2J1YPDfxN8w==
   dependencies:
     "@jahia/ds-mui-theme" "^1.0.0-beta.20190313104751"
     "@jahia/icons" "^1.0.0-beta.20181011112119"
@@ -1137,9 +1137,9 @@
     "@types/react" "*"
 
 "@types/react@*":
-  version "16.8.10"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-16.8.10.tgz#1ccb6fde17f71a62ef055382ec68bdc379d4d8d9"
-  integrity sha512-7bUQeZKP4XZH/aB4i7k1i5yuwymDu/hnLMhD9NjVZvQQH7ZUgRN3d6iu8YXzx4sN/tNr0bj8jgguk8hhObzGvA==
+  version "16.8.11"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-16.8.11.tgz#2b13a7ab797b7ed1309e3cbf69994405d2391623"
+  integrity sha512-xEqvjpe7L5xAMlbZYUxxrgo3+ZXBvdnbhDtLWE/Md5LRw/quMRebZBIbqyKCl/77i64rqVtC2/WVDuYmO/diJQ==
   dependencies:
     "@types/prop-types" "*"
     csstype "^2.2.0"
@@ -3976,7 +3976,7 @@ hoist-non-react-statics@^2.3.1, hoist-non-react-statics@^2.5.0:
   resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-2.5.5.tgz#c5903cf409c0dfd908f388e619d86b9c1174cb47"
   integrity sha512-rqcy4pJo55FTTLWt+bU8ukscqHeE/e9KWvsOW2b/a3afxQZhwkQdT1rPPCJ0rYXdj4vNcasY8zHTH+jF/qStxw==
 
-hoist-non-react-statics@^3.1.0, hoist-non-react-statics@^3.2.1, hoist-non-react-statics@^3.3.0:
+hoist-non-react-statics@^3.0.0, hoist-non-react-statics@^3.1.0, hoist-non-react-statics@^3.2.1:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-3.3.0.tgz#b09178f0122184fb95acf525daaecb4d8f45958b"
   integrity sha512-0XsbTXxgiaCDYDIWFcwkmerZPSwywfUqYmwT4jzewKTQSWoE6FCMoUVOeBJWK3E/CrWbxRG3m5GzY4lnIwGRBA==
@@ -6532,16 +6532,16 @@ react-ace@^6.4.0:
     lodash.isequal "^4.5.0"
     prop-types "^15.6.2"
 
-react-apollo@^2.1.3:
-  version "2.5.3"
-  resolved "https://registry.yarnpkg.com/react-apollo/-/react-apollo-2.5.3.tgz#9844a522894a6e0392f6a982c6052348d9a4ae12"
-  integrity sha512-sBh7M3h4xdbck8NFnn1nlUG0mD0hCTeIcvov4A8hagxjOyTVSakoum+DP6rYNaHuAZFDS3oNurNNSbGZmgoU6g==
+react-apollo@2.5.2:
+  version "2.5.2"
+  resolved "https://registry.yarnpkg.com/react-apollo/-/react-apollo-2.5.2.tgz#6732c6af55e6adc9ebf97bf189e867a893c449d3"
+  integrity sha512-lmglhG6NQ+lfAUDzx8ZgelWKUbvxBhhy1l7Z2ksgtQ8+FVqwX7i6p5O3zicAZZlIdKzdq82V0kqq5WkxEsffrA==
   dependencies:
     apollo-utilities "^1.2.1"
-    hoist-non-react-statics "^3.3.0"
+    hoist-non-react-statics "^3.0.0"
     lodash.isequal "^4.5.0"
-    prop-types "^15.7.2"
-    ts-invariant "^0.3.2"
+    prop-types "^15.6.0"
+    ts-invariant "^0.3.0"
     tslib "^1.9.3"
 
 react-dom@^16.4.0:
@@ -7801,7 +7801,7 @@ ts-invariant@^0.2.1:
   dependencies:
     tslib "^1.9.3"
 
-ts-invariant@^0.3.2:
+ts-invariant@^0.3.0, ts-invariant@^0.3.2:
   version "0.3.2"
   resolved "https://registry.yarnpkg.com/ts-invariant/-/ts-invariant-0.3.2.tgz#89a2ffeb70879b777258df1df1c59383c35209b0"
   integrity sha512-QsY8BCaRnHiB5T6iE4DPlJMAKEG3gzMiUco9FEt1jUXQf0XP6zi0idT0i0rMTu8A326JqNSDsmlkA9dRSh1TRg==
