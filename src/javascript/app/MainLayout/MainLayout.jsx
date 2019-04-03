@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'react-props';
 import {compose} from 'react-apollo';
 import {translate} from 'react-i18next';
 import {withStyles, AppBar, Toolbar, Grid, Paper, Button} from '@material-ui/core';
@@ -6,7 +7,7 @@ import {Typography} from '@jahia/ds-mui-theme';
 import StepperComponent from '../StepperComponent/index';
 import GQLSchemaViewer from '../GQLSchemaViewer/index';
 
-let styles = theme => ({
+let styles = () => ({
     topBar: {
         background: '#3B3D40',
         color: '#fff'
@@ -91,6 +92,12 @@ const MainLayout = ({classes, t, ctx}) => {
 
         </React.Fragment>
     );
+};
+
+MainLayout.propTypes = {
+    classes: PropTypes.object.isRequired,
+    t: PropTypes.object.isRequired,
+    ctx: PropTypes.object.isRequired
 };
 
 export default compose(

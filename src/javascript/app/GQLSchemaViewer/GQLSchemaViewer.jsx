@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'react-props';
 import {compose} from 'react-apollo';
 import {translate} from 'react-i18next';
 import {withStyles, Grid} from '@material-ui/core';
@@ -50,6 +51,12 @@ const GQLSchemaViewer = ({classes, t, nodeTypes}) => {
             </Grid>
         </React.Fragment>
     );
+};
+
+GQLSchemaViewer.propTypes = {
+    classes: PropTypes.object.isRequired,
+    t: PropTypes.object.isRequired,
+    nodeTypes: PropTypes.object.isRequired
 };
 
 export default compose(

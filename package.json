@@ -4,8 +4,7 @@
   "description": "Jahia module for providing a set of tools for GraphQL schema generation",
   "main": "main.js",
   "scripts": {
-    "build": "yarn webpack",
-    "webpack": "npx --node-arg=--max_old_space_size=2048 webpack",
+    "build": "webpack",
     "build:analyze": "yarn build --analyze",
     "build:production": "yarn build -p",
     "build:production-analyze": "yarn build -p --analyze",
@@ -77,6 +76,7 @@
     "react-i18next": "^7.3.1",
     "react-iframe": "^1.2.0",
     "react-loadable": "^5.5.0",
+    "react-props": "^0.0.3",
     "react-redux": "^5.0.7",
     "react-router": "^4.3.1",
     "react-select": "^2.4.1",

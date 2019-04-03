@@ -1,6 +1,7 @@
+import React from 'react';
+import PropTypes from 'react-props';
 import {FormControl, InputLabel, ListItemText, MenuItem, Select, withStyles} from '@material-ui/core';
 import {Typography} from '@jahia/ds-mui-theme';
-import React from 'react';
 
 const PredefinedTypeSelector = ({t, classes, disabled, value, open, handleClose, handleChange, handleOpen, types}) => (
     <FormControl className={classes.formControl} disabled={disabled}>
@@ -29,6 +30,18 @@ const PredefinedTypeSelector = ({t, classes, disabled, value, open, handleClose,
         </Select>
     </FormControl>
 );
+
+PredefinedTypeSelector.propTypes = {
+    t: PropTypes.object.isRequired,
+    classes: PropTypes.object.isRequired,
+    disabled: PropTypes.bool.isRequired,
+    value: PropTypes.string.isRequired,
+    open: PropTypes.bool.isRequired,
+    handleClose: PropTypes.func.isRequired,
+    handleChange: PropTypes.func.isRequired,
+    handleOpen: PropTypes.func.isRequired,
+    types: PropTypes.array.isRequired
+};
 
 export default withStyles({
     root: {

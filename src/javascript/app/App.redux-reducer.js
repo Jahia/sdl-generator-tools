@@ -7,15 +7,18 @@ const nodeTypesReducer = (state = {}, action) => {
     const newState = {
         ...state
     };
+
+    let uuid;
+    let nodeType;
     switch (action.type) {
         case actionTypes.SDL_INIT_NODE_TYPES:
             return action.nodeTypes;
         case actionTypes.SDL_ADD_TYPE:
-            const uuid = action.uuid ? action.uuid : generateUUID();
+            uuid = action.uuid ? action.uuid : generateUUID();
             newState[uuid] = getInitialObject(actionTypes.SDL_ADD_TYPE, action.typeInfo);
             return newState;
         case actionTypes.SDL_UPDATE_TYPE:
-            const nodeType = lookUpMappingStringArgumentInfo(newState[action.uuid], 'node');
+            nodeType = lookUpMappingStringArgumentInfo(newState[action.uuid], 'node');
             if (nodeType === action.typeInfo.nodeType) { // If just update type name, keep all other properties
                 newState[action.uuid] = {
                     ...newState[action.uuid],

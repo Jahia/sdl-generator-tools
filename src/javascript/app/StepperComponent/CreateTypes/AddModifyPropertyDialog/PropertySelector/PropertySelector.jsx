@@ -2,6 +2,7 @@ import {FormControl, Input, InputLabel, ListItemText, MenuItem, Select, withStyl
 import {Typography} from '@jahia/ds-mui-theme';
 import * as _ from 'lodash';
 import React from 'react';
+import PropTypes from "react-props";
 
 const PropertySelector = ({classes, t, disabled, value, open, handleClose, handleChange, handleOpen, nodeProperties, required}) => (
     <FormControl classes={classes} disabled={disabled}>
@@ -31,6 +32,19 @@ const PropertySelector = ({classes, t, disabled, value, open, handleClose, handl
         </Select>
     </FormControl>
 );
+
+PropertySelector.propTypes = {
+    t: PropTypes.object.isRequired,
+    classes: PropTypes.object.isRequired,
+    disabled: PropTypes.bool.isRequired,
+    required: PropTypes.bool.isRequired,
+    value: PropTypes.string.isRequired,
+    open: PropTypes.bool.isRequired,
+    handleClose: PropTypes.func.isRequired,
+    handleChange: PropTypes.func.isRequired,
+    handleOpen: PropTypes.func.isRequired,
+    nodeProperties: PropTypes.array.isRequired
+};
 
 export default withStyles({
     root: {
