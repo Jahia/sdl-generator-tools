@@ -84,7 +84,7 @@ const FinderPreviewComp = ({classes, finderPrefix = '', finderSuffix = ''}) => {
         );
     };
     return (
-        <p className={classes.finderPreview}>{format()}</p>
+        <Typography variant="zeta" className={classes.finderPreview}>{format()}</Typography>
     );
 };
 
