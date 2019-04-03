@@ -1,3 +1,3 @@
-const eslintConfig = require('@jahia/test-framework/eslint.config');
+const eslintConfig = require('@jahia/test-framework').eslintConfig;
 
 module.exports = eslintConfig;
