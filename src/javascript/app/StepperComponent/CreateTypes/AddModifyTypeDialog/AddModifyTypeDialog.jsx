@@ -34,7 +34,6 @@ import {
     getAvailableTypeNames,
     upperCaseFirst
 } from '../../StepperComponent.utils';
-import {Close} from '@material-ui/icons';
 import {connect} from 'react-redux';
 import {generateUUID} from '../../../App.utils';
 import TypeSelect from './TypeSelect/index';
@@ -185,19 +184,9 @@ const AddTypeDialog = ({classes, defaultNodeTypeNames, allNodeTypeNames, t, open
                             />
                         }/>
                 </FormGroup>
-                {
-                    mode === C.DIALOG_MODE_EDIT &&
-                    <Button color="primary" onClick={removeAndClose}>
-                        <Typography color="inherit" variant="zeta">
-                            {t('label.sdlGeneratorTools.deleteButton')}
-                        </Typography>
-                        <Close/>
-                    </Button>
-                }
             </DialogContent>
             <DialogActions>
-                <Button color="primary"
-                        variant="contained"
+                <Button variant="ghost"
                         onClick={cancelAndClose}
                 >
                     <Typography color="inherit" variant="zeta">
@@ -213,6 +202,14 @@ const AddTypeDialog = ({classes, defaultNodeTypeNames, allNodeTypeNames, t, open
                         {mode === C.DIALOG_MODE_ADD ? t('label.sdlGeneratorTools.addButton') : t('label.sdlGeneratorTools.updateButton')}
                     </Typography>
                 </Button>
+                {
+                    mode === C.DIALOG_MODE_EDIT &&
+                    <Button color="secondary" variant="contained" onClick={removeAndClose}>
+                        <Typography color="inherit" variant="zeta">
+                            {t('label.sdlGeneratorTools.deleteButton')}
+                        </Typography>
+                    </Button>
+                }
             </DialogActions>
         </Dialog>
     );

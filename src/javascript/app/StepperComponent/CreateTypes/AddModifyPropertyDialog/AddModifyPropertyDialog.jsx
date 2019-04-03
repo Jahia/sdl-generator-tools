@@ -23,7 +23,6 @@ import {
     getAvailableTypeNames,
     getAvailablePropertyNames, formatFinderName
 } from '../../StepperComponent.utils';
-import {Close} from '@material-ui/icons';
 import C from '../../../App.constants';
 import gqlQueries from '../CreateTypes.gql-queries';
 import {
@@ -163,7 +162,7 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, channel, ava
             jcrPropName = '';
         }
 
-        const isWeakreference = nodeProperties.find(p => p.name === jcrPropName && p.requiredType === "WEAKREFERENCE") !== undefined;
+        const isWeakreference = nodeProperties.find(p => p.name === jcrPropName && p.requiredType === 'WEAKREFERENCE') !== undefined;
         if (mode === C.DIALOG_MODE_EDIT) {
             updateProperty({
                 name: selectedPropertyName,
@@ -173,10 +172,11 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, channel, ava
             }, selectionId, selectedProperty.propertyIndex, oldPropertyName, selection, selectedType);
         } else {
             addProperty({
-                isWeakreference: isWeakreference,
-                name: selectedPropertyName,
-                property: jcrPropName,
-                type: propType},
+                    isWeakreference: isWeakreference,
+                    name: selectedPropertyName,
+                    property: jcrPropName,
+                    type: propType
+                },
                 selectionId);
         }
         updateUserInputDetected(false);
@@ -312,20 +312,9 @@ const PropertyChannel = ({t, mode, updateSelectedProp, addPropertyAndClose, sele
                     }}
                     onChange={e => updateSelectedProp({propertyName: e.target.value})}
                 />
-                {
-                    mode === C.DIALOG_MODE_EDIT &&
-                    <Button color="primary"
-                            onClick={removeAndClose}
-                    >
-                        <Typography color="inherit" variant="zeta">
-                            {t('label.sdlGeneratorTools.deleteButton')}
-                        </Typography>
-                        <Close/>
-                    </Button>
-                }
             </DialogContent>
             <DialogActions>
-                <Button color="primary" variant="contained" onClick={cancelAndClose}>
+                <Button variant="ghost" onClick={cancelAndClose}>
                     <Typography color="inherit" variant="zeta">
                         {t('label.sdlGeneratorTools.cancelButton')}
                     </Typography>
@@ -339,6 +328,17 @@ const PropertyChannel = ({t, mode, updateSelectedProp, addPropertyAndClose, sele
                         {mode === C.DIALOG_MODE_ADD ? t('label.sdlGeneratorTools.addButton') : t('label.sdlGeneratorTools.updateButton')}
                     </Typography>
                 </Button>
+                {
+                    mode === C.DIALOG_MODE_EDIT &&
+                    <Button color="secondary"
+                            variant="contained"
+                            onClick={removeAndClose}
+                    >
+                        <Typography color="inherit" variant="zeta">
+                            {t('label.sdlGeneratorTools.deleteButton')}
+                        </Typography>
+                    </Button>
+                }
             </DialogActions>
         </React.Fragment>
     );
@@ -360,7 +360,6 @@ const TypeMappingChannel = ({t, mode, updateSelectedProp, addPropertyAndClose, a
     const properties = sortProperties(filterProperties(nodeProperties));
 
     const handlePredefinedTypeChange = event => {
-        const type = event.target.value;
         const prop = {
             propertyType: event.target.value
         };
@@ -444,21 +443,9 @@ const TypeMappingChannel = ({t, mode, updateSelectedProp, addPropertyAndClose, a
                             />
                         }/>
                 </FormGroup>
-                {
-                    mode === C.DIALOG_MODE_EDIT &&
-                    <Button color="primary"
-                            onClick={removeAndClose}
-                    >
-                        <Typography color="inherit" variant="zeta">
-                            {t('label.sdlGeneratorTools.deleteButton')}
-                        </Typography>
-                        <Close/>
-                    </Button>
-                }
             </DialogContent>
             <DialogActions>
-                <Button color="primary"
-                        variant="contained"
+                <Button variant="ghost"
                         onClick={cancelAndClose}
                 >
                     <Typography color="inherit" variant="zeta">
@@ -474,6 +461,17 @@ const TypeMappingChannel = ({t, mode, updateSelectedProp, addPropertyAndClose, a
                         {mode === C.DIALOG_MODE_ADD ? t('label.sdlGeneratorTools.addButton') : t('label.sdlGeneratorTools.updateButton')}
                     </Typography>
                 </Button>
+                {
+                    mode === C.DIALOG_MODE_EDIT &&
+                    <Button color="secondary"
+                            variant="contained"
+                            onClick={removeAndClose}
+                    >
+                        <Typography color="inherit" variant="zeta">
+                            {t('label.sdlGeneratorTools.deleteButton')}
+                        </Typography>
+                    </Button>
+                }
             </DialogActions>
         </React.Fragment>
     );
@@ -550,7 +548,11 @@ const mapDispatchToProps = dispatch => {
                     const finderInfo = selectedType.queries[index];
                     const finderPrefix = finderInfo.prefix;
                     const finderSuffix = 'by' + upperCaseFirst(propertyInfo.name) + finder;
-                    dispatch(sdlModifyFinderOfType(selection, index, {name: formatFinderName(finderPrefix, finderSuffix), prefix: finderPrefix, suffix: finderSuffix}));
+                    dispatch(sdlModifyFinderOfType(selection, index, {
+                        name: formatFinderName(finderPrefix, finderSuffix),
+                        prefix: finderPrefix,
+                        suffix: finderSuffix
+                    }));
                 }
             });
         },

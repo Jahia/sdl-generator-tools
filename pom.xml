@@ -166,6 +166,16 @@
                         </configuration>
                     </execution>
                     <execution>
+                        <id>yarn webpack cli</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>yarn</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>add webpack-cli --dev</arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>yarn install</id>
                         <phase>generate-resources</phase>
                         <goals>
