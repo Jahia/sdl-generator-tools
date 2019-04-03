@@ -24,10 +24,10 @@ const renderNodes = (children, components) => {
             const inner = renderNodes(getChildren(child));
             return React.cloneElement(
                 child,
-                { ...child.props, key: i },
+                {...child.props, key: i},
                 inner,
             );
-        } else if (typeof child === 'object' && !isElement) {
+        } if (typeof child === 'object' && !isElement) {
             return Object.keys(child).reduce((str, childKey) => `${str}${child[childKey]}`, '');
         }
 
@@ -37,10 +37,10 @@ const renderNodes = (children, components) => {
 
 module.exports = {
     // This mock makes sure any components using the translate HoC receive the t function as a prop
-    withNamespaces: () => Component => props => <Component t={k => k} {...props} />,
-    translate: () => Component => props => <Component t={k => k} {...props} />,
-    Trans: ({ children, components }) => renderNodes(children, components),
-    NamespacesConsumer: ({ children }) => children(k => k, { i18n: {} }),
+    withNamespaces: () => Component => props => <Component t={k => k} {...props}/>,
+    translate: () => Component => props => <Component t={k => k} {...props}/>,
+    Trans: ({children, components}) => renderNodes(children, components),
+    NamespacesConsumer: ({children}) => children(k => k, {i18n: {}}),
 
     // Mock if needed
     Interpolate: reactI18next.Interpolate,
@@ -50,5 +50,5 @@ module.exports = {
     setDefaults: reactI18next.setDefaults,
     getDefaults: reactI18next.getDefaults,
     setI18n: reactI18next.setI18n,
-    getI18n: reactI18next.getI18n,
+    getI18n: reactI18next.getI18n
 };

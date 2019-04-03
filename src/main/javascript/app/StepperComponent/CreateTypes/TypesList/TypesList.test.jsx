@@ -2,11 +2,10 @@ import React from 'react';
 import {shallow, shallowWithTheme} from '../../../../enzyme/Enzyme';
 import TypeList from './';
 import {Typography} from '@jahia/ds-mui-theme';
-import configureStore from 'redux-mock-store'
-import C from "../../../App.constants";
+import configureStore from 'redux-mock-store';
+import C from '../../../App.constants';
 
 describe('TypeList tests', () => {
-
     let mockStore = configureStore();
 
     test('Test empty list in mode create', () => {
@@ -33,9 +32,9 @@ describe('TypeList tests', () => {
             <Typography color="alpha" variant="zeta">label.sdlGeneratorTools.createTypes.addNewTypeButton</Typography>
         )).toBe(true);
         expect(wrapper.find('[uuid="46e237d9-c125-48c0-a9f8-3c380da7d03b"]')).toBeDefined();
-    })
+    });
 
-    // test('Test empty mode create', () => {
+    // Test('Test empty mode create', () => {
     //     const store = mockStore(initialState);
     //     // const wrapper = shallow(<li><p className={"myClass"}>My item</p></li>);
     //     const wrapper = shallowWithTheme(<TypeList store={store} mode={C.TYPE_LIST_MODE_CREATE}/>);
