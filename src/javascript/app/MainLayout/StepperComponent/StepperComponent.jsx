@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {translate} from 'react-i18next';
-import {withStyles, Stepper, Step, StepLabel, Button} from '@material-ui/core';
-import {Typography} from '@jahia/ds-mui-theme';
-import CreateTypes from './CreateTypes/index';
-import ExportResult from './ExportResult/index';
+import {withStyles, Stepper, Step, StepLabel} from '@material-ui/core';
+import {Typography, Button} from '@jahia/ds-mui-theme';
+import CreateTypes from './CreateTypes';
+import ExportResult from './ExportResult';
 import {downloadFile, copyToClipBoard} from './StepperComponent.document-utils';
 import DefineFinder from './DefineFinders/index';
 import {compose} from 'react-apollo';
@@ -16,13 +16,15 @@ import {sdlInitNodeTypes} from '../../App.redux-actions';
 import {sdlSelectType} from './StepperComponent.redux-actions';
 import * as _ from 'lodash';
 
-const styles = () => ({
+const styles = theme => ({
     root: {
-        margin: '10px 16px',
-        height: '90%'
+        marginTop: theme.spacing.unit * 4
+    },
+    steppers: {
+        marginBottom: theme.spacing.unit * 3
     },
     bottomBar: {
-        margin: '16px 6px',
+        margin: theme.spacing.unit * 4 + ' 0',
         textAlign: 'right',
         '& button': {
             marginLeft: '5px'
@@ -125,7 +127,7 @@ class StepperComponent extends React.Component {
         return (
             <React.Fragment>
                 <div className={classes.root}>
-                    <Stepper activeStep={activeStep}>
+                    <Stepper className={classes.steppers} activeStep={activeStep}>
                         {steps.map(label => {
                             const props = {};
                             const labelProps = {};
@@ -143,48 +145,43 @@ class StepperComponent extends React.Component {
                         {
                             activeStep === 0 &&
                             <Button
-                                color="primary"
+                                variant="ghost"
+                                size="normal"
                                 className={classes.button}
                                 onClick={() => {
                                     storeLocally(C.LOCAL_STORAGE, {});
                                     this.props.setStore({});
                                 }}
                             >
-                                <Typography variant="zeta">
                                     {t('label.sdlGeneratorTools.clearButton')}
-                                </Typography>
                             </Button>
                         }
                         {
                             activeStep !== 0 &&
-                            <Button color="primary" className={classes.button} onClick={this.handleBack}>
-                                <Typography variant="zeta">{t('label.sdlGeneratorTools.backButton')}</Typography>
+                            <Button variant="secondary" className={classes.button} onClick={this.handleBack}>
+                               {t('label.sdlGeneratorTools.backButton')}
                             </Button>
                         }
                         {
                             activeStep === lastStep &&
                             <Button
                                 disabled={!this.hasNext()}
-                                variant="contained"
-                                color="primary"
+                                variant="secondary"
+                                size="normal"
                                 className={classes.button}
                                 onClick={this.handleCopy}
                             >
-                                <Typography color="invert" variant="zeta">
                                     {t('label.sdlGeneratorTools.copyToClipboardButton')}
-                                </Typography>
                             </Button>
                         }
                         <Button
                             disabled={!this.hasNext()}
-                            variant="contained"
-                            color="primary"
+                            variant="primary"
+                            size="normal"
                             className={classes.button}
                             onClick={activeStep === lastStep ? this.handleDownload : this.handleNext}
                         >
-                            <Typography color="invert" variant="zeta">
                                 {activeStep === lastStep ? t('label.sdlGeneratorTools.downloadFileButton') : t('label.sdlGeneratorTools.nextButton')}
-                            </Typography>
                         </Button>
                     </div>
                 </div>

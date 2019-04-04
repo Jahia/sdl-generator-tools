@@ -12,15 +12,16 @@ import C from '../../App.constants';
 import {storeLocally} from '../../App.utils';
 import * as _ from 'lodash';
 
-let styles = () => ({
-    viewerText: {
-        padding: '12px 24px',
-        fontWeight: 600,
-        lineHeight: '18px',
-        fontSize: '14px'
+let styles = theme => ({
+    title: {
+        marginBottom: theme.spacing.unit * 4
     },
     editor: {
-        borderRadius: '0 0 3px 3px'
+        borderRadius: '0 0 3px 3px',
+        background: theme.palette.ui.gamma + ' !important',
+        '& .ace_gutter' : {
+            background: theme.palette.ui.gamma + ' !important',
+        }
     }
 });
 
@@ -31,24 +32,20 @@ const GQLSchemaViewer = ({classes, t, nodeTypes}) => {
     }
     return (
         <React.Fragment>
-            <Grid item>
-                <Typography color="invert" variant="zeta" className={classes.viewerText}>
+                <Typography color="invert" variant="epsilon" className={classes.title}>
                     {t('label.sdlGeneratorTools.viewerCaption')}
                 </Typography>
-            </Grid>
-            <Grid item>
+
                 <AceEditor
                     readOnly
                     mode="graphqlschema"
                     theme="monokai"
                     name="gqlschema"
-                    height="93%"
                     width="100%"
                     className={classes.editor}
                     value={SDLParser.parse(nodeTypes)}
                     editorProps={{$blockScrolling: false}}
                 />
-            </Grid>
         </React.Fragment>
     );
 };

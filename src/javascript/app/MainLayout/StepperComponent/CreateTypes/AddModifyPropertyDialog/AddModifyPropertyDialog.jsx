@@ -6,12 +6,11 @@ import DialogContent from '@material-ui/core/DialogContent/DialogContent';
 import TextField from '@material-ui/core/TextField/TextField';
 import DialogActions from '@material-ui/core/DialogActions/DialogActions';
 import {
-    Button,
     FormControlLabel,
     FormGroup,
     Switch
 } from '@material-ui/core';
-import {Typography} from '@jahia/ds-mui-theme';
+import {Typography, Button} from '@jahia/ds-mui-theme';
 import {compose, graphql, withApollo} from 'react-apollo';
 import {connect} from 'react-redux';
 import {translate} from 'react-i18next';
@@ -355,28 +354,22 @@ const PropertyChannel = ({t, mode, updateSelectedProp, addPropertyAndClose, sele
             </DialogContent>
             <DialogActions>
                 <Button variant="ghost" onClick={cancelAndClose}>
-                    <Typography color="inherit" variant="zeta">
                         {t('label.sdlGeneratorTools.cancelButton')}
-                    </Typography>
                 </Button>
                 <Button disabled={duplicateName || !selectedPropertyName || !selectedJcrPropertyName}
-                        color="primary"
-                        variant="contained"
+                        variant="primary"
+                        size="normal"
                         onClick={addPropertyAndClose}
                 >
-                    <Typography color="inherit" variant="zeta">
                         {mode === C.DIALOG_MODE_ADD ? t('label.sdlGeneratorTools.addButton') : t('label.sdlGeneratorTools.updateButton')}
-                    </Typography>
                 </Button>
                 {
                     mode === C.DIALOG_MODE_EDIT &&
-                    <Button color="secondary"
-                            variant="contained"
+                    <Button variant="secondary"
+                            size="normal"
                             onClick={removeAndClose}
                     >
-                        <Typography color="inherit" variant="zeta">
                             {t('label.sdlGeneratorTools.deleteButton')}
-                        </Typography>
                     </Button>
                 }
             </DialogActions>
@@ -507,8 +500,8 @@ const TypeMappingChannel = ({t, mode, updateSelectedProp, addPropertyAndClose, a
                     </Typography>
                 </Button>
                 <Button disabled={duplicateName || !selectedPropertyName || !selectedPropertyType}
-                        color="primary"
-                        variant="contained"
+                        variant="primary"
+                        size="normal"
                         onClick={addPropertyAndClose}
                 >
                     <Typography color="inherit" variant="zeta">
@@ -517,8 +510,8 @@ const TypeMappingChannel = ({t, mode, updateSelectedProp, addPropertyAndClose, a
                 </Button>
                 {
                     mode === C.DIALOG_MODE_EDIT &&
-                    <Button color="secondary"
-                            variant="contained"
+                    <Button  variant="secondary"
+                             size="normal"
                             onClick={removeAndClose}
                     >
                         <Typography color="inherit" variant="zeta">
@@ -551,8 +544,9 @@ const ChannelSelect = ({t, selectChannel, updateSelectedProp}) => (
     <React.Fragment>
         <DialogContent style={{width: 400}}>
             <FormGroup>
-                <Button color="primary"
-                        variant="contained"
+                <Button variant="primary"
+                        size="normal"
+                        style={{marginBottom: 8}}
                         onClick={() => {
                             updateSelectedProp({isPredefinedType: true, jcrPropertyName: ''});
                             selectChannel('MAP_TO_TYPE');
@@ -562,8 +556,9 @@ const ChannelSelect = ({t, selectChannel, updateSelectedProp}) => (
                         {t('label.sdlGeneratorTools.createProperty.mapToType')}
                     </Typography>
                 </Button>
-                <Button color="primary"
-                        variant="contained"
+                <Button variant="primary"
+                        size="normal"
+                        style={{marginBottom: 24}}
                         onClick={() => selectChannel('PROPERTY')}
                 >
                     <Typography color="inherit" variant="zeta">

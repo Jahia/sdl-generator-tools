@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
-import {Button, Select, MenuItem, Dialog, withStyles, InputLabel, FormControl, Input} from '@material-ui/core';
+import {Select, MenuItem, Dialog, withStyles, InputLabel, FormControl, Input} from '@material-ui/core';
 import DialogTitle from '@material-ui/core/DialogTitle/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent/DialogContent';
 import TextField from '@material-ui/core/TextField/TextField';
@@ -14,7 +14,7 @@ import {
     sdlModifyFinderOfType,
     sdlRemoveFinderFromType
 } from '../../../../App.redux-actions';
-import {Typography} from '@jahia/ds-mui-theme';
+import {Typography, Button} from '@jahia/ds-mui-theme';
 import {sdlUpdateAddModifyFinderDialog} from '../../StepperComponent.redux-actions';
 import {compose} from 'react-apollo';
 import {connect} from 'react-redux';
@@ -96,7 +96,7 @@ const FinderPreviewComp = ({classes, finderPrefix = '', finderSuffix = ''}) => {
         );
     };
     return (
-        <p className={classes.finderPreview}>{format()}</p>
+        <Typography variant="zeta" className={classes.finderPreview}>{format()}</Typography>
     );
 };
 
@@ -216,27 +216,21 @@ const AddModifyFinderDialog = ({t, open, close, mode, addFinder, modifyFinder, r
                 <Button variant="ghost"
                         onClick={cancelAndClose}
                 >
-                    <Typography color="inherit" variant="zeta">
                         {t('label.sdlGeneratorTools.cancelButton')}
-                    </Typography>
                 </Button>
-                <Button color="primary"
-                        variant="contained"
+                <Button variant="primary"
+                        size="normal"
                         onClick={addFinderAndClose}
                 >
-                    <Typography color="inherit" variant="zeta">
                         {mode === C.DIALOG_MODE_ADD ? t('label.sdlGeneratorTools.addButton') : t('label.sdlGeneratorTools.updateButton')}
-                    </Typography>
                 </Button>
                 {
                     mode === C.DIALOG_MODE_EDIT &&
-                    <Button color="secondary"
-                            variant="contained"
+                    <Button variant="secondary"
+                            size="normal"
                             onClick={removeAndClose}
                     >
-                        <Typography color="inherit" variant="zeta">
                             {t('label.sdlGeneratorTools.deleteButton')}
-                        </Typography>
                     </Button>
                 }
             </DialogActions>
