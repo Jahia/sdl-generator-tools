@@ -1,8 +1,8 @@
 import React from 'react';
-import {Button, List, ListItem, ListItemText, ListSubheader, withStyles} from '@material-ui/core';
+import {List, ListItem, ListItemText, ListSubheader, withStyles} from '@material-ui/core';
 import C from '../../../App.constants';
 import {Add} from '@material-ui/icons';
-import {Typography, Paper} from '@jahia/ds-mui-theme';
+import {Typography, Paper, Button} from '@jahia/ds-mui-theme';
 import {
     sdlSelectFinder,
     sdlUpdateAddModifyFinderDialog
@@ -47,13 +47,13 @@ const FindersList = ({t, classes, selectedType, selectedFinder, mode, selectFind
             </ListSubheader>}
             >
                 <ListItem>
-                    <Button disabled={selectedType === undefined || availableFinders.length === 0}
-                            className={classes.listButton}
-                            onClick={() => updateFinderDialogState({open: true, mode: C.DIALOG_MODE_ADD})}
-                    >   <Typography color={selectedType !== undefined ? 'alpha' : ''} variant="zeta">
+                    <Button variant="ghost"
+                            icon={<Add/>}
+                        disabled={selectedType === undefined || availableFinders.length === 0}
+                        className={classes.listButton}
+                        onClick={() => updateFinderDialogState({open: true, mode: C.DIALOG_MODE_ADD})}
+                    >
                         {t('label.sdlGeneratorTools.defineFinder.addAFinder')}
-                        </Typography>
-                        <Add/>
                     </Button>
                 </ListItem>
                 {
