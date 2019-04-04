@@ -115,7 +115,7 @@ const TypesList = ({classes, t, nodeTypes, selection, selectType, updateTypeDial
 
 TypesList.propTypes = {
     classes: PropTypes.object.isRequired,
-    t: PropTypes.object.isRequired,
+    t: PropTypes.func.isRequired,
     nodeTypes: PropTypes.object.isRequired,
     selectType: PropTypes.func.isRequired,
     updateTypeDialogMode: PropTypes.func.isRequired,

@@ -96,8 +96,8 @@ const MainLayout = ({classes, t, ctx}) => {
 
 MainLayout.propTypes = {
     classes: PropTypes.object.isRequired,
-    t: PropTypes.object.isRequired,
-    ctx: PropTypes.object.isRequired
+    t: PropTypes.func.isRequired,
+    ctx: PropTypes.string.isRequired
 };
 
 export default compose(

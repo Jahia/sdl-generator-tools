@@ -32,9 +32,9 @@ const PredefinedTypeSelector = ({t, classes, disabled, value, open, handleClose,
 );
 
 PredefinedTypeSelector.propTypes = {
-    t: PropTypes.object.isRequired,
+    t: PropTypes.func.isRequired,
     classes: PropTypes.object.isRequired,
-    disabled: PropTypes.bool.isRequired,
+    disabled: PropTypes.bool,
     value: PropTypes.string.isRequired,
     open: PropTypes.bool.isRequired,
     handleClose: PropTypes.func.isRequired,

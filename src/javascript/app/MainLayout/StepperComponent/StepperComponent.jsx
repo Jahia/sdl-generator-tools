@@ -194,7 +194,7 @@ class StepperComponent extends React.Component {
 }
 
 StepperComponent.propTypes = {
-    t: PropTypes.object.isRequired,
+    t: PropTypes.func.isRequired,
     setStore: PropTypes.func.isRequired,
     nodeTypes: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired,

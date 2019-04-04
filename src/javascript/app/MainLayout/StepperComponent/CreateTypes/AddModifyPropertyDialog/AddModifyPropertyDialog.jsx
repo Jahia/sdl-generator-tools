@@ -106,13 +106,13 @@ const ContentSwitch = ({mode, t, channel, updateSelectedProp, addPropertyAndClos
 
 ContentSwitch.propTypes = {
     mode: PropTypes.string.isRequired,
-    t: PropTypes.object.isRequired,
-    channel: PropTypes.string.isRequired,
+    t: PropTypes.func.isRequired,
+    channel: PropTypes.string,
     updateSelectedProp: PropTypes.func.isRequired,
     addPropertyAndClose: PropTypes.func.isRequired,
     availableNodeTypes: PropTypes.array.isRequired,
-    selectedProperty: PropTypes.string.isRequired,
-    selectJCRProperty: PropTypes.string.isRequired,
+    selectedProperty: PropTypes.object,
+    selectJCRProperty: PropTypes.func.isRequired,
     nodeProperties: PropTypes.array.isRequired,
     duplicateName: PropTypes.bool.isRequired,
     cancelAndClose: PropTypes.func.isRequired,
@@ -277,11 +277,11 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, channel, ava
 
 AddModifyPropertyDialog.propTypes = {
     data: PropTypes.object,
-    t: PropTypes.object.isRequired,
+    t: PropTypes.func.isRequired,
     open: PropTypes.bool.isRequired,
     mode: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    channel: PropTypes.string.isRequired,
+    name: PropTypes.string,
+    channel: PropTypes.string,
     closeDialog: PropTypes.func.isRequired,
     addProperty: PropTypes.func.isRequired,
     removeProperty: PropTypes.func.isRequired,
@@ -292,8 +292,8 @@ AddModifyPropertyDialog.propTypes = {
     availableNodeTypes: PropTypes.array.isRequired,
     availableProperties: PropTypes.array.isRequired,
     selectedProperty: PropTypes.object,
-    selectedType: PropTypes.string.isRequired,
-    requiredType: PropTypes.string.isRequired,
+    selectedType: PropTypes.object,
+    requiredType: PropTypes.string,
     selection: PropTypes.string
 };
 
@@ -385,13 +385,13 @@ const PropertyChannel = ({t, mode, updateSelectedProp, addPropertyAndClose, sele
 };
 
 PropertyChannel.propTypes = {
-    t: PropTypes.object.isRequired,
+    t: PropTypes.func.isRequired,
     mode: PropTypes.string.isRequired,
     updateSelectedProp: PropTypes.func.isRequired,
     addPropertyAndClose: PropTypes.func.isRequired,
-    selectedProperty: PropTypes.string.isRequired,
+    selectedProperty: PropTypes.object,
     cancelAndClose: PropTypes.func.isRequired,
-    selectJCRProperty: PropTypes.string.isRequired,
+    selectJCRProperty: PropTypes.func.isRequired,
     nodeProperties: PropTypes.array.isRequired,
     duplicateName: PropTypes.bool.isRequired,
     removeAndClose: PropTypes.func.isRequired,
@@ -532,13 +532,13 @@ const TypeMappingChannel = ({t, mode, updateSelectedProp, addPropertyAndClose, a
 };
 
 TypeMappingChannel.propTypes = {
-    t: PropTypes.object.isRequired,
+    t: PropTypes.func.isRequired,
     mode: PropTypes.string.isRequired,
     updateSelectedProp: PropTypes.func.isRequired,
     addPropertyAndClose: PropTypes.func.isRequired,
-    selectedProperty: PropTypes.string.isRequired,
+    selectedProperty: PropTypes.object.isRequired,
     cancelAndClose: PropTypes.func.isRequired,
-    selectJCRProperty: PropTypes.string.isRequired,
+    selectJCRProperty: PropTypes.func.isRequired,
     nodeProperties: PropTypes.array.isRequired,
     duplicateName: PropTypes.bool.isRequired,
     userInputDetected: PropTypes.bool.isRequired,
@@ -576,7 +576,7 @@ const ChannelSelect = ({t, selectChannel, updateSelectedProp}) => (
 );
 
 ChannelSelect.propTypes = {
-    t: PropTypes.object.isRequired,
+    t: PropTypes.func.isRequired,
     updateSelectedProp: PropTypes.func.isRequired,
     selectChannel: PropTypes.func.isRequired
 };

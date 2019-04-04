@@ -50,7 +50,7 @@ const inputComponent = ({inputRef, ...props}) => {
 };
 
 inputComponent.propTypes = {
-    inputRef: PropTypes.element
+    inputRef: PropTypes.func
 };
 
 const Control = props => {
@@ -74,7 +74,7 @@ const Control = props => {
 Control.propTypes = {
     selectProps: PropTypes.object,
     innerProps: PropTypes.object,
-    innerRef: PropTypes.element,
+    innerRef: PropTypes.func,
     children: PropTypes.array
 };
 
@@ -116,7 +116,7 @@ const Menu = props => {
 Menu.propTypes = {
     selectProps: PropTypes.object,
     innerProps: PropTypes.object,
-    children: PropTypes.array
+    children: PropTypes.object
 };
 
 const SingleValue = props => (
@@ -198,13 +198,13 @@ const TypeSelect = ({classes, t, value, handleClose, handleChange, handleOpen, d
 TypeSelect.propTypes = {
     classes: PropTypes.object.isRequired,
     t: PropTypes.func.isRequired,
-    value: PropTypes.string.isRequired,
-    handleClose: PropTypes.func.isRequired,
+    value: PropTypes.string,
+    handleClose: PropTypes.func,
     handleChange: PropTypes.func.isRequired,
-    handleOpen: PropTypes.func.isRequired,
+    handleOpen: PropTypes.func,
     defaultNodes: PropTypes.array.isRequired,
     allNodes: PropTypes.array.isRequired,
-    isLoading: PropTypes.bool.isRequired
+    isLoading: PropTypes.bool
 };
 
 export default withStyles(styles, {withTheme: true})(withApollo(TypeSelect));

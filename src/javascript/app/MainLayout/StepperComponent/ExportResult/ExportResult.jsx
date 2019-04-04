@@ -11,7 +11,7 @@ const ExportResult = ({t}) => (
 );
 
 ExportResult.propTypes = {
-    t: PropTypes.object.isRequired
+    t: PropTypes.func.isRequired
 };
 
 export default translate()(ExportResult);

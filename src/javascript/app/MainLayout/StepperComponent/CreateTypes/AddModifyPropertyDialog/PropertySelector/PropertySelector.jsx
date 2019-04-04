@@ -35,9 +35,9 @@ const PropertySelector = ({classes, t, disabled, value, open, handleClose, handl
 );
 
 PropertySelector.propTypes = {
-    t: PropTypes.object.isRequired,
+    t: PropTypes.func.isRequired,
     classes: PropTypes.object.isRequired,
-    disabled: PropTypes.bool.isRequired,
+    disabled: PropTypes.bool,
     required: PropTypes.bool.isRequired,
     value: PropTypes.string.isRequired,
     open: PropTypes.bool.isRequired,

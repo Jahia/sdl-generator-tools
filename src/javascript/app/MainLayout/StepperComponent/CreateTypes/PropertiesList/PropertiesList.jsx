@@ -97,8 +97,8 @@ const PropertiesList = ({classes, t, selectedType, selectProperty, addModifyProp
 };
 
 PropertiesList.propTypes = {
-    classes: PropTypes.object,
-    t: PropTypes.object,
+    classes: PropTypes.object.isRequired,
+    t: PropTypes.func.isRequired,
     selectedType: PropTypes.object,
     selectProperty: PropTypes.func.isRequired,
     addModifyPropertyDialog: PropTypes.func.isRequired

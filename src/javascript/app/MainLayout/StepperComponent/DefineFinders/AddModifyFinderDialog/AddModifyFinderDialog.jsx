@@ -57,7 +57,7 @@ const FinderSelectCom = ({classes, t, open, handleClose, handleOpen, handleChang
 
 FinderSelectCom.propTypes = {
     classes: PropTypes.object.isRequired,
-    t: PropTypes.object.isRequired,
+    t: PropTypes.func.isRequired,
     open: PropTypes.bool.isRequired,
     handleClose: PropTypes.func.isRequired,
     handleOpen: PropTypes.func.isRequired,
@@ -248,12 +248,12 @@ AddModifyFinderDialog.propTypes = {
     open: PropTypes.bool.isRequired,
     close: PropTypes.func.isRequired,
     selectedType: PropTypes.object.isRequired,
-    t: PropTypes.object.isRequired,
+    t: PropTypes.func.isRequired,
     mode: PropTypes.string.isRequired,
     addFinder: PropTypes.func.isRequired,
     modifyFinder: PropTypes.func.isRequired,
     removeFinder: PropTypes.func.isRequired,
-    selectedFinder: PropTypes.string.isRequired,
+    selectedFinder: PropTypes.string,
     selection: PropTypes.string.isRequired
 };
 

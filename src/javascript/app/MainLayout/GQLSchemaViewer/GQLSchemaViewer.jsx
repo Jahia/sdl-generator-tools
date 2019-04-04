@@ -55,7 +55,7 @@ const GQLSchemaViewer = ({classes, t, nodeTypes}) => {
 
 GQLSchemaViewer.propTypes = {
     classes: PropTypes.object.isRequired,
-    t: PropTypes.object.isRequired,
+    t: PropTypes.func.isRequired,
     nodeTypes: PropTypes.object.isRequired
 };
 

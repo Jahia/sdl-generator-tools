@@ -80,10 +80,10 @@ const FindersList = ({t, classes, selectedType, selectedFinder, mode, selectFind
 };
 
 FindersList.propTypes = {
-    t: PropTypes.object.isRequired,
+    t: PropTypes.func.isRequired,
     classes: PropTypes.object.isRequired,
     selectedType: PropTypes.object.isRequired,
-    selectedFinder: PropTypes.string.isRequired,
+    selectedFinder: PropTypes.string,
     mode: PropTypes.string.isRequired,
     selectFinder: PropTypes.func.isRequired,
     updateFinderDialogState: PropTypes.func.isRequired
