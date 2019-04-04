@@ -1,7 +1,7 @@
 import {actionTypes} from './App.redux-actions';
 import {getInitialObject} from './App.redux-initializers';
 import {generateUUID} from './App.utils';
-import {lookUpMappingStringArgumentInfo} from './StepperComponent/StepperComponent.utils';
+import {lookUpMappingStringArgumentInfo} from './MainLayout/StepperComponent/StepperComponent.utils';
 
 const nodeTypesReducer = (state = {}, action) => {
     const newState = {

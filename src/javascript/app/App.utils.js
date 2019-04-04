@@ -1,3 +1,4 @@
+/* eslint-disable */
 const generateUUID = () => {
     let d = new Date().getTime();
     if (typeof performance !== 'undefined' && typeof performance.now === 'function') {
@@ -9,6 +10,7 @@ const generateUUID = () => {
         return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
     });
 };
+/* eslint-disable */
 
 const storeLocally = (key, jsonValue) => {
     window.localStorage.setItem(key, JSON.stringify(jsonValue));

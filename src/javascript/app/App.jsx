@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'react-props';
+import PropTypes from 'prop-types';
 import {I18nextProvider} from 'react-i18next';
 import {getI18n} from '@jahia/i18next';
 import {Provider} from 'react-redux';
