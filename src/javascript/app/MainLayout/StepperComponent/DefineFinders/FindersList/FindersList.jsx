@@ -13,11 +13,12 @@ import {connect} from 'react-redux';
 import {translate} from 'react-i18next';
 import {filterAvailableFinders} from '../DefineFinders.utils';
 
+/* eslint-disable */
 const styles = theme => ({
     paper: {
         width: '100%',
         minHeight: '35vh',
-        padding:  theme.spacing.unit * 2 + 'px 0',
+        padding: theme.spacing.unit * 2 + 'px 0',
         overflowY: 'auto'
     },
     listButton: {
@@ -26,6 +27,7 @@ const styles = theme => ({
         }
     }
 });
+/* eslint-disable */
 
 const FinderItem = ({name, handleEditFinder}) => (
     <ListItem button onClick={() => handleEditFinder(name)}>

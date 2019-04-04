@@ -16,6 +16,7 @@ import {sdlInitNodeTypes} from '../../App.redux-actions';
 import {sdlSelectType} from './StepperComponent.redux-actions';
 import * as _ from 'lodash';
 
+/* eslint-disable */
 const styles = theme => ({
     root: {
         marginTop: theme.spacing.unit * 4
@@ -34,6 +35,7 @@ const styles = theme => ({
         float: 'left'
     }
 });
+/* eslint-disable */
 
 const stepsTitles = t => ([
     t('label.sdlGeneratorTools.steps.createTypes'),
@@ -159,7 +161,7 @@ class StepperComponent extends React.Component {
                         {
                             activeStep !== 0 &&
                             <Button variant="secondary" className={classes.button} onClick={this.handleBack}>
-                               {t('label.sdlGeneratorTools.backButton')}
+                                {t('label.sdlGeneratorTools.backButton')}
                             </Button>
                         }
                         {
@@ -181,7 +183,7 @@ class StepperComponent extends React.Component {
                             className={classes.button}
                             onClick={activeStep === lastStep ? this.handleDownload : this.handleNext}
                         >
-                                {activeStep === lastStep ? t('label.sdlGeneratorTools.downloadFileButton') : t('label.sdlGeneratorTools.nextButton')}
+                            {activeStep === lastStep ? t('label.sdlGeneratorTools.downloadFileButton') : t('label.sdlGeneratorTools.nextButton')}
                         </Button>
                     </div>
                 </div>

@@ -189,14 +189,14 @@ const AddTypeDialog = ({classes, defaultNodeTypeNames, allNodeTypeNames, t, open
                         size="normal"
                         onClick={cancelAndClose}
                 >
-                        {t('label.sdlGeneratorTools.cancelButton')}
+                    {t('label.sdlGeneratorTools.cancelButton')}
                 </Button>
                 <Button variant="primary"
                         size="normal"
                         disabled={duplicateName || !nodeType || !typeName}
                         onClick={saveTypeAndClose}
                 >
-                        {mode === C.DIALOG_MODE_ADD ? t('label.sdlGeneratorTools.addButton') : t('label.sdlGeneratorTools.updateButton')}
+                    {mode === C.DIALOG_MODE_ADD ? t('label.sdlGeneratorTools.addButton') : t('label.sdlGeneratorTools.updateButton')}
                 </Button>
                 {
                     mode === C.DIALOG_MODE_EDIT &&

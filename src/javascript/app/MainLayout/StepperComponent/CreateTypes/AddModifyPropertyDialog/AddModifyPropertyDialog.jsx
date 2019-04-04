@@ -354,14 +354,14 @@ const PropertyChannel = ({t, mode, updateSelectedProp, addPropertyAndClose, sele
             </DialogContent>
             <DialogActions>
                 <Button variant="ghost" onClick={cancelAndClose}>
-                        {t('label.sdlGeneratorTools.cancelButton')}
+                    {t('label.sdlGeneratorTools.cancelButton')}
                 </Button>
                 <Button disabled={duplicateName || !selectedPropertyName || !selectedJcrPropertyName}
                         variant="primary"
                         size="normal"
                         onClick={addPropertyAndClose}
                 >
-                        {mode === C.DIALOG_MODE_ADD ? t('label.sdlGeneratorTools.addButton') : t('label.sdlGeneratorTools.updateButton')}
+                    {mode === C.DIALOG_MODE_ADD ? t('label.sdlGeneratorTools.addButton') : t('label.sdlGeneratorTools.updateButton')}
                 </Button>
                 {
                     mode === C.DIALOG_MODE_EDIT &&
@@ -510,8 +510,8 @@ const TypeMappingChannel = ({t, mode, updateSelectedProp, addPropertyAndClose, a
                 </Button>
                 {
                     mode === C.DIALOG_MODE_EDIT &&
-                    <Button  variant="secondary"
-                             size="normal"
+                    <Button variant="secondary"
+                            size="normal"
                             onClick={removeAndClose}
                     >
                         <Typography color="inherit" variant="zeta">

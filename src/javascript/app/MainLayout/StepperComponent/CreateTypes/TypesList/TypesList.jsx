@@ -22,11 +22,12 @@ import {
 } from '../../StepperComponent.redux-actions';
 import {connect} from 'react-redux';
 
+/* eslint-disable */
 const styles = theme => ({
     paper: {
         width: '100%',
         minHeight: '35vh',
-        padding:  theme.spacing.unit * 2 + 'px 0',
+        padding: theme.spacing.unit * 2 + 'px 0',
         overflowY: 'auto'
     },
     root: {
@@ -39,6 +40,7 @@ const styles = theme => ({
         }
     }
 });
+/* eslint-disable */
 
 const TypeItem = withStyles(styles)(({classes, name, uuid, mode, isSelected, selectType, updateTypeDialogMode}) => {
     const renderEditButton = () => {

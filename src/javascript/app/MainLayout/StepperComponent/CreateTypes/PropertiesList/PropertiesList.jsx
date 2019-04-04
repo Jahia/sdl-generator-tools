@@ -18,11 +18,12 @@ import {lookUpMappingStringArgumentInfo} from '../../StepperComponent.utils';
 import {sdlUpdateAddModifyPropertyDialog, sdlSelectProperty} from '../../StepperComponent.redux-actions';
 import {connect} from 'react-redux';
 
+/* eslint-disable */
 const styles = theme => ({
     paper: {
         width: '100%',
         minHeight: '35vh',
-        padding:  theme.spacing.unit * 2 + 'px 0',
+        padding: theme.spacing.unit * 2 + 'px 0',
         overflowY: 'auto'
     },
     listButton: {
@@ -31,6 +32,7 @@ const styles = theme => ({
         }
     }
 });
+/* eslint-disable */
 
 const PropertyItem = ({index, name, type, jcrName, selectProperty, showAddPropertyDialog}) => (
     <ListItem button

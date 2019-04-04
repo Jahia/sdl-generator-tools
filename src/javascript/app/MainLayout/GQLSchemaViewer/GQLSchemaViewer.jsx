@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {compose} from 'react-apollo';
 import {translate} from 'react-i18next';
-import {withStyles, Grid} from '@material-ui/core';
+import {withStyles} from '@material-ui/core';
 import {Typography} from '@jahia/ds-mui-theme';
 import AceEditor from 'react-ace';
 import 'brace/mode/graphqlschema';
@@ -19,8 +19,8 @@ let styles = theme => ({
     editor: {
         borderRadius: '0 0 3px 3px',
         background: theme.palette.ui.gamma + ' !important',
-        '& .ace_gutter' : {
-            background: theme.palette.ui.gamma + ' !important',
+        '& .ace_gutter': {
+            background: theme.palette.ui.gamma + ' !important'
         }
     }
 });
@@ -32,11 +32,11 @@ const GQLSchemaViewer = ({classes, t, nodeTypes}) => {
     }
     return (
         <React.Fragment>
-                <Typography color="invert" variant="epsilon" className={classes.title}>
-                    {t('label.sdlGeneratorTools.viewerCaption')}
-                </Typography>
+            <Typography color="invert" variant="epsilon" className={classes.title}>
+                {t('label.sdlGeneratorTools.viewerCaption')}
+            </Typography>
 
-                <AceEditor
+            <AceEditor
                     readOnly
                     mode="graphqlschema"
                     theme="monokai"

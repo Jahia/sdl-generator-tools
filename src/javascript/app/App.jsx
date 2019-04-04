@@ -35,7 +35,8 @@ const App = ({dxContext}) => (
                     contextPath: dxContext.contextPath,
                     useBatch: true,
                     httpOptions: {batchMax: 10}
-                })}>
+                })}
+                >
                     <MainLayout contextPath={dxContext.contextPath}/>
                 </ApolloProvider>
             </I18nextProvider>

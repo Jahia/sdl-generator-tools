@@ -216,13 +216,13 @@ const AddModifyFinderDialog = ({t, open, close, mode, addFinder, modifyFinder, r
                 <Button variant="ghost"
                         onClick={cancelAndClose}
                 >
-                        {t('label.sdlGeneratorTools.cancelButton')}
+                    {t('label.sdlGeneratorTools.cancelButton')}
                 </Button>
                 <Button variant="primary"
                         size="normal"
                         onClick={addFinderAndClose}
                 >
-                        {mode === C.DIALOG_MODE_ADD ? t('label.sdlGeneratorTools.addButton') : t('label.sdlGeneratorTools.updateButton')}
+                    {mode === C.DIALOG_MODE_ADD ? t('label.sdlGeneratorTools.addButton') : t('label.sdlGeneratorTools.updateButton')}
                 </Button>
                 {
                     mode === C.DIALOG_MODE_EDIT &&
