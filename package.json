@@ -4,7 +4,7 @@
   "description": "Jahia module for providing a set of tools for GraphQL schema generation",
   "main": "main.js",
   "scripts": {
-    "build": "webpack",
+    "build": "yarn lint && webpack",
     "build:analyze": "yarn build --analyze",
     "build:production": "yarn build -p",
     "build:production-analyze": "yarn build -p --analyze",
