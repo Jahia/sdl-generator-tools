@@ -78,9 +78,7 @@ const TypesList = ({classes, t, nodeTypes, selection, selectType, updateTypeDial
                     updateTypeDialogMode({open: true, mode: C.DIALOG_MODE_ADD});
                 }}
                 >
-
                         {t('label.sdlGeneratorTools.createTypes.addNewTypeButton')}
-
                 </Button>
             </ListItem> : null;
     };

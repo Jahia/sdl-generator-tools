@@ -78,6 +78,7 @@ const ContentSwitch = ({mode, t, channel, updateSelectedProp, addPropertyAndClos
                              updateUserInputDetected={updateUserInputDetected}/>
         );
     }
+
     if (channel === C.CHANNEL_MAP_TO_TYPE) {
         return (
             <TypeMappingChannel t={t}
@@ -196,6 +197,7 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, channel, ava
             },
             selectionId);
         }
+
         updateUserInputDetected(false);
         closeDialog();
     };
@@ -225,6 +227,7 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, channel, ava
             updateSelectedProp({jcrPropertyName: ''});
             return;
         }
+
         let isList = false;
         const prop = nodeProperties.find(p => p.name === value || p.name + p.requiredType === value);
         if (value.startsWith(C.MULTIPLE_CHILDREN_INDICATOR)) {
@@ -232,6 +235,7 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, channel, ava
         } else {
             isList = prop.multiple !== undefined ? prop.multiple : false;
         }
+
         let selectedProp = {
             jcrPropertyName: value,
             isListType: isList
@@ -244,6 +248,7 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, channel, ava
             // Preset only if the property is not a list of children nodes.
             selectedProp.propertyName = _.camelCase(removeNodeTypePrefix(prop.name));
         }
+
         updateSelectedProp(selectedProp);
     };
 
@@ -342,6 +347,7 @@ const PropertyChannel = ({t, mode, updateSelectedProp, addPropertyAndClose, sele
                         if (e.which !== 13) {
                             updateUserInputDetected(true);
                         }
+
                         if (e.key === 'Enter' && !duplicateName && selectedPropertyName && selectedJcrPropertyName) {
                             addPropertyAndClose();
                         } else if (e.which === 32) {
@@ -415,6 +421,7 @@ const TypeMappingChannel = ({t, mode, updateSelectedProp, addPropertyAndClose, a
         if (mode === C.DIALOG_MODE_ADD && !userInputDetected && (!selectedJcrPropertyName || selectedJcrPropertyName.startsWith('*'))) {
             prop.propertyName = _.camelCase(event.target.value);
         }
+
         updateSelectedProp(prop);
     };
 
@@ -466,6 +473,7 @@ const TypeMappingChannel = ({t, mode, updateSelectedProp, addPropertyAndClose, a
                         if (e.which !== 13) {
                             updateUserInputDetected(true);
                         }
+
                         if (e.key === 'Enter' && !duplicateName && !selectedPropertyName && !selectedPropertyType) {
                             addPropertyAndClose();
                         } else if (e.which === 32) {
@@ -573,6 +581,7 @@ const getJCRType = (nodeTypes, selection) => {
         const node = nodeTypes[selection];
         return lookUpMappingStringArgumentInfo(node, 'node');
     }
+
     return '';
 };
 

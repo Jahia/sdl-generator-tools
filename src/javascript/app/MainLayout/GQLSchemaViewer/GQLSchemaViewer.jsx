@@ -30,6 +30,7 @@ const GQLSchemaViewer = ({classes, t, nodeTypes}) => {
     if (!_.isEmpty(nodeTypes)) {
         storeLocally(C.LOCAL_STORAGE, nodeTypes);
     }
+
     return (
         <Fragment>
             <Typography color="invert" variant="epsilon" className={classes.title}>

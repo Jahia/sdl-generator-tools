@@ -4,6 +4,7 @@ const convertTypesToSelectOptions = (nodeTypes, doSort) => {
     if (_.isNil(nodeTypes)) {
         return null;
     }
+
     const options = nodeTypes.map(type => (
         {
             label: type.displayName,

@@ -82,6 +82,7 @@ const AddModifyTypeDialog = ({classes, defaultNodeTypeNames, allNodeTypeNames, t
         } else if (mode === C.DIALOG_MODE_EDIT) {
             removeDirective(uuid, 'mapping', lookUpMappingArgumentIndex(selectedType, 'ignoreDefaultQueries'));
         }
+
         closeDialog();
         cleanUp();
     };
@@ -112,6 +113,7 @@ const AddModifyTypeDialog = ({classes, defaultNodeTypeNames, allNodeTypeNames, t
         if (event.which !== 13) {
             updateUserInputDetected(true);
         }
+
         if (event.key === 'Enter' && !duplicateName && nodeType && typeName) {
             saveTypeAndClose();
         } else if (event.which === 32) {

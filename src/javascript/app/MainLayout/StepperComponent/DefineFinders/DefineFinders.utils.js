@@ -19,19 +19,23 @@ const filterAvailableFinders = (mode, selectedFinder, selectedType) => {
         if (isPredefinedType(curr.type) && !curr.isWeakreference) {
             return acc;
         }
+
         let suffix = generateFinderSuffix(curr.name);
         let connectionVariantExists = false;
         if (selectedType.queries.reduce((found, query) => {
             if (suffix.connection === query.suffix) {
                 connectionVariantExists = true;
             }
+
             return query.suffix === suffix.standard ? false : found;
         }, true)) {
             acc.push(suffix.standard);
         }
+
         if (!connectionVariantExists) {
             acc.push(suffix.connection);
         }
+
         return acc;
     }, finders);
     // If we are editing, add the suffix of the editing finder to the finders list and sort it.
@@ -40,12 +44,14 @@ const filterAvailableFinders = (mode, selectedFinder, selectedType) => {
         finders.push(editingFinder.suffix);
         finders.sort();
     }
+
     return finders;
 
     function getSelectedFinder() {
         if (mode === C.DIALOG_MODE_EDIT) {
             return selectedType.queries.find(finder => finder.name === selectedFinder);
         }
+
         return undefined;
     }
 };

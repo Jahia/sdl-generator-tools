@@ -88,6 +88,7 @@ const FinderPreviewComp = ({classes, finderPrefix = '', finderSuffix = ''}) => {
                 </Fragment>
             );
         }
+
         return (
             <Fragment>
                 <em className={classes.prefix}>{finderPrefix}</em>
@@ -95,6 +96,7 @@ const FinderPreviewComp = ({classes, finderPrefix = '', finderSuffix = ''}) => {
             </Fragment>
         );
     };
+
     return (
         <Typography variant="zeta" className={classes.finderPreview}>{format()}</Typography>
     );
@@ -133,6 +135,7 @@ const AddModifyFinderDialog = ({t, open, close, mode, addFinder, modifyFinder, r
             close();
             return;
         }
+
         addOrModifyFinder({
             name: formatFinderName(finderPrefix, finderSuffix),
             prefix: finderPrefix,

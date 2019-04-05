@@ -33,6 +33,7 @@ const addProperty = fieldInfo => {
             directives: []
         };
     }
+
     return {
         name: fieldInfo.name,
         type: fieldInfo.type,

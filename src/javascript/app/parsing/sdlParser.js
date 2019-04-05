@@ -20,6 +20,7 @@ const parseQueries = (queries, type) => {
         if (query.name.endsWith('Connection')) {
             return `${query.name}: ${type}Connection`;
         }
+
         return `${query.name}: [${type}]`;
     });
 };

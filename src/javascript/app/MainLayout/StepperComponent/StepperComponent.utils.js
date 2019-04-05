@@ -12,6 +12,7 @@ const getMappingDirectiveArguments = selected => {
         const mappingDirective = selected.directives.filter(directive => directive.name === 'mapping');
         return !_.isNil(mappingDirective) ? mappingDirective[0].arguments : null;
     }
+
     return null;
 };
 
@@ -20,6 +21,7 @@ const lookUpMappingArgumentIndex = (selected, argName) => {
     if (!_.isNil(mappingDirectiveArgs)) {
         return mappingDirectiveArgs.findIndex(argument => argument.name === argName);
     }
+
     return null;
 };
 
@@ -29,6 +31,7 @@ const lookUpMappingArgumentInfo = (selected, argName) => {
         const arg = mappingDirectiveArgs.filter(argument => argument.name === argName)[0];
         return !_.isNil(arg) ? arg.value : null;
     }
+
     return null;
 };
 
@@ -71,6 +74,7 @@ const getAvailableTypeNames = (nodeTypes, selection) => {
             }
         }
     }
+
     return availableTypes;
 };
 
@@ -78,6 +82,7 @@ const getAvailablePropertyNames = selectedType => {
     if (!_.isNil(selectedType)) {
         return selectedType.fieldDefinitions.map(field => field.name);
     }
+
     return [];
 };
 

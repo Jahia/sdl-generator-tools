@@ -27,6 +27,7 @@ const nodeTypesReducer = (state = {}, action) => {
             } else {
                 newState[action.uuid] = getInitialObject(actionTypes.SDL_ADD_TYPE, action.typeInfo);
             }
+
             return newState;
         case actionTypes.SDL_REMOVE_TYPE:
             delete newState[action.typeName];
@@ -57,6 +58,7 @@ const nodeTypesReducer = (state = {}, action) => {
                     if (dir.name !== action.directiveName) {
                         return dir;
                     }
+
                     return {
                         ...dir,
                         arguments: dir.arguments.concat(getInitialObject(actionTypes.SDL_ADD_DIRECTIVE_ARG_TO_TYPE, action.argumentInfo))
@@ -71,6 +73,7 @@ const nodeTypesReducer = (state = {}, action) => {
                     if (dir.name !== action.directiveName) {
                         return dir;
                     }
+
                     return {
                         ...dir,
                         arguments: dir.arguments.filter((arg, index) => index !== action.argumentIndex)
@@ -93,6 +96,7 @@ const nodeTypesReducer = (state = {}, action) => {
                     } else {
                         acc.push(curr);
                     }
+
                     return acc;
                 }, [])
             };
