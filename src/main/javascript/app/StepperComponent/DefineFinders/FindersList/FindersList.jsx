@@ -15,14 +15,22 @@ import {filterAvailableFinders} from '../DefineFinders.utils';
 const styles = theme => ({
     paper: {
         width: '100%',
-        minHeight: '35vh',
-        padding:  theme.spacing.unit * 2 + 'px 0',
-        overflowY: 'auto'
+        height: '100%',
+        padding: 0,
+        overflowY: 'auto',
+        boxShadow: 'none',
+        border: '1px solid ' + theme.palette.ui.omega
     },
     listButton: {
         '& > * *': {
             color: theme.palette.brand.alpha
         }
+    },
+    subHeader: {
+        textDecoration: 'none',
+        padding: (theme.spacing.unit * 3),
+        background: theme.palette.ui.epsilon,
+        borderBottom: '1px solid ' + theme.palette.ui.omega
     }
 });
 
@@ -40,22 +48,21 @@ const FindersList = ({t, classes, selectedType, selectedFinder, mode, selectFind
     };
     return (
         <Paper className={classes.paper}>
-            <List subheader={<ListSubheader>
-                <Typography color="alpha" variant="zeta">
-                    {t('label.sdlGeneratorTools.defineFinder.finders')}
-                </Typography>
-            </ListSubheader>}
+            <List subheader={
+                <ListSubheader className={classes.subHeader}>
+                    <Typography color="alpha" variant="zeta">
+                        {t('label.sdlGeneratorTools.defineFinder.finders')}
+                        <Button variant="ghost"
+                                icon={<Add/>}
+                                disabled={selectedType === undefined || availableFinders.length === 0}
+                                className={classes.listButton}
+                                onClick={() => updateFinderDialogState({open: true, mode: C.DIALOG_MODE_ADD})}
+                        >
+                            {t('label.sdlGeneratorTools.defineFinder.addAFinder')}
+                        </Button>
+                    </Typography>
+                </ListSubheader>}
             >
-                <ListItem>
-                    <Button variant="ghost"
-                            icon={<Add/>}
-                        disabled={selectedType === undefined || availableFinders.length === 0}
-                        className={classes.listButton}
-                        onClick={() => updateFinderDialogState({open: true, mode: C.DIALOG_MODE_ADD})}
-                    >
-                        {t('label.sdlGeneratorTools.defineFinder.addAFinder')}
-                    </Button>
-                </ListItem>
                 {
                     selectedType && selectedType.queries.map(finder => {
                         return (

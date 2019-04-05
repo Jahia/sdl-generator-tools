@@ -7,7 +7,7 @@ import FindersList from './FindersList';
 
 const DefineFindersCom = ({classes}) => {
     return (
-        <React.Fragment>
+        <>
             <Grid container classes={classes}>
                 <Grid item xs={12} sm={6} classes={classes}>
                     <TypesList mode={C.TYPE_LIST_MODE_DISPLAY}/>
@@ -17,12 +17,13 @@ const DefineFindersCom = ({classes}) => {
                 </Grid>
             </Grid>
             <AddModifyFinderDialog/>
-        </React.Fragment>
+        </>
     );
 };
 
 const DefineFinders = withStyles({
     container: {
+        height: '44vh'
     },
     item: {
         maxHeight: '100%'

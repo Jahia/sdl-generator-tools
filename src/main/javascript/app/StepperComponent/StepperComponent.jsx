@@ -23,7 +23,7 @@ const styles = theme => ({
         marginBottom: theme.spacing.unit * 3
     },
     bottomBar: {
-        margin: theme.spacing.unit * 4 + ' 0',
+        margin: (theme.spacing.unit * 4) + ' 0 ' + (theme.spacing.unit * 2),
         textAlign: 'right',
         '& button': {
             marginLeft: '5px'

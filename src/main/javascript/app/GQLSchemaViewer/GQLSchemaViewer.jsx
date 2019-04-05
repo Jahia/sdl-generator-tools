@@ -18,8 +18,9 @@ let styles = theme => ({
     editor: {
         borderRadius: '0 0 3px 3px',
         background: theme.palette.ui.gamma + ' !important',
-        '& .ace_gutter' : {
-            background: theme.palette.ui.gamma + ' !important',
+        height: '67vh!important',
+        '& .ace_gutter': {
+            background: theme.palette.ui.gamma + ' !important'
         }
     }
 });
@@ -30,12 +31,12 @@ const GQLSchemaViewer = ({classes, t, nodeTypes}) => {
         storeLocally(C.LOCAL_STORAGE, nodeTypes);
     }
     return (
-        <React.Fragment>
-                <Typography color="invert" variant="epsilon" className={classes.title}>
-                    {t('label.sdlGeneratorTools.viewerCaption')}
-                </Typography>
+        <>
+            <Typography color="invert" variant="epsilon" className={classes.title}>
+                {t('label.sdlGeneratorTools.viewerCaption')}
+            </Typography>
 
-                <AceEditor
+            <AceEditor
                     readOnly
                     mode="graphqlschema"
                     theme="monokai"
@@ -45,7 +46,7 @@ const GQLSchemaViewer = ({classes, t, nodeTypes}) => {
                     value={SDLParser.parse(nodeTypes)}
                     editorProps={{$blockScrolling: false}}
                 />
-        </React.Fragment>
+        </>
     );
 };
 

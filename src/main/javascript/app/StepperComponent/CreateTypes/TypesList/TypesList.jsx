@@ -3,7 +3,6 @@ import {translate} from 'react-i18next';
 import PropTypes from 'prop-types';
 import {
     withStyles,
-    Paper,
     List,
     ListItem,
     ListItemText,
@@ -11,7 +10,7 @@ import {
     ListItemSecondaryAction,
     IconButton
 } from '@material-ui/core';
-import {Typography, Button} from '@jahia/ds-mui-theme';
+import {Typography, Button, Paper} from '@jahia/ds-mui-theme';
 import {Add, Edit} from '@material-ui/icons';
 import {compose} from 'react-apollo';
 import C from '../../../App.constants';
@@ -24,9 +23,11 @@ import {connect} from 'react-redux';
 const styles = theme => ({
     paper: {
         width: '100%',
-        minHeight: '35vh',
-        padding:  theme.spacing.unit * 2 + 'px 0',
-        overflowY: 'auto'
+        height: '100%',
+        padding: 0,
+        overflowY: 'auto',
+        boxShadow: 'none',
+        border: '1px solid ' + theme.palette.ui.omega
     },
     root: {
         position: 'absolute',
@@ -35,6 +36,16 @@ const styles = theme => ({
     listButton: {
         '& > * *': {
             color: theme.palette.primary.main
+        }
+    },
+    subHeader: {
+        textDecoration: 'none',
+        padding: (theme.spacing.unit * 3),
+        background: theme.palette.ui.epsilon,
+        borderBottom: '1px solid ' + theme.palette.ui.omega,
+        borderRight: '1px solid ' + theme.palette.ui.omega,
+        '& > p': {
+            lineHeight: 2.54
         }
     }
 });
@@ -67,33 +78,29 @@ const TypeItem = withStyles(styles)(({classes, name, uuid, mode, isSelected, sel
 const TypesList = ({classes, t, nodeTypes, selection, selectType, updateTypeDialogMode, mode}) => {
     const renderCreateListButton = () => {
         return mode === C.TYPE_LIST_MODE_CREATE ?
-            <ListItem>
-                <Button
+            <Button
                     variant="ghost"
                     icon={<Add/>}
                     className={classes.listButton}
                     onClick={() => {
                     updateTypeDialogMode({open: true, mode: C.DIALOG_MODE_ADD});
                 }}
-                >
-
-                        {t('label.sdlGeneratorTools.createTypes.addNewTypeButton')}
-
-                </Button>
-            </ListItem> : null;
+            >
+                {t('label.sdlGeneratorTools.createTypes.addNewTypeButton')}
+            </Button> : null;
     };
 
     return (
         <Paper className={classes.paper}>
             <List subheader={
-                <ListSubheader>
+                <ListSubheader className={classes.subHeader}>
                     <Typography color="alpha" variant="zeta">
                         {t('label.sdlGeneratorTools.createTypes.nodeTypeText')}
+                        {renderCreateListButton()}
                     </Typography>
                 </ListSubheader>
                     }
             >
-                {renderCreateListButton()}
                 {
                             Object.getOwnPropertyNames(nodeTypes).map(uuid => {
                                 const type = nodeTypes[uuid];
