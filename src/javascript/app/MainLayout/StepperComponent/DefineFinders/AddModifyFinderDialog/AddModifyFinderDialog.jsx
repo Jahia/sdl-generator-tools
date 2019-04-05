@@ -142,6 +142,7 @@ const AddModifyFinderDialog = ({t, open, close, mode, addFinder, modifyFinder, r
             suffix: finderSuffix
         });
         close();
+        cleanUp();
 
         function addOrModifyFinder(finderInfo) {
             if (mode === C.DIALOG_MODE_ADD) {
@@ -233,7 +234,7 @@ const AddModifyFinderDialog = ({t, open, close, mode, addFinder, modifyFinder, r
                             size="normal"
                             onClick={removeAndClose}
                     >
-                            {t('label.sdlGeneratorTools.deleteButton')}
+                        {t('label.sdlGeneratorTools.deleteButton')}
                     </Button>
                 }
             </DialogActions>
