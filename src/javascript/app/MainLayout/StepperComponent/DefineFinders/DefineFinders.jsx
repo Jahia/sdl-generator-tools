@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import {Grid, withStyles} from '@material-ui/core';
 import AddModifyFinderDialog from './AddModifyFinderDialog/index';
