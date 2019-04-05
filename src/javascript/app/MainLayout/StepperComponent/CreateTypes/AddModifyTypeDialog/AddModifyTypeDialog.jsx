@@ -209,7 +209,7 @@ const AddModifyTypeDialog = ({classes, defaultNodeTypeNames, allNodeTypeNames, t
     );
 };
 
-AddTypeDialog.propTypes = {
+AddModifyTypeDialog.propTypes = {
     classes: PropTypes.object.isRequired,
     t: PropTypes.func.isRequired,
     selectedType: PropTypes.object,
