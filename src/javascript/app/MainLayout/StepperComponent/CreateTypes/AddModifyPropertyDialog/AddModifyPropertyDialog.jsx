@@ -492,21 +492,17 @@ const TypeMappingChannel = ({t, mode, updateSelectedProp, addPropertyAndClose, a
                 </FormGroup>
             </DialogContent>
             <DialogActions>
-                <Button variant="ghost"
+                <Button variant="secondary"
                         onClick={cancelAndClose}
                 >
-                    <Typography color="inherit" variant="zeta">
                         {t('label.sdlGeneratorTools.cancelButton')}
-                    </Typography>
                 </Button>
                 <Button disabled={duplicateName || !selectedPropertyName || !selectedPropertyType}
                         variant="primary"
                         size="normal"
                         onClick={addPropertyAndClose}
                 >
-                    <Typography color="inherit" variant="zeta">
                         {mode === C.DIALOG_MODE_ADD ? t('label.sdlGeneratorTools.addButton') : t('label.sdlGeneratorTools.updateButton')}
-                    </Typography>
                 </Button>
                 {
                     mode === C.DIALOG_MODE_EDIT &&
@@ -514,9 +510,9 @@ const TypeMappingChannel = ({t, mode, updateSelectedProp, addPropertyAndClose, a
                             size="normal"
                             onClick={removeAndClose}
                     >
-                        <Typography color="inherit" variant="zeta">
+
                             {t('label.sdlGeneratorTools.deleteButton')}
-                        </Typography>
+
                     </Button>
                 }
             </DialogActions>
@@ -552,18 +548,14 @@ const ChannelSelect = ({t, selectChannel, updateSelectedProp}) => (
                             selectChannel('MAP_TO_TYPE');
                         }}
                 >
-                    <Typography color="inherit" variant="zeta">
                         {t('label.sdlGeneratorTools.createProperty.mapToType')}
-                    </Typography>
                 </Button>
                 <Button variant="primary"
                         size="normal"
                         style={{marginBottom: 24}}
                         onClick={() => selectChannel('PROPERTY')}
                 >
-                    <Typography color="inherit" variant="zeta">
                         {t('label.sdlGeneratorTools.createProperty.selectProp')}
-                    </Typography>
                 </Button>
             </FormGroup>
         </DialogContent>

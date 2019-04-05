@@ -9,10 +9,9 @@ import {
     ListItemText,
     ListSubheader,
     ListItemSecondaryAction,
-    IconButton,
-    Button
+    IconButton
 } from '@material-ui/core';
-import {Typography} from '@jahia/ds-mui-theme';
+import {Typography, Button} from '@jahia/ds-mui-theme';
 import {Add, Edit} from '@material-ui/icons';
 import {compose} from 'react-apollo';
 import C from '../../../../App.constants';
@@ -71,15 +70,17 @@ const TypesList = ({classes, t, nodeTypes, selection, selectType, updateTypeDial
     const renderCreateListButton = () => {
         return mode === C.TYPE_LIST_MODE_CREATE ?
             <ListItem>
-                <Button className={classes.listButton}
-                        onClick={() => {
+                <Button
+                    variant="ghost"
+                    icon={<Add/>}
+                    className={classes.listButton}
+                    onClick={() => {
                     updateTypeDialogMode({open: true, mode: C.DIALOG_MODE_ADD});
                 }}
                 >
-                    <Typography color="alpha" variant="zeta">
+
                         {t('label.sdlGeneratorTools.createTypes.addNewTypeButton')}
-                    </Typography>
-                    <Add/>
+
                 </Button>
             </ListItem> : null;
     };

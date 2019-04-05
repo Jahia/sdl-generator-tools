@@ -54,6 +54,7 @@
     "@jahia/apollo-dx": "^1.0.0-beta.20190226170343",
     "@jahia/ds-mui-theme": "^1.0.0-beta.20190205085737",
     "@jahia/i18next": "^1.0.0-beta.20180628145923",
+    "@jahia/icons": "^1.0.0-beta.20190404144749",
     "@jahia/layouts": "^1.0.0-beta.20190401120852",
     "@jahia/react-material": "^1.0.0-beta.20190401120857",
     "@jahia/test-framework": "^1.0.0-beta.20190329150204",
