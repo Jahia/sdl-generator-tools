@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {compose} from 'react-apollo';
 import {translate} from 'react-i18next';
@@ -31,7 +31,7 @@ const GQLSchemaViewer = ({classes, t, nodeTypes}) => {
         storeLocally(C.LOCAL_STORAGE, nodeTypes);
     }
     return (
-        <React.Fragment>
+        <Fragment>
             <Typography color="invert" variant="epsilon" className={classes.title}>
                 {t('label.sdlGeneratorTools.viewerCaption')}
             </Typography>
@@ -46,7 +46,7 @@ const GQLSchemaViewer = ({classes, t, nodeTypes}) => {
                     value={SDLParser.parse(nodeTypes)}
                     editorProps={{$blockScrolling: false}}
                 />
-        </React.Fragment>
+        </Fragment>
     );
 };
 

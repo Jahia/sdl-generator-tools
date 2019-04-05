@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {Fragment, useState} from 'react';
 import PropTypes from 'prop-types';
 import Dialog from '@material-ui/core/Dialog/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle/DialogTitle';
@@ -302,7 +302,7 @@ const PropertyChannel = ({t, mode, updateSelectedProp, addPropertyAndClose, sele
 
     const [showPropertySelector, setShowPropertySelector] = useState(false);
     return (
-        <React.Fragment>
+        <Fragment>
             <DialogTitle
                 id="form-dialog-title"
             >{mode === C.DIALOG_MODE_EDIT ? t('label.sdlGeneratorTools.createTypes.viewProperty') : t('label.sdlGeneratorTools.createTypes.addNewPropertyButton')}
@@ -373,7 +373,7 @@ const PropertyChannel = ({t, mode, updateSelectedProp, addPropertyAndClose, sele
                     </Button>
                 }
             </DialogActions>
-        </React.Fragment>
+        </Fragment>
     );
 };
 
@@ -419,7 +419,7 @@ const TypeMappingChannel = ({t, mode, updateSelectedProp, addPropertyAndClose, a
     };
 
     return (
-        <React.Fragment>
+        <Fragment>
             <DialogTitle
                 id="form-dialog-title"
             >{mode === C.DIALOG_MODE_EDIT ? t('label.sdlGeneratorTools.createTypes.viewProperty') : t('label.sdlGeneratorTools.createTypes.addNewPropertyButton')}
@@ -520,7 +520,7 @@ const TypeMappingChannel = ({t, mode, updateSelectedProp, addPropertyAndClose, a
                     </Button>
                 }
             </DialogActions>
-        </React.Fragment>
+        </Fragment>
     );
 };
 
@@ -541,7 +541,7 @@ TypeMappingChannel.propTypes = {
 };
 
 const ChannelSelect = ({t, selectChannel, updateSelectedProp}) => (
-    <React.Fragment>
+    <Fragment>
         <DialogContent style={{width: 400}}>
             <FormGroup>
                 <Button variant="primary"
@@ -567,7 +567,7 @@ const ChannelSelect = ({t, selectChannel, updateSelectedProp}) => (
                 </Button>
             </FormGroup>
         </DialogContent>
-    </React.Fragment>
+    </Fragment>
 );
 
 ChannelSelect.propTypes = {

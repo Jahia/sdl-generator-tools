@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {Grid, withStyles} from '@material-ui/core';
 import AddModifyFinderDialog from './AddModifyFinderDialog/index';
@@ -8,7 +8,7 @@ import FindersList from './FindersList/index';
 
 const DefineFindersCom = ({classes}) => {
     return (
-        <React.Fragment>
+        <Fragment>
             <Grid container classes={classes}>
                 <Grid item xs={12} sm={6} classes={classes}>
                     <TypesList mode={C.TYPE_LIST_MODE_DISPLAY}/>
@@ -18,7 +18,7 @@ const DefineFindersCom = ({classes}) => {
                 </Grid>
             </Grid>
             <AddModifyFinderDialog/>
-        </React.Fragment>
+        </Fragment>
     );
 };
 

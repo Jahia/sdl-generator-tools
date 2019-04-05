@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import PropTypes from 'prop-types';
 import {compose} from 'react-apollo';
 import {translate} from 'react-i18next';
@@ -9,7 +9,7 @@ import GQLSchemaViewer from './GQLSchemaViewer';
 
 const MainLayout = ({t, contextPath}) => {
     return (
-        <React.Fragment>
+        <Fragment>
             <ToolLayout contextPath={contextPath} label={t('label.sdlGeneratorTools.top.backToToolsButton')} title={t('label.sdlGeneratorTools.top.caption')}>
                 <TwoColumnsContent
                 rightCol={<Paper color="dark"><GQLSchemaViewer/></Paper>}
@@ -22,7 +22,7 @@ const MainLayout = ({t, contextPath}) => {
                     </Paper>
                 </TwoColumnsContent>
             </ToolLayout>
-        </React.Fragment>
+        </Fragment>
     );
 };
 
