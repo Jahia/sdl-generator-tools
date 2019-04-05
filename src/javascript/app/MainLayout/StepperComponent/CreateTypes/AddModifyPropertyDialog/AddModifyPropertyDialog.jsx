@@ -495,14 +495,14 @@ const TypeMappingChannel = ({t, mode, updateSelectedProp, addPropertyAndClose, a
                 <Button variant="secondary"
                         onClick={cancelAndClose}
                 >
-                        {t('label.sdlGeneratorTools.cancelButton')}
+                    {t('label.sdlGeneratorTools.cancelButton')}
                 </Button>
                 <Button disabled={duplicateName || !selectedPropertyName || !selectedPropertyType}
                         variant="primary"
                         size="normal"
                         onClick={addPropertyAndClose}
                 >
-                        {mode === C.DIALOG_MODE_ADD ? t('label.sdlGeneratorTools.addButton') : t('label.sdlGeneratorTools.updateButton')}
+                    {mode === C.DIALOG_MODE_ADD ? t('label.sdlGeneratorTools.addButton') : t('label.sdlGeneratorTools.updateButton')}
                 </Button>
                 {
                     mode === C.DIALOG_MODE_EDIT &&
@@ -548,14 +548,14 @@ const ChannelSelect = ({t, selectChannel, updateSelectedProp}) => (
                             selectChannel('MAP_TO_TYPE');
                         }}
                 >
-                        {t('label.sdlGeneratorTools.createProperty.mapToType')}
+                    {t('label.sdlGeneratorTools.createProperty.mapToType')}
                 </Button>
                 <Button variant="primary"
                         size="normal"
                         style={{marginBottom: 24}}
                         onClick={() => selectChannel('PROPERTY')}
                 >
-                        {t('label.sdlGeneratorTools.createProperty.selectProp')}
+                    {t('label.sdlGeneratorTools.createProperty.selectProp')}
                 </Button>
             </FormGroup>
         </DialogContent>
