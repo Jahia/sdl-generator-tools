@@ -7,10 +7,9 @@ import {
     List,
     ListItem,
     ListItemText,
-    ListSubheader,
-    Button
+    ListSubheader
 } from '@material-ui/core';
-import {Typography} from '@jahia/ds-mui-theme';
+import {Typography, Button} from '@jahia/ds-mui-theme';
 import {Add} from '@material-ui/icons';
 import {compose} from 'react-apollo';
 import C from '../../../App.constants';
@@ -55,15 +54,15 @@ const PropertiesList = ({classes, t, selectedType, selectProperty, addModifyProp
             }
             >
                 <ListItem>
-                    <Button className={classes.listButton}
-                            onClick={() => {
+                    <Button
+                        icon={<Add/>}
+                        variant="ghost"
+                        className={classes.listButton}
+                        onClick={() => {
                         addModifyPropertyDialog({open: true, channel: undefined, mode: C.DIALOG_MODE_ADD});
                     }}
                     >
-                        <Typography color="alpha" variant="zeta">
                             {t('label.sdlGeneratorTools.createTypes.addNewPropertyButton')}
-                        </Typography>
-                        <Add/>
                     </Button>
                 </ListItem>
                 {
