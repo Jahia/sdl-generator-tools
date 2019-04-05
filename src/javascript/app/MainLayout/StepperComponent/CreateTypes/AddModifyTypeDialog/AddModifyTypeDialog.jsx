@@ -43,7 +43,7 @@ const styles = () => ({
     }
 });
 
-const AddTypeDialog = ({classes, defaultNodeTypeNames, allNodeTypeNames, t, open, closeDialog, mode, selection, selectedType, selectType, removeType, addType, updateType, addDirective, removeDirective, availableTypeNames}) => {
+const AddModifyTypeDialog = ({classes, defaultNodeTypeNames, allNodeTypeNames, t, open, closeDialog, mode, selection, selectedType, selectType, removeType, addType, updateType, addDirective, removeDirective, availableTypeNames}) => {
     const customTypeName = !_.isNil(selectedType) ? selectedType.name : '';
     const customDisplayName = !_.isNil(selectedType) ? selectedType.displayName : '';
     const jcrNodeType = lookUpMappingStringArgumentInfo(selectedType, 'node');
@@ -276,7 +276,7 @@ const CompositeComp = compose(
     }),
     withStyles(styles),
     translate()
-)(AddTypeDialog);
+)(AddModifyTypeDialog);
 
 export default withApollo(CompositeComp);
 
