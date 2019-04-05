@@ -10,7 +10,7 @@ import AddModifyTypeDialog from './AddModifyTypeDialog/index';
 
 const CreateTypesCom = ({classes}) => {
     return (
-        <Fragment>
+        <>
             <Grid container classes={classes}>
                 <Grid item xs={12} sm={6} classes={classes}>
                     <TypesList/>
@@ -21,7 +21,7 @@ const CreateTypesCom = ({classes}) => {
             </Grid>
             <AddModifyPropertyDialog/>
             <AddModifyTypeDialog/>
-        </Fragment>
+        </>
     );
 };
 
@@ -31,6 +31,7 @@ CreateTypesCom.propTypes = {
 
 const CreateTypes = withStyles({
     container: {
+        height: '44vh'
     },
     item: {
         maxHeight: '100%'

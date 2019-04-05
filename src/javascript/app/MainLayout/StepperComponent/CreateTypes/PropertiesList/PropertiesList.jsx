@@ -3,13 +3,12 @@ import {translate} from 'react-i18next';
 import PropTypes from 'prop-types';
 import {
     withStyles,
-    Paper,
     List,
     ListItem,
     ListItemText,
     ListSubheader
 } from '@material-ui/core';
-import {Typography, Button} from '@jahia/ds-mui-theme';
+import {Typography, Button, Paper} from '@jahia/ds-mui-theme';
 import {Add} from '@material-ui/icons';
 import {compose} from 'react-apollo';
 import C from '../../../../App.constants';
@@ -21,14 +20,22 @@ import {connect} from 'react-redux';
 const styles = theme => ({
     paper: {
         width: '100%',
-        minHeight: '35vh',
-        padding: theme.spacing.unit * 2 + 'px 0',
-        overflowY: 'auto'
+        height: '100%',
+        padding: 0,
+        overflowY: 'auto',
+        boxShadow: 'none',
+        border: '1px solid ' + theme.palette.ui.omega
     },
     listButton: {
         '& > * *': {
             color: theme.palette.brand.alpha
         }
+    },
+    subHeader: {
+        textDecoration: 'none',
+        padding: (theme.spacing.unit * 3),
+        background: theme.palette.ui.epsilon,
+        borderBottom: '1px solid ' + theme.palette.ui.omega
     }
 });
 /* eslint-disable */
@@ -57,25 +64,23 @@ const PropertiesList = ({classes, t, selectedType, selectProperty, addModifyProp
     return (
         <Paper className={classes.paper}>
             <List subheader={
-                <ListSubheader>
+                <ListSubheader className={classes.subHeader}>
                     <Typography color="alpha" variant="zeta">
                         {t('label.sdlGeneratorTools.createTypes.propertiesText')}
+                        <Button
+                            icon={<Add/>}
+                            variant="ghost"
+                            className={classes.listButton}
+                            onClick={() => {
+                                addModifyPropertyDialog({open: true, channel: undefined, mode: C.DIALOG_MODE_ADD});
+                            }}
+                        >
+                            {t('label.sdlGeneratorTools.createTypes.addNewPropertyButton')}
+                        </Button>
                     </Typography>
                 </ListSubheader>
             }
             >
-                <ListItem>
-                    <Button
-                        icon={<Add/>}
-                        variant="ghost"
-                        className={classes.listButton}
-                        onClick={() => {
-                        addModifyPropertyDialog({open: true, channel: undefined, mode: C.DIALOG_MODE_ADD});
-                    }}
-                    >
-                            {t('label.sdlGeneratorTools.createTypes.addNewPropertyButton')}
-                    </Button>
-                </ListItem>
                 {
                     selectedType && selectedType.fieldDefinitions.map((field, i) => (
                         <PropertyItem key={field.name}
