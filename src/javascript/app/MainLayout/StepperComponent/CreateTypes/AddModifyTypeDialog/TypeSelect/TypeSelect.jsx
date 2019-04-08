@@ -199,7 +199,7 @@ const TypeSelect = ({classes, t, value, handleClose, handleChange, handleOpen, d
 TypeSelect.propTypes = {
     classes: PropTypes.object.isRequired,
     t: PropTypes.func.isRequired,
-    value: PropTypes.string,
+    value: PropTypes.object,
     handleClose: PropTypes.func,
     handleChange: PropTypes.func.isRequired,
     handleOpen: PropTypes.func,
