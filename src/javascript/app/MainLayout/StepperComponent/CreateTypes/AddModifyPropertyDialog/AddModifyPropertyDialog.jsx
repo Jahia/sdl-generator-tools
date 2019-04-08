@@ -359,7 +359,9 @@ const PropertyChannel = ({t, mode, updateSelectedProp, addPropertyAndClose, sele
                 />
             </DialogContent>
             <DialogActions>
-                <Button variant="ghost" onClick={cancelAndClose}>
+                <Button variant="secondary"
+                        onClick={cancelAndClose}
+                >
                     {t('label.sdlGeneratorTools.cancelButton')}
                 </Button>
                 <Button disabled={duplicateName || !selectedPropertyName || !selectedJcrPropertyName}

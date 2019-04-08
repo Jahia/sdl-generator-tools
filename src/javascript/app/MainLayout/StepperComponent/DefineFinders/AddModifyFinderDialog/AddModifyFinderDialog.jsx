@@ -217,7 +217,7 @@ const AddModifyFinderDialog = ({t, open, close, mode, addFinder, modifyFinder, r
                 <FinderPreview finderPrefix={finderPrefix} finderSuffix={finderSuffix}/>
             </DialogContent>
             <DialogActions>
-                <Button variant="ghost"
+                <Button variant="secondary"
                         onClick={cancelAndClose}
                 >
                     {t('label.sdlGeneratorTools.cancelButton')}

@@ -187,7 +187,7 @@ const AddModifyTypeDialog = ({classes, defaultNodeTypeNames, allNodeTypeNames, t
                 </FormGroup>
             </DialogContent>
             <DialogActions>
-                <Button variant="ghost"
+                <Button variant="secondary"
                         size="normal"
                         onClick={cancelAndClose}
                 >
