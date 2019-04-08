@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React, {} from 'react';
 import PropTypes from 'prop-types';
 import {translate} from 'react-i18next';
 import {withStyles, Stepper, Step, StepLabel} from '@material-ui/core';
@@ -127,7 +127,7 @@ class StepperComponent extends React.Component {
         const lastStep = steps.length - 1;
 
         return (
-            <Fragment>
+            <>
                 <div className={classes.root}>
                     <Stepper className={classes.steppers} activeStep={activeStep}>
                         {steps.map(label => {
@@ -187,7 +187,7 @@ class StepperComponent extends React.Component {
                         </Button>
                     </div>
                 </div>
-            </Fragment>
+            </>
         );
     }
 }

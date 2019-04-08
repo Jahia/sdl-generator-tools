@@ -1,4 +1,4 @@
-import React, {Fragment, useState} from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {Select, MenuItem, Dialog, withStyles, InputLabel, FormControl, Input} from '@material-ui/core';
 import DialogTitle from '@material-ui/core/DialogTitle/DialogTitle';
@@ -81,19 +81,19 @@ const FinderPreviewComp = ({classes, finderPrefix = '', finderSuffix = ''}) => {
     const format = () => {
         if (finderSuffix === 'all' || finderSuffix === 'allConnection') {
             return (
-                <Fragment>
+                <>
                     <span>{finderSuffix.substr(0, 3)}</span>
                     <em className={classes.prefix}>{upperCaseFirst(finderPrefix)}</em>
                     <span>{finderSuffix.substr(3)}</span>
-                </Fragment>
+                </>
             );
         }
 
         return (
-            <Fragment>
+            <>
                 <em className={classes.prefix}>{finderPrefix}</em>
                 <span>{upperCaseFirst(finderSuffix)}</span>
-            </Fragment>
+            </>
         );
     };
 
