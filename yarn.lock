@@ -781,7 +781,7 @@
 
 "@jahia/apollo-dx@^1.0.0-beta.20190226170343":
   version "1.0.0-beta.20190405120310"
-  resolved "http://npm.int.jahia.com:4873/@jahia%2fapollo-dx/-/apollo-dx-1.0.0-beta.20190405120310.tgz#b2637daa89716c9b03cd0b7db533bd3ee9983e81"
+  resolved "https://npm.jahia.com/@jahia%2fapollo-dx/-/apollo-dx-1.0.0-beta.20190405120310.tgz#b2637daa89716c9b03cd0b7db533bd3ee9983e81"
   integrity sha512-e04tN4h6B3YOCUgH086NyyrPac8vZeWnpRtb5UlSMMIK6eAQOHocJWCDxx4q0R+OapjNiDCRYjy/vPiWsP5Gig==
   dependencies:
     apollo-cache-inmemory "^1.5.1"
@@ -797,7 +797,7 @@
 
 "@jahia/ds-mui-theme@^1.0.0-beta.20190205085737":
   version "1.0.0-beta.20190405120314"
-  resolved "http://npm.int.jahia.com:4873/@jahia%2fds-mui-theme/-/ds-mui-theme-1.0.0-beta.20190405120314.tgz#d98b65697e75de3c57a0f29ba63a03436ed5aaca"
+  resolved "https://npm.jahia.com/@jahia%2fds-mui-theme/-/ds-mui-theme-1.0.0-beta.20190405120314.tgz#d98b65697e75de3c57a0f29ba63a03436ed5aaca"
   integrity sha512-Zg3I4ABY73oS5J0gwdshDRV0/orOocSYYPF4siIQp45Tw5ZFPeLnA6xrT5iMhGBe/JvcGBb4KEYIoCbUAabJ7Q==
   dependencies:
     classnames "^2.2.6"
@@ -806,7 +806,7 @@
 
 "@jahia/i18next@^1.0.0-beta.20180628145923":
   version "1.0.0-beta.20190405120311"
-  resolved "http://npm.int.jahia.com:4873/@jahia%2fi18next/-/i18next-1.0.0-beta.20190405120311.tgz#bda5f7354043f9a7797def658da7a985ab74dd45"
+  resolved "https://npm.jahia.com/@jahia%2fi18next/-/i18next-1.0.0-beta.20190405120311.tgz#bda5f7354043f9a7797def658da7a985ab74dd45"
   integrity sha512-PsryFZt7gig/ybUo5s6sdlPFs66ClcRbo2ehbQ9DdllGlx3wQWX7myvHXI7wBRTCBJeqOPBcrLaDh/RjfttRnw==
   dependencies:
     i18next "^11.3.2"
@@ -815,7 +815,7 @@
 
 "@jahia/icons@^1.0.0-beta.20190404144749":
   version "1.0.0-beta.20190405120310"
-  resolved "http://npm.int.jahia.com:4873/@jahia%2ficons/-/icons-1.0.0-beta.20190405120310.tgz#4354dafb627f592b4a6acdce1b8c7ac6587655b1"
+  resolved "https://npm.jahia.com/@jahia%2ficons/-/icons-1.0.0-beta.20190405120310.tgz#4354dafb627f592b4a6acdce1b8c7ac6587655b1"
   integrity sha512-8/ikjK3uWnbyVtMQwThqaPsSXrCe4WWcw+UphxMZCyTU74K192OgauBruIh4nQeh/tdI0Zq+aVanH0+UpN8BmA==
   dependencies:
     "@material-ui/icons" "^3.0.2"
@@ -823,7 +823,7 @@
 
 "@jahia/layouts@^1.0.0-beta.20190401120852":
   version "1.0.0-beta.20190405120311"
-  resolved "http://npm.int.jahia.com:4873/@jahia%2flayouts/-/layouts-1.0.0-beta.20190405120311.tgz#cacbd81c9bafcb65ca416950a625243d1d432455"
+  resolved "https://npm.jahia.com/@jahia%2flayouts/-/layouts-1.0.0-beta.20190405120311.tgz#cacbd81c9bafcb65ca416950a625243d1d432455"
   integrity sha512-tMb2Drsz/+8kl7ef9FO5WGRwRyaTrB/vIgaTcGxIYbeh/jye84i+8M+CkOyqFvz/hemtk/HHEb4Sa+z18/hrQQ==
   dependencies:
     classnames "^2.2.6"
@@ -834,7 +834,7 @@
 
 "@jahia/react-material@^1.0.0-beta.20190401120857":
   version "1.0.0-beta.20190405120311"
-  resolved "http://npm.int.jahia.com:4873/@jahia%2freact-material/-/react-material-1.0.0-beta.20190405120311.tgz#8281340d99dce7c318aba171f3d8e8326bfd449a"
+  resolved "https://npm.jahia.com/@jahia%2freact-material/-/react-material-1.0.0-beta.20190405120311.tgz#8281340d99dce7c318aba171f3d8e8326bfd449a"
   integrity sha512-wx0gGoGbuIROnTNi0bVCniekED8bEOQDBdcCnVZnRYW5ycMb/WpsKZaeIk1SCWOmYFxgwwTTA1QgfaXej9r9GA==
   dependencies:
     lodash "^4.17.10"
@@ -845,7 +845,7 @@
 
 "@jahia/test-framework@^1.0.0-beta.20190329150204":
   version "1.0.0-beta.20190405120312"
-  resolved "http://npm.int.jahia.com:4873/@jahia%2ftest-framework/-/test-framework-1.0.0-beta.20190405120312.tgz#adfffdb58a7dd71d4d1fad5e527dcfc19e7cda84"
+  resolved "https://npm.jahia.com/@jahia%2ftest-framework/-/test-framework-1.0.0-beta.20190405120312.tgz#adfffdb58a7dd71d4d1fad5e527dcfc19e7cda84"
   integrity sha512-QoRaizYbgY8Oy4qYLcH12gq8rI6ZYb0uz2n7m2tvQfaityyH+uqRZqvV83I3t6WqOvNQmuVbPkJTjFnPY5zMUQ==
   dependencies:
     babel-jest "^24.5.0"
