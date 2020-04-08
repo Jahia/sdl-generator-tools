@@ -68,7 +68,7 @@
     <properties>
         <jahia-depends>default,serverSettings,graphql-dxm-provider</jahia-depends>
         <yarn.arguments>build:production</yarn.arguments>
-        <jahia-module-signature>MCwCFHshyaVIRvWFVUUayakXyWa+C3LlAhQ7TOfTgKxXNLMAKuEvURAH6dSe9Q==</jahia-module-signature>
+        <jahia-module-signature>MC0CFGZINkOcSMORWOgIx1nI3LQUsuunAhUAkpi7nzlqkiVuD7H7t5A/PRtp7MM=</jahia-module-signature>
     </properties>
 
     <dependencies>
