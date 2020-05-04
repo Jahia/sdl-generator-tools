@@ -62,14 +62,15 @@ const generateFinderSuffix = name => {
 const getAvailableTypeNames = (nodeTypes, selection) => {
     const availableTypes = [];
     if (nodeTypes) {
-        for (let key in nodeTypes) {
-            /* eslint-disable-next-line */
-            if (!nodeTypes.hasOwnProperty(key)) {
+        // eslint-disable-next-line no-unused-vars
+        for (let nodeType in nodeTypes) {
+            // eslint-disable-next-line no-prototype-builtins
+            if (!nodeTypes.hasOwnProperty(nodeType)) {
                 continue;
             }
 
-            const node = nodeTypes[key];
-            if (selection !== key) {
+            const node = nodeTypes[nodeType];
+            if (selection !== nodeType) {
                 availableTypes.push(node.name);
             }
         }

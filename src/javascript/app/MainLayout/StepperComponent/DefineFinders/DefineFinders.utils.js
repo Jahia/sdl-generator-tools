@@ -1,8 +1,5 @@
 import * as _ from 'lodash';
-import {
-    generateFinderSuffix,
-    isPredefinedType
-} from '../StepperComponent.utils';
+import {generateFinderSuffix, isPredefinedType} from '../StepperComponent.utils';
 import C from '../../../App.constants';
 
 const filterAvailableFinders = (mode, selectedFinder, selectedType) => {

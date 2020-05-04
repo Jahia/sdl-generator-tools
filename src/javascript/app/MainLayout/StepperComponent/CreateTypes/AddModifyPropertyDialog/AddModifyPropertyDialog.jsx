@@ -5,37 +5,30 @@ import DialogTitle from '@material-ui/core/DialogTitle/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent/DialogContent';
 import TextField from '@material-ui/core/TextField/TextField';
 import DialogActions from '@material-ui/core/DialogActions/DialogActions';
-import {
-    FormControlLabel,
-    FormGroup,
-    Switch
-} from '@material-ui/core';
-import {Typography, Button} from '@jahia/ds-mui-theme';
+import {FormControlLabel, FormGroup, Switch} from '@material-ui/core';
+import {Button, Typography} from '@jahia/ds-mui-theme';
 import {compose, graphql, withApollo} from 'react-apollo';
 import {connect} from 'react-redux';
 import {translate} from 'react-i18next';
 import * as _ from 'lodash';
 import {
-    lookUpMappingStringArgumentInfo,
+    formatFinderName,
     generateFinderSuffix,
-    upperCaseFirst,
+    getAvailablePropertyNames,
     getAvailableTypeNames,
-    getAvailablePropertyNames, formatFinderName
+    lookUpMappingStringArgumentInfo,
+    upperCaseFirst
 } from '../../StepperComponent.utils';
 import C from '../../../../App.constants';
 import gqlQueries from '../CreateTypes.gql-queries';
 import {
     sdlAddPropertyToType,
+    sdlModifyFinderOfType,
     sdlRemoveFinderFromType,
     sdlRemovePropertyFromType,
-    sdlUpdatePropertyOfType,
-    sdlModifyFinderOfType
+    sdlUpdatePropertyOfType
 } from '../../../../App.redux-actions';
-import {
-    sdlUpdateSelectedProperty,
-    sdlUpdateAddModifyPropertyDialog,
-    sdlSelectProperty
-} from '../../StepperComponent.redux-actions';
+import {sdlSelectProperty, sdlUpdateAddModifyPropertyDialog, sdlUpdateSelectedProperty} from '../../StepperComponent.redux-actions';
 import PredefinedTypeSelector from './PredefinedTypeSelector/index';
 import PropertySelector from './PropertySelector/index';
 
@@ -377,7 +370,7 @@ const PropertyChannel = ({t, mode, updateSelectedProp, addPropertyAndClose, sele
                             size="normal"
                             onClick={removeAndClose}
                     >
-                            {t('label.sdlGeneratorTools.deleteButton')}
+                        {t('label.sdlGeneratorTools.deleteButton')}
                     </Button>
                 }
             </DialogActions>
@@ -521,7 +514,7 @@ const TypeMappingChannel = ({t, mode, updateSelectedProp, addPropertyAndClose, a
                             onClick={removeAndClose}
                     >
 
-                            {t('label.sdlGeneratorTools.deleteButton')}
+                        {t('label.sdlGeneratorTools.deleteButton')}
 
                     </Button>
                 }

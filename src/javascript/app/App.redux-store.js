@@ -1,7 +1,14 @@
 import {applyMiddleware, combineReducers, compose, createStore} from 'redux';
 import {batchDispatchMiddleware} from 'redux-batched-actions';
 import {nodeTypesReducer} from './App.redux-reducer';
-import {selectedPropertyReducer, selectedFinderReducer, selectionReducer, addModifyPropertyDialog, addModifyTypeDialog, addModifyFinderDialog} from './MainLayout/StepperComponent/StepperComponent.redux-reducer';
+import {
+    addModifyFinderDialog,
+    addModifyPropertyDialog,
+    addModifyTypeDialog,
+    selectedFinderReducer,
+    selectedPropertyReducer,
+    selectionReducer
+} from './MainLayout/StepperComponent/StepperComponent.redux-reducer';
 
 const rootReducer = combineReducers({
     nodeTypes: nodeTypesReducer,
@@ -20,8 +27,8 @@ const store = createStore(
     composeEnhancers(
         applyMiddleware(
             batchDispatchMiddleware
-        ),
-    ),
+        )
+    )
 );
 
 export default store;

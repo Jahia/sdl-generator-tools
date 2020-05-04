@@ -1,36 +1,30 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import {translate} from 'react-i18next';
-import {compose, withApollo, graphql} from 'react-apollo';
+import {compose, graphql, withApollo} from 'react-apollo';
 import gqlQueries from '../CreateTypes.gql-queries';
 import Dialog from '@material-ui/core/Dialog/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent/DialogContent';
 import TextField from '@material-ui/core/TextField/TextField';
 import DialogActions from '@material-ui/core/DialogActions/DialogActions';
-import {
-    FormControlLabel,
-    FormGroup,
-    Switch,
-    withStyles
-} from '@material-ui/core';
-import {Typography, Button} from '@jahia/ds-mui-theme';
+import {FormControlLabel, FormGroup, Switch, withStyles} from '@material-ui/core';
+import {Button, Typography} from '@jahia/ds-mui-theme';
 import * as _ from 'lodash';
 import C from '../../../../App.constants';
 import {
-    sdlAddType, sdlUpdateType,
     sdlAddDirectiveArgToType,
-    sdlRemoveDirectiveArgFromType, sdlRemoveType
+    sdlAddType,
+    sdlRemoveDirectiveArgFromType,
+    sdlRemoveType,
+    sdlUpdateType
 } from '../../../../App.redux-actions';
+import {sdlSelectType, sdlUpdateAddModifyTypeDialog} from '../../StepperComponent.redux-actions';
 import {
-    sdlSelectType,
-    sdlUpdateAddModifyTypeDialog
-} from '../../StepperComponent.redux-actions';
-import {
-    lookUpMappingStringArgumentInfo,
-    lookUpMappingBooleanArgumentInfo,
-    lookUpMappingArgumentIndex,
     getAvailableTypeNames,
+    lookUpMappingArgumentIndex,
+    lookUpMappingBooleanArgumentInfo,
+    lookUpMappingStringArgumentInfo,
     upperCaseFirst
 } from '../../StepperComponent.utils';
 import {connect} from 'react-redux';
@@ -203,7 +197,7 @@ const AddModifyTypeDialog = ({classes, defaultNodeTypeNames, allNodeTypeNames, t
                 {
                     mode === C.DIALOG_MODE_EDIT &&
                     <Button variant="secondary" size="normal" onClick={removeAndClose}>
-                            {t('label.sdlGeneratorTools.deleteButton')}
+                        {t('label.sdlGeneratorTools.deleteButton')}
                     </Button>
                 }
             </DialogActions>

@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import Select from 'react-select';
 import {withStyles} from '@material-ui/core/styles';
-import {MenuItem, ListItemText, TextField} from '@material-ui/core';
+import {ListItemText, MenuItem, TextField} from '@material-ui/core';
 import {Paper} from '@jahia/ds-mui-theme';
 import * as _ from 'lodash';
 import withApollo from 'react-apollo/withApollo';

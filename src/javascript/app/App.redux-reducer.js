@@ -3,6 +3,7 @@ import {getInitialObject} from './App.redux-initializers';
 import {generateUUID} from './App.utils';
 import {lookUpMappingStringArgumentInfo} from './MainLayout/StepperComponent/StepperComponent.utils';
 
+// eslint-disable-next-line default-param-last
 const nodeTypesReducer = (state = {}, action) => {
     const newState = {
         ...state
@@ -107,7 +108,8 @@ const nodeTypesReducer = (state = {}, action) => {
                 queries: newState[action.typeIndexOrName].queries.filter((query, index) => index !== action.finderIndexOrName && query.name !== action.finderIndexOrName)
             };
             return newState;
-        default: return state;
+        default:
+            return state;
     }
 };
 

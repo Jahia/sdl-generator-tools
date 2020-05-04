@@ -1,19 +1,13 @@
 import React from 'react';
 import {translate} from 'react-i18next';
 import PropTypes from 'prop-types';
-import {
-    withStyles,
-    List,
-    ListItem,
-    ListItemText,
-    ListSubheader
-} from '@material-ui/core';
-import {Typography, Button, Paper} from '@jahia/ds-mui-theme';
+import {List, ListItem, ListItemText, ListSubheader, withStyles} from '@material-ui/core';
+import {Button, Paper, Typography} from '@jahia/ds-mui-theme';
 import {Add} from '@material-ui/icons';
 import {compose} from 'react-apollo';
 import C from '../../../../App.constants';
 import {lookUpMappingStringArgumentInfo} from '../../StepperComponent.utils';
-import {sdlUpdateAddModifyPropertyDialog, sdlSelectProperty} from '../../StepperComponent.redux-actions';
+import {sdlSelectProperty, sdlUpdateAddModifyPropertyDialog} from '../../StepperComponent.redux-actions';
 import {connect} from 'react-redux';
 
 /* eslint-disable */

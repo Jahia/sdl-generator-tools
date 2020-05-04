@@ -1,23 +1,12 @@
 import React from 'react';
 import {translate} from 'react-i18next';
 import PropTypes from 'prop-types';
-import {
-    withStyles,
-    List,
-    ListItem,
-    ListItemText,
-    ListSubheader,
-    ListItemSecondaryAction,
-    IconButton
-} from '@material-ui/core';
-import {Typography, Button, Paper} from '@jahia/ds-mui-theme';
+import {IconButton, List, ListItem, ListItemSecondaryAction, ListItemText, ListSubheader, withStyles} from '@material-ui/core';
+import {Button, Paper, Typography} from '@jahia/ds-mui-theme';
 import {Add, Edit} from '@material-ui/icons';
 import {compose} from 'react-apollo';
 import C from '../../../../App.constants';
-import {
-    sdlSelectType,
-    sdlUpdateAddModifyTypeDialog
-} from '../../StepperComponent.redux-actions';
+import {sdlSelectType, sdlUpdateAddModifyTypeDialog} from '../../StepperComponent.redux-actions';
 import {connect} from 'react-redux';
 
 /* eslint-disable */
@@ -81,10 +70,10 @@ const TypesList = ({classes, t, nodeTypes, selection, selectType, updateTypeDial
     const renderCreateListButton = () => {
         return mode === C.TYPE_LIST_MODE_CREATE ?
             <Button
-                    variant="ghost"
-                    icon={<Add/>}
-                    className={classes.listButton}
-                    onClick={() => {
+                variant="ghost"
+                icon={<Add/>}
+                className={classes.listButton}
+                onClick={() => {
                     updateTypeDialogMode({open: true, mode: C.DIALOG_MODE_ADD});
                 }}
             >
@@ -101,23 +90,23 @@ const TypesList = ({classes, t, nodeTypes, selection, selectType, updateTypeDial
                         {renderCreateListButton()}
                     </Typography>
                 </ListSubheader>
-                    }
+            }
             >
                 {
-                            Object.getOwnPropertyNames(nodeTypes).map(uuid => {
-                                const type = nodeTypes[uuid];
-                                return (
-                                    <TypeItem key={type.name}
-                                              {...type}
-                                              uuid={uuid}
-                                              isSelected={uuid === selection}
-                                              selectType={selectType}
-                                              updateTypeDialogMode={updateTypeDialogMode}
-                                              mode={mode}
-                                    />
-                                );
-                            })
-                        }
+                    Object.getOwnPropertyNames(nodeTypes).map(uuid => {
+                        const type = nodeTypes[uuid];
+                        return (
+                            <TypeItem key={type.name}
+                                      {...type}
+                                      uuid={uuid}
+                                      isSelected={uuid === selection}
+                                      selectType={selectType}
+                                      updateTypeDialogMode={updateTypeDialogMode}
+                                      mode={mode}
+                            />
+                        );
+                    })
+                }
             </List>
         </Paper>
     );

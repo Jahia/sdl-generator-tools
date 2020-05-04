@@ -1,11 +1,11 @@
-import React, {} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import {translate} from 'react-i18next';
-import {withStyles, Stepper, Step, StepLabel} from '@material-ui/core';
-import {Typography, Button} from '@jahia/ds-mui-theme';
+import {Step, StepLabel, Stepper, withStyles} from '@material-ui/core';
+import {Button, Typography} from '@jahia/ds-mui-theme';
 import CreateTypes from './CreateTypes';
 import ExportResult from './ExportResult';
-import {downloadFile, copyToClipBoard} from './StepperComponent.document-utils';
+import {copyToClipBoard, downloadFile} from './StepperComponent.document-utils';
 import DefineFinder from './DefineFinders/index';
 import {compose} from 'react-apollo';
 import SDLParser from '../../parsing/sdlParser';
@@ -155,7 +155,7 @@ class StepperComponent extends React.Component {
                                     this.props.setStore({});
                                 }}
                             >
-                                    {t('label.sdlGeneratorTools.clearButton')}
+                                {t('label.sdlGeneratorTools.clearButton')}
                             </Button>
                         }
                         {
@@ -173,7 +173,7 @@ class StepperComponent extends React.Component {
                                 className={classes.button}
                                 onClick={this.handleCopy}
                             >
-                                    {t('label.sdlGeneratorTools.copyToClipboardButton')}
+                                {t('label.sdlGeneratorTools.copyToClipboardButton')}
                             </Button>
                         }
                         <Button
