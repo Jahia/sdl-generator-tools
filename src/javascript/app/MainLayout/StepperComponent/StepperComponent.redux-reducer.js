@@ -2,22 +2,27 @@ import {actionTypes} from './StepperComponent.redux-actions';
 import {isPredefinedType} from './StepperComponent.utils';
 import C from '../../App.constants';
 
+// eslint-disable-next-line default-param-last
 const selectionReducer = (state = null, action) => {
     switch (action.type) {
         case actionTypes.SDL_SELECT_TYPE:
             return action.typeName;
-        default: return state;
+        default:
+            return state;
     }
 };
 
+// eslint-disable-next-line default-param-last
 const selectedFinderReducer = (state = null, action) => {
     switch (action.type) {
         case actionTypes.SDL_SELECT_FINDER:
             return action.finderName;
-        default: return state;
+        default:
+            return state;
     }
 };
 
+// eslint-disable-next-line default-param-last
 const selectedPropertyReducer = (state = null, action) => {
     switch (action.type) {
         case actionTypes.SDL_SELECT_PROPERTY:
@@ -35,10 +40,12 @@ const selectedPropertyReducer = (state = null, action) => {
                 ...state,
                 ...action.propertyFields
             };
-        default: return state;
+        default:
+            return state;
     }
 };
 
+// eslint-disable-next-line default-param-last
 const addModifyPropertyDialog = (state = {open: false, mode: C.DIALOG_MODE_ADD}, action) => {
     switch (action.type) {
         case actionTypes.SDL_UPDATE_ADD_MOD_PROPERTY_DIALOG:
@@ -46,10 +53,12 @@ const addModifyPropertyDialog = (state = {open: false, mode: C.DIALOG_MODE_ADD},
                 ...state,
                 ...action.updateObject
             };
-        default: return state;
+        default:
+            return state;
     }
 };
 
+// eslint-disable-next-line default-param-last
 const addModifyTypeDialog = (state = {open: false, mode: C.DIALOG_MODE_ADD}, action) => {
     switch (action.type) {
         case actionTypes.SDL_UPDATE_ADD_TYPE_DIALOG:
@@ -57,10 +66,12 @@ const addModifyTypeDialog = (state = {open: false, mode: C.DIALOG_MODE_ADD}, act
                 ...state,
                 ...action.updateObject
             };
-        default: return state;
+        default:
+            return state;
     }
 };
 
+// eslint-disable-next-line default-param-last
 const addModifyFinderDialog = (state = {open: false, mode: C.DIALOG_MODE_ADD}, action) => {
     switch (action.type) {
         case actionTypes.SDL_UPDATE_ADD_FINDER_DIALOG:
@@ -68,7 +79,8 @@ const addModifyFinderDialog = (state = {open: false, mode: C.DIALOG_MODE_ADD}, a
                 ...state,
                 ...action.updateObject
             };
-        default: return state;
+        default:
+            return state;
     }
 };
 

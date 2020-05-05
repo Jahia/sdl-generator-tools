@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-    Grid, withStyles
-} from '@material-ui/core';
+import {Grid, withStyles} from '@material-ui/core';
 import TypesList from './TypesList/TypesList';
 import PropertiesList from './PropertiesList/PropertiesList';
 import AddModifyPropertyDialog from './AddModifyPropertyDialog/index';

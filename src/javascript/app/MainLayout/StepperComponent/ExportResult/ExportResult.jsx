@@ -1,4 +1,4 @@
-import React, {} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import {Typography} from '@jahia/ds-mui-theme';
 import {translate} from 'react-i18next';

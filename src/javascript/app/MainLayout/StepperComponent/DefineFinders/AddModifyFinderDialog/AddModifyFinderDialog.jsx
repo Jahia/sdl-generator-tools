@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
-import {Select, MenuItem, Dialog, withStyles, InputLabel, FormControl, Input} from '@material-ui/core';
+import {Dialog, FormControl, Input, InputLabel, MenuItem, Select, withStyles} from '@material-ui/core';
 import DialogTitle from '@material-ui/core/DialogTitle/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent/DialogContent';
 import TextField from '@material-ui/core/TextField/TextField';
@@ -9,12 +9,8 @@ import {translate} from 'react-i18next';
 import {formatFinderName, upperCaseFirst} from '../../StepperComponent.utils';
 import C from '../../../../App.constants';
 import * as _ from 'lodash';
-import {
-    sdlAddFinderToType,
-    sdlModifyFinderOfType,
-    sdlRemoveFinderFromType
-} from '../../../../App.redux-actions';
-import {Typography, Button} from '@jahia/ds-mui-theme';
+import {sdlAddFinderToType, sdlModifyFinderOfType, sdlRemoveFinderFromType} from '../../../../App.redux-actions';
+import {Button, Typography} from '@jahia/ds-mui-theme';
 import {sdlUpdateAddModifyFinderDialog} from '../../StepperComponent.redux-actions';
 import {compose} from 'react-apollo';
 import {connect} from 'react-redux';
@@ -27,11 +23,10 @@ const FinderSelectCom = ({classes, t, open, handleClose, handleOpen, handleChang
 
     return (
         <FormControl classes={classes}>
-            <InputLabel shrink htmlFor="finder-name">{
+            <InputLabel shrink htmlFor="finder-name">
                 <Typography color="alpha" variant="zeta">
                     {t('label.sdlGeneratorTools.defineFinder.selectAFinder')}
                 </Typography>
-            }
             </InputLabel>
             <Select open={open}
                     value={value}

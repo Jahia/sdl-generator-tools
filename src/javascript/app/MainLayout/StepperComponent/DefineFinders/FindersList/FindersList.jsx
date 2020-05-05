@@ -3,11 +3,8 @@ import PropTypes from 'prop-types';
 import {List, ListItem, ListItemText, ListSubheader, withStyles} from '@material-ui/core';
 import C from '../../../../App.constants';
 import {Add} from '@material-ui/icons';
-import {Typography, Paper, Button} from '@jahia/ds-mui-theme';
-import {
-    sdlSelectFinder,
-    sdlUpdateAddModifyFinderDialog
-} from '../../StepperComponent.redux-actions';
+import {Button, Paper, Typography} from '@jahia/ds-mui-theme';
+import {sdlSelectFinder, sdlUpdateAddModifyFinderDialog} from '../../StepperComponent.redux-actions';
 import {compose} from 'react-apollo';
 import {connect} from 'react-redux';
 import {translate} from 'react-i18next';

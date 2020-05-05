@@ -39,15 +39,15 @@ const GQLSchemaViewer = ({classes, t, nodeTypes}) => {
             </Typography>
 
             <AceEditor
-                    readOnly
-                    mode="graphqlschema"
-                    theme="monokai"
-                    name="gqlschema"
-                    width="100%"
-                    className={classes.editor}
-                    value={SDLParser.parse(nodeTypes)}
-                    editorProps={{$blockScrolling: false}}
-                />
+                readOnly
+                mode="graphqlschema"
+                theme="monokai"
+                name="gqlschema"
+                width="100%"
+                className={classes.editor}
+                value={SDLParser.parse(nodeTypes)}
+                editorProps={{$blockScrolling: false}}
+            />
         </>
     );
 };

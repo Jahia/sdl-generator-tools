@@ -2,45 +2,45 @@ import gql from 'graphql-tag';
 
 const gqlQueries = {
     ALL_NODE_TYPE_NAMES: gql`query getAllNodeTypeNames{
-      jcr {
-          nodeTypes(filter:{includeMixins:true}) {
-            nodes {
-              name
-              displayName(language:"en")
-              icon
+        jcr {
+            nodeTypes(filter:{includeMixins:true}) {
+                nodes {
+                    name
+                    displayName(language:"en")
+                    icon
+                }
             }
-          }
-      }
+        }
     }`,
     DEFAULT_NODE_TYPE_NAMES: gql`query getDefaultNodeTypeNames {
         jcr {
             nodeTypes(filter:{includeTypes:"jmix:editorialContent", includeMixins:false}) {
-              nodes {
-                name
-                displayName(language:"en")
-                icon
-              }
+                nodes {
+                    name
+                    displayName(language:"en")
+                    icon
+                }
             }
         }
     }`,
     NODE_TYPE_NAMES_BY_SEARCH: gql`query searchNodeTypeNames($keyword: String!) {
         jcr {
             nodeTypes(filter: {
-              includeMixins: true
+                includeMixins: true
             },fieldFilter: {
-              filters: {
-                  evaluation: CONTAINS_IGNORE_CASE
-                  fieldName: "displayName"
-                  value: $keyword
+                filters: {
+                    evaluation: CONTAINS_IGNORE_CASE
+                    fieldName: "displayName"
+                    value: $keyword
                 }
-              }, limit: 40){
-              nodes{
-                name
-                displayName (language: "en")
-                icon
-              }
+            }, limit: 40){
+                nodes{
+                    name
+                    displayName (language: "en")
+                    icon
+                }
             }
-          }
+        }
     }`,
     NODE_TYPE_PROPERTIES: gql`query getNodeTypeProperties($includeTypes: [String!]) {
         jcr {
@@ -76,7 +76,7 @@ const gqlQueries = {
                             {evaluation: DIFFERENT, fieldName: "name", value: "j:originWS"}
                             {evaluation: DIFFERENT, fieldName: "name", value: "lastReplay"}
                         ]
-                      }){
+                    }){
                         name
                         requiredType
                         multiple
