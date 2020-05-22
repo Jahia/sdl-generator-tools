@@ -2,12 +2,12 @@
 <settings>
     <servers>
         <server>
-            <id>jahia-enterprise</id>
+            <id>jahia-releases</id>
             <username>${env.NEXUS_USERNAME}</username>
             <password>${env.NEXUS_PASSWORD}</password>
         </server>
         <server>
-            <id>jahia-enterprise-snapshots</id>
+            <id>jahia-snapshots</id>
             <username>${env.NEXUS_USERNAME}</username>
             <password>${env.NEXUS_PASSWORD}</password>
         </server>
