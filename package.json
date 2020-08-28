@@ -15,6 +15,11 @@
     "lint": "eslint --ext js,jsx .",
     "lint:fix": "eslint --ext js,jsx --fix ."
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn lint"
+    }
+  },
   "author": "chooli yip <cyip@jahia.com>",
   "repository": "https://github.com/Jahia/sdl-generator-tools.git",
   "license": "MIT",
@@ -41,6 +46,7 @@
     "eslint-plugin-react-hooks": "^2.5.0",
     "file-loader": "^2.0.0",
     "hoek": ">=4.2.1",
+    "husky": "^3.0.5",
     "pom-parser": "^1.1.1",
     "redux-mock-store": "^1.5.3",
     "rimraf": "^2.6.2",
