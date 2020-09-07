@@ -23,6 +23,13 @@
   "author": "chooli yip <cyip@jahia.com>",
   "repository": "https://github.com/Jahia/sdl-generator-tools.git",
   "license": "MIT",
+  "jahia": {
+    "apps": {
+      "jahia": [
+        "javascript/apps/jahia.bundle.js"
+      ]
+    }
+  },
   "devDependencies": {
     "@babel/cli": "^7.1.5",
     "@babel/core": "^7.1.6",
@@ -35,7 +42,9 @@
     "babel-eslint": "^10.0.1",
     "babel-loader": "^8.0.4",
     "babel-plugin-lodash": "^3.3.4",
+    "case-sensitive-paths-webpack-plugin": "^2.3.0",
     "clean-webpack-plugin": "^1.0.0",
+    "copy-webpack-plugin": "^6.1.0",
     "cryptiles": ">=4.1.2",
     "css-loader": "^1.0.1",
     "eslint": "^6.7.2",
@@ -57,41 +66,26 @@
     "webpack-node-externals": "^1.7.2"
   },
   "dependencies": {
-    "@jahia/apollo-dx": "^1.0.0-beta.20190226170343",
-    "@jahia/ds-mui-theme": "^1.0.0-beta.20190205085737",
-    "@jahia/i18next": "^1.0.0-beta.20180628145923",
-    "@jahia/icons": "^1.0.0-beta.20190404144749",
-    "@jahia/layouts": "^1.0.0-beta.20190401120852",
-    "@jahia/react-material": "^1.0.0-beta.20190401120857",
+    "@jahia/design-system-kit": "^1.1.8",
+    "@jahia/moonstone": "^0.16.1",
+    "@jahia/react-material": "^2.1.2",
+    "@jahia/ui-extender": "^0.4.20",
     "@material-ui/core": "^3.6.2",
     "@material-ui/icons": "^3.0.1",
     "@material-ui/lab": "^3.0.0-alpha.16",
-    "apollo-cache-inmemory": "^1.4.3",
-    "apollo-client": "^2.4.12",
-    "apollo-link-http": "^1.5.11",
-    "cryptiles": ">=4.1.2",
-    "fuse.js": "^3.4.4",
+    "brace": "^0.11.1",
+    "fuse.js": "^6.4.1",
     "graphql": "0.12.3",
     "graphql-tag": "^2.9.1",
-    "hoek": ">=4.2.1",
-    "i18next": "^15.0.2",
-    "i18next-xhr-backend": "^2.0.0",
-    "lodash": "4.17.11",
+    "lodash": "^4.17.20",
     "prop-types": "^15.7.2",
-    "react": "^16.2.0",
-    "react-ace": "^6.4.0",
-    "react-apollo": "2.5.2",
-    "react-dom": "^16.4.0",
-    "react-i18next": "^7.3.1",
-    "react-iframe": "^1.2.0",
-    "react-loadable": "^5.5.0",
-    "react-props": "^0.0.3",
-    "react-redux": "^5.0.7",
-    "react-router": "^4.3.1",
-    "react-select": "^2.4.1",
-    "recompose": "^0.30.0",
-    "redux": "^4.0.0",
-    "redux-batched-actions": "^0.4.0",
-    "rxjs": "^6.3.3"
+    "react": "^16.13.1",
+    "react-ace": "^9.1.3",
+    "react-apollo": "^3.1.5",
+    "react-dom": "^16.13.1",
+    "react-i18next": "^11.2.7",
+    "react-redux": "^7.2.1",
+    "react-select": "^3.1.0",
+    "redux": "^4.0.0"
   }
 }

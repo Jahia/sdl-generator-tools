@@ -1,5 +1,5 @@
 import {FormControl, Input, InputLabel, ListItemText, MenuItem, Select, withStyles} from '@material-ui/core';
-import {Typography} from '@jahia/ds-mui-theme';
+import {Typography} from '@jahia/design-system-kit';
 import * as _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';

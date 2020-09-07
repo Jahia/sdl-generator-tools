@@ -1,10 +1,10 @@
 import React from 'react';
-import {translate} from 'react-i18next';
+import {withTranslation} from 'react-i18next';
 import PropTypes from 'prop-types';
 import {IconButton, List, ListItem, ListItemSecondaryAction, ListItemText, ListSubheader, withStyles} from '@material-ui/core';
-import {Button, Paper, Typography} from '@jahia/ds-mui-theme';
+import {Button, Paper, Typography} from '@jahia/design-system-kit';
 import {Add, Edit} from '@material-ui/icons';
-import {compose} from 'react-apollo';
+import {compose} from '../../../../compose';
 import C from '../../../../App.constants';
 import {sdlSelectType, sdlUpdateAddModifyTypeDialog} from '../../StepperComponent.redux-actions';
 import {connect} from 'react-redux';
@@ -127,7 +127,7 @@ TypesList.defaultProps = {
     mode: C.TYPE_LIST_MODE_CREATE
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = ({sdlGeneratorTools: state}) => {
     return {
         nodeTypes: state.nodeTypes,
         selection: state.selection
@@ -144,5 +144,5 @@ const mapDispatchToProps = dispatch => {
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
     withStyles(styles),
-    translate()
+    withTranslation('sdl-generator-tools')
 )(TypesList);

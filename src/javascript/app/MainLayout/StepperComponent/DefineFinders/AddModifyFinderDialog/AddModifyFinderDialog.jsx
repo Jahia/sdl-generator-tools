@@ -5,14 +5,14 @@ import DialogTitle from '@material-ui/core/DialogTitle/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent/DialogContent';
 import TextField from '@material-ui/core/TextField/TextField';
 import DialogActions from '@material-ui/core/DialogActions/DialogActions';
-import {translate} from 'react-i18next';
+import {withTranslation} from 'react-i18next';
 import {formatFinderName, upperCaseFirst} from '../../StepperComponent.utils';
 import C from '../../../../App.constants';
 import * as _ from 'lodash';
 import {sdlAddFinderToType, sdlModifyFinderOfType, sdlRemoveFinderFromType} from '../../../../App.redux-actions';
-import {Button, Typography} from '@jahia/ds-mui-theme';
+import {Button, Typography} from '@jahia/design-system-kit';
 import {sdlUpdateAddModifyFinderDialog} from '../../StepperComponent.redux-actions';
-import {compose} from 'react-apollo';
+import {compose} from '../../../../compose';
 import {connect} from 'react-redux';
 import {filterAvailableFinders} from '../DefineFinders.utils';
 
@@ -250,7 +250,7 @@ AddModifyFinderDialog.propTypes = {
     selection: PropTypes.string.isRequired
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = ({sdlGeneratorTools: state}) => {
     return {
         selectedType: state.nodeTypes[state.selection],
         selection: state.selection,
@@ -270,5 +270,5 @@ const mapDispatchToProps = dispatch => {
 
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
-    translate()
+    withTranslation('sdl-generator-tools')
 )(AddModifyFinderDialog);

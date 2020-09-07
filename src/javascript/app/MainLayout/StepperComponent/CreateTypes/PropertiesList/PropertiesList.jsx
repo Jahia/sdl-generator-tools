@@ -1,10 +1,10 @@
 import React from 'react';
-import {translate} from 'react-i18next';
+import {withTranslation} from 'react-i18next';
 import PropTypes from 'prop-types';
 import {List, ListItem, ListItemText, ListSubheader, withStyles} from '@material-ui/core';
-import {Button, Paper, Typography} from '@jahia/ds-mui-theme';
+import {Button, Paper, Typography} from '@jahia/design-system-kit';
 import {Add} from '@material-ui/icons';
-import {compose} from 'react-apollo';
+import {compose} from '../../../../compose';
 import C from '../../../../App.constants';
 import {lookUpMappingStringArgumentInfo} from '../../StepperComponent.utils';
 import {sdlSelectProperty, sdlUpdateAddModifyPropertyDialog} from '../../StepperComponent.redux-actions';
@@ -104,7 +104,7 @@ PropertiesList.propTypes = {
     addModifyPropertyDialog: PropTypes.func.isRequired
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = ({sdlGeneratorTools: state}) => {
     return {
         selectedType: state.nodeTypes[state.selection]
     };
@@ -120,5 +120,5 @@ const mapDispatchToProps = dispatch => {
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
     withStyles(styles),
-    translate()
+    withTranslation('sdl-generator-tools')
 )(PropertiesList);

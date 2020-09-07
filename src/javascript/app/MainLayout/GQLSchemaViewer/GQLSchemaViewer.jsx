@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {compose} from 'react-apollo';
-import {translate} from 'react-i18next';
+import {compose} from '../../compose';
+import {withTranslation} from 'react-i18next';
 import {withStyles} from '@material-ui/core';
-import {Typography} from '@jahia/ds-mui-theme';
+import {Typography} from '@jahia/design-system-kit';
 import AceEditor from 'react-ace';
 import 'brace/mode/graphqlschema';
 import 'brace/theme/monokai';
@@ -60,5 +60,5 @@ GQLSchemaViewer.propTypes = {
 
 export default compose(
     withStyles(styles),
-    translate()
+    withTranslation('sdl-generator-tools')
 )(GQLSchemaViewer);

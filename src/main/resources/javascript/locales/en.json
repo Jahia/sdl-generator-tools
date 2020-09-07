@@ -1,65 +1,65 @@
 {
-    "label": {
-        "sdlGeneratorTools": {
-            "top": {
-                "caption": "SDL Generator Tools",
-                "backToToolsButton": "Back to tools"
-            },
-            "steps": {
-                "createTypes": "Create types",
-                "defineFinder": "Define finder",
-                "exportResult": "Export result"
-            },
-            "createProperty" : {
-                "mapToType": "Select and map property to type",
-                "selectProp": "Select property"
-            },
-            "createTypes": {
-                "nodeTypeText": "Node type",
-                "propertiesText": "Properties",
-                "addNewTypeButton": "Add new type",
-                "selectSearchNodeType": "Select or search a node type*",
-                "editTypeButton": "Edit type",
-                "addNewPropertyButton": "Add new property",
-                "viewProperty": "Edit property",
-                "selectNodeProperty": {
-                    "default": "Select a property",
-                    "required": "Select a property*"
-                },
-                "customTypeNameText": "Custom type name*",
-                "customPropertyNameText": "Custom property name*",
-                "ignoreDefaultQueries": "Remove {{type}}ByPath and {{type}}ById entry points",
-                "mapToCustomType": "Map to pre-defined type",
-                "predefinedType": "Predefined type*",
-                "propertyAsList": "As list"
-            },
-            "defineFinder": {
-                "finders": "Finders",
-                "addAFinder": "Add a finder",
-                "editAFinder": "Edit a finder",
-                "selectAFinder": "Select a finder",
-                "customFinderPrefixText": "Custom name"
-            },
-            "exportResult": {
-                "wellDoneText": "Well done!",
-                "descriptionText": "All types have been correctly configured. You can now export your SDL file"
-            },
-            "type": "type",
-            "Type": "Type",
-            "types": "types",
-            "mainCaption": "Build your GraphQL Schema Definition",
-            "viewerCaption": "GraphQL Schema",
-            "backButton": "Back",
-            "clearButton": "Clear",
-            "nextButton": "Next",
-            "addButton": "Add",
-            "updateButton": "Update",
-            "saveButton": "Save",
-            "deleteButton": "Delete",
-            "applyButton": "Apply",
-            "cancelButton": "Cancel",
-            "copyToClipboardButton": "Copy to clipboard",
-            "downloadFileButton": "Download as a file"
-        }
+  "label": {
+    "sdlGeneratorTools": {
+      "top": {
+        "caption": "SDL Generator Tools",
+        "backToToolsButton": "Back to tools"
+      },
+      "steps": {
+        "createTypes": "Create types",
+        "defineFinder": "Define finder",
+        "exportResult": "Export result"
+      },
+      "createProperty": {
+        "mapToType": "Select and map property to type",
+        "selectProp": "Select property"
+      },
+      "createTypes": {
+        "nodeTypeText": "Node type",
+        "propertiesText": "Properties",
+        "addNewTypeButton": "Add new type",
+        "selectSearchNodeType": "Select or search a node type*",
+        "editTypeButton": "Edit type",
+        "addNewPropertyButton": "Add new property",
+        "viewProperty": "Edit property",
+        "selectNodeProperty": {
+          "default": "Select a property",
+          "required": "Select a property*"
+        },
+        "customTypeNameText": "Custom type name*",
+        "customPropertyNameText": "Custom property name*",
+        "ignoreDefaultQueries": "Remove {{type}}ByPath and {{type}}ById entry points",
+        "mapToCustomType": "Map to pre-defined type",
+        "predefinedType": "Predefined type*",
+        "propertyAsList": "As list"
+      },
+      "defineFinder": {
+        "finders": "Finders",
+        "addAFinder": "Add a finder",
+        "editAFinder": "Edit a finder",
+        "selectAFinder": "Select a finder",
+        "customFinderPrefixText": "Custom name"
+      },
+      "exportResult": {
+        "wellDoneText": "Well done!",
+        "descriptionText": "All types have been correctly configured. You can now export your SDL file"
+      },
+      "type": "type",
+      "Type": "Type",
+      "types": "types",
+      "mainCaption": "Build your GraphQL Schema Definition",
+      "viewerCaption": "GraphQL Schema",
+      "backButton": "Back",
+      "clearButton": "Clear",
+      "nextButton": "Next",
+      "addButton": "Add",
+      "updateButton": "Update",
+      "saveButton": "Save",
+      "deleteButton": "Delete",
+      "applyButton": "Apply",
+      "cancelButton": "Cancel",
+      "copyToClipboardButton": "Copy to clipboard",
+      "downloadFileButton": "Download as a file"
     }
+  }
 }

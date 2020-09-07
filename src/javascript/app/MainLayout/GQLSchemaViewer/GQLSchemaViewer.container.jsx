@@ -1,8 +1,8 @@
-import {compose} from 'react-apollo';
+import {compose} from '../../compose';
 import {connect} from 'react-redux';
 import GQLSchemaViewer from './GQLSchemaViewer';
 
-const mapStateToProps = state => {
+const mapStateToProps = ({sdlGeneratorTools: state}) => {
     return {
         nodeTypes: state.nodeTypes
     };

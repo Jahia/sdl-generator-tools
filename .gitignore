@@ -11,5 +11,6 @@ target
 .settings
 .project
 .classpath
-/src/main/resources/javascript/apps/*
+/src/main/resources/javascript/apps/*.js
+/src/main/resources/javascript/apps/*.map
 yarn-error.log

@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import {List, ListItem, ListItemText, ListSubheader, withStyles} from '@material-ui/core';
 import C from '../../../../App.constants';
 import {Add} from '@material-ui/icons';
-import {Button, Paper, Typography} from '@jahia/ds-mui-theme';
+import {Button, Paper, Typography} from '@jahia/design-system-kit';
 import {sdlSelectFinder, sdlUpdateAddModifyFinderDialog} from '../../StepperComponent.redux-actions';
-import {compose} from 'react-apollo';
+import {compose} from '../../../../compose';
 import {connect} from 'react-redux';
-import {translate} from 'react-i18next';
+import {withTranslation} from 'react-i18next';
 import {filterAvailableFinders} from '../DefineFinders.utils';
 
 /* eslint-disable */
@@ -93,7 +93,7 @@ FindersList.propTypes = {
     updateFinderDialogState: PropTypes.func.isRequired
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = ({sdlGeneratorTools: state}) => {
     return {
         selectedType: state.nodeTypes[state.selection],
         selectedFinder: state.selectedFinder,
@@ -111,5 +111,5 @@ const mapDispatchToProps = dispatch => {
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
     withStyles(styles),
-    translate()
+    withTranslation('sdl-generator-tools')
 )(FindersList);
