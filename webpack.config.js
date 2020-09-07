@@ -2,15 +2,22 @@ const path = require('path');
 const webpack = require('webpack');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
+// Get manifest
+var normalizedPath = require('path').join(__dirname, './target/dependency');
+var manifest = '';
+require('fs').readdirSync(normalizedPath).forEach(function (file) {
+    manifest = './target/dependency/' + file;
+    console.log('use manifest ' + manifest);
+});
+
 module.exports = (env, argv) => {
     const config = {
         entry: {
-            'sdlGeneratorTools': [path.resolve(__dirname, 'src/javascript/app', 'index.js')]
+            main: [path.resolve(__dirname, 'src/javascript/publicPath'), path.resolve(__dirname, 'src/javascript/index.js')]
         },
-
         output: {
-            path: __dirname + '/src/main/resources/javascript/apps/',
-            filename: "[name].js"
+            path: path.resolve(__dirname, 'src/main/resources/javascript/apps/'),
+            filename: 'jahia.bundle.js'
         },
         resolve: {
             mainFields: ['module', 'main'],
@@ -53,17 +60,16 @@ module.exports = (env, argv) => {
                 }
             ]
         },
-        optimization: {
-            splitChunks: {
-                cacheGroups: {
-                    commons: {
-                        test: /[\\/]node_modules[\\/]/,
-                        name: 'vendors',
-                        chunks: 'all'
-                    }
-                }
-            }
-        },
+        plugins: [
+            new webpack.DllReferencePlugin({
+                manifest: require(manifest)
+            }),
+            new webpack.HashedModuleIdsPlugin({
+                hashFunction: 'sha256',
+                hashDigest: 'hex',
+                hashDigestLength: 20
+            })
+        ],
         mode: 'development'
     };
 

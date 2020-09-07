@@ -1,39 +1,40 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {compose} from 'react-apollo';
-import {translate} from 'react-i18next';
-import {Paper, Typography} from '@jahia/ds-mui-theme';
-import {ToolLayout, TwoColumnsContent} from '@jahia/layouts';
+import {compose} from '../compose';
+import {withTranslation} from 'react-i18next';
+import {Paper, TwoColumnsContent, Typography} from '@jahia/design-system-kit';
 import StepperComponent from './StepperComponent';
 import GQLSchemaViewer from './GQLSchemaViewer';
+import {withStyles} from '@material-ui/core/index';
 
-const MainLayout = ({t, contextPath}) => {
+const MainLayout = ({t, classes}) => {
     return (
         <>
-            <ToolLayout contextPath={contextPath}
-                        label={t('label.sdlGeneratorTools.top.backToToolsButton')}
-                        title={t('label.sdlGeneratorTools.top.caption')}
+            <TwoColumnsContent classes={classes}
+                               rightCol={<Paper className="flexFluid" color="dark"><GQLSchemaViewer/></Paper>}
             >
-                <TwoColumnsContent
-                    rightCol={<Paper color="dark"><GQLSchemaViewer/></Paper>}
-                >
-                    <Paper color="light">
-                        <Typography color="alpha" variant="epsilon">
-                            {t('label.sdlGeneratorTools.mainCaption')}
-                        </Typography>
-                        <StepperComponent/>
-                    </Paper>
-                </TwoColumnsContent>
-            </ToolLayout>
+                <Paper color="light" className="flexFluid flexCol">
+                    <Typography color="alpha" variant="epsilon">
+                        {t('label.sdlGeneratorTools.mainCaption')}
+                    </Typography>
+                    <StepperComponent/>
+                </Paper>
+            </TwoColumnsContent>
         </>
     );
 };
 
 MainLayout.propTypes = {
     t: PropTypes.func.isRequired,
-    contextPath: PropTypes.string.isRequired
+    classes: PropTypes.object.isRequired
 };
 
 export default compose(
-    translate()
+    withStyles({
+        root: {
+            padding: '32px',
+            minHeight: 0
+        }
+    }),
+    withTranslation('sdl-generator-tools')
 )(MainLayout);

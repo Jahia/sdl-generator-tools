@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {translate} from 'react-i18next';
+import {withTranslation} from 'react-i18next';
 import {Step, StepLabel, Stepper, withStyles} from '@material-ui/core';
-import {Button, Typography} from '@jahia/ds-mui-theme';
+import {Button, Typography} from '@jahia/design-system-kit';
 import CreateTypes from './CreateTypes';
 import ExportResult from './ExportResult';
 import {copyToClipBoard, downloadFile} from './StepperComponent.document-utils';
 import DefineFinder from './DefineFinders/index';
-import {compose} from 'react-apollo';
+import {compose} from '../../compose';
 import SDLParser from '../../parsing/sdlParser';
 import {connect} from 'react-redux';
 import C from '../../App.constants';
@@ -16,7 +16,6 @@ import {sdlInitNodeTypes} from '../../App.redux-actions';
 import {sdlSelectType} from './StepperComponent.redux-actions';
 import * as _ from 'lodash';
 
-/* eslint-disable */
 const styles = theme => ({
     root: {
         marginTop: theme.spacing.unit * 4
@@ -35,13 +34,12 @@ const styles = theme => ({
         float: 'left'
     }
 });
-/* eslint-disable */
 
-const stepsTitles = t => ([
-    t('label.sdlGeneratorTools.steps.createTypes'),
-    t('label.sdlGeneratorTools.steps.defineFinder'),
-    t('label.sdlGeneratorTools.steps.exportResult')
-]);
+const steps = [
+    'label.sdlGeneratorTools.steps.createTypes',
+    'label.sdlGeneratorTools.steps.defineFinder',
+    'label.sdlGeneratorTools.steps.exportResult'
+];
 
 const getStepsComponents = currentStep => {
     switch (currentStep) {
@@ -62,7 +60,7 @@ class StepperComponent extends React.Component {
         this.state = {
             activeStep: 0,
             skipped: new Set(),
-            steps: stepsTitles(props.t)
+            steps
         };
         this.hasNext = this.hasNext.bind(this);
         this.handleNext = this.handleNext.bind(this);
@@ -128,15 +126,15 @@ class StepperComponent extends React.Component {
 
         return (
             <>
-                <div className={classes.root}>
+                <div className={classes.root + ' flexFluid flexCol'}>
                     <Stepper className={classes.steppers} activeStep={activeStep}>
-                        {steps.map(label => {
+                        {steps.map(k => {
                             const props = {};
                             const labelProps = {};
                             return (
-                                <Step key={label} {...props}>
+                                <Step key={k} {...props}>
                                     <StepLabel {...labelProps}>
-                                        <Typography color="alpha" variant="zeta">{label}</Typography>
+                                        <Typography color="alpha" variant="zeta">{t(k)}</Typography>
                                     </StepLabel>
                                 </Step>
                             );
@@ -200,7 +198,7 @@ StepperComponent.propTypes = {
     currentStep: PropTypes.number
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = ({sdlGeneratorTools: state}) => {
     return {
         nodeTypes: state.nodeTypes
     };
@@ -219,5 +217,5 @@ const mapDispatchToProps = dispatch => {
 export default compose(
     connect(mapStateToProps, mapDispatchToProps),
     withStyles(styles),
-    translate()
+    withTranslation('sdl-generator-tools')
 )(StepperComponent);

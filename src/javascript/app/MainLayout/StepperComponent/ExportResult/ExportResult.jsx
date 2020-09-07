@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Typography} from '@jahia/ds-mui-theme';
-import {translate} from 'react-i18next';
+import {Typography} from '@jahia/design-system-kit';
+import {withTranslation} from 'react-i18next';
 
 const ExportResult = ({t}) => (
     <>
@@ -14,4 +14,4 @@ ExportResult.propTypes = {
     t: PropTypes.func.isRequired
 };
 
-export default translate()(ExportResult);
+export default withTranslation('sdl-generator-tools')(ExportResult);

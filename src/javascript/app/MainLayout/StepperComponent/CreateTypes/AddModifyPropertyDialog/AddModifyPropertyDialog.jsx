@@ -6,10 +6,11 @@ import DialogContent from '@material-ui/core/DialogContent/DialogContent';
 import TextField from '@material-ui/core/TextField/TextField';
 import DialogActions from '@material-ui/core/DialogActions/DialogActions';
 import {FormControlLabel, FormGroup, Switch} from '@material-ui/core';
-import {Button, Typography} from '@jahia/ds-mui-theme';
-import {compose, graphql, withApollo} from 'react-apollo';
+import {Button, Typography} from '@jahia/design-system-kit';
+import {compose} from '../../../../compose';
+import {graphql, withApollo} from 'react-apollo';
 import {connect} from 'react-redux';
-import {translate} from 'react-i18next';
+import {withTranslation} from 'react-i18next';
 import * as _ from 'lodash';
 import {
     formatFinderName,
@@ -580,7 +581,7 @@ const getJCRType = (nodeTypes, selection) => {
     return '';
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = ({sdlGeneratorTools: state}) => {
     return {
         availableNodeTypes: getAvailableTypeNames(state.nodeTypes, state.selection),
         availableProperties: getAvailablePropertyNames(state.nodeTypes[state.selection]),
@@ -635,7 +636,7 @@ const CompositeComp = compose(
             };
         }
     }),
-    translate()
+    withTranslation('sdl-generator-tools')
 )(AddModifyPropertyDialog);
 
 export default withApollo(CompositeComp);

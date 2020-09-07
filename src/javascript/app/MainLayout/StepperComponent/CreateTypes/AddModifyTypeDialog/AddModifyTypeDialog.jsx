@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
 import PropTypes from 'prop-types';
-import {translate} from 'react-i18next';
-import {compose, graphql, withApollo} from 'react-apollo';
+import {withTranslation} from 'react-i18next';
+import {compose} from '../../../../compose';
+import {graphql, withApollo} from 'react-apollo';
 import gqlQueries from '../CreateTypes.gql-queries';
 import Dialog from '@material-ui/core/Dialog/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle/DialogTitle';
@@ -9,7 +10,7 @@ import DialogContent from '@material-ui/core/DialogContent/DialogContent';
 import TextField from '@material-ui/core/TextField/TextField';
 import DialogActions from '@material-ui/core/DialogActions/DialogActions';
 import {FormControlLabel, FormGroup, Switch, withStyles} from '@material-ui/core';
-import {Button, Typography} from '@jahia/ds-mui-theme';
+import {Button, Typography} from '@jahia/design-system-kit';
 import * as _ from 'lodash';
 import C from '../../../../App.constants';
 import {
@@ -225,7 +226,7 @@ AddModifyTypeDialog.propTypes = {
 
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = ({sdlGeneratorTools: state}) => {
     return {
         availableTypeNames: getAvailableTypeNames(state.nodeTypes, null),
         selectedType: state.nodeTypes[state.selection],
@@ -271,7 +272,7 @@ const CompositeComp = compose(
         })
     }),
     withStyles(styles),
-    translate()
+    withTranslation('sdl-generator-tools')
 )(AddModifyTypeDialog);
 
 export default withApollo(CompositeComp);
