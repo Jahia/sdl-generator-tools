@@ -9,7 +9,7 @@ const Component = React.lazy(() => import('./MainLayout'));
 window.jahia.i18n.loadNamespaces('sdl-generator-tools');
 
 registry.add('adminRoute', 'sdlGeneratorTools', {
-    targets: ['developerTools:20'],
+    targets: ['developerTools:40'],
     icon: <SdLgenerator/>,
     label: 'sdl-generator-tools:label.sdlGeneratorTools.top.caption',
     isSelectable: true,
