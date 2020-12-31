@@ -2,8 +2,8 @@
   "label": {
     "sdlGeneratorTools": {
       "top": {
-        "caption": "SDL Generator Tools",
-        "backToToolsButton": "Back to tools"
+        "caption": "SDL Generator Tool",
+        "backToToolsButton": "Back to tool"
       },
       "steps": {
         "createTypes": "Create types",
