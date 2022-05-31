@@ -9,7 +9,6 @@ import C from '../../../../App.constants';
 import {sdlSelectType, sdlUpdateAddModifyTypeDialog} from '../../StepperComponent.redux-actions';
 import {connect} from 'react-redux';
 
-/* eslint-disable */
 const styles = theme => ({
     paper: {
         width: '100%',
@@ -39,7 +38,6 @@ const styles = theme => ({
         }
     }
 });
-/* eslint-disable */
 
 const TypeItem = withStyles(styles)(({classes, name, uuid, mode, isSelected, selectType, updateTypeDialogMode}) => {
     const renderEditButton = () => {
@@ -48,7 +46,7 @@ const TypeItem = withStyles(styles)(({classes, name, uuid, mode, isSelected, sel
                 <IconButton aria-label="Edit"
                             onClick={() => {
                                 selectType(uuid);
-                                updateTypeDialogMode({open: true, mode: C.DIALOG_MODE_EDIT});
+                                updateTypeDialogMode({isOpen: true, mode: C.DIALOG_MODE_EDIT});
                             }}
                 >
                     <Edit/>
@@ -74,7 +72,7 @@ const TypesList = ({classes, t, nodeTypes, selection, selectType, updateTypeDial
                 icon={<Add/>}
                 className={classes.listButton}
                 onClick={() => {
-                    updateTypeDialogMode({open: true, mode: C.DIALOG_MODE_ADD});
+                    updateTypeDialogMode({isOpen: true, mode: C.DIALOG_MODE_ADD});
                 }}
             >
                 {t('label.sdlGeneratorTools.createTypes.addNewTypeButton')}

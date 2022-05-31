@@ -10,7 +10,6 @@ import {connect} from 'react-redux';
 import {withTranslation} from 'react-i18next';
 import {filterAvailableFinders} from '../DefineFinders.utils';
 
-/* eslint-disable */
 const styles = theme => ({
     paper: {
         width: '100%',
@@ -48,7 +47,7 @@ FinderItem.propTypes = {
 const FindersList = ({t, classes, selectedType, selectedFinder, mode, selectFinder, updateFinderDialogState}) => {
     const availableFinders = filterAvailableFinders(mode, selectedFinder, selectedType);
     const handleEditFinder = finderName => {
-        updateFinderDialogState({open: true, mode: C.DIALOG_MODE_EDIT});
+        updateFinderDialogState({isOpen: true, mode: C.DIALOG_MODE_EDIT});
         selectFinder(finderName);
     };
     return (
@@ -61,7 +60,7 @@ const FindersList = ({t, classes, selectedType, selectedFinder, mode, selectFind
                                 icon={<Add/>}
                                 disabled={selectedType === undefined || availableFinders.length === 0}
                                 className={classes.listButton}
-                                onClick={() => updateFinderDialogState({open: true, mode: C.DIALOG_MODE_ADD})}
+                                onClick={() => updateFinderDialogState({isOpen: true, mode: C.DIALOG_MODE_ADD})}
                         >
                             {t('label.sdlGeneratorTools.defineFinder.addAFinder')}
                         </Button>

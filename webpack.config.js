@@ -1,24 +1,19 @@
 const path = require('path');
 const webpack = require('webpack');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-
-// Get manifest
-var normalizedPath = require('path').join(__dirname, './target/dependency');
-var manifest = '';
-require('fs').readdirSync(normalizedPath).forEach(function (file) {
-    manifest = './target/dependency/' + file;
-    console.log('use manifest ' + manifest);
-});
-
+const {CleanWebpackPlugin} = require('clean-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const ModuleFederationPlugin = require('webpack/lib/container/ModuleFederationPlugin');
+const shared = require('./webpack.shared');
 module.exports = (env, argv) => {
     const config = {
         entry: {
-            main: [path.resolve(__dirname, 'src/javascript/publicPath'), path.resolve(__dirname, 'src/javascript/index.js')]
+            main: [path.resolve(__dirname, 'src/javascript/index.js')]
         },
         output: {
             path: path.resolve(__dirname, 'src/main/resources/javascript/apps/'),
-            filename: 'jahia.bundle.js',
-            jsonpFunction: 'sdlGeneratorToolsJsonp'
+            filename: 'sdlgeneratortools.bundle.js',
+            chunkFilename: '[name].sdlgeneratortools.[chunkhash:6].js'
         },
         resolve: {
             mainFields: ['module', 'main'],
@@ -27,26 +22,28 @@ module.exports = (env, argv) => {
         module: {
             rules: [
                 {
-                    test: /\.mjs$/,
-                    include: /node_modules/,
+                    test: /\.m?js$/,
                     type: "javascript/auto",
                 },
                 {
                     test: /\.jsx?$/,
                     include: [path.join(__dirname, "src")],
-                    loader: 'babel-loader',
-                    query: {
-                        presets: [
-                            ['@babel/preset-env', {modules: false, targets: {safari: '7', ie: '10'}}],
-                            '@babel/preset-react'
-                        ],
-                        plugins: [
-                            "lodash"
-                        ]
+                    use: {
+                        loader: 'babel-loader',
+                        options: {
+                            presets: [
+                                ['@babel/preset-env', {modules: false, targets: {safari: '7', ie: '10'}}],
+                                '@babel/preset-react'
+                            ],
+                            plugins: [
+                                '@babel/plugin-syntax-dynamic-import'
+                            ]
+                        }
                     }
                 },
                 {
                     test: /\.css$/,
+                    sideEffects: true,
                     use: ['style-loader', 'css-loader']
                 },
                 {
@@ -62,14 +59,20 @@ module.exports = (env, argv) => {
             ]
         },
         plugins: [
-            new webpack.DllReferencePlugin({
-                manifest: require(manifest)
+            new ModuleFederationPlugin({
+                name: 'sdlgeneratortools',
+                library: {type: 'assign', name: 'appShell.remotes.sdlgeneratortools'},
+                filename: 'remoteEntry.js',
+                exposes: {
+                    './init': './src/javascript/init'
+                },
+                remotes: {
+                    '@jahia/app-shell': 'appShellRemote'
+                },
+                shared
             }),
-            new webpack.HashedModuleIdsPlugin({
-                hashFunction: 'sha256',
-                hashDigest: 'hex',
-                hashDigestLength: 20
-            })
+            new CleanWebpackPlugin({verbose: false}),
+            new CopyWebpackPlugin({patterns: [{from: './package.json', to: ''}]})
         ],
         mode: 'development'
     };
