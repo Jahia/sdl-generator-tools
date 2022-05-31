@@ -49,7 +49,7 @@ parameters:
     default: false
   SSH_KEY_FINGERPRINT:
     type: string
-    default: "a5:8b:fd:fb:1b:38:af:66:3d:fb:1e:84:22:e1:8a:e1"
+    default: "04:24:ed:d2:e6:06:ba:d3:9c:63:ae:ef:ad:72:62:b9"
   SHOULD_SKIP_ARTIFACTS:
     type: boolean
     default: true
