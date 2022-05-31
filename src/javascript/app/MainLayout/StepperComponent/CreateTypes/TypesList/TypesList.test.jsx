@@ -5,8 +5,6 @@ import {Typography} from '@jahia/design-system-kit';
 import configureStore from 'redux-mock-store';
 import C from '../../../../App.constants';
 
-/* eslint-disable */
-
 describe('TypeList tests', () => {
     let mockStore = configureStore();
 
@@ -36,8 +34,6 @@ describe('TypeList tests', () => {
         expect(wrapper.find('[uuid="46e237d9-c125-48c0-a9f8-3c380da7d03b"]')).toBeDefined();
     });
 });
-
-/* eslint-disable */
 
 const initialState = {
     nodeTypes: {},

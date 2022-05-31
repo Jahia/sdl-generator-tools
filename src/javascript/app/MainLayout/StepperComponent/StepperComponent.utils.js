@@ -10,7 +10,7 @@ const upperCaseFirst = val => {
 const getMappingDirectiveArguments = selected => {
     if (!_.isNil(selected) && !_.isNil(selected.directives) && selected.directives.length > 0) {
         const mappingDirective = selected.directives.filter(directive => directive.name === 'mapping');
-        return !_.isNil(mappingDirective) ? mappingDirective[0].arguments : null;
+        return _.isNil(mappingDirective) ? null : mappingDirective[0].arguments;
     }
 
     return null;
@@ -29,7 +29,7 @@ const lookUpMappingArgumentInfo = (selected, argName) => {
     const mappingDirectiveArgs = getMappingDirectiveArguments(selected);
     if (!_.isNil(mappingDirectiveArgs)) {
         const arg = mappingDirectiveArgs.filter(argument => argument.name === argName)[0];
-        return !_.isNil(arg) ? arg.value : null;
+        return _.isNil(arg) ? null : arg.value;
     }
 
     return null;
@@ -37,12 +37,12 @@ const lookUpMappingArgumentInfo = (selected, argName) => {
 
 const lookUpMappingStringArgumentInfo = (selected, argName) => {
     const info = lookUpMappingArgumentInfo(selected, argName);
-    return !_.isNil(info) ? info : '';
+    return _.isNil(info) ? '' : info;
 };
 
 const lookUpMappingBooleanArgumentInfo = (selected, argName) => {
     const info = lookUpMappingArgumentInfo(selected, argName);
-    return !_.isNil(info) ? info : false;
+    return _.isNil(info) ? false : info;
 };
 
 const isPredefinedType = type => {
@@ -62,7 +62,6 @@ const generateFinderSuffix = name => {
 const getAvailableTypeNames = (nodeTypes, selection) => {
     const availableTypes = [];
     if (nodeTypes) {
-        // eslint-disable-next-line no-unused-vars
         for (let nodeType in nodeTypes) {
             // eslint-disable-next-line no-prototype-builtins
             if (!nodeTypes.hasOwnProperty(nodeType)) {

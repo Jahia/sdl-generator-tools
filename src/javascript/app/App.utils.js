@@ -10,7 +10,6 @@ const generateUUID = () => {
         return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
     });
 };
-/* eslint-disable */
 
 const storeLocally = (key, jsonValue) => {
     window.localStorage.setItem(key, JSON.stringify(jsonValue));

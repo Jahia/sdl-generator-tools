@@ -50,7 +50,7 @@
     <parent>
         <groupId>org.jahia.modules</groupId>
         <artifactId>jahia-modules</artifactId>
-        <version>8.0.0.0</version>
+        <version>8.1.0.0</version>
     </parent>
 
     <artifactId>sdl-generator-tools</artifactId>
@@ -68,22 +68,21 @@
     <properties>
         <jahia-depends>default,serverSettings,graphql-dxm-provider</jahia-depends>
         <yarn.arguments>build:production</yarn.arguments>
-        <jahia-module-signature>MCwCFBHt5lahsS3sBhN+6hFCqkyUXxo5AhQxIsMKltgPhfgLOW2aZ8Eou8nxWg==</jahia-module-signature>
+        <jahia-module-signature>MC0CFBMboxbnGjFljqk8HdeP8G+2ESxJAhUAlcUocYmoOCBUpiuYvWHfaGcLVvY=</jahia-module-signature>
+        <jahia-plugin-version>6.4</jahia-plugin-version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.jahia.modules</groupId>
             <artifactId>graphql-dxm-provider</artifactId>
-            <version>2.0.0</version>
+            <version>2.8.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.jahia.modules</groupId>
             <artifactId>app-shell</artifactId>
-            <version>2.0.0</version>
-            <type>json</type>
-            <classifier>manifest</classifier>
+            <version>2.2.1</version>
         </dependency>
     </dependencies>
 
@@ -159,7 +158,7 @@
             <plugin>
                 <groupId>com.github.eirslett</groupId>
                 <artifactId>frontend-maven-plugin</artifactId>
-                <version>1.6</version>
+                <version>1.12.0</version>
                 <executions>
                     <execution>
                         <id>npm install node and yarn</id>
@@ -168,8 +167,8 @@
                             <goal>install-node-and-yarn</goal>
                         </goals>
                         <configuration>
-                            <nodeVersion>v11.11.0</nodeVersion>
-                            <yarnVersion>v1.19.1</yarnVersion>
+                            <nodeVersion>v14.17.0</nodeVersion>
+                            <yarnVersion>v1.22.19</yarnVersion>
                         </configuration>
                     </execution>
                     <execution>
@@ -190,30 +189,6 @@
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>copy</id>
-                        <phase>initialize</phase>
-                        <goals>
-                            <goal>copy</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <artifactItems>
-                        <artifactItem>
-                            <groupId>org.jahia.modules</groupId>
-                            <artifactId>app-shell</artifactId>
-                            <type>json</type>
-                            <classifier>manifest</classifier>
-                        </artifactItem>
-                    </artifactItems>
-                </configuration>
             </plugin>
         </plugins>
     </build>

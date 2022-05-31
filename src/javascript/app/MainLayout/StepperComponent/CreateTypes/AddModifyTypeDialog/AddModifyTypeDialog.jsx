@@ -38,9 +38,26 @@ const styles = () => ({
     }
 });
 
-const AddModifyTypeDialog = ({classes, defaultNodeTypeNames, allNodeTypeNames, t, open, closeDialog, mode, selection, selectedType, selectType, removeType, addType, updateType, addDirective, removeDirective, availableTypeNames}) => {
-    const customTypeName = !_.isNil(selectedType) ? selectedType.name : '';
-    const customDisplayName = !_.isNil(selectedType) ? selectedType.displayName : '';
+const AddModifyTypeDialog = ({
+    classes,
+    defaultNodeTypeNames,
+    allNodeTypeNames,
+    t,
+    isOpen,
+    closeDialog,
+    mode,
+    selection,
+    selectedType,
+    selectType,
+    removeType,
+    addType,
+    updateType,
+    addDirective,
+    removeDirective,
+    availableTypeNames
+}) => {
+    const customTypeName = _.isNil(selectedType) ? '' : selectedType.name;
+    const customDisplayName = _.isNil(selectedType) ? '' : selectedType.displayName;
     const jcrNodeType = lookUpMappingStringArgumentInfo(selectedType, 'node');
     const ignoreDefaultQueriesDirective = lookUpMappingBooleanArgumentInfo(selectedType, 'ignoreDefaultQueries');
     const [typeName, updateTypeName] = useState(customTypeName);
@@ -118,7 +135,7 @@ const AddModifyTypeDialog = ({classes, defaultNodeTypeNames, allNodeTypeNames, t
     };
 
     return (
-        <Dialog open={open}
+        <Dialog open={isOpen}
                 classes={classes}
                 aria-labelledby="form-dialog-title"
                 onClose={closeDialog}
@@ -133,8 +150,8 @@ const AddModifyTypeDialog = ({classes, defaultNodeTypeNames, allNodeTypeNames, t
             <DialogContent style={{width: 400, overflow: 'visible'}}>
                 <TypeSelect t={t}
                             value={mode === C.DIALOG_MODE_EDIT ? {label: customDisplayName, value: jcrNodeType} : null}
-                            defaultNodes={!_.isNil(defaultNodeTypeNames) ? defaultNodeTypeNames.nodeTypes.nodes : null}
-                            allNodes={!_.isNil(allNodeTypeNames) ? allNodeTypeNames.nodeTypes.nodes : null}
+                            defaultNodes={_.isNil(defaultNodeTypeNames) ? null : defaultNodeTypeNames.nodeTypes.nodes}
+                            allNodes={_.isNil(allNodeTypeNames) ? null : allNodeTypeNames.nodeTypes.nodes}
                             handleChange={event => {
                                 updateNodeType(event.value);
                                 updateDisplayName(event.label);
@@ -154,7 +171,7 @@ const AddModifyTypeDialog = ({classes, defaultNodeTypeNames, allNodeTypeNames, t
                         </Typography>
                     }
                     type="text"
-                    value={!_.isNil(typeName) ? typeName : ''}
+                    value={_.isNil(typeName) ? '' : typeName}
                     error={duplicateName}
                     onKeyDown={e => {
                         // Delete key
@@ -210,7 +227,7 @@ AddModifyTypeDialog.propTypes = {
     classes: PropTypes.object.isRequired,
     t: PropTypes.func.isRequired,
     selectedType: PropTypes.object,
-    open: PropTypes.bool.isRequired,
+    isOpen: PropTypes.bool.isRequired,
     mode: PropTypes.string.isRequired,
     selection: PropTypes.string,
     closeDialog: PropTypes.func.isRequired,
@@ -243,7 +260,7 @@ const mapDispatchToProps = dispatch => {
         updateType: (infos, uuid) => dispatch(sdlUpdateType(infos, uuid)),
         removeDirective: (type, directiveName, args) => dispatch(sdlRemoveDirectiveArgFromType(type, directiveName, args)),
         addDirective: (type, directiveName, args) => dispatch(sdlAddDirectiveArgToType(type, directiveName, args)),
-        closeDialog: () => dispatch(sdlUpdateAddModifyTypeDialog({open: false}))
+        closeDialog: () => dispatch(sdlUpdateAddModifyTypeDialog({isOpen: false}))
     };
 };
 
@@ -276,4 +293,3 @@ const CompositeComp = compose(
 )(AddModifyTypeDialog);
 
 export default withApollo(CompositeComp);
-

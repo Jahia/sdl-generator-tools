@@ -56,7 +56,7 @@ const sortProperties = nodeProperties => {
     return _.sortBy(propertyItems, [item => item.displayName.toLowerCase()]);
 };
 
-const ContentSwitch = ({mode, t, channel, updateSelectedProp, addPropertyAndClose, availableNodeTypes, selectedProperty, selectJCRProperty, nodeProperties, duplicateName, cancelAndClose, selectChannel, removeAndClose, userInputDetected, updateUserInputDetected}) => {
+const ContentSwitch = ({mode, t, channel, updateSelectedProp, addPropertyAndClose, availableNodeTypes, selectedProperty, selectJCRProperty, nodeProperties, hasDuplicateName, cancelAndClose, selectChannel, removeAndClose, hasUserInputDetected, updateUserInputDetected}) => {
     if (channel === C.CHANNEL_PROPERTY) {
         return (
             <PropertyChannel t={t}
@@ -66,7 +66,7 @@ const ContentSwitch = ({mode, t, channel, updateSelectedProp, addPropertyAndClos
                              selectedProperty={selectedProperty}
                              selectJCRProperty={selectJCRProperty}
                              nodeProperties={nodeProperties}
-                             duplicateName={duplicateName}
+                             hasDuplicateName={hasDuplicateName}
                              cancelAndClose={cancelAndClose}
                              removeAndClose={removeAndClose}
                              updateUserInputDetected={updateUserInputDetected}/>
@@ -83,10 +83,10 @@ const ContentSwitch = ({mode, t, channel, updateSelectedProp, addPropertyAndClos
                                 selectedProperty={selectedProperty}
                                 selectJCRProperty={selectJCRProperty}
                                 nodeProperties={nodeProperties}
-                                duplicateName={duplicateName}
+                                hasDuplicateName={hasDuplicateName}
                                 cancelAndClose={cancelAndClose}
                                 removeAndClose={removeAndClose}
-                                userInputDetected={userInputDetected}
+                                hasUserInputDetected={hasUserInputDetected}
                                 updateUserInputDetected={updateUserInputDetected}/>
         );
     }
@@ -108,19 +108,19 @@ ContentSwitch.propTypes = {
     selectedProperty: PropTypes.object,
     selectJCRProperty: PropTypes.func.isRequired,
     nodeProperties: PropTypes.array.isRequired,
-    duplicateName: PropTypes.bool.isRequired,
+    hasDuplicateName: PropTypes.bool.isRequired,
     cancelAndClose: PropTypes.func.isRequired,
     selectChannel: PropTypes.func.isRequired,
     removeAndClose: PropTypes.func.isRequired,
-    userInputDetected: PropTypes.bool.isRequired,
+    hasUserInputDetected: PropTypes.bool.isRequired,
     updateUserInputDetected: PropTypes.func.isRequired
 };
 
-const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, channel, availableNodeTypes, selection, selectedType, availableProperties, selectedProperty, addProperty, removeProperty, removeFinder, updateSelectedProp, updateProperty, selectChannel}) => {
-    const nodes = !_.isNil(data.jcr) ? data.jcr.nodeTypes.nodes : [];
+const AddModifyPropertyDialog = ({data, t, isOpen, closeDialog, mode, channel, availableNodeTypes, selection, selectedType, availableProperties, selectedProperty, addProperty, removeProperty, removeFinder, updateSelectedProp, updateProperty, selectChannel}) => {
+    const nodes = _.isNil(data.jcr) ? [] : data.jcr.nodeTypes.nodes;
     let nodeProperties = nodes.length > 0 ? nodes[0].properties : [];
 
-    const selectionId = !_.isNil(selection) ? selection : '';
+    const selectionId = _.isNil(selection) ? '' : selection;
     const selectedPropertyName = resolveSelectedProp(selectedProperty, 'propertyName');
     const oldPropertyName = resolveSelectedProp(selectedProperty, 'oldPropertyName');
     const selectedJcrPropertyName = resolveSelectedProp(selectedProperty, 'jcrPropertyName');
@@ -227,7 +227,7 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, channel, ava
         if (value.startsWith(C.MULTIPLE_CHILDREN_INDICATOR)) {
             isList = true;
         } else {
-            isList = prop.multiple !== undefined ? prop.multiple : false;
+            isList = prop.multiple === undefined ? false : prop.multiple;
         }
 
         let selectedProp = {
@@ -248,7 +248,7 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, channel, ava
 
     return (
         <Dialog
-            open={open}
+            open={isOpen}
             aria-labelledby="form-dialog-title"
             onClose={closeDialog}
         >
@@ -262,11 +262,11 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, channel, ava
                 selectedProperty={selectedProperty}
                 selectJCRProperty={selectJCRProperty}
                 nodeProperties={nodeProperties}
-                duplicateName={duplicateName}
+                hasDuplicateName={duplicateName}
                 cancelAndClose={cancelAndClose}
                 selectChannel={selectChannel}
                 removeAndClose={removeAndClose}
-                userInputDetected={userInputDetected}
+                hasUserInputDetected={userInputDetected}
                 updateUserInputDetected={updateUserInputDetected}
             />
         </Dialog>
@@ -276,7 +276,7 @@ const AddModifyPropertyDialog = ({data, t, open, closeDialog, mode, channel, ava
 AddModifyPropertyDialog.propTypes = {
     data: PropTypes.object,
     t: PropTypes.func.isRequired,
-    open: PropTypes.bool.isRequired,
+    isOpen: PropTypes.bool.isRequired,
     mode: PropTypes.string.isRequired,
     name: PropTypes.string,
     channel: PropTypes.string,
@@ -295,7 +295,7 @@ AddModifyPropertyDialog.propTypes = {
     selection: PropTypes.string
 };
 
-const PropertyChannel = ({t, mode, updateSelectedProp, addPropertyAndClose, selectedProperty, cancelAndClose, selectJCRProperty, nodeProperties, duplicateName, removeAndClose, updateUserInputDetected}) => {
+const PropertyChannel = ({t, mode, updateSelectedProp, addPropertyAndClose, selectedProperty, cancelAndClose, selectJCRProperty, nodeProperties, hasDuplicateName, removeAndClose, updateUserInputDetected}) => {
     const selectedPropertyName = resolveSelectedProp(selectedProperty, 'propertyName');
     const selectedJcrPropertyName = resolveSelectedProp(selectedProperty, 'jcrPropertyName');
 
@@ -308,7 +308,7 @@ const PropertyChannel = ({t, mode, updateSelectedProp, addPropertyAndClose, sele
             </DialogTitle>
             <DialogContent style={{width: 400}}>
                 <PropertySelector required
-                                  open={showPropertySelector}
+                                  isOpen={showPropertySelector}
                                   t={t}
                                   nodeProperties={sortProperties(nodeProperties)}
                                   value={selectedJcrPropertyName}
@@ -330,7 +330,7 @@ const PropertyChannel = ({t, mode, updateSelectedProp, addPropertyAndClose, sele
                     }
                     type="text"
                     value={selectedPropertyName}
-                    error={duplicateName}
+                    error={hasDuplicateName}
                     onKeyDown={e => {
                         // Delete key
                         if (e.which === 8 && selectedPropertyName.length > 0) {
@@ -342,7 +342,7 @@ const PropertyChannel = ({t, mode, updateSelectedProp, addPropertyAndClose, sele
                             updateUserInputDetected(true);
                         }
 
-                        if (e.key === 'Enter' && !duplicateName && selectedPropertyName && selectedJcrPropertyName) {
+                        if (e.key === 'Enter' && !hasDuplicateName && selectedPropertyName && selectedJcrPropertyName) {
                             addPropertyAndClose();
                         } else if (e.which === 32) {
                             e.preventDefault();
@@ -358,7 +358,7 @@ const PropertyChannel = ({t, mode, updateSelectedProp, addPropertyAndClose, sele
                 >
                     {t('label.sdlGeneratorTools.cancelButton')}
                 </Button>
-                <Button disabled={duplicateName || !selectedPropertyName || !selectedJcrPropertyName}
+                <Button disabled={hasDuplicateName || !selectedPropertyName || !selectedJcrPropertyName}
                         variant="primary"
                         size="normal"
                         onClick={addPropertyAndClose}
@@ -388,12 +388,12 @@ PropertyChannel.propTypes = {
     cancelAndClose: PropTypes.func.isRequired,
     selectJCRProperty: PropTypes.func.isRequired,
     nodeProperties: PropTypes.array.isRequired,
-    duplicateName: PropTypes.bool.isRequired,
+    hasDuplicateName: PropTypes.bool.isRequired,
     removeAndClose: PropTypes.func.isRequired,
     updateUserInputDetected: PropTypes.func.isRequired
 };
 
-const TypeMappingChannel = ({t, mode, updateSelectedProp, addPropertyAndClose, availableNodeTypes, selectedProperty, cancelAndClose, removeAndClose, selectJCRProperty, nodeProperties, duplicateName, userInputDetected, updateUserInputDetected}) => {
+const TypeMappingChannel = ({t, mode, updateSelectedProp, addPropertyAndClose, availableNodeTypes, selectedProperty, cancelAndClose, removeAndClose, selectJCRProperty, nodeProperties, hasDuplicateName, hasUserInputDetected, updateUserInputDetected}) => {
     const selectedPropertyName = resolveSelectedProp(selectedProperty, 'propertyName');
     const selectedJcrPropertyName = resolveSelectedProp(selectedProperty, 'jcrPropertyName');
     const selectedPropertyType = resolveSelectedProp(selectedProperty, 'propertyType');
@@ -414,7 +414,7 @@ const TypeMappingChannel = ({t, mode, updateSelectedProp, addPropertyAndClose, a
         };
         // Preset propertyName using predefinted type name IF:
         // A property is not already selected, or IF the selected property is a list of children(denoted by *)
-        if (mode === C.DIALOG_MODE_ADD && !userInputDetected && (!selectedJcrPropertyName || selectedJcrPropertyName.startsWith('*'))) {
+        if (mode === C.DIALOG_MODE_ADD && !hasUserInputDetected && (!selectedJcrPropertyName || selectedJcrPropertyName.startsWith('*'))) {
             prop.propertyName = _.camelCase(event.target.value);
         }
 
@@ -429,13 +429,13 @@ const TypeMappingChannel = ({t, mode, updateSelectedProp, addPropertyAndClose, a
             </DialogTitle>
             <DialogContent style={{width: 400}}>
                 <PredefinedTypeSelector t={t}
-                                        open={showPredefinedTypeSelector}
+                                        isOpen={showPredefinedTypeSelector}
                                         types={C.PREDEFINED_SDL_TYPES.concat(availableNodeTypes)}
                                         value={selectedPropertyType.replace(/(\[|])/g, '')}
                                         handleOpen={() => setPredefinedTypeSelector(true)}
                                         handleClose={() => setPredefinedTypeSelector(false)}
                                         handleChange={handlePredefinedTypeChange}/>
-                <PropertySelector open={showPropertySelector}
+                <PropertySelector isOpen={showPropertySelector}
                                   required={false}
                                   t={t}
                                   nodeProperties={properties}
@@ -458,7 +458,7 @@ const TypeMappingChannel = ({t, mode, updateSelectedProp, addPropertyAndClose, a
                     }
                     type="text"
                     value={selectedPropertyName}
-                    error={duplicateName}
+                    error={hasDuplicateName}
                     onKeyDown={e => {
                         // Delete key
                         if (e.which === 8 && selectedPropertyName.length > 0) {
@@ -470,7 +470,7 @@ const TypeMappingChannel = ({t, mode, updateSelectedProp, addPropertyAndClose, a
                             updateUserInputDetected(true);
                         }
 
-                        if (e.key === 'Enter' && !duplicateName && !selectedPropertyName && !selectedPropertyType) {
+                        if (e.key === 'Enter' && !hasDuplicateName && !selectedPropertyName && !selectedPropertyType) {
                             addPropertyAndClose();
                         } else if (e.which === 32) {
                             e.preventDefault();
@@ -501,7 +501,7 @@ const TypeMappingChannel = ({t, mode, updateSelectedProp, addPropertyAndClose, a
                 >
                     {t('label.sdlGeneratorTools.cancelButton')}
                 </Button>
-                <Button disabled={duplicateName || !selectedPropertyName || !selectedPropertyType}
+                <Button disabled={hasDuplicateName || !selectedPropertyName || !selectedPropertyType}
                         variant="primary"
                         size="normal"
                         onClick={addPropertyAndClose}
@@ -533,8 +533,8 @@ TypeMappingChannel.propTypes = {
     cancelAndClose: PropTypes.func.isRequired,
     selectJCRProperty: PropTypes.func.isRequired,
     nodeProperties: PropTypes.array.isRequired,
-    duplicateName: PropTypes.bool.isRequired,
-    userInputDetected: PropTypes.bool.isRequired,
+    hasDuplicateName: PropTypes.bool.isRequired,
+    hasUserInputDetected: PropTypes.bool.isRequired,
     removeAndClose: PropTypes.func.isRequired,
     updateUserInputDetected: PropTypes.func.isRequired,
     availableNodeTypes: PropTypes.array.isRequired
@@ -596,6 +596,7 @@ const mapStateToProps = ({sdlGeneratorTools: state}) => {
 const mapDispatchToProps = dispatch => {
     return {
         addProperty: (propertyInfo, typeIndex) => dispatch(sdlAddPropertyToType(propertyInfo, typeIndex)),
+        // eslint-disable-next-line max-params
         updateProperty: (propertyInfo, typeIndex, propIndex, oldPropertyName, selection, selectedType) => {
             dispatch(sdlUpdatePropertyOfType(propertyInfo, typeIndex, propIndex));
             ['', 'Connection'].forEach(finder => {
@@ -617,7 +618,7 @@ const mapDispatchToProps = dispatch => {
         removeProperty: (propertyIndex, typeIndexOrName) => dispatch(sdlRemovePropertyFromType(propertyIndex, typeIndexOrName)),
         removeFinder: (uuid, finderIndex) => dispatch(sdlRemoveFinderFromType(uuid, finderIndex)),
         closeDialog: () => {
-            dispatch(sdlUpdateAddModifyPropertyDialog({open: false, mode: C.DIALOG_MODE_ADD}));
+            dispatch(sdlUpdateAddModifyPropertyDialog({isOpen: false, mode: C.DIALOG_MODE_ADD}));
             dispatch(sdlSelectProperty('', '', '', ''));
         },
         selectChannel: channel => dispatch(sdlUpdateAddModifyPropertyDialog({channel: channel}))

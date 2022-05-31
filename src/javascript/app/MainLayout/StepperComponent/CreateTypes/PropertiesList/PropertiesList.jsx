@@ -10,7 +10,6 @@ import {lookUpMappingStringArgumentInfo} from '../../StepperComponent.utils';
 import {sdlSelectProperty, sdlUpdateAddModifyPropertyDialog} from '../../StepperComponent.redux-actions';
 import {connect} from 'react-redux';
 
-/* eslint-disable */
 const styles = theme => ({
     paper: {
         width: '100%',
@@ -32,7 +31,6 @@ const styles = theme => ({
         borderBottom: '1px solid ' + theme.palette.ui.omega
     }
 });
-/* eslint-disable */
 
 const PropertyItem = ({index, name, type, jcrName, selectProperty, showAddPropertyDialog}) => (
     <ListItem button
@@ -66,7 +64,7 @@ const PropertiesList = ({classes, t, selectedType, selectProperty, addModifyProp
                             variant="ghost"
                             className={classes.listButton}
                             onClick={() => {
-                                addModifyPropertyDialog({open: true, channel: undefined, mode: C.DIALOG_MODE_ADD});
+                                addModifyPropertyDialog({isOpen: true, channel: undefined, mode: C.DIALOG_MODE_ADD});
                             }}
                         >
                             {t('label.sdlGeneratorTools.createTypes.addNewPropertyButton')}
@@ -84,7 +82,7 @@ const PropertiesList = ({classes, t, selectedType, selectProperty, addModifyProp
                                       jcrName={lookUpMappingStringArgumentInfo(field, 'property')}
                                       selectProperty={selectProperty}
                                       showAddPropertyDialog={() => addModifyPropertyDialog({
-                                          open: true,
+                                          isOpen: true,
                                           mode: C.DIALOG_MODE_EDIT
                                       })}
                         />

@@ -136,7 +136,7 @@ const components = {
 };
 
 const fetchDefaultOptionItem = (optionItems, updateOptionItems, defaultValue) => {
-    let defaultItem = !_.isNil(optionItems) ? optionItems.find(e => e.value === defaultValue.value) : null;
+    let defaultItem = _.isNil(optionItems) ? null : optionItems.find(e => e.value === defaultValue.value);
 
     if (!_.isNil(defaultItem)) {
         return defaultItem;
@@ -154,7 +154,7 @@ const fetchDefaultOptionItem = (optionItems, updateOptionItems, defaultValue) =>
 
 const TypeSelect = ({classes, t, value, handleClose, handleChange, handleOpen, defaultNodes, allNodes, isLoading}) => {
     const [optionItems, updateOptionItems] = useState(convertTypesToSelectOptions(defaultNodes, true));
-    const defaultItem = !_.isNil(value) ? fetchDefaultOptionItem(optionItems, updateOptionItems, value) : null;
+    const defaultItem = _.isNil(value) ? null : fetchDefaultOptionItem(optionItems, updateOptionItems, value);
 
     const handleSearch = keyword => {
         if (_.isNil(keyword) || keyword.replace(/^\s+|\s+$/gm, '') === '') {

@@ -46,7 +46,7 @@ const selectedPropertyReducer = (state = null, action) => {
 };
 
 // eslint-disable-next-line default-param-last
-const addModifyPropertyDialog = (state = {open: false, mode: C.DIALOG_MODE_ADD}, action) => {
+const addModifyPropertyDialog = (state = {isOpen: false, mode: C.DIALOG_MODE_ADD}, action) => {
     switch (action.type) {
         case actionTypes.SDL_UPDATE_ADD_MOD_PROPERTY_DIALOG:
             return {
@@ -59,7 +59,7 @@ const addModifyPropertyDialog = (state = {open: false, mode: C.DIALOG_MODE_ADD},
 };
 
 // eslint-disable-next-line default-param-last
-const addModifyTypeDialog = (state = {open: false, mode: C.DIALOG_MODE_ADD}, action) => {
+const addModifyTypeDialog = (state = {isOpen: false, mode: C.DIALOG_MODE_ADD}, action) => {
     switch (action.type) {
         case actionTypes.SDL_UPDATE_ADD_TYPE_DIALOG:
             return {
@@ -72,7 +72,7 @@ const addModifyTypeDialog = (state = {open: false, mode: C.DIALOG_MODE_ADD}, act
 };
 
 // eslint-disable-next-line default-param-last
-const addModifyFinderDialog = (state = {open: false, mode: C.DIALOG_MODE_ADD}, action) => {
+const addModifyFinderDialog = (state = {isOpen: false, mode: C.DIALOG_MODE_ADD}, action) => {
     switch (action.type) {
         case actionTypes.SDL_UPDATE_ADD_FINDER_DIALOG:
             return {
