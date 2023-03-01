@@ -66,7 +66,7 @@
     </scm>
 
     <properties>
-        <jahia-depends/>
+        <jahia-depends>graphql-dxm-provider</jahia-depends>
         <yarn.arguments>build:production</yarn.arguments>
         <jahia-module-signature>MC0CFBMboxbnGjFljqk8HdeP8G+2ESxJAhUAlcUocYmoOCBUpiuYvWHfaGcLVvY=</jahia-module-signature>
         <jahia-plugin-version>6.4</jahia-plugin-version>
