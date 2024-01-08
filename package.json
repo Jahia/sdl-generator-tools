@@ -69,6 +69,7 @@
     "@jahia/eslint-config": "^1.1.0",
     "@jahia/stylelint-config": "^0.0.3",
     "@jahia/test-framework": "^1.1.5",
+    "@jahia/webpack-config": "^1.1.0",
     "babel-loader": "^8.0.6",
     "babel-plugin-lodash": "^3.3.4",
     "clean-webpack-plugin": "^3.0.0",
