@@ -1,6 +1,6 @@
 {
   "name": "sdl-generator-tools",
-  "version": "2.4.0-SNAPSHOT",
+  "version": "2.4.0",
   "description": "Jahia module for providing a set of tools for GraphQL schema generation",
   "main": "main.js",
   "scripts": {
